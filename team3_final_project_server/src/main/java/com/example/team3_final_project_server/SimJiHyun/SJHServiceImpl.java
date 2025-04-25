@@ -7,4 +7,9 @@ import org.springframework.stereotype.Service;
 public class SJHServiceImpl implements SJHService {
   @Autowired
   private SJHMapper sjhMapper;
+
+  @Override
+  public void home() {
+    sjhMapper.home();
+  }
 }
