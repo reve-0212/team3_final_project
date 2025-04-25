@@ -1,6 +1,7 @@
 import './App.css'
 // import axios from "axios";
 import Banner from "./KimSangMin/Banner.jsx";
+import PreSetting from "./KimSangMin/PreSetting.jsx";
 
 function App() {
 
@@ -18,7 +19,7 @@ function App() {
   return (
     <div>
       {/*<h1>team3 final project</h1>*/}
-        <Banner/>
+        <PreSetting/>
       {/*<button type={"button"} onClick={() => axiosTest()}>테스트</button>*/}
     </div>
   )
