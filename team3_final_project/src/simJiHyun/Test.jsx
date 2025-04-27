@@ -1,6 +1,7 @@
 import axios from "axios";
 import UseUrlStore from "../stores/UrlStore.jsx";
 import {useEffect} from "react";
+import LastWaiting from "./LastWaiting.jsx";
 
 function Test() {
   const axiosTest = () => {
@@ -28,8 +29,10 @@ function Test() {
 
   return (
     <div>
-      <h1>테스트</h1>
-      <button type={"button"} onClick={() => axiosTest()}>테스트</button>
+      {/*<h1>테스트</h1>*/}
+      {/*<button type={"button"} onClick={() => axiosTest()}>테스트</button>*/}
+      {/*<hr/>*/}
+      {/*<LastWaiting/>*/}
     </div>
   );
 }
