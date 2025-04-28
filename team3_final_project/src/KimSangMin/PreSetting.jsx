@@ -52,9 +52,8 @@ function PreSetting() {
     return (
         <div
             style={{
-              marginLeft: '200px',
-              marginTop: '10vh',
-              paddingTop: '2rem',
+              marginLeft: '300px',
+              paddingTop: '8rem',
               paddingLeft: '1rem',
               width: 'calc(100% - 200px)',
               maxWidth: '1000px'
@@ -64,6 +63,8 @@ function PreSetting() {
           <h4 className="text-start">가게정보</h4>
           <hr/>
           <br/>
+
+
           <h4 className="text-start"><strong>가게 대표 이미지</strong></h4>
 
           <div className="mb-4">
@@ -214,7 +215,6 @@ function PreSetting() {
           <br/>
 
           <SeatEditor/>
-
         </div>
     );
 }
