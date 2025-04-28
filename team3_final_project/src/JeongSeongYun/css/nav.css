@@ -1,0 +1,67 @@
+/* .nav-wrapper를 모바일 화면에 맞게 조정 */
+.nav-wrapper {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 6vh; /* 하단 네비바 높이 */
+    background-color: #fff;
+    padding: 1px 0px;
+    box-shadow: 0 0px 10px rgba(0, 0, 0, 0.2);
+    max-width: 480px; /* 모바일 화면 크기 (최대 너비 375px로 제한) */
+    margin-left: auto;
+    margin-right: auto; /* 중앙 정렬 */
+    width: 100%; /* 전체 화면 너비를 차지하되, 최대 너비는 375px로 제한 */
+}
+
+/* 네비게이션 바 */
+nav {
+    overflow: hidden;
+    /* 네비게이션 바의 상단에 선 표현을 원하면 활성화 */
+    /* border-top: 2px solid rgba(128, 128, 128, 0.623); */
+}
+
+/* 네비게이션 항목 */
+.bottom-nav-link {
+    float: left;
+    width: 25%; /* 4개의 버튼을 각각 25%의 너비를 할당 */
+    text-align: center;
+    height: 50px;
+    line-height: 50px; /* 버튼 텍스트 수직 중앙 정렬 */
+}
+
+/* 네비게이션 아이템의 기본 색상 */
+.bottom-nav-item {
+    color: rgba(128, 128, 128, 0.623);
+}
+
+/* 활성화된 메뉴 항목 색상 */
+.active-bottom-nav-item {
+    color: black; /* 선택된 메뉴 색상 */
+}
+@media screen and (max-width: 767px){
+    .nav-wrapper {
+        max-width: 100%; /* 화면 너비에 맞게 네비게이션 바 확장 */
+    }
+}
+/* 반응형 처리 - 화면 크기 375px 이하에서 네비게이션 바의 너비 조정 */
+@media screen and (max-width: 375px) {
+    .nav-wrapper {
+        max-width: 100%; /* 화면 너비에 맞게 네비게이션 바 확장 */
+    }
+
+    .bottom-nav-link {
+        width: 25%; /* 화면 크기가 작아지면 버튼 너비를 줄여줌 */
+    }
+
+    /* 아이콘 크기 줄이기 */
+    .bottom-nav-item {
+        font-size: 20px; /* 아이콘 크기 줄여서 표시 */
+    }
+}
+
+@media screen and (max-width: 320px) { /* 320px 이하 화면에서 네비게이션 바 조정 */
+    .bottom-nav-item {
+        font-size: 18px; /* 더 작은 화면에서 아이콘 크기 줄이기 */
+    }
+}
