@@ -1,0 +1,27 @@
+.app-container {
+  max-width: 480px;
+  margin: 0 auto;
+  border: 1px solid black;
+}
+
+.input-box {
+  width: 400px;
+}
+
+.hover-p {
+  color: #000;
+  display: inline-block;
+  margin: 0;
+}
+
+/*.hover-p:after {*/
+/*  display: block;*/
+/*  content: '';*/
+/*  border-bottom: solid 3px #FFA31C;*/
+/*  transform: scaleX(0);*/
+/*  transition: tranform 250ms ease-in-out;*/
+/*}*/
+
+/*.hover-p:hover:after {*/
+/*  transform: scaleX(1);*/
+/*}*/
