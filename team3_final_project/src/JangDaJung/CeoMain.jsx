@@ -33,7 +33,7 @@ const reviewData = [
 
 function CeoMain() {
     return (
-        <div>
+        <div style={{ marginTop: '10vh' }}>
             < Banner />
             <div className={'CeoMain-content'}>
                 <h2 className={'CeoMain-title mb-4'}>가게 이름</h2>

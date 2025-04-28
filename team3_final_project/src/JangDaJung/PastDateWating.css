@@ -1,0 +1,65 @@
+/* 날짜 범위 박스 */
+.date-box {
+    cursor: pointer;
+
+    border: 1px solid #e3e5e8;
+    border-radius: 10px;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    width: 27.4vw;
+    height: 3.5vw;
+    text-align: center;
+    line-height: 3.5vw;
+}
+
+.date-range-container {
+    position: relative;
+}
+
+/* 달력 팝업 스타일 */
+.calendar-popup {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;  /* 'div' 박스를 덮지 않도록 최상위 레벨 */
+}
+
+/* 날짜 선택 원형 표시 */
+.selected-from, .selected-to {
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 50%;
+    font-weight: bold;
+    text-align: center;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+}
+
+/* 날짜 범위 바 표시 */
+.selected-range {
+    background-color: rgba(76, 175, 80, 0.3);
+}
+
+/* 버튼 스타일 */
+button {
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.title {
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: #5D4037;
+}
