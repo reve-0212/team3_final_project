@@ -1,0 +1,42 @@
+/* 손님 페이지 기본 사이즈  */
+.app-container {
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+/* 전체 스타일 적용*/
+ul {
+    padding: 0;
+}
+li {
+    list-style: none;
+}
+section {
+    padding: 20px 0;
+    text-align: left;
+}
+
+/* 상세페이지 버튼 스타일 */
+.common-btn {
+    width: 100%;
+    background: #FFA31C;
+    padding: 15px 0;
+    color: #ffffff;
+    font-weight: bold;
+    margin: 0 auto;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.prev-btn, .next-btn {
+    border: none;
+    background: none;
+}
+.waiting-title {
+    font-weight: bold;
+    font-size: 30px;
+    text-align: left;
+    margin-bottom: 60px;
+}
+
+

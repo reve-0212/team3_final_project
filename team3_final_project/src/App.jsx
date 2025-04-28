@@ -1,5 +1,7 @@
 import SjhApp from "./simJiHyun/SjhApp.jsx";
 import PreTime from "./KimSangMin/PreTime.jsx";
+import KnhApp from "./KimNaHyun/KnhApp.jsx";
+import Visitor from "./KimNaHyun/waiting/Visitor.jsx";
 
 function App() {
 
@@ -16,10 +18,7 @@ function App() {
 
   return (
     <div>
-      {/*<h1>team3 final project</h1>*/}
-      {/*  <PreSetting/>*/}
-        <PreTime/>
-      {/*<button type={"button"} onClick={() => axiosTest()}>테스트</button>*/}
+     <KnhApp />
     </div>
   )
 }
