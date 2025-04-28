@@ -1,0 +1,57 @@
+.header {
+    height: 56px;
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+}
+
+.link {
+    text-decoration: none;
+    text-align: center;
+    color: inherit;
+}
+
+.title {
+    font-size: 20px;
+    color: black;
+    font-weight: bold;
+    margin: 0;
+}
+
+.back, .setting {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+}
+
+.logintitle {
+    display: flex;
+    align-items: center;
+    /*justify-content: center;*/
+    width: 200px;
+    height: 40px;
+    cursor: pointer;
+}
+
+.backIcon, .settingIcon, .loginIcon {
+    font-size: 20px;
+    color: rgba(128, 128, 128, 0.623);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.backIcon:active,
+.settingIcon:active {
+    color: black;
+    transform: scale(1.1);
+}

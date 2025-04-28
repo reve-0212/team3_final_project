@@ -1,7 +1,5 @@
-import SjhApp from "./simJiHyun/SjhApp.jsx";
-import PreTime from "./KimSangMin/PreTime.jsx";
-import KnhApp from "./KimNaHyun/KnhApp.jsx";
-import Visitor from "./KimNaHyun/waiting/Visitor.jsx";
+import './App.css'
+import axios from "axios";
 
 function App() {
   return (
