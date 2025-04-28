@@ -1,5 +1,7 @@
 import Banner from "./Banner.jsx";
 import {useState} from "react";
+import PreTimeSet from "./PreTimeSet.jsx";
+import {Link} from "react-router-dom";
 
 function PreTime() {
 
@@ -33,7 +35,7 @@ function PreTime() {
         }}>
             <Banner/>
             <div className="d-flex">
-                <h4 className="text-start me-5">가게정보</h4>
+                <Link to={"/preSetting"} style={{ textDecoration: 'none' }}><h4 className="text-start me-5">가게정보</h4></Link>
                 <h4 className="text-start">운영정보</h4>
             </div>
             <hr/>
@@ -101,6 +103,10 @@ function PreTime() {
                     <button className="btn" style={{backgroundColor:'#FFD727'}}>수정</button>
                 </div>
             </div>
+            <hr/>
+            <h4><strong>휴무일</strong></h4>
+            <hr/>
+
         </div>
     );
 }
