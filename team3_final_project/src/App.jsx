@@ -4,18 +4,6 @@ import KnhApp from "./KimNaHyun/KnhApp.jsx";
 import Visitor from "./KimNaHyun/waiting/Visitor.jsx";
 
 function App() {
-
-  // const axiosTest = () => {
-  //   axios.get("/test")
-  //     .then(res => {
-  //       console.log('success')
-  //       console.log(res)
-  //     })
-  //     .catch(err => {
-  //       console.log(err)
-  //     })
-  // }
-
   return (
     <div>
      <KnhApp />
