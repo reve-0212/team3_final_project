@@ -1,6 +1,7 @@
 import {useState} from "react";
 import Banner from "./Banner.jsx";
-import SeatEditor from "./SeatEditor.jsx";
+import AdminSeatEditor from "./AdminSeatEditor.jsx";
+import UserSeatReservation from "./UserSeatReservation.jsx";
 
 
 function PreSetting() {
@@ -214,7 +215,7 @@ function PreSetting() {
           <hr/>
           <br/>
 
-          <SeatEditor/>
+            <AdminSeatEditor/>
         </div>
     );
 }

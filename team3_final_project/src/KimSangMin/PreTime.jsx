@@ -2,37 +2,24 @@ import Banner from "./Banner.jsx";
 import {useState} from "react";
 
 function PreTime() {
-    const [input , setInput] = useState([
-        { day: '', startHour: '', startMinute: '', endHour: '', endMinute: '' }
-    ]);
+
+    const wDays = ["월","화","수","목","금","토","일"]
+
+    // 요일 순서대로 폼 출력
+    const [input , setInput] = useState(
+        wDays.map(day => ({
+            day,
+            startHo: '',
+            startMi:'',
+            endHo:'',
+            endMi:''
+        }))
+    );
 
     const chInput = (index, field, value) => {
         const newInput = [...input];
-
-        if (field === 'day') {
-            const hDay = newInput.some((item, idx) => item.day === value && idx !== index);
-            if (hDay){
-                alert('이미 선택된 요일입니다.');
-                return;
-            }
-        }
-
         newInput[index][field] = value;
         setInput(newInput);
-    };
-
-    const addInput = () => {
-        if (input.length >= 7) {
-            alert('더 이상 추가하실 수 없습니다.');
-            return;
-        }
-        setInput([...input, { day: '', startHour: '', startMinute: '', endHour: '', endMinute: '' }]);
-    };
-
-    const rmInput = () => {
-        if (input.length > 1) {
-            setInput(input.slice(0, -1));
-        }
     };
 
     return (
@@ -56,59 +43,46 @@ function PreTime() {
 
             <div className="mb-4">
                 {input.map((val, index) => {
-                    const stTime = `${String(val.startHour).padStart(2,'0')}:${String(val.startMinute).padStart(2,'0')}`;
-                    const fiTime = `${String(val.endHour).padStart(2,'0')}:${String(val.endMinute).padStart(2,'0')}`;
+                    const stTime = `${String(val.startHo).padStart(2,'0')}:${String(val.startMi).padStart(2,'0')}`;
+                    const fiTime = `${String(val.endHo).padStart(2,'0')}:${String(val.endMi).padStart(2,'0')}`;
 
                     return (
                         <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-                            <select
-                                value={val.day}
-                                onChange={(e) => chInput(index, 'day', e.target.value)}
-                                className="form-control"
-                                style={{ width: '100px', marginRight: '10px' }}
-                            >
-                                <option value="">요일 선택</option>
-                                <option value="월요일">월요일</option>
-                                <option value="화요일">화요일</option>
-                                <option value="수요일">수요일</option>
-                                <option value="목요일">목요일</option>
-                                <option value="금요일">금요일</option>
-                                <option value="토요일">토요일</option>
-                                <option value="일요일">일요일</option>
-                            </select>
 
-
+                            <div style={{ width: '100px', marginRight: '10px', fontWeight: 'bold' }}>
+                                {val.day}
+                            </div>
 
                             {/* 입력폼 */}
                             <input
                                 type="number"
                                 placeholder="시작 시간"
-                                value={val.startHour}
-                                onChange={(e) => chInput(index, 'startHour', e.target.value)}
+                                value={val.startHo}
+                                onChange={(e) => chInput(index, 'startHo', e.target.value)}
                                 className="form-control"
                                 style={{ width: '130px', marginLeft: '10px', marginRight: '5px' }}
                             />
                             <input
                                 type="number"
                                 placeholder="시작 분"
-                                value={val.startMinute}
-                                onChange={(e) => chInput(index, 'startMinute', e.target.value)}
+                                value={val.startMi}
+                                onChange={(e) => chInput(index, 'startMi', e.target.value)}
                                 className="form-control"
                                 style={{ width: '130px', marginRight: '10px' }}
                             />
                             <input
                                 type="number"
                                 placeholder="종료 시간"
-                                value={val.endHour}
-                                onChange={(e) => chInput(index, 'endHour', e.target.value)}
+                                value={val.endHo}
+                                onChange={(e) => chInput(index, 'endHo', e.target.value)}
                                 className="form-control"
                                 style={{ width: '130px', marginRight: '5px' }}
                             />
                             <input
                                 type="number"
                                 placeholder="종료 분"
-                                value={val.endMinute}
-                                onChange={(e) => chInput(index, 'endMinute', e.target.value)}
+                                value={val.endMi}
+                                onChange={(e) => chInput(index, 'endMi', e.target.value)}
                                 className="form-control"
                                 style={{ width: '130px' }}
                             />
@@ -118,17 +92,6 @@ function PreTime() {
                                 {val.day && `${val.day} : ${stTime} ~ ${fiTime}`}
                             </div>
 
-                            {/* 버튼 */}
-                            {index === input.length - 1 && (
-                                <div style={{ marginLeft: '10px' }}>
-                                    <button className='btn btn-sm' onClick={addInput} style={{ marginRight: '5px', border :'1px solid #FFD727' }}>
-                                        추가
-                                    </button>
-                                    <button className='btn btn-sm' style={{ border :'1px solid #FFD727'}} onClick={rmInput}>
-                                        삭제
-                                    </button>
-                                </div>
-                            )}
                         </div>
                     )
                 })}

@@ -6,13 +6,17 @@ import TodayWaiting from "./simJiHyun/TodayWaiting.jsx";
 import Banner from "./KimSangMin/Banner.jsx";
 import PreSetting from "./KimSangMin/PreSetting.jsx";
 import PreTime from "./KimSangMin/PreTime.jsx";
+import AdminSeatEditor from "./KimSangMin/AdminSeatEditor.jsx";
+import UserSeatReservation from "./KimSangMin/UserSeatReservation.jsx";
 
 function App() {
   return (
     <div>
       {/*<h1>team3 final project</h1>*/}
-      {/*  <PreSetting/>*/}
-        <PreTime/>
+        <PreSetting/>
+      {/*  <PreTime/>*/}
+      {/*  <AdminSeatEditor/>*/}
+      {/*  <UserSeatReservation/>*/}
       {/*<button type={"button"} onClick={() => axiosTest()}>테스트</button>*/}
     </div>
   )

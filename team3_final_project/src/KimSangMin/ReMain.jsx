@@ -1,5 +1,5 @@
 import { useState } from "react";
-import SeatEditor from "./SeatEditor.jsx";
+import AdminSeatEditor from "./AdminSeatEditor.jsx";
 
 function ReMain() {
   const [reviews, setReviews] = useState([
