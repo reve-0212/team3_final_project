@@ -4,18 +4,6 @@ import Banner from "./KimSangMin/Banner.jsx";
 import CeoMain from "./JangDaJung/CeoMain.jsx";
 
 function App() {
-
-  // const axiosTest = () => {
-  //   axios.get("/test")
-  //     .then(res => {
-  //       console.log('success')
-  //       console.log(res)
-  //     })
-  //     .catch(err => {
-  //       console.log(err)
-  //     })
-  // }
-
   return (
     <div>
       {/*<h1>team3 final project</h1>*/}

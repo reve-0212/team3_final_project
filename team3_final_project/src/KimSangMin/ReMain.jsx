@@ -1,4 +1,5 @@
 import { useState } from "react";
+import SeatEditor from "./SeatEditor.jsx";
 
 function ReMain() {
   const [reviews, setReviews] = useState([
@@ -104,6 +105,7 @@ function ReMain() {
               </li>
           ))}
         </ul>
+
       </div>
   );
 }
