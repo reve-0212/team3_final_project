@@ -1,9 +1,11 @@
 import PastDateWaiting from "./PastDateWaiting.jsx";
+import TodayWaiting from "./TodayWaiting.jsx";
 
 function DajungApp() {
     return (
         <div>
-          <PastDateWaiting />
+          {/*<PastDateWaiting />*/}
+            <TodayWaiting />
         </div>
     );
 }

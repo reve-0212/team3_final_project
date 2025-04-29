@@ -1,7 +1,6 @@
 /* 날짜 범위 박스 */
 .date-box {
     cursor: pointer;
-
     border: 1px solid #e3e5e8;
     border-radius: 10px;
     display: inline-block;
@@ -11,6 +10,7 @@
     height: 3.5vw;
     text-align: center;
     line-height: 3.5vw;
+    min-width: 200px;
 }
 
 .date-range-container {
@@ -62,4 +62,53 @@ button:hover {
     font-weight: 600;
     font-size: 1.5rem;
     color: #5D4037;
+    text-align: left;
+    padding-left: 20px;
+}
+
+.table {
+    border-collapse: collapse;
+    border: none;
+}
+
+.table th,
+.table td {
+    border: none;
+    border-top: 1px solid #F4F4F4;
+    border-bottom: 1px solid #F4F4F4;
+    text-align: center;
+    vertical-align: middle;
+    color: #808080;
+    padding: 14px 8px;
+    font-weight: normal;
+}
+.table td {
+    font-size: 14px;
+}
+
+/* 헤더 구분선은 더 진하게 */
+.table thead th {
+    border-top: 2px solid #DADADA;
+    border-bottom: 2px solid #DADADA;
+    color: #5D4037;
+}
+
+.table th:nth-child(5), .table td:nth-child(5), .table th:nth-child(6), .table td:nth-child(6), .table th:nth-child(7), .table td:nth-child(7), .table th:nth-child(8), .table td:nth-child(8) {
+    min-width: 12vw;
+}
+
+.status-box {
+    border-radius: 15%;
+    font-size: 12px;
+}
+
+.status-request {
+    background-color: #009018;
+}
+
+.status-done {
+    background-color: #808080;
+}
+.status-cancel {
+    background-color: #FF5025;
 }
