@@ -2,20 +2,47 @@ import {useState} from "react";
 import Banner from "./Banner.jsx";
 import AdminSeatEditor from "./AdminSeatEditor.jsx";
 import UserSeatReservation from "./UserSeatReservation.jsx";
+import SeatManager from "./SeatManager.jsx";
 
 
 function PreSetting() {
 
   const [input, setInput] = useState(['']);
 
+    // 예약 가능한 시간 관리
+    const [resTime, setReTime] = useState(['']);
+
+
+    // 시간 추가
+    const addTime = () => {
+        setReTime([...resTime, '']);
+    };
+
+    // 시간 삭제
+    const delTime = () => {
+        setReTime(resTime.slice(0, -1));
+    };
+
+    // 시간 값 변경
+    const chTime = (index, value) => {
+        const upTime = [...resTime];
+        upTime[index] = value;
+        setReTime(upTime);
+    };
+
+
+
+  // 편의시설 적는 칸 추가하기.
   const addInput = () => {
     setInput([...input, '']);
   };
 
+    // 편의시설 적는 칸 삭제하기.
   const rmInput = () => {
     setInput(input.slice(0, -1));
   }
 
+  // input 안의 값 변경하기
   const chInput = (index, value) => {
     const upInput = [...input];
     upInput[index] = value;
@@ -38,14 +65,6 @@ function PreSetting() {
       Content: "가게 소개",
       Function: "가게 기능"
     },
-    {
-      Title: "가게이름",
-      Phone: "가게번호",
-      Address: "가게주소",
-      HashTag: "가게 해시태그",
-      Content: "가게 소개",
-      Function: "가게 기능"
-    }
   ]);
 
 
@@ -212,10 +231,44 @@ function PreSetting() {
             </div>
         </div>
 
+            <hr/>
+            <br/>
+
+            {/* 예약 가능한 시간 설정 */}
+            <h4 className="text-start"><strong>예약 가능한 시간</strong></h4>
+
+            <div className="mb-4">
+                {resTime.map((time, index) => (
+                    <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                        <input
+                            type="time"
+                            value={time}
+                            onChange={(e) => chTime(index, e.target.value)}
+                            className="form-control"
+                            style={{ width: '300px', height: '50px' }}
+                            required
+                        />
+                        {index === resTime.length - 1 && (
+                            <div style={{ marginLeft: '10px' }}>
+                                <button className='btn btn-sm' onClick={addTime} style={{ marginRight: '5px', border: '1px solid #FFD727' }}>
+                                    추가
+                                </button>
+                                <button className='btn btn-sm' style={{ border: '1px solid #FFD727' }} onClick={delTime}  disabled={resTime.length === 1} >삭제</button>
+                            </div>
+                        )}
+                    </div>
+                ))}
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '30px' }}>
+                <button className="btn me-2" style={{ backgroundColor: '#FFCD83' }}>저장</button>
+                <button className="btn " style={{ backgroundColor: '#FFD727' }}>수정</button>
+            </div>
+
           <hr/>
           <br/>
 
-            <AdminSeatEditor/>
+            <SeatManager/>
         </div>
     );
 }
