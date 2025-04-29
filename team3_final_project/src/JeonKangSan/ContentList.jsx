@@ -2,10 +2,6 @@
 
 // 대다수의 태그나 요소들은 기능에 맞게 바꿀겁니다
 
-// index.html에 필요
-// <!--  부트스트랩 아이콘 cdn -->
-// <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
 
 import "./JksSheet.css";
 
@@ -15,9 +11,9 @@ function ContentList() {
 
             {/* 상단 필터 버튼 - */}
             <div className="d-flex gap-2 mb-4">
-                <button className="btn btn-outline-secondary btn-sm"><i className="bi bi-arrow-clockwise"></i> 초기화</button>
-                <button className="btn btn-warning btn-sm text-white">부산 전체 <i className="bi bi-chevron-down"></i></button>
-                <button className="btn btn-outline-secondary btn-sm">가까운 순 <i className="bi bi-chevron-down"></i></button>
+                <button className="btn btn-outline-secondary btn-sm"><i className="fa-solid fa-rotate-right"></i> 초기화</button>
+                <button className="btn btn-warning btn-sm text-white">부산 전체 <i className="fa-solid fa-chevron-down"></i></button>
+                <button className="btn btn-outline-secondary btn-sm">가까운 순 <i className="fa-solid fa-chevron-down"></i></button>
             </div>
             <hr></hr>
             <br></br>
@@ -31,7 +27,7 @@ function ContentList() {
                         <div className="d-flex justify-content-between align-items-center">
                             <h5 className="card-title mb-0 fw-semibold">몬베톤</h5>
                             <button className="btn btn-light btn-sm">
-                                <i className="bi bi-bookmark"></i>
+                                <i className="fa-regular fa-bookmark"></i>
                             </button>
                         </div>
                         <p className="card-text my-2">⭐ 4.6 (109)</p>
@@ -81,7 +77,7 @@ function ContentList() {
                         <div className="d-flex justify-content-between align-items-center">
                             <h5 className="card-title mb-0 fw-semibold">수프올샐러드</h5>
                             <button className="btn btn-light btn-sm">
-                                <i className="bi bi-bookmark"></i>
+                                <i className="fa-regular fa-bookmark"></i>
                             </button>
                         </div>
                         <p className="card-text my-2">⭐ 4.7 (241)</p>
