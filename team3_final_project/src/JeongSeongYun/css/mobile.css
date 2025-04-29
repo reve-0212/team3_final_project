@@ -38,6 +38,12 @@ body {
     }
 }
 
+@media screen and (max-width: 460px) {
+    .tabsBtn {
+        padding: 0.35rem !important;
+    }
+}
+
 /* 더 작은 화면 (ex. 375px 이하) */
 @media screen and (max-width: 375px) { /* 최대 너비 375px 이하 화면 */
     .mobile-wrapper {
@@ -54,7 +60,12 @@ body {
     .backIcon, .settingIcon {
         font-size: 18px;
     }
+    .tabsBtn {
+        padding: 0 !important;
+    }
 }
+
+
 
 /* 매우 작은 화면 (예: 320px 이하) */
 @media screen and (max-width: 320px) { /* 최대 너비 320px 이하 화면 (예: 작은 스마트폰) */
@@ -73,5 +84,8 @@ body {
 
     .header {
         padding: 0 12px; /* 패딩 줄이기 */
+    }
+    .tabsBtn {
+        padding: 0 !important;
     }
 }
