@@ -1,6 +1,5 @@
-// import './App.css'
+import './App.css'
 import axios from "axios";
-import PreSetting from "./KimSangMin/PreSetting.jsx";
 
 function App() {
   return (
@@ -22,6 +21,7 @@ function App() {
       {/*  <AdminSeatEditor/>*/}
       {/*  <UserSeatReservation/>*/}
       {/*<button type={"button"} onClick={() => axiosTest()}>테스트</button>*/}
+     <KnhApp />
     </div>
   )
 }

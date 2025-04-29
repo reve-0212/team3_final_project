@@ -2,8 +2,6 @@
 .app-container {
     max-width: 480px;
     margin: 0 auto;
-    border: 0px solid black !important;
-
 }
 
 /* 전체 스타일 적용*/
@@ -28,7 +26,6 @@ section {
     margin: 0 auto;
     border-radius: 10px;
     text-align: center;
-    border: 0 solid black;
 }
 
 .prev-btn, .next-btn {
@@ -40,18 +37,6 @@ section {
     font-size: 30px;
     text-align: left;
     margin-bottom: 60px;
-}
-.waiting-title-sub {
-    font-size: 20px;
-    font-weight: bold;
-}
-.point-font {
-    font-size: 35px;
-    font-weight: bold;
-    color: #FFA31C;
-}
-.basic-font {
-    color: #5D4037;
 }
 
 

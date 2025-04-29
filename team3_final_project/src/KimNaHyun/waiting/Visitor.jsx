@@ -1,7 +1,7 @@
-import Button from "../waiting/Button.jsx";
-import VisitorBtn from "../waiting/VisitorBtn.jsx";
+import Button from "./Button.jsx";
+import VisitorBtn from "./VisitorBtn.jsx";
 
-function visitPage(props) {
+function visitor(props) {
     const {gender} = props;
 
 
@@ -32,7 +32,7 @@ function visitPage(props) {
 
 
 
-export default visitPage
+export default visitor
 
 
 

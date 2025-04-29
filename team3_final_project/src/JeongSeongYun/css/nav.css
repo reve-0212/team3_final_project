@@ -7,7 +7,7 @@
     height: 6vh; /* 하단 네비바 높이 */
     background-color: #fff;
     padding: 1px 0px;
-    /*box-shadow: 0 0px 10px rgba(0, 0, 0, 0.2);*/
+    box-shadow: 0 0px 10px rgba(0, 0, 0, 0.2);
     max-width: 480px; /* 모바일 화면 크기 (최대 너비 375px로 제한) */
     margin-left: auto;
     margin-right: auto; /* 중앙 정렬 */

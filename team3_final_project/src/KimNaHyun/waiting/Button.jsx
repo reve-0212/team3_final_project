@@ -1,10 +1,11 @@
 import React from "react";
 import '../KnhMain.css';
-const Button = ({btnName, onClick}) => {
-
+const Button = ({btnName}) => {
     return (
         <div className={'m-5'}>
-          <button className={'common-btn'} onClick={onClick}>{btnName}</button>
+            <div className={'common-btn'}>
+                {btnName}
+            </div>
         </div>
 
     );
