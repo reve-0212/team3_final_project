@@ -1,0 +1,54 @@
+/* JksSheet.css */
+/* 480px(공통) */
+
+
+.app-container {
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+
+.btn{
+    border-radius: 50px;
+    padding : 8px 20px;
+}
+
+.common-btn {
+    width: 50%;
+    background: #FFA31C;
+    padding: 15px 0;
+    color: #ffffff;
+    font-weight: bold;
+    margin: 0 auto;
+    border-radius: 10px;
+}
+
+
+.detail-photo{
+    max-width: 320px;
+    max-height: 150px;
+    margin: 0 auto;
+}
+
+
+
+
+
+
+/*[ui 지침]*/
+/* 손님 페이지 기본 사이즈  */
+/*.app-container {*/
+/*    max-width: 480px;*/
+/*    margin: 0 auto;*/
+/*}*/
+
+/* 상세페이지 버튼 스타일 */
+/*.common-btn {*/
+/*    width: 50%;*/
+/*    background: #FFA31C;*/
+/*    padding: 15px 0;*/
+/*    color: #ffffff;*/
+/*    font-weight: bold;*/
+/*    margin: 0 auto;*/
+/*    border-radius: 10px;*/
+/*}*/
