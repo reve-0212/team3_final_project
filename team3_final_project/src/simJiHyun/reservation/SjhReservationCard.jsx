@@ -1,8 +1,7 @@
 function SjhReservationCard(props) {
     return (
-        <div style={{height: "400px", border: "1px solid #929292"}}
-             className={"ms-3 rounded-4 input-box ps-4 pe-4 pt-3 pb-3 my-4"}>
-
+        <div style={{height: "350px", border: "1px solid #929292"}}
+             className={"ms-3 rounded-4 p-3 my-2"}>
             <div className={"d-flex align-items-center justify-content-between"}>
                 <p className={"fw-bold fs-5"}>{props.restName}</p>
                 {/*방문했다면 이용 완료, 방문하지 않았다면 이용 예정을 출력한다*/}
@@ -34,10 +33,7 @@ function SjhReservationCard(props) {
                             style={{border: "1px solid #929292"}}>대기 상세
                     </button>
                     <button type={"button"} className={"btn"}
-                            style={{border: "1px solid #929292"}}>대기 확정 코드 입력하기
-                    </button>
-                    <button type={"button"} className={"btn"}
-                            style={{border: "1px solid #929292"}}>대기 취소하기
+                            style={{border: "1px solid #C0C0C0", color: "#C0C0C0"}}>리뷰 등록하기
                     </button>
                 </div>
                 :
@@ -46,7 +42,7 @@ function SjhReservationCard(props) {
                             style={{border: "1px solid #929292"}}>대기 상세
                     </button>
                     <button type={"button"} className={"btn"}
-                            style={{border: "1px solid #C0C0C0", color:"#C0C0C0"}}>리뷰 등록하기
+                            style={{border: "1px solid #929292"}}>대기 취소하기
                     </button>
                 </div>
             }

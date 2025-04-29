@@ -1,18 +1,10 @@
-import SjhNav from "../nav/SjhNav.jsx";
 import SignMini from "./SignMini.jsx";
 import LoginSignText from "../LoginSignText.jsx";
-import "../SjhCss.css"
 
 function SignUp() {
     return (
-        <form className={"container app-container"}>
-            <div className={"row mt-2"}>
-                <SjhNav/>
-            </div>
-
-            <div className={"row"}>
-                <LoginSignText text={"회원가입"}/>
-            </div>
+        <form className={"container vh-100 pt-3"}>
+            <LoginSignText text={"회원가입"}/>
 
             <SignMini id={"userId"} label={"아이디"} holder={"아이디 입력"}/>
             <SignMini id={"userPass"} label={"비밀번호"} holder={"비밀번호 입력"}/>
@@ -22,8 +14,12 @@ function SignUp() {
                 <div className={"col"}>
                     <label htmlFor={"userName"} className={"form-label fs-3"}>성별</label>
                     <div className={"col d-flex flex-row justify-content-center gap-3 input-box"}>
-                        <button type={"button"} className={"btn flex-fill py-3"}>남</button>
-                        <button type={"button"} className={"btn flex-fill py-3"}>여</button>
+                        <button type={"button"} className={"btn flex-fill py-3"}
+                                style={{border: "1px solid #929292", backgroundColor: "white"}}>남
+                        </button>
+                        <button type={"button"} className={"btn flex-fill py-3"}
+                                style={{border: "1px solid #929292", backgroundColor: "white"}}>여
+                        </button>
                     </div>
                 </div>
             </div>

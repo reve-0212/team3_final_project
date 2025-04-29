@@ -1,6 +1,6 @@
 function LoginSignText(props) {
     return (
-        <div className={"row mt-2 ms-3"}>
+        <div className={"mt-2 ms-4"}>
             <h3 className={"fw-bold"}>{props.text}</h3>
         </div>
     );

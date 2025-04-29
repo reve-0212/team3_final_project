@@ -9,9 +9,6 @@ function BottomNav() {
     const locationNow = useLocation();
 
     const Nv = useNavigate();
-
-
-
         return(
             <nav className={'nav-wrapper'}>
                 <Link to={'/'} className={'bottom-nav-link'}>

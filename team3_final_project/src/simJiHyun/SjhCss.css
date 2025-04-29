@@ -13,15 +13,3 @@
   display: inline-block;
   margin: 0;
 }
-
-/*.hover-p:after {*/
-/*  display: block;*/
-/*  content: '';*/
-/*  border-bottom: solid 3px #FFA31C;*/
-/*  transform: scaleX(0);*/
-/*  transition: tranform 250ms ease-in-out;*/
-/*}*/
-
-/*.hover-p:hover:after {*/
-/*  transform: scaleX(1);*/
-/*}*/
