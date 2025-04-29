@@ -31,7 +31,7 @@ function PastDateWaiting() {
         },
         {
             id: 2,
-            status: '예약',
+            status: '신청',
             name: '장다정',
             phone: '010-9876-5432',
             people: 2,
@@ -62,9 +62,9 @@ function PastDateWaiting() {
 
     // 예약 상태에 따라 색상 변경
     const getStatusColor = (status) => {
-        if (status === '완료') return 'bg-secondary text-white';
-        if (status === '예약') return 'bg-success text-white';
-        if (status === '취소') return 'bg-danger text-white';
+        if (status === '완료') return 'status-done text-white status-box';
+        if (status === '신청') return 'status-request text-white status-box';
+        if (status === '취소') return 'status-cancel text-white status-box';
         return '';
     };
 
@@ -125,12 +125,41 @@ function PastDateWaiting() {
         <div>
             <Banner />
             <div className={'date-range-container'}  style={{ marginTop: '10vh', marginLeft: '200px' }} ref={dateBoxRef}>
-                <h2 className={'CeoMain-title mb-4'}>웨이팅 내역</h2>
-            {/*    날짜 범위 표시 */}
-                <div className={'date-box'} onClick={() => setIsCalendarVisible(true)}>
-                    <p style={{ marginBottom: '0px' }}>
-                        {formatDate(range.from)} ~ {range.to ? formatDate(range.to) : formatDate(range.from)}
-                    </p>
+                <h2 className={'title mb-4'}>웨이팅 내역</h2><hr />
+                <div className={'d-flex align-items-center gap-3'}>
+                {/*    날짜 범위 표시 */}
+                    <div
+                        className={'date-box d-flex align-items-center justify-content-center'}
+                        style={{ width: '300px' }}
+                        onClick={() => setIsCalendarVisible(true)}
+                        // style={{ padding: '8px 16px' }}
+                    >
+                        <p style={{ marginBottom: '0px' }}>
+                            {formatDate(range.from)} ~ {range.to ? formatDate(range.to) : formatDate(range.from)}
+                        </p>
+                    </div>
+                {/*    검색창 */}
+                    <div className={'d-flex align-items-center border'} style={{ borderRadius: '10px', overflow: 'hidden', width: '500px', paddingRight: '5px' }}>
+                        <select
+                            value={searchType}
+                            onChange={(e) => setSearchType(e.target.value)}
+                            className={'form-select text-center'}
+                            style={{ border: 'none', width: '30%', borderRight: '1px solid #ced4da', borderRadius: '0', margin: '0.3vw', height: '100%' }}
+                        >
+                            <option value="name">예약자명</option>
+                            <option value="phone">예약자 전화번호</option>
+                        </select>
+                        <input
+                            type="text"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            placeholder={'검색어를 입력하세요'}
+                            className={'form-control'}
+                            style={{ border: 'none', width: '70%', height: '100%' }}
+                        />
+                        <button className="btn btn-primary" style={{ height: '40px', whiteSpace: 'nowrap' }} onClick={handleSearchButtonClick}>검색</button>
+                    </div>
+
                 </div>
                 {/* 달력 UI 표시/숨기기 */}
                 {isCalendarVisible && (
@@ -144,7 +173,7 @@ function PastDateWaiting() {
                             selected={range}
                             onDayClick={handleDateSelect}
                             modifiers={{
-                                range: (date) => range.from && range.to && date >= range.from && date <= range.to
+                                range: (date) => range.from && range.to && date >= range.from && date <= range.to,
                             }}
                             modifiersClassNames={{
                                 range: 'selected-range', // 날짜 범위에 바 표시
@@ -159,33 +188,20 @@ function PastDateWaiting() {
                         </div>
                     </div>
                 )}
-            {/*    검색창 */}
-                <div className={'col-md-8'}>
-                    <div className={'d-flex align-items-center gap-3'}>
-                        <select
-                            value={searchType}
-                            onChange={(e) => setSearchType(e.target.value)}
-                            className={'form-select'}
-                            style={{ width: '20%', marginRight: '10px' }}
-                        >
-                            <option value="name">예약자명</option>
-                            <option value="phone">예약자 전화번호</option>
-                        </select>
-                        <input
-                            type="text"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            placeholder={'검색어를 입력하세요'}
-                            className={'form-control'}
-                            style={{ width: '60%' }}
-                        />
-                        <button className="btn btn-primary ms-2" style={{ height: '40px' }} onClick={handleSearchButtonClick}>검색</button>
-                    </div>
-                </div>
             {/*    리스트 출력부분 */}
                 <div className={'mt-4'}>
-                    <div className={'table-responsive'}>
-                        <table className={'table table-bordered me-3'}>
+                    <div className={'table-responsive'} style={{ overflowX: 'auto' }}>
+                        <table className={'table me-3'} style={{ tableLayout: 'fixed', width: '100%' }}>
+                            <colgroup>
+                                <col style={{ width: '5%' }} />
+                                <col style={{ width: '7%' }} />
+                                <col style={{ width: '5%' }} />
+                                <col style={{ width: '14%' }} />
+                                <col />
+                                <col />
+                                <col />
+                                <col />
+                            </colgroup>
                             <thead className={'thead-light'}>
                                 <tr>
                                     <th>상태</th>
@@ -202,7 +218,9 @@ function PastDateWaiting() {
                             {filteredData.length > 0 ? (
                                 filteredData.map((item, idx) => (
                                     <tr key={idx}>
-                                        <td className={getStatusColor(item.status)}>{item.status}</td>
+                                        <td>
+                                            <div className={getStatusColor(item.status)}>{item.status}</div>
+                                        </td>
                                         <td>{item.name}</td>
                                         <td>{item.people}</td>
                                         <td>{item.phone}</td>
