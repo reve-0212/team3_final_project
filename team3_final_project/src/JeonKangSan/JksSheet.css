@@ -1,0 +1,204 @@
+/* JksSheet.css */
+/* 480px(공통) */
+
+html {
+    overflow-y: scroll;
+}
+
+.app-container {
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.btn {
+    border-radius: 50px;
+    padding: 8px 20px;
+}
+
+/* 공통*/
+.common-btn {
+    width: 50%;
+    background: #FFA31C;
+    padding: 15px 0;
+    color: #ffffff;
+    font-weight: bold;
+    margin: 0 auto;
+    border-radius: 10px;
+}
+
+
+.common-btn-outline {
+    background: #ffffff;
+    color: #FFA31C;
+    padding: 15px 0;
+    font-weight: bold;
+    width: 50%;
+    margin: 0 auto;
+    border: 2px solid #FFA31C;
+    border-radius: 10px;
+}
+
+
+.common-btn-outline:hover {
+    background: #FFA31C;
+    color: #ffffff;
+}
+
+
+.content-container {
+    min-height: 600px; /* 상세정보 기준 충분한 높이 */
+    width: 100%;       /* 항상 100% 차지 */
+}
+
+
+
+.notice-text {
+    color: #FFA31C;
+    font-weight: 600; /* 살짝 굵게 (semi-bold) */
+}
+
+.extra-bold {
+    font-weight: 800; /* 아주 굵게 */
+    font-size: 1.1rem; /* 작게 (보통 h4는 1.5rem 정도인데 줄임) */
+    margin-bottom: 0.5rem; /* 줄 간격도 살짝 정리 */
+}
+
+.hashtag-wrap {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2개씩 균등하게 나누기 */
+    gap: 8px; /* 와플처럼 칸 간격 */
+    padding: 10px;
+    background-color: #FFF8E1;
+    border-radius: 10px;
+}
+
+.hashtag-item {
+    background-color: #ffffff; /* 각 뱃지 칸 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px; /* 고정 높이로 깔끔 */
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #666;
+}
+
+.badge {
+    background-color: #FFF8E1 !important; /* 배경 연노랑 */
+    color: #555555; /* 글자색 */
+    font-weight: 600;
+    font-size: 0.8rem; /* 글자 크기 약간 축소 */
+    padding: 6px 10px; /* 패딩도 약간 축소 */
+    border-radius: 8px;
+}
+
+/* 이상함 */
+/* 탭용 버튼 */
+.tab-btn {
+    flex: 1 1 35%; /* grow:1, shrink:1, 기본 폭 35% */
+    padding: 14px 0; /* 패딩 위아래 여유롭게 */
+    border: 1px solid #FFA31C;
+    border-radius: 12px;
+    background: #FFF8E1;
+    color: black;
+    font-weight: normal;
+    font-size: 1.05rem;
+    text-align: center;
+    transition: 0.2s;
+    min-width: 110px; /* 최소 너비 보장 */
+    max-width: 180px; /* 너무 퍼지지 않게 */
+}
+/* 탭 버튼 활성화 */
+.tab-btn.active {
+    background: #FFA31C;
+    color: white;
+    border: 1px solid #FFA31C;
+}
+
+
+.tab-menu-wrapper {
+    display: flex;
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.tab-menu-text {
+    flex: 1;
+    text-align: center;
+    padding: 10px 0;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #333;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+}
+
+.tab-menu-text.active {
+    color: #FFA31C;
+    border-bottom: 3px solid #FFA31C;
+}
+
+/* ---- */
+
+
+
+
+/* 리뷰용 작은 탭 버튼 */
+.small-tab-btn {
+    flex: 1 1 30%;
+    padding: 10px 0;
+    border: 1px solid #FFA31C;
+    border-radius: 10px;
+    background: white;
+    color: #FFA31C;
+    font-weight: bold;
+    font-size: 0.9rem;
+    text-align: center;
+    transition: 0.2s;
+    min-width: 90px;
+    max-width: 150px;
+}
+
+
+/* 활성화된 리뷰 버튼 */
+.small-tab-btn.active {
+    background: #FFA31C;
+    color: white;
+    border: 1px solid #FFA31C;
+}
+
+.common-btn-sm {
+    background: #FFA31C;
+    padding: 12px 0;
+    color: #ffffff;
+    font-weight: bold;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+
+
+
+
+
+/*[ui 지침]*/
+/* 손님 페이지 기본 사이즈  */
+/*.app-container {*/
+/*    max-width: 480px;*/
+/*    margin: 0 auto;*/
+/*}*/
+
+/* 상세페이지 버튼 스타일 */
+/*.common-btn {*/
+/*    width: 50%;*/
+/*    background: #FFA31C;*/
+/*    padding: 15px 0;*/
+/*    color: #ffffff;*/
+/*    font-weight: bold;*/
+/*    margin: 0 auto;*/
+/*    border-radius: 10px;*/
+/*}*/
