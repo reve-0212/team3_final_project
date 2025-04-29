@@ -1,6 +1,7 @@
 import {useState} from "react";
 import Banner from "./Banner.jsx";
-import SeatEditor from "./SeatEditor.jsx";
+import AdminSeatEditor from "./AdminSeatEditor.jsx";
+import UserSeatReservation from "./UserSeatReservation.jsx";
 
 
 function PreSetting() {
@@ -52,9 +53,8 @@ function PreSetting() {
     return (
         <div
             style={{
-                marginLeft: '200px',
-                marginTop: '10vh',
-                paddingTop: '2rem',
+                marginLeft: '300px',
+                paddingTop: '8rem',
                 paddingLeft: '1rem',
                 width: 'calc(100% - 200px)',
                 maxWidth: '1000px'
@@ -217,8 +217,7 @@ function PreSetting() {
             <hr/>
             <br/>
 
-            <SeatEditor/>
-
+            <AdminSeatEditor/>
         </div>
     );
 }
