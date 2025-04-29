@@ -33,21 +33,22 @@ function PreTime() {
 
 
     return (
-        <div style={{
-            marginLeft: '200px',
-            marginTop: '10vh',
-            paddingTop: '2rem',
-            paddingLeft: '1rem',
-            width: 'calc(100% - 200px)',
-            maxWidth: '1000px'
+        <div
+            style={{
+                marginLeft: '200px',
+                marginTop: '10vh',
+                paddingTop: '2rem',
+                paddingLeft: '1rem',
+                width: 'calc(100% - 200px)',
+                maxWidth: '1000px'
+
         }}>
             <Banner/>
             <div className="d-flex">
                 <Link to={"/preSetting"} style={{ textDecoration: 'none' }}><h4 className="text-start me-5">가게정보</h4></Link>
                 <h4 className="text-start">운영정보</h4>
             </div>
-            <hr/>
-            <h4 className="text-start"><strong>운영 시간</strong>
+            <hr/><h4 className="text-start"><strong>운영 시간</strong>
                 <span style={{color:"#FFD727", fontSize: "14px"}}> *필수</span>
             </h4>
 
