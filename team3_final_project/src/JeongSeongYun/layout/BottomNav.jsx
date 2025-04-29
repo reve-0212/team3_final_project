@@ -1,7 +1,7 @@
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import "../css/nav.css"
-import {faHome, faMagnifyingGlass, faMapLocationDot, faUser} from "@fortawesome/free-solid-svg-icons";
+import {faHome, faUser,faClipboard,faStar} from "@fortawesome/free-solid-svg-icons";
 
 
 function BottomNav() {
@@ -23,12 +23,12 @@ function BottomNav() {
                         />
                     </div>
                 </Link>
-                <Link to={'/map'} className={'bottom-nav-link'}>
+                <Link to={'/latestDetails'} className={'bottom-nav-link'}>
                     <div>
                         <FontAwesomeIcon
-                            icon={faMapLocationDot}
+                            icon={faClipboard}
                             className={
-                                locationNow.pathname === "/map"
+                                locationNow.pathname === "/latestDetails"
                                     ? 'bottom-nav-item active-bottom-nav-item'
                                     : 'bottom-nav-item'
                             }
@@ -38,7 +38,7 @@ function BottomNav() {
                 <Link to={'/bookmark'} className={'bottom-nav-link'}>
                     <div>
                         <FontAwesomeIcon
-                            icon={faMagnifyingGlass}
+                            icon={faStar}
                             className={
                                 locationNow.pathname === "/bookmark"
                                     ? 'bottom-nav-item active-bottom-nav-item'

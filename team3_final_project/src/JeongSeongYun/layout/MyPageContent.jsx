@@ -7,8 +7,6 @@ import {Link} from "react-router-dom";
 
 function MyPageContent() {
 
-
-
     return (
         <div className={'container py-4 vh-100'}>
             <div className={'mt-3 border-bottom pb-3'}>
