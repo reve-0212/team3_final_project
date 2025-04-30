@@ -1,8 +1,5 @@
 // ContentList.jsx
 
-// 대다수의 태그나 요소들은 기능에 맞게 바꿀겁니다
-
-
 import "./JksSheet.css";
 
 function ContentList() {
@@ -12,8 +9,49 @@ function ContentList() {
             {/* 상단 필터 버튼 - */}
             <div className="d-flex gap-2 mb-4">
                 <button className="btn btn-outline-secondary btn-sm"><i className="fa-solid fa-rotate-right"></i> 초기화</button>
-                <button className="btn btn-warning btn-sm text-white">부산 전체 <i className="fa-solid fa-chevron-down"></i></button>
-                <button className="btn btn-outline-secondary btn-sm">가까운 순 <i className="fa-solid fa-chevron-down"></i></button>
+
+
+
+                {/* 지역 선택 콤보박스 */}
+                <div className="position-relative">
+                    <select
+                        className="btn btn-outline-secondary btn-sm button-seebox me-auto text-start"
+                        style={{ width: 'auto', appearance: 'none' }}
+                        aria-label="지역 선택"
+                    >
+                        <option>지역 선택</option>
+                        <option>전포동</option>
+                        <option>서면</option>
+                        <option>해운대</option>
+                        <option>남포동</option>
+                    </select>
+                    <i
+                        className="fa-solid fa-chevron-down position-absolute top-50 end-0 translate-middle-y me-3 text-white"
+                        style={{ pointerEvents: 'none' }}></i>
+                </div>
+
+                {/* 정렬 기준 선택 콤보박스 */}
+                <div className="position-relative d-inline-block">
+                    <select
+                        className="btn btn-outline-secondary btn-sm text-start"
+                        style={{
+                            width: 'auto',
+                            appearance: 'none',
+                            paddingRight: '2rem'
+                        }}
+                        aria-label="정렬 기준 선택"
+                    >
+                        <option>가까운 순</option>
+                        <option>별점 높은 순</option>
+                        <option>대기 짧은 순</option>
+                        <option>리뷰 많은 순</option>
+                    </select>
+                    <i
+                        className="fa-solid fa-chevron-down position-absolute top-50 translate-middle-y me-1 text-secondary"
+                        style={{ right: '10px', pointerEvents: 'none' }}
+                    ></i>
+                </div>
+
             </div>
             <hr></hr>
             <br></br>
@@ -33,9 +71,9 @@ function ContentList() {
                         <p className="card-text my-2">⭐ 4.6 (109)</p>
                         <small className="text-muted">양식 · 전포동(602m)</small>
                         <div className="d-flex gap-2 my-2">
-                            <span className="badge rounded-pill bg-light text-muted border">원격줄서기</span>
-                            <span className="badge rounded-pill bg-light text-muted border">현장대기</span>
-                            <span className="badge rounded-pill bg-light text-muted border">재방문률높음</span>
+                            <span className="badge-default rounded-pill bg-light text-muted border">원격줄서기</span>
+                            <span className="badge-default rounded-pill bg-light text-muted border">현장대기</span>
+                            <span className="badge-default rounded-pill bg-light text-muted border">재방문률높음</span>
                             {/*<span className="badge bg-primary">원격줄서기</span>*/}
                             {/*<span className="badge bg-success">현장대기</span>*/}
                         </div>
@@ -45,15 +83,15 @@ function ContentList() {
                         {/*    <img src="/images/monbette.jpg" className="card-img detail-photo" alt="몬베톤 음식사진" />*/}
                         {/*</div>*/}
                         <div className="d-flex justify-content-center align-items-center bg-light detail-photo">
-                            <span className="text-muted">No Image</span>
+                            <span className="text-muted">사진</span>
                         </div>
 
                         <div className="d-flex justify-content-center align-items-center bg-light detail-photo">
-                            <span className="text-muted">No Image</span>
+                            <span className="text-muted">사진</span>
                         </div>
 
                         <div className="d-flex justify-content-center align-items-center bg-light detail-photo">
-                            <span className="text-muted">No Image</span>
+                            <span className="text-muted">사진</span>
                         </div>
 
                     </div>
@@ -61,11 +99,11 @@ function ContentList() {
                         <div className="d-flex justify-content-between align-items-center">
                             {/* 남은 대기 안내 (왼쪽) */}
                             <div className="d-flex align-items-center gap-2">
-                                <span className="badge rounded-pill bg-light text-muted border">남은 대기 : 3팀</span>
+                                <span className="badge-default rounded-pill bg-light text-muted border">남은 대기 : 3팀</span>
                             </div>
                         </div>
                         {/* 상세 정보 보기 버튼 (아래) */}
-                        <button className="btn btn-sm common-btn mt-3">
+                        <button className="btn btn-sm common-btn mt-3 w-100">
                             상세 정보
                         </button>
                     </div>
@@ -83,9 +121,9 @@ function ContentList() {
                         <p className="card-text my-2">⭐ 4.7 (241)</p>
                         <small className="text-muted">카페/베이커리 · 전포동(806m)</small>
                         <div className="d-flex gap-2 my-2">
-                            <span className="badge rounded-pill bg-light text-muted border">원격줄서기</span>
-                            <span className="badge rounded-pill bg-light text-muted border">현장대기</span>
-                            <span className="badge rounded-pill bg-light text-muted border">테이블많음</span>
+                            <span className="badge-default rounded-pill bg-light text-muted border">원격줄서기</span>
+                            <span className="badge-default rounded-pill bg-light text-muted border">현장대기</span>
+                            <span className="badge-default rounded-pill bg-light text-muted border">테이블많음</span>
                         </div>
                     </div>
                     <div className="d-flex justify-content-between bg-light  flex-wrap p-3">
@@ -93,15 +131,15 @@ function ContentList() {
                         {/*    <img src="/images/soupandsalad.jpg" className="card-img detail-photo" alt="수프올샐러드 음식사진" />*/}
                         {/*</div>*/}
                         <div className="d-flex justify-content-center align-items-center bg-light detail-photo">
-                            <span className="text-muted">No Image</span>
+                            <span className="text-muted">사진</span>
                         </div>
 
                         <div className="d-flex justify-content-center align-items-center bg-light detail-photo">
-                            <span className="text-muted">No Image</span>
+                            <span className="text-muted">사진</span>
                         </div>
 
                         <div className="d-flex justify-content-center align-items-center bg-light detail-photo">
-                            <span className="text-muted">No Image</span>
+                            <span className="text-muted">사진</span>
                         </div>
 
                     </div>
@@ -109,13 +147,13 @@ function ContentList() {
                         <div className="d-flex justify-content-between align-items-center">
                             {/* 남은 대기 안내 (왼쪽) */}
                             <div className="d-flex align-items-center gap-2">
-                                <span className="badge rounded-pill bg-light text-muted border">남은 대기 : 1팀</span>
+                                <span className="badge-default rounded-pill bg-light text-muted border">남은 대기 : 1팀</span>
                             </div>
 
 
                         </div>
                         {/* 상세 정보 보기 버튼 (아래) */}
-                        <button className="btn btn-sm common-btn mt-3">
+                        <button className="btn btn-sm common-btn mt-3 w-100">
                             상세 정보
                         </button>
                     </div>

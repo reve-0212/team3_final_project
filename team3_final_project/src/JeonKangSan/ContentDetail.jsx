@@ -15,7 +15,7 @@ function ContentDetail() {
 
                 {/* 가게 대표 이미지 */}
                 <div className="d-flex justify-content-center align-items-center bg-light w-100 mb-3" style={{ height: '250px' }}>
-                    <span className="text-muted">No Image</span>
+                    <span className="text-muted">사진</span>
                 </div>
 
 
@@ -92,10 +92,13 @@ function ContentDetail() {
 
                         <br/>
                         <div className="mb-3">
-                            <h4 className="extra-bold">위치</h4>
-                            <span>부산 해운대구 구남로 24번길 8 (우동) 1층</span>
+                            <h4 className="extra-bold mb-2">위치</h4>
+                            <div className="location-box">
+                            </div>
+                            <div className="mt-2">
+                            부산 해운대구 구남로 24번길 8 (우동) 1층
+                            </div>
                         </div>
-
 
 
                         <br/>
@@ -143,7 +146,7 @@ function ContentDetail() {
                                     className="bg-light d-flex justify-content-center align-items-center"
                                     style={{ width: "64px", height: "64px", borderRadius: "6px" }}
                                 >
-                                    <span className="text-muted small">No Image</span>
+                                    <span className="text-muted small">사진</span>
                                 </div>
                             </div>
                         ))}
@@ -214,9 +217,15 @@ function ContentDetail() {
                         </div>
 
                         {/* 리뷰 정렬 */}
-                        <div className="d-flex gap-3 mb-2">
-                            <span className="fw-bold text-warning">최신순</span>
-                            <span className="text-muted">사진리뷰</span>
+                        <div className="d-flex align-items-center mb-2">
+                            {/* 필터 select 박스 */}
+                            <select className="custom-select-text" aria-label="리뷰 정렬 기준" defaultValue="latest">
+                                <option value="latest">최신순</option>
+                                <option value="oldest">오래된순</option>
+                                <option value="high">평점높은순</option>
+                                <option value="low">평점낮은순</option>
+                            </select>
+                            <span className="custom-span-text ms-2">사진리뷰</span>
                         </div>
 
                         {/* 리뷰 리스트 (더미) */}
@@ -235,13 +244,16 @@ function ContentDetail() {
 
                     </div>
                 )}
+                {/* 예약 등록, 웨이팅 등록*/}
+                <div className="d-flex flex-column gap-2 mb-4">
+                    <div className="text-start"><h4 className="extra-bold">예약 시간</h4></div>
+                    <div className="location-box"></div>
+                    <button className="common-btn w-100">예약하기</button>
+                    <button className="common-btn w-100">웨이팅하기</button>
+                </div>
 
             </div>
-            {/*/!* 예약 & 웨이팅 등록 버튼*!/*/}
-            <div className="d-flex flex-column gap-2 mb-4">
-                <button className="common-btn w-100">예약하기</button>
-                <button className="common-btn w-100">웨이팅하기</button>
-            </div>
+
 
 
         </div>

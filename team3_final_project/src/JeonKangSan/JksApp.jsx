@@ -8,7 +8,7 @@ import ContentDetail from './ContentDetail.jsx';
 function JksApp() {
     return (
         <div>
-            {/*<ContentList />*/}
+            <ContentList />
             <ContentDetail />
         </div>
     );
