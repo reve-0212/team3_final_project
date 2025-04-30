@@ -3,32 +3,32 @@ import LoginSignText from "../LoginSignText.jsx";
 
 function SignUp() {
     return (
-        <form className={"container vh-100 pt-3"}>
+        <form className={"container pt-3 pb-5 flex-column d-flex justify-content-center"}>
             <LoginSignText text={"회원가입"}/>
 
             <SignMini id={"userId"} label={"아이디"} holder={"아이디 입력"}/>
             <SignMini id={"userPass"} label={"비밀번호"} holder={"비밀번호 입력"}/>
             <SignMini id={"userName"} label={"이름"} holder={"이름 입력"}/>
 
-            <div className={"row mt-4 ms-3"}>
-                <div className={"col"}>
-                    <label htmlFor={"userName"} className={"form-label fs-3"}>성별</label>
-                    <div className={"col d-flex flex-row justify-content-center gap-3 input-box"}>
-                        <button type={"button"} className={"btn flex-fill py-3"}
+            <div className={"d-flex justify-content-center"}>
+                <div>
+                    <label htmlFor={"userGender"} className={"form-label fs-3 mt-4"}>성별</label>
+                    <div className={"d-flex gap-3 input-box"}>
+                        <button type={"button"} className={"btn rounded-3 flex-fill py-3"}
                                 style={{border: "1px solid #929292", backgroundColor: "white"}}>남
                         </button>
-                        <button type={"button"} className={"btn flex-fill py-3"}
+                        <button type={"button"} className={"btn rounded-3 flex-fill py-3"}
                                 style={{border: "1px solid #929292", backgroundColor: "white"}}>여
                         </button>
                     </div>
                 </div>
             </div>
 
-            <div className={"row mt-4 ms-3"}>
-                <div className={"col"}>
-                    <label htmlFor={"userName"} className={"form-label fs-3"}>나이대</label>
-                    <select className={"form-select py-3 input-box"} aria-label={"Default select example"}>
-                        <option value={10} selected={"10대"}>10대</option>
+            <div className="d-flex justify-content-center mt-4">
+                <div>
+                    <label htmlFor="userAge" className="form-label fs-3 text-start">나이대</label>
+                    <select className="form-select py-3 input-box text-center" style={{maxWidth: "400px"}}>
+                        <option value={10}>10대</option>
                         <option value={20}>20대</option>
                         <option value={30}>30대</option>
                         <option value={40}>40대</option>
@@ -38,16 +38,15 @@ function SignUp() {
                 </div>
             </div>
 
+
             <SignMini id={"userCall"} label={"연락처"} holder={"01012345678"}/>
             <SignMini id={"userEmail"} label={"이메일"} holder={"example@example.com"}/>
 
-            <div className={"row mt-4 ms-3"}>
-                <div className={"col"}>
-                    <button type={"submit"}
-                            className={"btn shadow-sm py-3 my-5 fw-bold text-light fs-4 input-box"}
-                            style={{backgroundColor: "#FFB74D"}}>회원 등록
-                    </button>
-                </div>
+            <div className={"mt-4 mb-5 d-flex justify-content-center"}>
+                <button type={"submit"}
+                        className={"btn py-3 fw-bold text-light fs-4 input-box rounded-3"}
+                        style={{backgroundColor: "#FFB74D"}}>회원 등록
+                </button>
             </div>
 
         </form>

@@ -1,5 +1,5 @@
 import PastDateWaiting from "./JangDaJung/PastDateWaiting.jsx";
-
+// import '../src/App.css'
 
 function App() {
   return (
