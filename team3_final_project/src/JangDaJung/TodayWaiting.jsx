@@ -1,5 +1,6 @@
 import {useState} from "react";
 import Banner from "../KimSangMin/Banner.jsx";
+import './TodayWaiting.css'
 
 function TodayWaiting() {
     const [tab, setTab] = useState('current');
@@ -20,13 +21,13 @@ function TodayWaiting() {
 
     const handleStatusChange = (id, newStatus) => {
         setWaitingList((prev) =>
-        prev.map((item) => (item.id === id ? { ...item, status:newStatus } : item))
+            prev.map((item) => (item.id === id ? { ...item, status:newStatus } : item))
         );
     };
 
     const handleCall = (id) => {
         setWaitingList((prev) =>
-        prev.map((item) => (item.id === id ? { ...item, called: true } : item))
+            prev.map((item) => (item.id === id ? { ...item, called: true } : item))
         );
     };
 
@@ -38,65 +39,84 @@ function TodayWaiting() {
     });
 
     return (
-        <div>
+        <div className={'ceo-main'}>
             <Banner />
             <div style={{ marginTop: '10vh', marginLeft: '200px', position: 'relative'}}>
-                <h2 className={'title mb-4'}>웨이팅 내역</h2>
+                <h2 className={'today-waiting-title mb-4'}>오늘의 웨이팅</h2>
                 <hr />
-            {/*    탭 */}
+                {/*    탭 */}
                 <div className={'d-flex flex-wrap gap-3 mb-4 justify-content-center'}>
-                    <button className={`btn ${tab === 'current' ? 'btn-primary' : 'btn-outline-primary'}`} onClick={() => setTab('current')}>현재 웨이팅
+                    <button
+                        className={`custom-tab-btn ${tab === 'current' ? 'active' : ''}`}
+                        onClick={() => setTab('current')}
+                    >
+                        현재 웨이팅
                     </button>
-                    <button className={`btn ${tab === 'past' ? 'btn-success' : 'btn-outline-success'}`} onClick={() => setTab('past')}>지난 웨이팅
+                    <button
+                        className={`custom-tab-btn ${tab === 'past' ? 'active' : ''}`}
+                        onClick={() => setTab('past')}
+                    >
+                        지난 웨이팅
                     </button>
-                    <button className={`btn ${tab === 'canceled' ? 'btn-danger' : 'btn-outline-danger'}`} onClick={() => setTab('canceled')}>취소 웨이팅
+                    <button
+                        className={`custom-tab-btn ${tab === 'canceled' ? 'active' : ''}`}
+                        onClick={() => setTab('canceled')}
+                    >
+                        취소 웨이팅
                     </button>
                 </div>
-            {/*    리스트 */}
+                {/*    리스트 */}
                 <div className={'table-responsive'}>
-                    <table className={'table text-center align-middle'}>
+                    <table className={'table text-center align-middle table-background'}>
                         <thead className={'table-light'}>
-                            <tr>
-                                <th>번호</th>
-                                <th>이름</th>
-                                <th>인원수</th>
-                                <th>전화번호</th>
-                                <th>방문횟수</th>
-                                {tab === 'current' && <th>동작</th>}
-                            </tr>
+                        <tr>
+                            <th>번호</th>
+                            <th>이름</th>
+                            <th>인원수</th>
+                            <th>전화번호</th>
+                            <th>방문횟수</th>
+                            {tab === 'current' && <th>동작</th>}
+                            {tab === 'past' && <th>입장시간</th>}
+                        </tr>
                         </thead>
-                        <tbody>
-                            {filteredList.length === 0 ? (
-                                <tr>
-                                    <td colSpan={tab === 'current' ? 6 : 5}>등록된 웨이팅이 없습니다.</td>
+                        <tbody style={{backgroundColor: '#f5f5f5'}}>
+                        {filteredList.length === 0 ? (
+                            <tr>
+                                <td colSpan={tab === 'current' ? 6 : 5}>등록된 웨이팅이 없습니다.</td>
+                            </tr>
+                        ) : (
+                            filteredList.map((item) => (
+                                <tr key={item.id}>
+                                    <td>No. {item.id}</td>
+                                    <td>{item.name}</td>
+                                    <td>{item.people}</td>
+                                    <td>{item.phone}</td>
+                                    <td>{item.visits}</td>
+                                    {tab === 'current' && (
+                                        <td>
+                                            <div className="d-flex flex-wrap justify-content-center gap-2">
+                                                <button
+                                                    className="ceo-btn btn-sm btn-call"
+                                                    onClick={() => handleCall(item.id)}
+                                                    disabled={item.called}
+                                                >
+                                                    {item.called ? '호출됨' : '호출'}
+                                                </button>
+                                                <button className="ceo-btn btn-sm btn-done" onClick={() => handleStatusChange(item.id, '완료')}>
+                                                    완료
+                                                </button>
+                                                <button className="ceo-btn btn-sm btn-cancel" onClick={() => handleStatusChange(item.id, '취소')}>
+                                                    취소
+                                                </button>
+                                            </div>
+                                        </td>
+                                    )}
+                                    {tab === 'past' && (
+                                        <td>???</td>
+                                    )}
                                 </tr>
-                            ) : (
-                                filteredList.map((item) => (
-                                    <tr key={item.id}>
-                                        <td>No. {item.id}</td>
-                                        <td>{item.name}</td>
-                                        <td>{item.people}</td>
-                                        <td>{item.phone}</td>
-                                        <td>{item.visits}</td>
-                                        {tab === 'current' && (
-                                            <td>
-                                                <div className="d-flex flex-wrap justify-content-center gap-2">
-                                                    <button className="btn btn-sm btn-info" onClick={() => handleCall(item.id)}>
-                                                        호출
-                                                    </button>
-                                                    <button className="btn btn-sm btn-success" onClick={() => handleStatusChange(item.id, '완료')}>
-                                                        완료
-                                                    </button>
-                                                    <button className="btn btn-sm btn-danger" onClick={() => handleStatusChange(item.id, '취소')}>
-                                                        취소
-                                                    </button>
-                                                    {item.called && <span className="called-text">호출됨</span>}
-                                                </div>
-                                            </td>
-                                        )}
-                                    </tr>
-                                ))
-                            )}
+                            ))
+                        )}
                         </tbody>
                     </table>
                 </div>
