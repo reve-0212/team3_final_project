@@ -84,7 +84,7 @@ function SeatManager() {
     };
 
     return (
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "80vh" }}>
             <div>
                 {/* 버튼 요소 추가하기 */}
                 <div style={{ marginBottom: "10px" }}>

@@ -1,7 +1,7 @@
 import { useState } from "react";
-import AdminSeatEditor from "./AdminSeatEditor.jsx";
+import Banner from "./Banner.jsx";
 
-function ReMain() {
+function PreRe() {
   const [reviews, setReviews] = useState([
     {
       writer: "홍길동",
@@ -16,7 +16,6 @@ function ReMain() {
       date: "2024-04-25",
       rating: 5,
       content: "음식이 정말 맛있었어요!",
-      reply:"감사합니다! 또 방문해주세요",
       ImageUrl:"https://via.placeholder.com/100"
     },
     {
@@ -50,6 +49,31 @@ function ReMain() {
     },
   ]);
 
+  // 답글 상태관리
+  const [edIndex, setEdIndex] = useState (null);
+  const [chReply, setChReply] = useState("");
+
+  // 답글 수정하기
+  const upIndex = (index) => {
+    setEdIndex(index);
+    setChReply(reviews[index].reply);
+  };
+
+  // 답글 저장하기
+  const saIndex = (index) => {
+    const upReview = [...reviews];
+    upReview[index].reply = chReply;
+    setReviews(upReview);
+    setEdIndex(null);
+  }
+
+  // 답글 삭제하기
+  const delReply = (index) => {
+    const upReview = [...reviews];
+    upReview[index].reply = "";
+    setReviews(upReview);
+  }
+
   return (
       <div
           style={{
@@ -61,6 +85,7 @@ function ReMain() {
             maxWidth: '1000px'
           }}
       >
+        <Banner/>
         <h2 className="text-start">리뷰</h2>
         <hr />
 
@@ -87,7 +112,18 @@ function ReMain() {
                   <div><strong>작성일:</strong> {review.date}</div>
                   <div><strong>별점:</strong> {'⭐'.repeat(review.rating)}</div>
                   <div><strong>리뷰:</strong> {review.content}</div>
-                  <div className="mt-2"><strong>답글:</strong> {review.reply}</div>
+                  <div className="mt-2">
+                    <strong>답글:</strong>
+                    {edIndex === index ? (
+                        <textarea
+                          value={chReply}
+                          onChange={(e) => setChReply(e.target.value)}
+                          className="form-control mt-1"
+                        />
+                    ) : (
+                        <div>{review.reply}</div>
+                    )}
+                  </div>
                 </div>
 
                 {/* 오른쪽 - 사진 + 버튼 */}
@@ -98,8 +134,16 @@ function ReMain() {
                       style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '8px' }}
                   />
                   <div className="mt-2 d-flex gap-2">
-                    <button className="btn btn-sm btn-outline-secondary">수정</button>
-                    <button className="btn btn-sm btn-outline-danger">삭제</button>
+                    {edIndex === index ? (
+                        <button className="btn btn-sm btn-outline-success" onClick={() => saIndex(index)}>저장</button>
+                    ) : review.reply ? (
+                        <>
+                          <button className="btn btn-sm btn-outline-secondary" onClick={() => upIndex(index)}>수정</button>
+                          <button className="btn btn-sm btn-outline-danger" onClick={() => delReply(index)}>삭제</button>
+                        </>
+                    ) : (
+                        <button className="btn btn-sm btn-outline-primary" onClick={() => upIndex(index)}>작성</button>
+                    )}
                   </div>
                 </div>
               </li>
@@ -110,4 +154,4 @@ function ReMain() {
   );
 }
 
-export default ReMain;
+export default PreRe;

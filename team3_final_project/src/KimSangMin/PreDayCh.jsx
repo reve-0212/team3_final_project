@@ -1,19 +1,20 @@
 import { useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import Banner from "./Banner.jsx";
+import {Link} from "react-router-dom";
 
 
-function PreDayChart() {
+function PreDayCh() {
 
 //   시작날짜 지정
-const [stDay, setStDay] = useState('');
+  const [stDay, setStDay] = useState('');
 //  끝 날짜 지정
-const [endDay, setEndDay] = useState('');
+  const [endDay, setEndDay] = useState('');
 
 // 시작 날짜 변경
-const stDayCh = (e) => {
-  setStDay(e.target.value);
-};
+  const stDayCh = (e) => {
+    setStDay(e.target.value);
+  };
 
   // 끝 날짜 변경
   const endDayCh = (e) => {
@@ -104,6 +105,10 @@ const stDayCh = (e) => {
             maxWidth: '1000px'
           }}
       >
+        <div style={{display:"flex"}}>
+          <Link to="/PreCh" style={{textDecoration:'none',color:'black'}}><h4 className="me-5">매출통계</h4></Link>
+          <Link to="/PreDayCh" style={{textDecoration:'none',color:'black'}}><h4>예약통계</h4></Link>
+        </div>
         <Banner />
         <h2 style={{marginTop:'30px', marginBottom:'30px'}}>날짜별 시간대 통계</h2>
 
@@ -164,5 +169,5 @@ const stDayCh = (e) => {
   );
 }
 
-export default PreDayChart
+export default PreDayCh
 

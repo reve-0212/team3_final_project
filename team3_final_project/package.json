@@ -13,7 +13,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@toast-ui/editor": "^3.2.2",
-    "axios": "^1.8.4",
+    "axios": "^1.9.0",
     "bootstrap": "^5.3.5",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.9",
