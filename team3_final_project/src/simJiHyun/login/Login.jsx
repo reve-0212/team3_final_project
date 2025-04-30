@@ -1,21 +1,61 @@
-import SjhNav from "../nav/SjhNav.jsx";
 import {faArrowRight} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import LoginSignText from "../LoginSignText.jsx";
-import LoginText from "./LoginText.jsx";
 import "../SjhCss.css"
+import {useState} from "react";
+import axios from "axios";
 
 function Login() {
+    const [id, setId] = useState("");
+    const [pass, setPass] = useState("");
+
+    const handleChangeId = (event) => {
+        setId(event.target.value)
+        console.log(id)
+    }
+
+    const handleChangePass = (event) => {
+        setPass(event.target.value)
+        console.log(pass)
+    }
+
+    const isIdAvailable = (userId, userPass, event) => {
+        event.preventDefault();
+
+        axios.post("http://localhost:8080/login", {
+            params: {userId: userId, userPass: userPass}
+        }).then((res) => {
+            console.log(res)
+        }).catch((err) => {
+                console.log(err)
+            }
+        )
+    }
+
     return (
-        <form className={"container vh-100 pt-2"}>
+        <form className={"container vh-100 pt-2"}
+              onSubmit={(e) => isIdAvailable(id, pass, e)}>
 
             <LoginSignText text={"로그인"}/>
 
-            <LoginText holder={"아이디 입력"}/>
-            <LoginText holder={"비밀번호 입력"}/>
+            <div className={"mt-4 d-flex justify-content-center"}>
+                <div className={"d-flex flex-column gap-4"}>
+                    <input type={"text"}
+                           className={"form-control py-3"}
+                           style={{width: '25rem'}}
+                           placeholder={"아이디 입력"}
+                           onChange={handleChangeId}/>
+                    <input type={"text"}
+                           className={"form-control py-3"}
+                           style={{width: '25rem'}}
+                           placeholder={"비밀번호 입력"}
+                           onChange={handleChangePass}/>
+                </div>
+            </div>
 
             <div className={"mt-4 d-flex justify-content-center"}>
-                <button type={"submit"} className={"btn py-3 fw-bold text-light fs-5 rounded-3"}
+                <button type={"submit"}
+                        className={"btn py-3 fw-bold text-light fs-5 rounded-3"}
                         style={{backgroundColor: "#FFB74D", width: "400px"}}>로그인
                 </button>
             </div>
