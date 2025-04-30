@@ -9,7 +9,7 @@ function JksApp() {
     return (
         <div>
             <ContentList />
-            <ContentDetail />
+            {/*<ContentDetail />*/}
         </div>
     );
 }

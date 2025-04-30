@@ -137,7 +137,7 @@ function ContentDetail() {
                                 {/* 메뉴 설명 영역 */}
                                 <div className="text-start">
                                     <div className="fw-bold">메뉴이름</div>
-                                    <div className="text-muted small">메뉴설명메뉴설명메뉴설명</div>
+                                    <div className="text-muted small">메뉴설명</div>
                                     <div className="fw-bold mt-3">39,000 원</div>
                                 </div>
 
