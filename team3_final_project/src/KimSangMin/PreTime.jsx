@@ -1,7 +1,8 @@
 import Banner from "./Banner.jsx";
 import {useState} from "react";
-import PreTimeSet from "./PreTimeSet.jsx";
 import {Link} from "react-router-dom";
+// import PreTimeSet from "./PreTimeSet.jsx";
+// import {Link} from "react-router-dom";
 
 function PreTime() {
 
@@ -24,13 +25,10 @@ function PreTime() {
         setInput(newInput);
     };
 
-
-
-
-
-
-
-
+    // 설정한 데이터 저장(서버로 전송 )
+    const hSubmit = async (e) => {
+        e.preventDefault();
+    }
 
     return (
         <div
@@ -45,18 +43,18 @@ function PreTime() {
         }}>
             <Banner/>
             <div className="d-flex">
-                <Link to={"/preSetting"} style={{ textDecoration: 'none' }}><h4 className="text-start me-5">가게정보</h4></Link>
-                <h4 className="text-start">운영정보</h4>
+                <Link to={"/PreReSet"} style={{ textDecoration: 'none',color:'black' }}><h4 className="text-start me-5">가게정보</h4></Link>
+                <Link to={"/PreTimeSet"} style={{ textDecoration: 'none',color:'black' }}><h4 className="text-start me-5">가게정보</h4></Link>
             </div>
             <hr/><h4 className="text-start"><strong>운영 시간</strong>
                 <span style={{color:"#FFD727", fontSize: "14px"}}> *필수</span>
             </h4>
 
+            <form onSubmit={hSubmit}>
             <div className="mb-4">
                 {input.map((val, index) => {
-                    const stTime = `${String(val.startHo).padStart(2,'0')}:${String(val.startMi).padStart(2,'0')}`;
-                    const fiTime = `${String(val.endHo).padStart(2,'0')}:${String(val.endMi).padStart(2,'0')}`;
-
+                    const stTime = val.startHo && val.startMi ? `${String(val.startHo).padStart(2, '0')}:${String(val.startMi).padStart(2, '0')}` : "미정";
+                    const fiTime = val.endHo && val.endMi ? `${String(val.endHo).padStart(2, '0')}:${String(val.endMi).padStart(2, '0')}` : "미정";
                     return (
                         <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
 
@@ -68,7 +66,9 @@ function PreTime() {
                             <input
                                 type="number"
                                 placeholder="시작 시간"
-                                value={val.startHo}
+                                value=
+
+                                    {val.startHo}
                                 onChange={(e) => chInput(index, 'startHo', e.target.value)}
                                 className="form-control"
                                 style={{ width: '130px', marginLeft: '10px', marginRight: '5px' }}
@@ -108,14 +108,11 @@ function PreTime() {
                 })}
 
                 <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop:'30px' }}>
-                    <button className="btn me-2" style={{backgroundColor:'#FFCD83'}}>저장</button>
-                    <button className="btn" style={{backgroundColor:'#FFD727'}}>수정</button>
+                    <button type="submit" className="btn me-2" style={{backgroundColor:'#FFCD83'}}>저장</button>
                 </div>
             </div>
             <hr/>
-            <h4><strong>휴무일</strong></h4>
-            <hr/>
-
+            </form>
 
         </div>
     );

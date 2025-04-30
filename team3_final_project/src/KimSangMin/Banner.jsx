@@ -1,4 +1,4 @@
-import ReMain from "./ReMain.jsx";
+import PreRe from "./PreRe.jsx";
 
 function Banner() {
     return (
@@ -44,10 +44,10 @@ function Banner() {
                     <br/>
                     
                     <li className="nav-item">
-                        <a className="nav-link text-black" href="#">가게정보</a>
+                        <a className="nav-link text-black" href="/PreReSet">가게정보</a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link text-black" href="#">가게통계</a>
+                        <a className="nav-link text-black" href="/PreCh">가게통계</a>
                     </li>
                     <br/>
 
@@ -55,13 +55,11 @@ function Banner() {
                         <a className="nav-link text-black" href="#">가게메뉴</a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link text-black" href="#">리뷰관리</a>
+                        <a className="nav-link text-black" href="/PreRe">리뷰관리</a>
                     </li>
                 </ul>
             </div>
 
-            {/*/!* 메인 리뷰리스트 출력 *!/*/}
-            {/*<ReMain/>*/}
         </div>
     );
 }

@@ -1,10 +1,11 @@
-import PastDateWaiting from "./JangDaJung/PastDateWaiting.jsx";
-// import '../src/App.css'
+import SangMinApp from "./KimSangMin/SangMinApp.jsx";
 
 function App() {
   return (
     <div>
-        <PastDateWaiting />
+
+        <SangMinApp/>
+
     </div>
   )
 }
