@@ -14,31 +14,28 @@ function SjhReservation() {
     return (
         <div className={"container py-4"}>
 
-                <UseOrNoShow
-                    switchUN={(val) => setIsUsed(val)}
-                    isUsed={isUsed}/>
+            <UseOrNoShow
+                switchUN={(val) => setIsUsed(val)}
+                isUsed={isUsed}/>
 
-                <ReservationOrWaiting
-                    switchRW={(val) => setIsReservation(val)}
-                    isReservation={isReservation}/>
+            <ReservationOrWaiting
+                switchRW={(val) => setIsReservation(val)}
+                isReservation={isReservation}/>
 
-                <div>
-                    <SjhReservationCard
-                        isUse={false}
-                        restName={"해운대암소갈비집"}
-                        time={"2010-10-10"}
-                        number={200}
-                        people={2}/>
+            <div>
+                <SjhReservationCard
+                    isUse={false}
+                    restName={"해운대암소갈비집"}
+                    time={"2010-10-10"}
+                    number={200}
+                    people={2}/>
 
-                    <SjhReservationCard isUse={true}
-                                        restName={"블랙업커피"}
-                                        time={"2010-11-11"}
-                                        number={10}
-                                        people={5}/>
-                </div>
+                <SjhReservationCard isUse={true}
+                                    restName={"블랙업커피"}
+                                    time={"2010-11-11"}
+                                    number={10}
+                                    people={5}/>
             </div>
-
-
         </div>
     );
 }

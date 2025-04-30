@@ -1,7 +1,6 @@
 // JksApp.jsx
 // 작업대
 
-
 import ContentList from './ContentList.jsx';
 import ContentDetail from './ContentDetail.jsx';
 
