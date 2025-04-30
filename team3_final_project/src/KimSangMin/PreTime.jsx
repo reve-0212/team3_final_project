@@ -59,7 +59,9 @@ function PreTime() {
                             <input
                                 type="number"
                                 placeholder="시작 시간"
-                                value={val.startHo}
+                                value=
+
+                                    {val.startHo}
                                 onChange={(e) => chInput(index, 'startHo', e.target.value)}
                                 className="form-control"
                                 style={{ width: '130px', marginLeft: '10px', marginRight: '5px' }}

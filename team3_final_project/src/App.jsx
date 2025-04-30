@@ -12,13 +12,15 @@ import PreTimeSet from "./KimSangMin/PreTimeSet.jsx";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SeatManager from "./KimSangMin/SeatManager.jsx";
 import PreChart from "./KimSangMin/PreChart.jsx";
+import PreDayChart from "./KimSangMin/PreDayChart.jsx";
 
 
 function App() {
   return (
     <div>
 
-        <PreSetting/>
+        <PreDayChart/>
+        {/*<PreSetting/>*/}
         {/*<PreChart/>*/}
 
         {/*<Router>*/}
