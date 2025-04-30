@@ -1,27 +1,34 @@
 import SjhReservationCard from "./SjhReservationCard.jsx";
+import ReservationOrWaiting from "./ReservationOrWaiting.jsx";
+import UseOrNoShow from "./UseOrNoShow.jsx";
+import {useState} from "react";
 
+// state
 function SjhReservation() {
+    // true : 이용예정/완료 , false : 취소/노쇼
+    const [isUsed, setIsUsed] = useState(true)
+
+    // true : 예약 , false : 웨이팅
+    const [isReservation, setIsReservation] = useState(true)
+
     return (
         <div className={"container py-4"}>
 
-            <div className={"input-box ms-3"}>
-                <div className={"d-flex justify-content-start ms-3"}>
-                    <p className={"me-3 fw-bold fs-6"}
-                       style={{color: "#FFA31C", borderBottom: "3px solid #FFA31C"}}>이용예정/완료</p>
-                    <p className={"fw-bold fs-6"} style={{color: "#9E9E9E"}}>취소/노쇼</p>
-                </div>
+                <UseOrNoShow
+                    switchUN={(val) => setIsUsed(val)}
+                    isUsed={isUsed}/>
 
-                <div className={"d-flex justify-content-start ms-3 mb-0"}>
-                    <p>예약</p>
-                    <p>웨이팅</p>
-                </div>
+                <ReservationOrWaiting
+                    switchRW={(val) => setIsReservation(val)}
+                    isReservation={isReservation}/>
 
                 <div>
-                    <SjhReservationCard isUse={false}
-                                        restName={"해운대암소갈비집"}
-                                        time={"2010-10-10"}
-                                        number={200}
-                                        people={2}/>
+                    <SjhReservationCard
+                        isUse={false}
+                        restName={"해운대암소갈비집"}
+                        time={"2010-10-10"}
+                        number={200}
+                        people={2}/>
 
                     <SjhReservationCard isUse={true}
                                         restName={"블랙업커피"}

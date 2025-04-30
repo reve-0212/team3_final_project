@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin
@@ -13,8 +14,9 @@ public class SJHController {
   @Autowired
   private SJHService sjhService;
 
-  @GetMapping("/sjh")
-  public void home() {
-    sjhService.home();
+  @PostMapping("/login")
+  public String logIn() {
+    System.out.println("asdf");
+    return "login";
   }
 }

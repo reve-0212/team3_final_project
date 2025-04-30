@@ -1,6 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 
+import "./index.css"
 import "../src/JeongSeongYun/css/mobile.css"
 
 import DajungApp from "./JangDaJung/DajungApp.jsx";
@@ -12,9 +13,9 @@ import Main from "./JeongSeongYun/main.jsx";
 createRoot(document.getElementById('root')).render(
   <StrictMode>
       {/*<DajungApp/>*/}
-      {/*<SjhApp/>*/}
+      <SjhApp/>
       {/*<JksApp/>*/}
       {/*<KnhApp/>*/}
-      <Main/>
+      {/*<Main/>*/}
   </StrictMode>
 )
