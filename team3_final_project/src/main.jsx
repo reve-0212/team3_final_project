@@ -13,9 +13,9 @@ import Main from "./JeongSeongYun/main.jsx";
 createRoot(document.getElementById('root')).render(
   <StrictMode>
       {/*<DajungApp/>*/}
-      <SjhApp/>
+      {/*<SjhApp/>*/}
       {/*<JksApp/>*/}
-      {/*<KnhApp/>*/}
+      <KnhApp/>
       {/*<Main/>*/}
   </StrictMode>
 )
