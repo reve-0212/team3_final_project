@@ -4,10 +4,23 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import LoginSignText from "../LoginSignText.jsx";
 import LoginText from "./LoginText.jsx";
 import "../SjhCss.css"
+import useUserStore from "../../stores/useUserStore.jsx";
+import {Link, useNavigate} from "react-router-dom";
 
 function Login() {
+
+    const setUser = useUserStore((state) => state.setUser);
+    const Nv = useNavigate();
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const userData = { name: "홍길동"};
+        setUser(userData);
+        Nv("/user");
+    }
+
     return (
-        <form className={"container vh-100 pt-2"}>
+        <form className={"container pt-2"} onSubmit={handleSubmit}>
 
             <LoginSignText text={"로그인"}/>
 
@@ -25,7 +38,7 @@ function Login() {
                      style={{maxWidth: "400px"}}>
                     <p>아직 아이디가 없으시다면 ? </p>
                     <p><FontAwesomeIcon icon={faArrowRight}/></p>
-                    <a href="/signUp" style={{color: "#FFB74D", textDecorationLine: 'none'}}> 가입하기</a>
+                    <Link to={"/user/signUp"} style={{color: "#FFB74D", textDecorationLine: 'none'}} >가입하기</Link>
                 </div>
             </div>
         </form>

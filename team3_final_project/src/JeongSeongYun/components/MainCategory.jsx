@@ -2,15 +2,30 @@ import React from "react";
 
 function MainCategory() {
 
-    const categories = ['한식', '중식', '양식', '일식', '분식', '카페/디저트', '퓨전', '기타'];
+    const categoryList = [
+        { name: '한식', img: 'https://www.tabling.co.kr/images/home/normal/korean.svg' },
+        { name: '중식', img: 'https://www.tabling.co.kr/images/home/normal/chinese.svg' },
+        { name: '양식', img: 'https://www.tabling.co.kr/images/home/normal/western.svg' },
+        { name: '일식', img: 'https://www.tabling.co.kr/images/home/normal/japanese.svg' },
+        { name: '분식', img: 'https://d2ba33ltwyhxsm.cloudfront.net/common_img/comm_2531714140375417.webp' },
+        { name: '카페/디저트', img: 'https://www.tabling.co.kr/images/home/normal/cafe.svg' },
+        { name: '퓨전', img: 'https://d3kzx7mqemhf0.cloudfront.net/common_img/comm_24102311105777428.webp' },
+        { name: '기타', img: 'https://www.tabling.co.kr/images/home/normal/etc.svg' },
+    ];
 
     return (
         <div className="row row-cols-4 g-3 mb-4 text-center">
-            {categories.map((category, index) => (
+            {categoryList.map((category, index) => (
                 <div key={index} className="col">
                     <div className="rounded p-3 d-flex flex-column align-items-center">
-                        <div className="bg-secondary rounded mb-2" style={{ width: '48px', height: '48px' }}></div>
-                        <small className="fs-7 fs-md-6" style={{ fontSize: '0.65rem' }}>{category}</small>
+                        <div className={'mb-1'} style={{ width: '48px', height: '48px' }}>
+                            <img
+                                style={{width: '48px', height: '48px'}}
+                                src={category.img}
+                                alt={category.name}
+                            />
+                        </div>
+                        <small className="fs-7 fs-md-6" style={{ fontSize: '0.65rem' }}>{category.name}</small>
                     </div>
                 </div>
             ))}

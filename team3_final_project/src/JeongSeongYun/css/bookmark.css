@@ -17,3 +17,10 @@
 .filled-star {
     color : gold;
 }
+.categoryBtn{
+    border: 1px solid lightgray;
+    background-color: lightgray;
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size : 0.75rem;
+}

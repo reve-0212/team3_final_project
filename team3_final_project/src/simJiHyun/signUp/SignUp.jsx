@@ -3,7 +3,7 @@ import LoginSignText from "../LoginSignText.jsx";
 
 function SignUp() {
     return (
-        <form className={"container vh-100 pt-3"}>
+        <form className={"container py-4"}>
             <LoginSignText text={"회원가입"}/>
 
             <SignMini id={"userId"} label={"아이디"} holder={"아이디 입력"}/>

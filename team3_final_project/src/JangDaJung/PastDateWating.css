@@ -45,18 +45,18 @@
 }
 
 /* 버튼 스타일 */
-button {
-    padding: 8px 16px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
+/*button {*/
+/*    padding: 8px 16px;*/
+/*    background-color: #4CAF50;*/
+/*    color: white;*/
+/*    border: none;*/
+/*    border-radius: 4px;*/
+/*    cursor: pointer;*/
+/*}*/
 
-button:hover {
-    background-color: #45a049;
-}
+/*button:hover {*/
+/*    background-color: #45a049;*/
+/*}*/
 
 .title {
     font-weight: 600;

@@ -1,66 +1,63 @@
-import {Link, useLocation, useNavigate} from "react-router-dom";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import "../css/nav.css"
-import {faHome, faUser,faClipboard,faStar} from "@fortawesome/free-solid-svg-icons";
-
+import { Link, useMatch } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import "../css/nav.css";
+import { faHome, faUser, faClipboard, faStar } from "@fortawesome/free-solid-svg-icons";
 
 function BottomNav() {
 
-    const locationNow = useLocation();
+    // ✅ useMatch로 하위 경로까지 포함 매칭
+    const matchHome = useMatch("/");
+    const matchDetails = useMatch("/latestDetails");
+    const matchBookmark = useMatch("/bookmark");
+    const matchUser = useMatch("/user/*"); // /user 및 하위 모두 포함
 
-    const Nv = useNavigate();
-        return(
-            <nav className={'nav-wrapper'}>
-                <Link to={'/'} className={'bottom-nav-link'}>
-                    <div>
-                        <FontAwesomeIcon
-                            icon={faHome}
-                            className={
-                                locationNow.pathname === "/"
-                                    ? 'bottom-nav-item active-bottom-nav-item'
-                                    : 'bottom-nav-item'
-                            }
-                        />
-                    </div>
-                </Link>
-                <Link to={'/latestDetails'} className={'bottom-nav-link'}>
-                    <div>
-                        <FontAwesomeIcon
-                            icon={faClipboard}
-                            className={
-                                locationNow.pathname === "/latestDetails"
-                                    ? 'bottom-nav-item active-bottom-nav-item'
-                                    : 'bottom-nav-item'
-                            }
-                        />
-                    </div>
-                </Link>
-                <Link to={'/bookmark'} className={'bottom-nav-link'}>
-                    <div>
-                        <FontAwesomeIcon
-                            icon={faStar}
-                            className={
-                                locationNow.pathname === "/bookmark"
-                                    ? 'bottom-nav-item active-bottom-nav-item'
-                                    : 'bottom-nav-item'
-                            }
-                        />
-                    </div>
-                </Link>
-                <Link to={'/user'} className={'bottom-nav-link'}>
-                    <div>
-                        <FontAwesomeIcon
-                            icon={faUser}
-                            className={
-                                locationNow.pathname === "/user"
-                                    ? 'bottom-nav-item active-bottom-nav-item'
-                                    : 'bottom-nav-item'
-                            }
-                        />
-                    </div>
-                </Link>
-            </nav>
-        );
+    return (
+        <nav className={"nav-wrapper"}>
+            <Link to={"/"} className={"bottom-nav-link"}>
+                <div>
+                    <FontAwesomeIcon
+                        icon={faHome}
+                        className={
+                            matchHome ? "bottom-nav-item active-bottom-nav-item" : "bottom-nav-item"
+                        }
+                    />
+                </div>
+            </Link>
+
+            <Link to={"/latestDetails"} className={"bottom-nav-link"}>
+                <div>
+                    <FontAwesomeIcon
+                        icon={faClipboard}
+                        className={
+                            matchDetails ? "bottom-nav-item active-bottom-nav-item" : "bottom-nav-item"
+                        }
+                    />
+                </div>
+            </Link>
+
+            <Link to={"/bookmark"} className={"bottom-nav-link"}>
+                <div>
+                    <FontAwesomeIcon
+                        icon={faStar}
+                        className={
+                            matchBookmark ? "bottom-nav-item active-bottom-nav-item" : "bottom-nav-item"
+                        }
+                    />
+                </div>
+            </Link>
+
+            <Link to={"/user"} className={"bottom-nav-link"}>
+                <div>
+                    <FontAwesomeIcon
+                        icon={faUser}
+                        className={
+                            matchUser ? "bottom-nav-item active-bottom-nav-item" : "bottom-nav-item"
+                        }
+                    />
+                </div>
+            </Link>
+        </nav>
+    );
 }
 
-export default BottomNav
+export default BottomNav;

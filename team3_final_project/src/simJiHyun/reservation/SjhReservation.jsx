@@ -2,7 +2,7 @@ import SjhReservationCard from "./SjhReservationCard.jsx";
 
 function SjhReservation() {
     return (
-        <div className={"container vh-100 my-3"}>
+        <div className={"container py-4"}>
 
             <div className={"input-box ms-3"}>
                 <div className={"d-flex justify-content-start ms-3"}>
