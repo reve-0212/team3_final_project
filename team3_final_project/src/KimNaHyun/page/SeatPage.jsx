@@ -1,8 +1,8 @@
-import VisitorBtn from "./VisitorBtn.jsx";
-import Button from "./Button.jsx";
-import SeatImg from "./SeatImg.jsx";
+import VisitorBtn from "../waiting/VisitorBtn.jsx";
+import Button from "../waiting/Button.jsx";
+import SeatImg from "../waiting/SeatImg.jsx";
 
-function Seat() {
+function SeatPage() {
     return (
         <div className={'app-container'}>
             <h3 className={'waiting-title'}>좌석을 선택하세요.</h3>
@@ -12,7 +12,7 @@ function Seat() {
     );
 }
 
-export default Seat
+export default SeatPage
 
 
 
