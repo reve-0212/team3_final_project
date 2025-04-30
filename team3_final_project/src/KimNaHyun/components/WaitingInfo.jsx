@@ -41,6 +41,10 @@ function WaitingInfo({info}) {
                     <li style={{paddingLeft:'6px'}}>등록정보</li>
                 </ul>
                 <ul className={'d-flex justify-content-between mb-2 fw-bold'}>
+                    <li>이용 방식</li>
+                    <li>먹고 갈게요 (매장 내 취식)</li>
+                </ul>
+                <ul className={'d-flex justify-content-between mb-2 fw-bold'}>
                     <li>총 입장 인원</li>
                     <li>{info.totalPeople}명</li>
                 </ul>

@@ -1,6 +1,6 @@
-import VisitorBtn from "../waiting/VisitorBtn.jsx";
-import Button from "../waiting/Button.jsx";
-import SeatImg from "../waiting/SeatImg.jsx";
+import VisitorBtn from "../components/VisitorBtn.jsx";
+import Button from "../components/Button.jsx";
+import SeatImg from "../components/SeatImg.jsx";
 
 function SeatPage() {
     return (

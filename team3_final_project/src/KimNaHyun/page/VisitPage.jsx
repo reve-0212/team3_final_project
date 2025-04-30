@@ -1,5 +1,5 @@
-import Button from "../waiting/Button.jsx";
-import VisitorBtn from "../waiting/VisitorBtn.jsx";
+import Button from "../components/Button.jsx";
+import VisitorBtn from "../components/VisitorBtn.jsx";
 
 function visitPage(props) {
     const {gender} = props;

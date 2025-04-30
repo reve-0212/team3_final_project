@@ -1,8 +1,9 @@
 import React from "react";
-import WaitingReg from '../waiting/WaitingReg.jsx';
+import WaitingReg from '../components/WaitingReg.jsx';
 import WaitingRegPage from "./WaitingRegPage.jsx";
-import WaitingInfo from "../waiting/WaitingInfo.jsx";
+import WaitingInfo from "../components/WaitingInfo.jsx";
 import Header from "../../JeongSeongYun/layout/Header.jsx";
+import BookInfo from "../components/BookInfo.jsx";
 
 function WaitingInfoPage() {
 
@@ -18,7 +19,7 @@ function WaitingInfoPage() {
 
   return (
       <>
-        <WaitingInfo info={waitingInfoObj} />
+        <BookInfo info={waitingInfoObj} />
       </>
 
 
