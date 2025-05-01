@@ -3,10 +3,10 @@ import Button from "./Button.jsx";
 
 function BookReg({bkReg}) {
     return (
-        <div className={'app-container'}>
+        <div className={'app-container container py-4'}>
             <section>
                 <h3 className={'waiting-title'}>
-                    {bkReg.bkName}에 예약하시겠어요?
+                    {bkReg.bkName}에 <br />예약하시겠어요?
                 </h3>
             </section>
             <section>
@@ -27,7 +27,7 @@ function BookReg({bkReg}) {
                     <li>{bkReg.bkDate}</li>
                 </ul>
             </section>
-            <section className={'p-3'} style={{background:'#ececec', borderRadius: '10px'}}>
+            <section className={'p-3'} style={{background:'#FFF8E1', borderRadius: '10px'}}>
                 <div className={'waiting-title-sub pb-2'} style={{color:'#FFA31C'}}>매장 예약시 유의사항</div>
                 <p>{bkReg.bkNotice}</p>
                 <div></div>

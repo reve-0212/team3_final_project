@@ -8,9 +8,9 @@ function BookInfo({bkinfo}) {
 
 
     return (
-        <div className={'app-container'}>
+        <div className={'app-container container py-4'}>
           <section>
-            <h3>{bkinfo.bkStoreName} <FontAwesomeIcon icon={faAngleRight} /></h3>
+            <h3 style={{color:'#5D4037',fontWeight:'bold'}}>{bkinfo.bkStoreName} <FontAwesomeIcon icon={faAngleRight} /></h3>
             <div className={'text-secondary'}>{bkinfo.bkStoreSort}</div>
           </section>
           <section>
@@ -53,9 +53,7 @@ function BookInfo({bkinfo}) {
             </ul>
             <div>{bkinfo.bkNoticeContent}</div>
 
-
           </section>
-
           <Button btnName={'예약 취소하기'}/>
         </div>
     );

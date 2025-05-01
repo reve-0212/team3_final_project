@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Button from "./Button.jsx";
 
 const MenuSelector = () => {
     const menuItems = [
@@ -53,7 +54,7 @@ const MenuSelector = () => {
     };
 
     return (
-        <div className="app-container">
+        <div className="app-container container py-4">
             <h3 className="waiting-title">메뉴를 선택하세요</h3>
             <div style={{ padding: '20px' }}>
                 <h2 className="waiting-title-sub">메뉴 선택</h2>
@@ -118,6 +119,7 @@ const MenuSelector = () => {
                                 </li>
                             );
                         })}
+                        <Button btnName={'다음'}/>
                     </ul>
                 )}
             </div>

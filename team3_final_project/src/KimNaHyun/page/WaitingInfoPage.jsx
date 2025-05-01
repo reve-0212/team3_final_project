@@ -19,7 +19,7 @@ function WaitingInfoPage() {
 
   return (
       <>
-        <BookInfo info={waitingInfoObj} />
+        <WaitingInfo info={waitingInfoObj} />
       </>
 
 

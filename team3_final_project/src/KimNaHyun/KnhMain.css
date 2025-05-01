@@ -21,34 +21,43 @@ section {
 /* 상세페이지 버튼 스타일 */
 .common-btn {
     width: 100%;
-    background: #FFA31C;
+    background: #FFD727;
     padding: 15px 0;
-    color: #ffffff;
+    color: #5D4037;
     font-weight: bold;
     margin: 0 auto;
     border-radius: 10px;
     text-align: center;
     border: 0 solid black;
 }
-
+.web-main-btn {
+    background:#FFF8E1;
+    border:none;
+    color:#5d4037;
+    border-radius: 5px;
+    padding: 15px 60px;
+    font-weight: bold;
+}
 .prev-btn, .next-btn {
     border: none;
     background: none;
 }
 .waiting-title {
     font-weight: bold;
-    font-size: 30px;
+    font-size: 25px;
     text-align: left;
+    color: #5D4037;
     margin-bottom: 60px;
 }
 .waiting-title-sub {
-    font-size: 20px;
+    color: #5D4037;
+    font-size: 18px;
     font-weight: bold;
 }
 .point-font {
     font-size: 35px;
     font-weight: bold;
-    color: #FFA31C;
+    color:  #FFD727;
 }
 .basic-font {
     color: #5D4037;
@@ -62,12 +71,12 @@ section {
 .datepicker-container {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     font-size: 20px !important;
 }
 .react-datepicker__month-container {
-    width: 500px !important;
-    height: 500px !important;
+    /*width: 500px !important;*/
+    /*height: 500px !important;*/
 }
 .react-datepicker {
     color: #ffffff !important;
@@ -84,7 +93,7 @@ section {
 }
 
 .custom-input:focus {
-    border-color: #fd9700 !important;
+    border-color: #FFD700 !important;
     outline: none;
 }
 
@@ -98,10 +107,10 @@ section {
 
 }
 .react-datepicker button {
-    background-color:  #FFA31C !important;
+    background-color:  #FFD700 !important;
 }
 .react-datepicker__header {
-    background-color: #FFA31C !important;
+    background-color: #FFD700 !important;
     border-bottom: 0px solid #ddd !important;
     padding: 18px 0 !important;
 }
@@ -121,7 +130,7 @@ section {
 }
 
 .react-datepicker__day--selected {
-    background-color: #fd9700  !important;
+    background-color: #FFD700  !important;
     z-index: 999;
     color: white;
     border-radius: 50% !important;
