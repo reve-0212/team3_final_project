@@ -1,9 +1,11 @@
 // ContentList.jsx
 
 import "./JksSheet.css";
-
+import {Link, useNavigate} from "react-router-dom";
 
 function ContentList() {
+    const Nv = useNavigate();
+
     return (
         <div className="app-container">
 
@@ -61,7 +63,9 @@ function ContentList() {
             <div className="mb-5">
 
                 {/* 첫 번째 가게 */}
-                <div className="card mb-4" style={{cursor: 'pointer'}}>
+                <div className="card mb-4" style={{cursor: 'pointer'}} onClick={() => {
+                    Nv("/contentDetail")
+                }}>
                     <div className="card-body text-start">
                         <div className="d-flex justify-content-between align-items-center">
                             <h5 className="card-title mb-0 fw-semibold">몬베톤</h5>
@@ -80,22 +84,24 @@ function ContentList() {
                     <div id="storeImageCarousel" className="carousel slide" data-bs-ride="carousel">
                         <div className="carousel-inner rounded">
                             <div className="carousel-item active">
-                                <img src="/monbette.jpg" className="d-block w-100" alt="몬베톤 음식" />
+                                <img src="/monbette.jpg" className="d-block w-100" alt="몬베톤 음식"/>
                             </div>
                             <div className="carousel-item">
-                                <img src="/monbette2.jpg" className="d-block w-100" alt="몬베톤 음식2" />
+                                <img src="/monbette2.jpg" className="d-block w-100" alt="몬베톤 음식2"/>
                             </div>
                             <div className="carousel-item">
-                                <img src="/monbette3.jpg" className="d-block w-100" alt="몬베톤 음식3" />
+                                <img src="/monbette3.jpg" className="d-block w-100" alt="몬베톤 음식3"/>
                             </div>
                             <div className="carousel-overlay-text">대기팀 : 3명</div>
                         </div>
 
-                        <button className="carousel-control-prev" type="button" data-bs-target="#storeImageCarousel" data-bs-slide="prev">
+                        <button className="carousel-control-prev" type="button" data-bs-target="#storeImageCarousel"
+                                data-bs-slide="prev">
                             <span className="carousel-control-prev-icon" aria-hidden="true"></span>
                             <span className="visually-hidden">이전</span>
                         </button>
-                        <button className="carousel-control-next" type="button" data-bs-target="#storeImageCarousel" data-bs-slide="next">
+                        <button className="carousel-control-next" type="button" data-bs-target="#storeImageCarousel"
+                                data-bs-slide="next">
                             <span className="carousel-control-next-icon" aria-hidden="true"></span>
                             <span className="visually-hidden">다음</span>
                         </button>
@@ -123,26 +129,31 @@ function ContentList() {
                         <div className="carousel-inner rounded position-relative">
 
                             <div className="carousel-item active">
-                                <img src="/soupandsalad1.jpg" className="d-block w-100" alt="수프올샐러드 음식1" style={{ height: '100%', objectFit: 'cover' }} />
+                                <img src="/soupandsalad1.jpg" className="d-block w-100" alt="수프올샐러드 음식1"
+                                     style={{height: '100%', objectFit: 'cover'}}/>
                             </div>
 
                             <div className="carousel-item">
-                                <img src="/soupandsalad2.jpg" className="d-block w-100" alt="수프올샐러드 음식2" style={{ height: '100%', objectFit: 'cover' }} />
+                                <img src="/soupandsalad2.jpg" className="d-block w-100" alt="수프올샐러드 음식2"
+                                     style={{height: '100%', objectFit: 'cover'}}/>
                             </div>
 
                             <div className="carousel-item">
-                                <img src="/soupandsalad3.jpg" className="d-block w-100" alt="수프올샐러드 음식3" style={{ height: '100%', objectFit: 'cover' }} />
+                                <img src="/soupandsalad3.jpg" className="d-block w-100" alt="수프올샐러드 음식3"
+                                     style={{height: '100%', objectFit: 'cover'}}/>
                             </div>
 
                             <div className="carousel-overlay-text">대기팀 : 1명</div>
                         </div>
 
-                        <button className="carousel-control-prev" type="button" data-bs-target="#soupAndSaladCarousel" data-bs-slide="prev">
+                        <button className="carousel-control-prev" type="button" data-bs-target="#soupAndSaladCarousel"
+                                data-bs-slide="prev">
                             <span className="carousel-control-prev-icon" aria-hidden="true"></span>
                             <span className="visually-hidden">이전</span>
                         </button>
 
-                        <button className="carousel-control-next" type="button" data-bs-target="#soupAndSaladCarousel" data-bs-slide="next">
+                        <button className="carousel-control-next" type="button" data-bs-target="#soupAndSaladCarousel"
+                                data-bs-slide="next">
                             <span className="carousel-control-next-icon" aria-hidden="true"></span>
                             <span className="visually-hidden">다음</span>
                         </button>

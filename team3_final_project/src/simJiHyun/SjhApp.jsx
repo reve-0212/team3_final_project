@@ -16,7 +16,7 @@ function SjhApp() {
             <BrowserRouter>
                 <Header/>
 
-                <Routes>
+                <Routes>h
                     <Route index element={<SjhMain/>}/>
                     <Route path={"/logIn"} element={<Login/>}/>
                     <Route path={"/signUp"} element={<SignUp/>}/>

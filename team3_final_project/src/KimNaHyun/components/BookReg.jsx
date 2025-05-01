@@ -1,7 +1,10 @@
 import React from "react";
 import Button from "./Button.jsx";
+import {useNavigate} from "react-router-dom";
 
 function BookReg({bkReg}) {
+    const Nv = useNavigate();
+
     return (
         <div className={'app-container'}>
             <section>
@@ -27,14 +30,16 @@ function BookReg({bkReg}) {
                     <li>{bkReg.bkDate}</li>
                 </ul>
             </section>
-            <section className={'p-3'} style={{background:'#ececec', borderRadius: '10px'}}>
-                <div className={'waiting-title-sub pb-2'} style={{color:'#FFA31C'}}>매장 예약시 유의사항</div>
+            <section className={'p-3'} style={{background: '#ececec', borderRadius: '10px'}}>
+                <div className={'waiting-title-sub pb-2'} style={{color: '#FFA31C'}}>매장 예약시 유의사항</div>
                 <p>{bkReg.bkNotice}</p>
                 <div></div>
 
 
             </section>
-            <Button btnName={'예약 등록하기'} />
+            <Button btnName={'예약 등록하기'} onClick={() => {
+                Nv("/book/info")
+            }}/>
         </div>
     );
 }

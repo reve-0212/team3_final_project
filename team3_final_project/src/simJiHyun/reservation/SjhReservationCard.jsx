@@ -1,9 +1,11 @@
 import {useState} from "react";
 import CancelPopup from "../popUP/cancelPopup.jsx";
+import {useNavigate} from "react-router-dom";
 
 function SjhReservationCard(props) {
     // 모달을 열지 말지 결정한다
     const [openModal, setOpenModal] = useState(false);
+    const Nv = useNavigate();
 
     return (
         <div style={{height: "350px", border: "1px solid #929292"}}
@@ -38,7 +40,10 @@ function SjhReservationCard(props) {
                             style={{border: "1px solid #929292"}}>대기 상세
                     </button>
                     <button type="button" className="btn rounded-3"
-                            style={{border: "1px solid #C0C0C0", color: "#C0C0C0"}}>리뷰 등록하기
+                            style={{border: "1px solid #C0C0C0", color: "#C0C0C0"}}
+                            onClick={() => {
+                                Nv("/review")
+                            }}>리뷰 등록하기
                     </button>
                 </div>
             ) : (

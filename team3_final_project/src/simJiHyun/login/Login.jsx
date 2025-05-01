@@ -8,45 +8,63 @@ import {useState} from "react";
 import axios from "axios";
 
 function Login() {
-
     const setUser = useUserStore((state) => state.setUser);
     const Nv = useNavigate();
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const userData = { name: "홍길동"};
-        setUser(userData);
-        Nv("/user");
-    }
 
     const [id, setId] = useState("");
     const [pass, setPass] = useState("");
 
     const handleChangeId = (event) => {
         setId(event.target.value)
-        console.log(id)
     }
 
     const handleChangePass = (event) => {
         setPass(event.target.value)
-        console.log(pass)
     }
 
     const isIdAvailable = (userId, userPass, event) => {
         event.preventDefault();
 
-        axios.post("http://localhost:8080/login", {
+        axios.post("http://localhost:8080/login", null, {
             params: {userId: userId, userPass: userPass}
         }).then((res) => {
-            console.log(res)
+            console.log(res.data)
+            // id 와 pass 가 맞는지 count 해서 그 반환값을 가져온다
+            // 반환값이 0 이면 없다는 뜻이므로 아래 알림을 출력한다
+            if (res.data === 0) {
+                alert("아이디 혹은 비밀번호가 틀렸습니다.")
+            } else {
+                // 만일 둘 다 있다면 유저 데이터를 가져온다
+                axios.post("http://localhost:8080/getUserData", null,
+                    {params: {userId: userId, userPass: userPass}})
+                    .then((res) => {
+                        const userData = {
+                            id: res.data.userId,
+                            pass: res.data.userPass,
+                            name: res.data.userName,
+                            gender: res.data.userGender,
+                            age: res.data.userAge,
+                            call: res.data.userCall,
+                            email: res.data.userEmail,
+                            level: res.data.userLevel
+                        }
+                        // 가져온 userData 를 useUserStore 에 저장한다
+                        setUser(userData)
+                        alert("로그인에 성공했습니다!")
+                    }).catch((err) => {
+                    console.log(err)
+                })
+                Nv("/")
+            }
         }).catch((err) => {
                 console.log(err)
             }
         )
     }
 
+    // onSubmit={handleSubmit}
     return (
-        <form className={"container pt-2"} onSubmit={handleSubmit}>
+        <form className={"container pt-2"} onSubmit={(e) => isIdAvailable(id, pass, e)}>
 
             <LoginSignText text={"로그인"}/>
 
@@ -77,7 +95,7 @@ function Login() {
                      style={{maxWidth: "400px"}}>
                     <p>아직 아이디가 없으시다면 ? </p>
                     <p><FontAwesomeIcon icon={faArrowRight}/></p>
-                    <Link to={"/signUp"} style={{color: "#FFB74D", textDecorationLine: 'none'}} >가입하기</Link>
+                    <Link to={"/user/signUp"} style={{color: "#FFB74D", textDecorationLine: 'none'}}>가입하기</Link>
                 </div>
             </div>
         </form>

@@ -13,3 +13,14 @@
   display: inline-block;
   margin: 0;
 }
+
+.genderBtn {
+  background-color: white;
+  color: black;
+  border: 1px solid #929292;
+}
+
+.genderBtn.active {
+  background-color: #929292;
+  color: white;
+}

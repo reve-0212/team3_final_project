@@ -3,13 +3,12 @@ import React, {useState} from "react";
 import DatePicker from "react-datepicker";
 import TimeSelector from "../components/TimeSelector.jsx";
 import Button from "../components/Button.jsx";
-
+import {useNavigate} from "react-router-dom";
 
 
 function DateSelectorPage() {
     const [selectedDate, setSelectedDate] = useState(null);
-
-
+    const Nv = useNavigate();
 
     return (
         <div className={'app-container'}>
@@ -26,15 +25,17 @@ function DateSelectorPage() {
                     />
 
                     {selectedDate && (
-                        <p style={{ marginTop: "30px" }}>
+                        <p style={{marginTop: "30px"}}>
                             선택한 날짜: {selectedDate.toLocaleDateString()}
                         </p>
                     )}
                 </div>
             </section>
             <section>
-                <TimeSelector />
-                <Button btnName={'다음'} />
+                <TimeSelector/>
+                <Button btnName={'다음'} onClick={() => {
+                    Nv("/book/menu")
+                }}/>
 
             </section>
 
