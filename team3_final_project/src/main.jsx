@@ -9,6 +9,7 @@ import SjhApp from "./simJiHyun/SjhApp.jsx";
 import JksApp from "./JeonKangSan/JksApp.jsx";
 import KnhApp from "./KimNaHyun/KnhApp.jsx";
 import Main from "./JeongSeongYun/main.jsx";
+import SangMinApp from "./KimSangMin/SangMinApp.jsx";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -16,6 +17,7 @@ createRoot(document.getElementById('root')).render(
       {/*<SjhApp/>*/}
       {/*<JksApp/>*/}
       {/*<KnhApp/>*/}
-      <Main/>
+      {/*<Main/>*/}
+      <SangMinApp/>
   </StrictMode>
 )

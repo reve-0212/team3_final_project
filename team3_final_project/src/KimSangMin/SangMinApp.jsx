@@ -7,6 +7,8 @@ import PreDayCh from "./PreDayCh.jsx";
 import PreRe from "./PreRe.jsx";
 import PreTime from "./PreTime.jsx";
 import PreTimeSet from "./PreTimeSet.jsx";
+import PreReserve from "./PreReserve.jsx";
+import PreWait from "./PreWait.jsx";
 
 function SangMinApp()
 {
@@ -15,13 +17,15 @@ function SangMinApp()
           <BrowserRouter>
               <Routes>
                   <Route path="/" element={<PreSelect />} />
-                  <Route path="/PreCh" element={<PreCh />} />
-                  <Route path="/PreRe" element={<PreRe />} />
-                  <Route path="/PreTime" element={<PreTime />} />
-                  <Route path="/PreTimeSet" element={<PreTimeSet />} />
-                  <Route path="/PreDayCh" element={<PreDayCh />} />
-                  <Route path="/PreWaSet" element={<PreWaSet />} />
-                  <Route path="/PreReSet" element={<PreReSet />} />
+                  <Route path="/pre/PreReserve" element={<PreReserve />} />
+                  <Route path="/pre/PreWait" element={<PreWait />} />
+                  <Route path="/pre/PreCh" element={<PreCh />} />
+                  <Route path="/pre/PreRe" element={<PreRe />} />
+                  <Route path="/pre/PreTime" element={<PreTime />} />
+                  <Route path="/pre/PreTimeSet" element={<PreTimeSet />} />
+                  <Route path="/pre/PreDayCh" element={<PreDayCh />} />
+                  <Route path="/pre/PreWaSet" element={<PreWaSet />} />
+                  <Route path="/pre/PreReSet" element={<PreReSet />} />
               </Routes>
           </BrowserRouter>
 

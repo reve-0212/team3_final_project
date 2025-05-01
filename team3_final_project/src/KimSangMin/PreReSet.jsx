@@ -98,8 +98,8 @@ function PreReSet() {
         <form onSubmit={hSub}>
         <Banner/>
           <div style={{display:'flex'}}>
-        <Link to="/PreReSet" style={{textDecoration:'none',color:"black"}}><h4 className="text-start me-4">가게정보</h4></Link>
-            <Link to="/PreTimeSet" style={{textDecoration:'none',color:"black"}}><h4>운영정보</h4></Link>
+        <Link to="/pre/PreReSet" style={{textDecoration:'none',color:"black"}}><h4 className="text-start me-4">가게정보</h4></Link>
+            <Link to="/pre/PreTimeSet" style={{textDecoration:'none',color:"black"}}><h4>운영정보</h4></Link>
           </div>
         <hr/>
         <br/>

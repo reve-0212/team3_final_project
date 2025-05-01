@@ -24,8 +24,8 @@ function PreSelect() {
               }}
           >
 
-         <Link to="/PreWaSet"><button style={{width:"300px",height:"80px", fontSize:'30px',border:'none',borderRadius:'20px',backgroundColor:'#FFD727'}}>웨이팅 전용</button></Link>
-            <Link to="/PreReSet"><button style={{width:"300px",height:"80px", fontSize:'30px',border:'none',borderRadius:'20px',backgroundColor:'#FFD727'}}>예약 전용 </button></Link>
+         <Link to="/pre/PreWaSet"><button style={{width:"300px",height:"80px", fontSize:'30px',border:'none',borderRadius:'20px',backgroundColor:'#FFD727'}}>웨이팅 전용</button></Link>
+            <Link to="/pre/PreReSet"><button style={{width:"300px",height:"80px", fontSize:'30px',border:'none',borderRadius:'20px',backgroundColor:'#FFD727'}}>예약 전용 </button></Link>
 
           </div>
 

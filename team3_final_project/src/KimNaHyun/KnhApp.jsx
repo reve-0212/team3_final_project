@@ -16,7 +16,7 @@ import Header from "../JeongSeongYun/layout/Header.jsx";
 import MainContent from "../JeongSeongYun/layout/MainContent.jsx";
 import MyPageContent from "../JeongSeongYun/layout/MyPageContent.jsx";
 import Bookmark from "../JeongSeongYun/layout/Bookmark.jsx";
-import MapLocation from "../JeongSeongYun/layout/MapLocation.jsx";
+// import MapLocation from "../JeongSeongYun/layout/MapLocation.jsx";
 import BottomNav from "../JeongSeongYun/layout/BottomNav.jsx";
 
 
@@ -27,7 +27,7 @@ function KnhApp() {
             {/*<DateSelectorPage />*/}
             {/*<WaitingRegPage />*/}
             {/*<BookRegPage />*/}
-            <BookInfoPage />
+            {/*<BookInfoPage />*/}
         </div>
 
     // <BrowserRouter basename="/">

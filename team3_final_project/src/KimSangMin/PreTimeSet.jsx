@@ -31,14 +31,14 @@ function PreTimeSet() {
         }}>
             <Banner />
             <div className="d-flex">
-                <Link to={"/PreReSet"} style={{ textDecoration: 'none',color:'black' }}><h4 className="text-start me-5">가게정보</h4></Link>
-                <Link to={"/PreTimeSet"} style={{ textDecoration: 'none',color:'black' }}><h4 className="text-start me-5">운영정보</h4></Link>
+                <Link to={"/pre/PreReSet"} style={{ textDecoration: 'none',color:'black' }}><h4 className="text-start me-5">가게정보</h4></Link>
+                <Link to={"/pre/PreTimeSet"} style={{ textDecoration: 'none',color:'black' }}><h4 className="text-start me-5">운영정보</h4></Link>
             </div>
             <hr />
 
             <div style={{display:"flex", justifyContent:'space-between'}}>
                 <h4 className="text-start me-5"><strong>운영 시간</strong></h4>
-                <Link to="/PreTime">
+                <Link to="/pre/PreTime">
                     <Button className="ms-auto" style={{ backgroundColor: "#FFD727" }}>
                         수정하기
                     </Button>

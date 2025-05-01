@@ -2,7 +2,7 @@ import { useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
-import './PreDay.css';
+import './css/PreDay.css';
 import Banner from "./Banner.jsx";
 import { Link } from "react-router-dom";
 
@@ -93,9 +93,9 @@ function PreCh() {
         maxWidth: '1000px'
       }}>
         <Banner />
-        <div style={{ display: "flex" }}>
-          <Link to="/PreCh" style={{ textDecoration: 'none', color: 'black' }}><h4 className="me-5">매출통계</h4></Link>
-          <Link to="/PreDayCh" style={{ textDecoration: 'none', color: 'black' }}><h4>예약통계</h4></Link>
+        <div style={{ display: "flex" ,position:'relative'}}>
+          <Link to="/pre/PreCh" style={{ textDecoration: 'none', color: 'black' }}><h4 className="me-5">매출통계</h4></Link>
+          <Link to="/pre/PreDayCh" style={{ textDecoration: 'none', color: 'black' }}><h4>예약통계</h4></Link>
         </div>
         <br />
         <hr />
@@ -138,8 +138,22 @@ function PreCh() {
 
         {/* 정렬 버튼 */}
         <div style={{ marginTop: '20px', marginBottom: '20px' }}>
-          <button onClick={() => setSortType('revenue')} style={{ marginRight: '10px', backgroundColor: '#FFD727' }}>매출순 정렬</button>
-          <button onClick={() => setSortType('count')} style={{ backgroundColor: '#FFCD83' }}>판매개수순 정렬</button>
+          <select
+              onChange={(e) => setSortType(e.target.value)}
+              value={sortType}
+              style={{
+                padding: '8px 12px',
+                backgroundColor: '#000000',
+                border: 'none',
+                color:'#FFFFFF',
+                borderRadius: '5px',
+                fontSize: '16px',
+                cursor: 'pointer'
+              }}
+          >
+            <option value="revenue">매출순 정렬</option>
+            <option value="count">판매개수순 정렬</option>
+          </select>
         </div>
 
         {confirm.from && confirm.to && allStoreData.map((store, idx) => {
@@ -150,18 +164,22 @@ function PreCh() {
                 <h2>{store.storeName}</h2>
 
                 {/* 차트 출력 */}
-                <div style={{ marginTop: '40px', height: '300px', marginBottom: "30px" }}>
+                <div style={{ marginTop: '40px', height: '350px', marginBottom: "30px" }}>
                   <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={store.chartData}>
+                    <BarChart
+                        data={store.chartData}
+                        margin={{ top: 20, right: 20, left: 40, bottom: 20 }}
+                        barCategoryGap="40%"   // 중앙 정렬 효과를 위해 간격 조정
+                    >
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="menuName" />
                       <YAxis />
-                      <Tooltip />
                       <Legend />
-                      <Bar dataKey="count" fill="#8884d8" name="판매개수" />
-                      <Bar dataKey="revenue" fill="#82ca9d" name="매출액" />
+                      <Bar dataKey="count" fill="#8884d8" name="판매개수" barSize={45} />
+                      <Bar dataKey="revenue" fill="#82ca9d" name="매출액" barSize={45} />
                     </BarChart>
                   </ResponsiveContainer>
+
                 </div>
 
                 {/* 리스트 출력 */}

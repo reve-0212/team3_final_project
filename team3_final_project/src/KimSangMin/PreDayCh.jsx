@@ -2,7 +2,7 @@ import { useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
-import './PreDay.css';
+import './css/PreDay.css';
 import Banner from "./Banner.jsx";
 import { Link } from "react-router-dom";
 
@@ -91,8 +91,8 @@ function PreDayCh() {
         maxWidth: '1000px'
       }}>
         <div style={{ display: "flex" }}>
-          <Link to="/PreCh" style={{ textDecoration: 'none', color: 'black' }}><h4 className="me-5">매출통계</h4></Link>
-          <Link to="/PreDayCh" style={{ textDecoration: 'none', color: 'black' }}><h4>예약통계</h4></Link>
+          <Link to="/pre/PreCh" style={{ textDecoration: 'none', color: 'black' }}><h4 className="me-5">매출통계</h4></Link>
+          <Link to="/pre/PreDayCh" style={{ textDecoration: 'none', color: 'black' }}><h4>예약통계</h4></Link>
         </div>
 
         <Banner />
