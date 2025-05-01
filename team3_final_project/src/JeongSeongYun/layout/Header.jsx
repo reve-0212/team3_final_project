@@ -8,10 +8,6 @@ function Header() {
 
 
     const {user} = useUserStore();
-
-
-
-
     const locationNow = useLocation();
     const Nv = useNavigate();
 

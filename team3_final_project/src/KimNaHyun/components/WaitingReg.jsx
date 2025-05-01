@@ -1,10 +1,12 @@
-import React from "react";
+import React, {useState} from "react";
 import Button from "./Button.jsx";
-
-
-
+import {useNavigate} from "react-router-dom";
 
 function WaitingReg({reg}) {
+    const Nv = useNavigate()
+    // 모달을 열지 말지 결정한다
+    const [openModal, setOpenModal] = useState(false);
+
     return (
         <div className={'app-container'}>
             <section>
@@ -35,7 +37,7 @@ function WaitingReg({reg}) {
 
 
             </section>
-            <Button btnName={'웨이팅 등록하기'} />
+            <Button btnName={'웨이팅 등록하기'} onClick={()=>{Nv("/waiting/info")}}/>
         </div>
     );
 }

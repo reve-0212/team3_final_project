@@ -1,9 +1,16 @@
 import SignMini from "./SignMini.jsx";
 import LoginSignText from "../LoginSignText.jsx";
+import {useNavigate} from "react-router-dom";
 
 function SignUp() {
+    const Nv = useNavigate();
+
+    const handleSignUp = (e) =>{
+        e.preventDefault();
+        Nv("/");
+    }
     return (
-        <form className={"container py-4"}>
+        <form className={"container py-4"} onSubmit={handleSignUp}>
             <LoginSignText text={"회원가입"}/>
 
             <SignMini id={"userId"} label={"아이디"} holder={"아이디 입력"}/>

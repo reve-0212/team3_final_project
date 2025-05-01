@@ -77,7 +77,7 @@ function Login() {
                      style={{maxWidth: "400px"}}>
                     <p>아직 아이디가 없으시다면 ? </p>
                     <p><FontAwesomeIcon icon={faArrowRight}/></p>
-                    <Link to={"/signUp"} style={{color: "#FFB74D", textDecorationLine: 'none'}} >가입하기</Link>
+                    <Link to={"/user/signUp"} style={{color: "#FFB74D", textDecorationLine: 'none'}} >가입하기</Link>
                 </div>
             </div>
         </form>

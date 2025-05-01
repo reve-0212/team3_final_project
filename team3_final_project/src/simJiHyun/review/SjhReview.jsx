@@ -3,10 +3,13 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCamera, faStar} from "@fortawesome/free-solid-svg-icons";
 import {useState} from "react";
 import ReviewTitle from "../reviewTitle.jsx";
+import {useNavigate} from "react-router-dom";
 
 function SjhReview() {
     // 별점 초기값은 0
     const [starScore, setStarScore] = useState(0);
+
+    const Nv = useNavigate();
 
     // 별점 매기기 위한 핸들러
     // 별을 누르면 해당하는 i+1 번째 별에 i+1 점수가 매겨진다
@@ -51,7 +54,10 @@ function SjhReview() {
 
             <div className={"d-flex justify-content-center"}>
                 <button type={"button"} className={"btn rounded-3 text-light fw-bold flex-fill py-3 mt-5"}
-                        style={{backgroundColor: "#FFA31C"}}>등록하기
+                        style={{backgroundColor: "#FFA31C"}}
+                        onClick={() => {
+                            Nv("/reviewList")
+                        }}>등록하기
                 </button>
             </div>
 
