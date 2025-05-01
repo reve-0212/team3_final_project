@@ -9,6 +9,13 @@ import PreTime from "./PreTime.jsx";
 import PreTimeSet from "./PreTimeSet.jsx";
 import PreReserve from "./PreReserve.jsx";
 import PreWait from "./PreWait.jsx";
+import PreMain from "./PreMain.jsx";
+import ReservationChart from "../JangDaJung/ReservationChart.jsx";
+import CeoMain from "../JangDaJung/CeoMain.jsx";
+import TodayWaiting from "../JangDaJung/TodayWaiting.jsx";
+import PastDateReservation from "../JangDaJung/PastDateReservation.jsx";
+import PastDateWaiting from "../JangDaJung/PastDateWaiting.jsx";
+import TodayReservation from "../JangDaJung/TodayReservation.jsx";
 
 function SangMinApp()
 {
@@ -16,16 +23,31 @@ function SangMinApp()
       <div>
           <BrowserRouter>
               <Routes>
-                  <Route path="/" element={<PreSelect />} />
-                  <Route path="/pre/PreReserve" element={<PreReserve />} />
-                  <Route path="/pre/PreWait" element={<PreWait />} />
-                  <Route path="/pre/PreCh" element={<PreCh />} />
-                  <Route path="/pre/PreRe" element={<PreRe />} />
+                  {/*<Route path="/pre/PreWait" element={<PreWait />} />  /!* 웨이팅 웹앱  *!/*/}
+                  {/*<Route path="/pre/PreReserve" element={<PreReserve />} />   예약 웹앱*/}
+
+                  {/* 시간 지정하기*/}
                   <Route path="/pre/PreTime" element={<PreTime />} />
                   <Route path="/pre/PreTimeSet" element={<PreTimeSet />} />
-                  <Route path="/pre/PreDayCh" element={<PreDayCh />} />
-                  <Route path="/pre/PreWaSet" element={<PreWaSet />} />
-                  <Route path="/pre/PreReSet" element={<PreReSet />} />
+
+
+                  <Route path="/" element={<PreSelect />} />
+                  <Route path="/pre/PreMain" element={<PreMain />} /> {/* 예약가게 메인*/}
+                  <Route path="/pre/PreCh" element={<PreCh />} /> {/* 예약가게 매출 통계 */}
+                  <Route path="/pre/PreRe" element={<PreRe />} />  {/* 예약가게 리뷰 보기*/}
+                  <Route path="/pre/PreDayCh" element={<PreDayCh />} /> {/* 예약 날짜 차트 */}
+                  <Route path="/pre/PreReSet" element={<PreReSet />} />  {/* 예약가게 셋팅 */}
+                  <Route path="/pre/PrePast" element={<PastDateReservation/>}/>  {/* 과거 예약 */}
+                  <Route path="/pre/PreToday" element={<TodayReservation/>}/>  {/* 오늘 예약  */}
+
+
+
+
+                  <Route path="/pre/PreWaSet" element={<PreWaSet />} /> {/* 웨이팅 가게 셋팅 */}
+                  <Route path="/pre/WaMain" element={<CeoMain/>}/>    {/*웨이팅 메인 */}
+                  <Route path="/pre/WaToday" element={<TodayWaiting/>}/>     {/* 현재 웨이팅 */}
+                  <Route path="/pre/WaPast" element={<PastDateWaiting/>}/>  {/* 과거 웨이팅 */}
+                  <Route path="/pre/WaChart" element={<ReservationChart/>}/>  {/* 웨이팅 차트 */}
               </Routes>
           </BrowserRouter>
 

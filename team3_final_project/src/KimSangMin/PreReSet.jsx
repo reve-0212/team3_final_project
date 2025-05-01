@@ -1,6 +1,7 @@
 import {useState} from "react";
-import Banner from "./Banner.jsx";
+import WaBanner from "./WaBanner.jsx";
 import {Link} from "react-router-dom";
+import ReBanner from "./ReBanner.jsx";
 
 
 function PreReSet() {
@@ -96,7 +97,7 @@ function PreReSet() {
           }}
       >
         <form onSubmit={hSub}>
-        <Banner/>
+        <ReBanner/>
           <div style={{display:'flex'}}>
         <Link to="/pre/PreReSet" style={{textDecoration:'none',color:"black"}}><h4 className="text-start me-4">가게정보</h4></Link>
             <Link to="/pre/PreTimeSet" style={{textDecoration:'none',color:"black"}}><h4>운영정보</h4></Link>
@@ -133,7 +134,7 @@ function PreReSet() {
               style={{ width: '300px', height: '50px' }}
               value={Rest[0].Title}
               onChange={(e) => hChange(e,'Title')}
-              required={true}
+              // required={true}
           />
         </div>
 
@@ -152,7 +153,7 @@ function PreReSet() {
               style={{ width: '300px', height: '50px' }}
               value={Rest[0].Phone}
               onChange={(e) => hChange(e,'Phone')}
-              required={true}
+              // required={true}
           />
         </div>
 
@@ -171,7 +172,7 @@ function PreReSet() {
               style={{ width: '300px', height: '50px' }}
               value={Rest[0].Address}
               onChange={(e) => hChange(e,'Address')}
-              required={true}
+              // required={true}
           />
         </div>
 
@@ -189,7 +190,7 @@ function PreReSet() {
                 style={{ width: '800px', height: '100px' }}
                 value={Rest[0].Content}
                 onChange={(e) => hChange(e,'Content')}
-                required={true}
+                // required={true}
             />
         </div>
 
@@ -209,7 +210,7 @@ function PreReSet() {
                     onChange={(e) => chInput(index, e.target.value)}
                     className="form-control"
                     style={{ width: '300px', height: '50px' }}
-                    required
+                    // required
                 />
                 {index === input.length - 1 && (
                     <div style={{ marginLeft: '10px' }}>
@@ -240,7 +241,7 @@ function PreReSet() {
                     onChange={(e) => chTime(index, e.target.value)}
                     className="form-control"
                     style={{ width: '300px', height: '50px' }}
-                    required
+                    // required
                 />
                 {index === resTime.length - 1 && (
                     <div style={{ marginLeft: '10px' }}>
@@ -257,13 +258,13 @@ function PreReSet() {
         <hr/>
         <br/>
           <div className="text-end mt-4">
-            <button
+          <Link to="/pre/PreMain"><button
                 type="submit"
                 className="btn"
                 style={{ backgroundColor: "#FFD727", color: "black", padding: "10px 20px", marginBottom:'50px' }}
             >
               저장하기
-            </button>
+            </button></Link>
           </div>
         </form>
       </div>

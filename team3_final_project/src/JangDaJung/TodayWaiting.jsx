@@ -1,5 +1,5 @@
 import {useState} from "react";
-import Banner from "../KimSangMin/Banner.jsx";
+import WaBanner from "../KimSangMin/WaBanner.jsx";
 import './TodayWaiting.css'
 
 function TodayWaiting() {
@@ -40,7 +40,7 @@ function TodayWaiting() {
 
     return (
         <div className={'ceo-main'}>
-            <Banner />
+            <WaBanner />
             <div style={{ marginTop: '10vh', marginLeft: '200px', position: 'relative'}}>
                 <h2 className={'today-waiting-title mb-4'}>오늘의 웨이팅</h2>
                 <hr />

@@ -1,4 +1,4 @@
-import Banner from "../KimSangMin/Banner.jsx";
+import WaBanner from "../KimSangMin/WaBanner.jsx";
 import {useState} from "react";
 
 import 'react-day-picker/dist/style.css';
@@ -103,7 +103,7 @@ function PastDateReservation() {
 
   return (
       <div className={'ceo-main'}>
-        <Banner />
+        <WaBanner />
         <div className={'date-range-container'}  style={{ marginTop: '10vh', marginLeft: '200px' }}>
           <h2 className={'past-waiting-title mb-4'}>예약 내역</h2>
           <hr />

@@ -3,8 +3,9 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import './css/PreDay.css';
-import Banner from "./Banner.jsx";
+import WaBanner from "./WaBanner.jsx";
 import { Link } from "react-router-dom";
+import ReBanner from "./ReBanner.jsx";
 
 function PreDayCh() {
   const [Cal, setCal] = useState(false);
@@ -95,7 +96,7 @@ function PreDayCh() {
           <Link to="/pre/PreDayCh" style={{ textDecoration: 'none', color: 'black' }}><h4>예약통계</h4></Link>
         </div>
 
-        <Banner />
+        <ReBanner />
         <h2 style={{ marginTop: '30px', marginBottom: '30px' }}>날짜별 시간대 통계</h2>
 
         {/* 날짜 범위 선택 UI */}

@@ -1,4 +1,4 @@
-import Banner from "./Banner.jsx";
+import WaBanner from "./WaBanner.jsx";
 import {useState} from "react";
 import {Link} from "react-router-dom";
 // import PreTimeSet from "./PreTimeSet.jsx";
@@ -41,7 +41,7 @@ function PreTime() {
                 maxWidth: '1000px'
 
         }}>
-            <Banner/>
+            <WaBanner/>
             <div className="d-flex">
                 <Link to={"/pre/PreReSet"} style={{ textDecoration: 'none',color:'black' }}><h4 className="text-start me-5">가게정보</h4></Link>
                 <Link to={"/pre/PreTimeSet"} style={{ textDecoration: 'none',color:'black' }}><h4 className="text-start me-5">운영정보</h4></Link>

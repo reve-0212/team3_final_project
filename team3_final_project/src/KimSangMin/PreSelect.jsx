@@ -1,5 +1,6 @@
-import Banner from "./Banner.jsx";
+import WaBanner from "./WaBanner.jsx";
 import {Link} from "react-router-dom";
+import ReBanner from "./ReBanner.jsx";
 
 function PreSelect() {
     return (
@@ -12,7 +13,7 @@ function PreSelect() {
               height: "100vh",
             }}>
 
-          <Banner />
+          <ReBanner />
           <h2>가게 설정</h2>
 
           <div

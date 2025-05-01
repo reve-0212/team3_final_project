@@ -1,4 +1,4 @@
-import Banner from "../KimSangMin/Banner.jsx";
+import WaBanner from "../KimSangMin/WaBanner.jsx";
 import {useState} from "react";
 
 import { format } from 'date-fns';
@@ -98,7 +98,7 @@ function PastDateWaiting() {
 
     return (
         <div className={'ceo-main'}>
-            <Banner />
+            <WaBanner />
             <div className={'date-range-container'}  style={{ marginTop: '10vh', marginLeft: '200px' }}>
                 <h2 className={'past-waiting-title mb-4'}>웨이팅 내역</h2>
                 <hr />

@@ -1,5 +1,5 @@
 
-function Banner() {
+function WaBanner() {
     return (
         <div>
 
@@ -38,19 +38,19 @@ function Banner() {
             }}>
                 <ul className="nav flex-column">
                     <li className="nav-item">
-                        <a className="nav-link text-black" href="#">홈</a>
+                        <a className="nav-link text-black" href="/pre/WaMain">홈</a>
                     </li>
                     <br/>
 
                     <li className="nav-item">
-                        <a className="nav-link text-black" href="/pre/PreReSet">개인정보 수정</a>
+                        <a className="nav-link text-black" href="#">개인정보 수정</a>
                     </li>
 
                     <li className="nav-item">
-                        <a className="nav-link text-black" href="/pre/PreReSet">가게정보</a>
+                        <a className="nav-link text-black" href="/pre/PreWaSet">가게정보</a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link text-black" href="/pre/PreCh">가게통계</a>
+                        <a className="nav-link text-black" href="/pre/WaChart">가게통계</a>
                     </li>
                     <br/>
 
@@ -67,5 +67,5 @@ function Banner() {
     );
 }
 
-export default Banner
+export default WaBanner
 

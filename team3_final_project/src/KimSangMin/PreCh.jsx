@@ -3,8 +3,9 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import './css/PreDay.css';
-import Banner from "./Banner.jsx";
+import WaBanner from "./WaBanner.jsx";
 import { Link } from "react-router-dom";
+import ReBanner from "./ReBanner.jsx";
 
 function PreCh() {
   const [calOpen, setCalOpen] = useState(false);
@@ -92,7 +93,7 @@ function PreCh() {
         width: 'calc(100% - 200px)',
         maxWidth: '1000px'
       }}>
-        <Banner />
+        <ReBanner />
         <div style={{ display: "flex" ,position:'relative'}}>
           <Link to="/pre/PreCh" style={{ textDecoration: 'none', color: 'black' }}><h4 className="me-5">매출통계</h4></Link>
           <Link to="/pre/PreDayCh" style={{ textDecoration: 'none', color: 'black' }}><h4>예약통계</h4></Link>

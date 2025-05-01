@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Banner from "./Banner.jsx";
+import ReBanner from "./ReBanner.jsx";
 
 function PreRe() {
   const [reviews, setReviews] = useState([
@@ -85,7 +85,7 @@ function PreRe() {
             maxWidth: '1000px'
           }}
       >
-        <Banner/>
+        <ReBanner/>
         <h2 className="text-start">리뷰</h2>
         <hr />
 
