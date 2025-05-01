@@ -1,5 +1,6 @@
-import Banner from "./Banner.jsx";
+import WaBanner from "./WaBanner.jsx";
 import {Link} from "react-router-dom";
+import ReBanner from "./ReBanner.jsx";
 
 function PreSelect() {
     return (
@@ -12,7 +13,7 @@ function PreSelect() {
               height: "100vh",
             }}>
 
-          <Banner />
+          <ReBanner />
           <h2>가게 설정</h2>
 
           <div
@@ -24,8 +25,8 @@ function PreSelect() {
               }}
           >
 
-         <Link to="/PreWaSet"><button style={{width:"300px",height:"80px", fontSize:'30px',border:'none',borderRadius:'20px',backgroundColor:'#FFD727'}}>웨이팅 전용</button></Link>
-            <Link to="/PreReSet"><button style={{width:"300px",height:"80px", fontSize:'30px',border:'none',borderRadius:'20px',backgroundColor:'#FFD727'}}>예약 전용 </button></Link>
+         <Link to="/pre/PreWaSet"><button style={{width:"300px",height:"80px", fontSize:'30px',border:'none',borderRadius:'20px',backgroundColor:'#FFD727'}}>웨이팅 전용</button></Link>
+            <Link to="/pre/PreReSet"><button style={{width:"300px",height:"80px", fontSize:'30px',border:'none',borderRadius:'20px',backgroundColor:'#FFD727'}}>예약 전용 </button></Link>
 
           </div>
 

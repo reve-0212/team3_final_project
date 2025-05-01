@@ -1,0 +1,114 @@
+/* 이름 칸 크기 조정 */
+.reservation-table th.name,
+.reservation-table td.name {
+    min-width: 120px; /* 최소 너비를 120px로 설정 */
+    white-space: nowrap; /* 이름은 가로로 나오게 */
+    text-overflow: ellipsis; /* 텍스트가 너무 길면 ... 처리 */
+    word-wrap: break-word; /* 긴 이름이 줄바꿈 되어 표시되도록 */
+}
+
+
+/* 전체 레이아웃 */
+.app-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+.app-title {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+/* 탭 버튼 */
+.app-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.app-tab-btn {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    background: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.app-tab-btn.active {
+    background: #057DEE;
+    color: white;
+    border-color: #057DEE;
+}
+
+/* 테이블 */
+.table-container {
+    overflow-x: auto;
+}
+
+.reservation-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.reservation-table th,
+.reservation-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    overflow: hidden; /* 텍스트가 칸을 벗어나지 않도록 방지 */
+}
+
+/* 테이블 헤더 스타일 */
+.reservation-table th {
+    background-color: #f2f2f2;
+}
+
+/* 버튼 2개 세로 정렬 */
+.action-buttons {
+    display: flex;
+    flex-direction: column; /* 세로로 정렬 */
+    align-items: center; /* 버튼을 가운데 정렬 */
+    gap: 8px;
+    margin-top: 6px;
+}
+
+/* 버튼 스타일 */
+.btn {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.btn-done {
+    background-color: #4caf50;
+    color: white;
+}
+
+.btn-cancel {
+    background-color: #f44336;
+    color: white;
+}
+
+.btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* 모바일 대응 */
+@media screen and (max-width: 768px) {
+    .reservation-table th,
+    .reservation-table td {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+
+    .app-tab-btn {
+        padding: 6px 15px;
+        font-size: 0.9rem;
+    }
+}

@@ -1,6 +1,6 @@
 import {Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
-import './CeoMain.css';
-import WaBanner from "../KimSangMin/WaBanner.jsx";
+import '../JangDaJung/CeoMain.css';
+import ReBanner from "./ReBanner.jsx";
 
 const waitingData = [
     { time: '13시', count: 5 },
@@ -31,10 +31,10 @@ const reviewData = [
     { month: '4월', reviews: 5 },
 ];
 
-function CeoMain() {
+function PreMain() {
     return (
         <div className={'ceo-main'} style={{ marginTop: '10vh'}}>
-            < WaBanner />
+            < ReBanner />
             <div className={'CeoMain-content'}>
                 <h2 className={'CeoMain-title mb-4'}>가게 이름</h2>
                 <div className={'row g-4'}>
@@ -115,4 +115,4 @@ function CeoMain() {
     );
 }
 
-export default CeoMain
+export default PreMain

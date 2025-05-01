@@ -1,5 +1,5 @@
 import {useState} from "react";
-import Banner from "./Banner.jsx";
+import WaBanner from "./WaBanner.jsx";
 import AdminSeatEditor from "./AdminSeatEditor.jsx";
 import UserSeatReservation from "./UserSeatReservation.jsx";
 
@@ -61,7 +61,7 @@ function PreSetting() {
             }}
         >
 
-            <Banner/>
+            <WaBanner/>
             <div className="d-flex">
                 <h4 className="text-start me-5">가게정보</h4>
                 <h4 className="text-start">운영정보</h4>

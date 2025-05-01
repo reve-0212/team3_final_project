@@ -1,6 +1,5 @@
-import PreRe from "./PreRe.jsx";
 
-function Banner() {
+function WaBanner() {
     return (
         <div>
 
@@ -39,15 +38,19 @@ function Banner() {
             }}>
                 <ul className="nav flex-column">
                     <li className="nav-item">
-                        <a className="nav-link text-black" href="#">홈</a>
+                        <a className="nav-link text-black" href="/pre/WaMain">홈</a>
                     </li>
                     <br/>
-                    
+
                     <li className="nav-item">
-                        <a className="nav-link text-black" href="/PreReSet">가게정보</a>
+                        <a className="nav-link text-black" href="#">개인정보 수정</a>
+                    </li>
+
+                    <li className="nav-item">
+                        <a className="nav-link text-black" href="/pre/PreWaSet">가게정보</a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link text-black" href="/PreCh">가게통계</a>
+                        <a className="nav-link text-black" href="/pre/WaChart">가게통계</a>
                     </li>
                     <br/>
 
@@ -55,7 +58,7 @@ function Banner() {
                         <a className="nav-link text-black" href="#">가게메뉴</a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link text-black" href="/PreRe">리뷰관리</a>
+                        <a className="nav-link text-black" href="/pre/PreRe">리뷰관리</a>
                     </li>
                 </ul>
             </div>
@@ -64,5 +67,5 @@ function Banner() {
     );
 }
 
-export default Banner
+export default WaBanner
 

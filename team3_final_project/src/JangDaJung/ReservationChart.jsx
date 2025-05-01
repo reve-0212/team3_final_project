@@ -1,5 +1,5 @@
 import {useState} from "react";
-import Banner from "../KimSangMin/Banner.jsx";
+import WaBanner from "../KimSangMin/WaBanner.jsx";
 import {DayPicker} from "react-day-picker";
 import './ReservationChart.css';
 import {
@@ -42,7 +42,7 @@ function ReservationChart() {
 
     return (
         <div className={'ceo-main'}>
-            <Banner />
+            <WaBanner />
             <div style={{ marginTop: '10vh', marginLeft: '200px', position: 'relative' }}>
             {/*    날짜 선택 */}
                 <div className="mb-4 position-relative">
