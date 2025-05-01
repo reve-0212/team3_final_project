@@ -1,9 +1,21 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import App from './App.jsx'
+
+import "./index.css"
+import "../src/JeongSeongYun/css/mobile.css"
+
+import DajungApp from "./JangDaJung/DajungApp.jsx";
+import SjhApp from "./simJiHyun/SjhApp.jsx";
+import JksApp from "./JeonKangSan/JksApp.jsx";
+import KnhApp from "./KimNaHyun/KnhApp.jsx";
+import Main from "./JeongSeongYun/main.jsx";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App />
-  </StrictMode>,
+      {/*<DajungApp/>*/}
+      {/*<SjhApp/>*/}
+      {/*<JksApp/>*/}
+      {/*<KnhApp/>*/}
+      <Main/>
+  </StrictMode>
 )

@@ -1,0 +1,78 @@
+.ceo-main{
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+}
+.CeoMain-content {
+    margin-left: 200px;
+    padding: 2rem;
+}
+
+.CeoMain-title {
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: #5D4037;
+    text-align: left;
+    padding-left: 20px;
+}
+
+.custom-card {
+    background-color: #fafafa;
+    border-radius: 12px;
+    padding: 20px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.card-header-text {
+    font-weight: 500;
+    color: #5D4037;
+    margin-bottom: 1rem;
+}
+
+.chart-wrapper {
+    text-align: center;
+}
+
+.chart-bottom-text {
+    margin-top: 12px;
+    font-weight: 500;
+    color: #5D4037;
+}
+
+.review-details {
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.review-score-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.review-score-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.review-star-score {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #5a3a2e;
+    margin-top: 6px;
+}
+.progress {
+    width: 70%;
+    height: 10px;
+    background-color: #e0e0e0;
+}
+.progress-bar {
+    height: 10px;
+}

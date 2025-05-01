@@ -28,31 +28,25 @@ function PreTime() {
     // 설정한 데이터 저장(서버로 전송 )
     const hSubmit = async (e) => {
         e.preventDefault();
-
-
-
-
     }
 
-
-
-
     return (
-        <div style={{
-            marginLeft: '200px',
-            marginTop: '10vh',
-            paddingTop: '2rem',
-            paddingLeft: '1rem',
-            width: 'calc(100% - 200px)',
-            maxWidth: '1000px'
+        <div
+            style={{
+                marginLeft: '200px',
+                marginTop: '10vh',
+                paddingTop: '2rem',
+                paddingLeft: '1rem',
+                width: 'calc(100% - 200px)',
+                maxWidth: '1000px'
+
         }}>
             <Banner/>
             <div className="d-flex">
                 <Link to={"/PreReSet"} style={{ textDecoration: 'none',color:'black' }}><h4 className="text-start me-5">가게정보</h4></Link>
                 <Link to={"/PreTimeSet"} style={{ textDecoration: 'none',color:'black' }}><h4 className="text-start me-5">가게정보</h4></Link>
             </div>
-            <hr/>
-            <h4 className="text-start"><strong>운영 시간</strong>
+            <hr/><h4 className="text-start"><strong>운영 시간</strong>
                 <span style={{color:"#FFD727", fontSize: "14px"}}> *필수</span>
             </h4>
 
@@ -119,8 +113,10 @@ function PreTime() {
             </div>
             <hr/>
             </form>
+
         </div>
     );
 }
 
-export default PreTime;
+export default PreTime
+

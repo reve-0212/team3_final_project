@@ -1,0 +1,26 @@
+.box1 {
+    border-color: rgb(235, 235, 235);
+}
+
+.box1 div {
+    height: 191px;
+    width: 167px;
+}
+
+.box1 img {
+    inset: 0;
+    color: transparent;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.filled-star {
+    color : gold;
+}
+.categoryBtn{
+    border: 1px solid lightgray;
+    background-color: lightgray;
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size : 0.75rem;
+}

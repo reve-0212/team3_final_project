@@ -1,0 +1,18 @@
+.ceo-main{
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+    min-height: 100vh;
+}
+/* 달력 팝업 반응형 위치 */
+.re-chart-calendar-popup {
+    z-index: 1050; /* Bootstrap 모달보다 낮고, 일반 div보단 높게 */
+}
+
+/* 차트 박스 */
+.chart-box {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+}

@@ -1,0 +1,15 @@
+.app-container {
+  max-width: 480px;
+  margin: 0 auto;
+  border: 1px solid black;
+}
+
+.input-box {
+  width: 400px;
+}
+
+.hover-p {
+  color: #000;
+  display: inline-block;
+  margin: 0;
+}
