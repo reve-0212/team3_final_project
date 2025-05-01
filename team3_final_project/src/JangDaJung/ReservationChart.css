@@ -7,7 +7,7 @@
 }
 /* 달력 팝업 반응형 위치 */
 .re-chart-calendar-popup {
-    z-index: 1050; /* Bootstrap 모달보다 낮고, 일반 div보단 높게 */
+    z-index: 1050;
 }
 
 /* 차트 박스 */
@@ -15,4 +15,11 @@
     width: 100%;
     max-width: 700px;
     margin: 0 auto;
+}
+.waiting-chart-title {
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: #5D4037;
+    text-align: left;
+    padding-left: 20px;
 }

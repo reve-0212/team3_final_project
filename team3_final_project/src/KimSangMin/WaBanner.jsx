@@ -6,7 +6,7 @@ function WaBanner() {
             {/* 위 헤더바*/}
             <div className="fixed-top">
                 <nav className="navbar navbar-expand-lg navbar-dark"
-                     style={{ height: '10vh', backgroundColor: '#FFA31C' }}>
+                     style={{ height: '10vh', backgroundColor: '#FFD700' }}>
                     <div className="container-fluid d-flex justify-content-between align-items-center">
                         {/*<Link to="/" className="nav-link active">*/}
                         {/*    <span className="text-white fs-1">Logo</span>*/}

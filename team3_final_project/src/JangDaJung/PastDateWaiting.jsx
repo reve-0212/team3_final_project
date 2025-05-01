@@ -188,8 +188,8 @@ function PastDateWaiting() {
                     <div className={'table-responsive'} style={{ overflowX: 'auto' }}>
                         <table className={'table me-3'} style={{ tableLayout: 'fixed', width: '100%' }}>
                             <colgroup>
-                                <col style={{ width: '6%' }} />
-                                <col style={{ width: '8%'}} />
+                                <col style={{ width: '8%' }} />
+                                <col style={{ width: '6%'}} />
                                 <col style={{ width: '7%' }} />
                                 <col style={{ width: '5%' }} />
                                 <col style={{ width: '14%' }} />

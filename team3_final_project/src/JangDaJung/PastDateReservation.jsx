@@ -42,6 +42,7 @@ function PastDateReservation() {
       cancelDate: '2025-05-01 19:00',
     },
   ];
+
   // 예약 상태에 따라 색상 변경
   const getStatusColor = (status) => {
     if (status === '완료') return 'status-done text-white status-box';
