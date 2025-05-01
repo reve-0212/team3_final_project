@@ -1,9 +1,11 @@
 package com.example.team3_final_project_server.SimJiHyun;
 
+import com.example.team3_final_project_server.dto.UserDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface SJHMapper {
+  int hasUser(String userId, String userPass);
 
-  void home();
+  UserDTO getUserData(String userId, String userPass);
 }

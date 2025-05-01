@@ -1,4 +1,4 @@
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {BrowserRouter, HashRouter, Route, Routes} from "react-router-dom";
 import App from "../App.jsx";
 import Header from "./layout/Header.jsx";
 import BottomNav from "./layout/BottomNav.jsx";
@@ -28,7 +28,7 @@ import SjhReviewList from "../simJiHyun/reviewList/SjhReviewList.jsx";
 function main() {
     return (
         <div className={'mobile-wrapper'}>
-            <BrowserRouter basename="/">
+            <HashRouter>
                 <Header/>
                 <main className={'content'}>
                     <Routes>
@@ -64,7 +64,7 @@ function main() {
                     </Routes>
                 </main>
                 <BottomNav/>
-            </BrowserRouter>
+            </HashRouter>
         </div>
     );
 }
