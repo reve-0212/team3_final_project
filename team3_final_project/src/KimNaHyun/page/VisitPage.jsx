@@ -2,7 +2,7 @@ import Button from "../components/Button.jsx";
 import VisitorBtn from "../components/VisitorBtn.jsx";
 import {useNavigate} from "react-router-dom";
 
-function visitPage(props) {
+function visitPage() {
     const {gender} = props;
     const Nv = useNavigate();
     const path = window.location.pathname
@@ -16,8 +16,6 @@ function visitPage(props) {
             Nv("/book/date")
         }
     }
-
-function visitPage() {
 
     return (
         <div className={'app-container  container py-4'} style={{textAlign: 'left'}}>
@@ -39,7 +37,6 @@ function visitPage() {
         </div>
 
     );
-
 }
 
 

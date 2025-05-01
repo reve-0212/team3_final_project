@@ -1,8 +1,6 @@
 import {BrowserRouter, HashRouter, Route, Routes} from "react-router-dom";
-import App from "../App.jsx";
 import Header from "./layout/Header.jsx";
 import BottomNav from "./layout/BottomNav.jsx";
-
 import "./css/mobile.css"
 import MainContent from "./layout/MainContent.jsx";
 import MyPageContent from "./layout/MyPageContent.jsx";
@@ -17,9 +15,7 @@ import VisitPage from "../KimNaHyun/page/VisitPage.jsx";
 import SeatPage from "../KimNaHyun/page/SeatPage.jsx";
 import DateSelectorPage from "../KimNaHyun/page/DateSelectorPage.jsx";
 import WaitingRegPage from "../KimNaHyun/page/WaitingRegPage.jsx";
-import MenuSelector from "../KimNaHyun/components/MenuSelector.jsx";
 import MenuSelectorPage from "../KimNaHyun/page/MenuSelectorPage.jsx";
-import WaitingInfoPage from "../KimNaHyun/page/WaitingInfoPage.jsx";
 import BookRegPage from "../KimNaHyun/page/BookRegPage.jsx";
 import BookInfoPage from "../KimNaHyun/page/BookInfoPage.jsx";
 import SjhReview from "../simJiHyun/review/SjhReview.jsx";
