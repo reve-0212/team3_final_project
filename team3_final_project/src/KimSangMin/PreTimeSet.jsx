@@ -31,7 +31,8 @@ function PreTimeSet() {
         }}>
             <Banner />
             <div className="d-flex">
-                <h4 className="text-start">운영정보</h4>
+                <Link to={"/PreReSet"} style={{ textDecoration: 'none',color:'black' }}><h4 className="text-start me-5">가게정보</h4></Link>
+                <Link to={"/PreTimeSet"} style={{ textDecoration: 'none',color:'black' }}><h4 className="text-start me-5">운영정보</h4></Link>
             </div>
             <hr />
 
