@@ -11,9 +11,9 @@ function BookInfo({bkinfo}) {
     const [openModal, setOpenModal] = useState(false);
 
     return (
-        <div className={'app-container'}>
+        <div className={'app-container container py-4'}>
             <section>
-                <h3>{bkinfo.bkStoreName} <FontAwesomeIcon icon={faAngleRight}/></h3>
+                <h3 style={{color:'#5D4037',fontWeight:'bold'}}>{bkinfo.bkStoreName} <FontAwesomeIcon icon={faAngleRight}/></h3>
                 <div className={'text-secondary'}>{bkinfo.bkStoreSort}</div>
             </section>
             <section>

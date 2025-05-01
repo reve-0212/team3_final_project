@@ -17,21 +17,21 @@ function visitPage(props) {
         }
     }
 
+function visitPage() {
 
     return (
-        <div className={'app-container'} style={{textAlign: 'left'}}>
+        <div className={'app-container  container py-4'} style={{textAlign: 'left'}}>
             <h3 className={'waiting-title'}>방문인원을 선택하세요.</h3>
             <ul>
                 <li>
-                    <h3 style={{fontWeight: 'bold', fontSize: '25px'}}>성인</h3>
+                    <h3 style={{fontWeight: 'bold', fontSize: '20px'}}>성인</h3>
                     <VisitorBtn gender={"남성"}/>
                     <VisitorBtn gender={"여성"}/>
-
                 </li>
             </ul>
-            <ul>
+            <ul className={'pt-5 border-top'}>
                 <li>
-                    <h3 style={{fontWeight: 'bold', fontSize: '25px'}}>유아</h3>
+                    <h3 style={{fontWeight: 'bold', fontSize: '20px'}}>유아</h3>
                     <VisitorBtn gender={"유아"}/>
                 </li>
             </ul>

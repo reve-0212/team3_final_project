@@ -18,7 +18,7 @@ function WaitingInfo({info}) {
     }
 
     return (
-        <div className={'app-container'}>
+        <div className={'app-container  container py-4'}>
             <section>
                 <h3>{info.storeName} <FontAwesomeIcon icon={faAngleRight} /></h3>
                 <div className={'text-secondary'}>{info.storeSort}</div>

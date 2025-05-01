@@ -1,6 +1,7 @@
 import BookInfo from "../components/BookInfo.jsx";
 import React from "react";
 
+
 function BookInfoPage() {
   const bkInfoObj = {
     bkStoreName : "런던베이글 뮤지엄 잠실",

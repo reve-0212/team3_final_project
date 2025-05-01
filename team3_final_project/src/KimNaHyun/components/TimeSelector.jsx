@@ -32,7 +32,7 @@ const TimeSelector = () => {
                     border: '1px solid #ccc',
                     borderRadius: '15px',
 
-                    backgroundColor: selectedTime === time ? '#ffa31c' : '#fff',  // 클릭된 시간의 배경색 변경
+                    backgroundColor: selectedTime === time ? '#5D4037' : '#fff',  // 클릭된 시간의 배경색 변경
                     color: selectedTime === time ? '#fff' : '#000', // 클릭된 시간의 글자색 변경
                   }}
               >
