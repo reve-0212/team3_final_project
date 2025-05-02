@@ -100,6 +100,7 @@ function ContentList() {
 
                 {/* 두 번째 가게 */}
                 <div className="card mb-4" style={{cursor: 'pointer'}}>
+
                     <div className="card-body text-start">
                         <div className="d-flex justify-content-between align-items-center">
                             <h5 className="card-title mb-0 fw-semibold">수프올샐러드</h5>
@@ -115,8 +116,10 @@ function ContentList() {
                             <span className="badge-default bg-light text-muted border">테이블많음</span>
                         </div>
                     </div>
+
                     <div className="px-3 pb-3">
                         <div className="d-flex justify-content-between gap-2 position-relative">
+
                             <div className="rounded overflow-hidden" style={{ width: '33.3%', height: '150px' }}>
                                 <img src="/soupandsalad1.jpg" alt="수프올샐러드 음식1" className="w-100 h-100" style={{ objectFit: 'cover' }} />
                             </div>
