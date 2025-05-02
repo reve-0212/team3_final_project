@@ -37,6 +37,7 @@ function OwnerLogin() {
                         </div>
                     </nav>
                 </div>
+
                 <form className={"container"}>
                     <div className={"row"} style={{paddingRight: '1rem'}}>
                         <LoginSignText text={"사장님 로그인"}/>

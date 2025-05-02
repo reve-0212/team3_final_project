@@ -13,7 +13,7 @@ html {
 }
 
 /* 기본 버튼 스타일 (둥근 형태, 여백 포함) */
-.btn {
+.btn-jks {
     border-radius: 50px;
     padding: 8px 20px;
 }

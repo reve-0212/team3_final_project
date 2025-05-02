@@ -32,8 +32,9 @@ function ReBanner() {
                         <a className="nav-link text-black" href="/pre/PreMain">홈</a>
                     </li>
                     <br/>
+
                     <li className="nav-item">
-                        <a className="nav-link text-black" href="/pre/info">개인정보 수정</a>
+                        <a className="nav-link text-black" href="/pre/update">개인정보 수정</a>
                     </li>
 
                     <li className="nav-item">
