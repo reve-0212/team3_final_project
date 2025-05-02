@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 function PreInfoPage() {
+    const nv = useNavigate();
+
     const [id, setId] = useState("");
     const [pass, setPass] = useState("");
     const [name, setName] = useState("");
@@ -18,7 +21,7 @@ function PreInfoPage() {
     const handleSubmit = (e) => {
         e.preventDefault();
         // 서버 전송 또는 유효성 검사
-        console.log({ id, pass, name, call, storeName, busNum });
+        console.log({id, pass, name, call, storeName, busNum});
     };
 
     return (
@@ -42,10 +45,10 @@ function PreInfoPage() {
                 <div className="fixed-top">
                     <nav
                         className="navbar navbar-expand-lg navbar-dark"
-                        style={{ height: "10vh", backgroundColor: "#FFD700" }}
+                        style={{height: "10vh", backgroundColor: "#FFD700"}}
                     >
                         <div className="container-fluid d-flex justify-content-between align-items-center">
-                            <div style={{ textAlign: "center" }} className="text-white fs-1">
+                            <div style={{textAlign: "center"}} className="text-white fs-1">
                                 Logo
                             </div>
                         </div>
@@ -53,7 +56,7 @@ function PreInfoPage() {
                 </div>
 
                 <form className="info-form" onSubmit={handleSubmit}>
-                    <h3 style={{ fontWeight: "bold" }} className="pt-5 text-center">
+                    <h3 style={{fontWeight: "bold"}} className="pt-5 text-center">
                         사장님 정보등록
                     </h3>
                     <div className="mt-4 d-flex justify-content-center flex-column align-items-center">
@@ -146,7 +149,10 @@ function PreInfoPage() {
                         <button
                             type="submit"
                             className="btn"
-                            style={{ backgroundColor: "#FFD727", padding: "10px 20px" }}
+                            style={{backgroundColor: "#FFD727", padding: "10px 20px"}}
+                            onClick={() => {
+                                nv("/pre/reg")
+                            }}
                         >
                             등록 하기
                         </button>
