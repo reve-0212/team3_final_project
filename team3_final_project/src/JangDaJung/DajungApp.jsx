@@ -4,6 +4,8 @@ import CeoMain from "./CeoMain.jsx";
 import TodayReservation from "./TodayReservation.jsx";
 import PastDateReservation from "./PastDateReservation.jsx";
 import ReservationChart from "./ReservationChart.jsx";
+import CeoNewMenu from "./CeoNewMenu.jsx";
+import CeoMenuList from "./CeoMenuList.jsx";
 
 function DajungApp() {
     return (
@@ -11,9 +13,12 @@ function DajungApp() {
             {/*<PastDateWaiting />*/}
             {/*  <PastDateReservation />*/}
             {/*  <TodayWaiting />*/}
+            {/*  <TodayWaiting />*/}
             {/*  <TodayReservation />*/}
             {/*  <CeoMain />*/}
-            <ReservationChart />
+            {/*<ReservationChart />*/}
+            <CeoNewMenu />
+            {/*<CeoMenuList/>*/}
         </div>
     );
 }

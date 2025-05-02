@@ -6,7 +6,7 @@ function ReBanner() {
         {/* 위 헤더바*/}
         <div className="fixed-top">
           <nav className="navbar navbar-expand-lg navbar-dark"
-               style={{ height: '10vh', backgroundColor: '#FFA31C' }}>
+               style={{ height: '10vh', backgroundColor: '#FFD700' }}>
             <div className="container-fluid d-flex justify-content-between align-items-center">
               {/*<Link to="/" className="nav-link active">*/}
               {/*    <span className="text-white fs-1">Logo</span>*/}
@@ -55,7 +55,7 @@ function ReBanner() {
             <br/>
 
             <li className="nav-item">
-              <a className="nav-link text-black" href="#">가게메뉴</a>
+              <a className="nav-link text-black" href="/pre/MenuList">가게메뉴</a>
             </li>
             <li className="nav-item">
               <a className="nav-link text-black" href="/pre/PreRe">리뷰관리</a>
