@@ -20,11 +20,13 @@ import BookRegPage from "../KimNaHyun/page/BookRegPage.jsx";
 import BookInfoPage from "../KimNaHyun/page/BookInfoPage.jsx";
 import SjhReview from "../simJiHyun/review/SjhReview.jsx";
 import SjhReviewList from "../simJiHyun/reviewList/SjhReviewList.jsx";
+import WaitingInfoPage from "../KimNaHyun/page/WaitingInfoPage.jsx";
 
 function main() {
     return (
         <div className={'mobile-wrapper'}>
-            <HashRouter>
+            <BrowserRouter>
+                {/*<HashRouter>*/}
                 <Header/>
                 <main className={'content'}>
                     <Routes>
@@ -42,17 +44,14 @@ function main() {
                         <Route path={"/contentDetail"} element={<ContentDetail/>}/>
 
                         <Route path={"/waiting/visit"} element={<VisitPage/>}/>
-                        <Route path={"/book/visit"} element={<VisitPage/>}/>
-
                         <Route path={"/waiting/seat"} element={<SeatPage/>}/>
-                        <Route path={"/book/date"} element={<DateSelectorPage/>}/>
-
                         <Route path={"/waiting/reg"} element={<WaitingRegPage/>}/>
+                        <Route path={"/waiting/info"} element={<WaitingInfoPage/>}/>
+
+                        <Route path={"/book/visit"} element={<VisitPage/>}/>
+                        <Route path={"/book/date"} element={<DateSelectorPage/>}/>
                         <Route path={"/book/menu"} element={<MenuSelectorPage/>}/>
-
-                        <Route path={"/waiting/info"} element={<BookInfoPage/>}/>
                         <Route path={"/book/reg"} element={<BookRegPage/>}/>
-
                         <Route path={"/book/info"} element={<BookInfoPage/>}/>
 
                         <Route path={"/review"} element={<SjhReview/>}/>
@@ -60,7 +59,8 @@ function main() {
                     </Routes>
                 </main>
                 <BottomNav/>
-            </HashRouter>
+            </BrowserRouter>
+            {/*</HashRouter>*/}
         </div>
     );
 }

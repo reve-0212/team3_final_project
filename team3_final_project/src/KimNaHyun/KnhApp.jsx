@@ -5,19 +5,11 @@ import BottomNav from "../JeongSeongYun/layout/BottomNav.jsx";
 import VisitPage from "./page/VisitPage.jsx";
 import SeatPage from "./page/SeatPage.jsx";
 import WaitingRegPage from "./page/WaitingRegPage.jsx";
-import WaitingInfo from "./components/WaitingInfo.jsx";
 import WaitingInfoPage from "./page/WaitingInfoPage.jsx";
 import DateSelectorPage from "./page/DateSelectorPage.jsx";
 import MenuSelectorPage from "./page/MenuSelectorPage.jsx";
 import BookRegPage from "./page/BookRegPage.jsx";
 import BookInfoPage from "./page/BookInfoPage.jsx";
-import Header from "../JeongSeongYun/layout/Header.jsx";
-import MainContent from "../JeongSeongYun/layout/MainContent.jsx";
-import MyPageContent from "../JeongSeongYun/layout/MyPageContent.jsx";
-import Bookmark from "../JeongSeongYun/layout/Bookmark.jsx";
-// import MapLocation from "../JeongSeongYun/layout/MapLocation.jsx";
-import BottomNav from "../JeongSeongYun/layout/BottomNav.jsx";
-
 
 
 function KnhApp() {

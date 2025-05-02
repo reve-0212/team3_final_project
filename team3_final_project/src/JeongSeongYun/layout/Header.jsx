@@ -1,4 +1,4 @@
-import {Link, useLocation, useMatch, useNavigate, useParams} from "react-router-dom";
+import {Link, useLocation, useMatch, useNavigate} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faAngleLeft, faAngleRight, faGear} from "@fortawesome/free-solid-svg-icons";
 import "../css/header.css";
@@ -13,6 +13,8 @@ function Header() {
     const matchBookmark = useMatch("/bookmark");
     const matchLatestDetails = useMatch("/latestDetails");
     const matchContentList = useMatch("/contentList/:category");
+    // const hashPath = locationNow.hash;
+
     const matchWaiting = useMatch("/waiting/*")
     const matchBook = useMatch("/book/*")
 
@@ -25,7 +27,7 @@ function Header() {
             <header className={'header'}>
                 <div className={'back'}></div>
                 <Link to={'/'} className={'link'}>
-                    <h1 className={'header-title'}>Tabling</h1>
+                    <h1 className={'header-title'}>Waitable</h1>
                 </Link>
                 <div className={'link setting'}></div>
             </header>
@@ -82,6 +84,40 @@ function Header() {
         );
     }
 
+    // HashRouter 전용
+    // if (hashPath.startsWith("#/contentList/")) {
+    //     console.log(hashPath)
+    //     // const category = matchContentList?.params?.category;
+    //     const category = hashPath.split("/")[2]
+    //     console.log(category)
+    //
+    //     const categoryMap = {
+    //         korean: "한식",
+    //         chinese: "중식",
+    //         western: "양식",
+    //         japanese: "일식",
+    //         snack: "분식",
+    //         cafe: "카페/디저트",
+    //         fusion: "퓨전",
+    //         ect: "기타"
+    //     };
+    //
+    //     const categoryName = categoryMap[category] || "카테고리"
+    //
+    //     return (
+    //         <header className={'header'}>
+    //             <div className={'back'}>
+    //                 <FontAwesomeIcon icon={faAngleLeft} className={'backIcon'} onClick={goBack}/>
+    //             </div>
+    //             <div className={'link pe-none'}>
+    //                 <h1 className={'header-title'}>{categoryName}</h1>
+    //             </div>
+    //             <div className={'link setting'}></div>
+    //         </header>
+    //     )
+    // }
+
+    // BrowserRouter 전용
     if (matchContentList) {
         const category = matchContentList?.params?.category;
         console.log(category)
@@ -94,7 +130,11 @@ function Header() {
             snack: "분식",
             cafe: "카페/디저트",
             fusion: "퓨전",
-            ect: "기타"
+            ect: "기타",
+            customRec:"맞춤형 추천",
+            bookmarkRes:"찜한 맛집",
+            reviewPick:"리뷰 맛집",
+            recentlyRes:"최근 본 맛집"
         };
 
         const categoryName = categoryMap[category] || "카테고리"
@@ -146,7 +186,7 @@ function Header() {
                 <FontAwesomeIcon icon={faAngleLeft} className={'backIcon'} onClick={goBack}/>
             </div>
             <Link to={'/'} className={'link'}>
-                <h1 className={'header-title'}>Tabling</h1>
+                <h1 className={'header-title'}>Waitable</h1>
             </Link>
             <div className={'link setting'}></div>
         </header>

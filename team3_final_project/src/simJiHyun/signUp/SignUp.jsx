@@ -15,6 +15,7 @@ function SignUp() {
     const [age, setAge] = useState(10);
     const [call, setCall] = useState("");
     const [email, setEmail] = useState("");
+    const [level, setLeve] = useState(1)
     const [btnActive, setBtnActive] = useState("male");
 
     const handleSignUp = (e) => {

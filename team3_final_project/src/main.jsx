@@ -17,6 +17,7 @@ createRoot(document.getElementById('root')).render(
       {/*<SjhApp/>*/}
       {/*<JksApp/>*/}
       {/*<KnhApp/>*/}
-      <SangMinApp/>
+      {/*<SangMinApp/>*/}
+      <Main/>
   </StrictMode>
 )

@@ -2,9 +2,8 @@ import Button from "../components/Button.jsx";
 import VisitorBtn from "../components/VisitorBtn.jsx";
 import {useNavigate} from "react-router-dom";
 
-function visitPage() {
-    const {gender} = props;
-    const Nv = useNavigate();
+function VisitPage() {
+    const Nv = useNavigate()
     const path = window.location.pathname
 
     const handlePath = (e) => {
@@ -40,7 +39,7 @@ function visitPage() {
 }
 
 
-export default visitPage
+export default VisitPage
 
 
 
