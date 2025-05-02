@@ -81,35 +81,30 @@ function ContentList() {
                             <span className="badge-default bg-light text-muted border">재방문많음</span>
                         </div>
                     </div>
-                    <div id="storeImageCarousel" className="carousel slide" data-bs-ride="carousel">
-                        <div className="carousel-inner rounded">
-                            <div className="carousel-item active">
-                                <img src="/monbette.jpg" className="d-block w-100" alt="몬베톤 음식"/>
+                    <div className="px-3 pb-3">
+                        <div className="d-flex justify-content-between gap-2 position-relative">
+                            <div className="rounded overflow-hidden" style={{ width: '33.3%', height: '150px' }}>
+                                <img src="/monbette.jpg" alt="몬베톤 음식1" className="w-100 h-100" style={{ objectFit: 'cover' }}/>
                             </div>
-                            <div className="carousel-item">
-                                <img src="/monbette2.jpg" className="d-block w-100" alt="몬베톤 음식2"/>
+                            <div className="rounded overflow-hidden" style={{ width: '33.3%', height: '150px' }}>
+                                <img src="/monbette2.jpg" alt="몬베톤 음식2" className="w-100 h-100" style={{ objectFit: 'cover' }}/>
                             </div>
-                            <div className="carousel-item">
-                                <img src="/monbette3.jpg" className="d-block w-100" alt="몬베톤 음식3"/>
+                            <div className="rounded overflow-hidden" style={{ width: '33.3%', height: '150px' }}>
+                                <img src="/monbette3.jpg" alt="몬베톤 음식3" className="w-100 h-100" style={{ objectFit: 'cover' }}/>
                             </div>
-                            <div className="carousel-overlay-text">대기팀 : 3명</div>
+                            {/* 대기팀 오버레이 */}
+                            <div className="overlay-badge">
+                                대기팀 : 3명
+                            </div>
                         </div>
+                    </div>
 
-                        <button className="carousel-control-prev" type="button" data-bs-target="#storeImageCarousel"
-                                data-bs-slide="prev">
-                            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span className="visually-hidden">이전</span>
-                        </button>
-                        <button className="carousel-control-next" type="button" data-bs-target="#storeImageCarousel"
-                                data-bs-slide="next">
-                            <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span className="visually-hidden">다음</span>
-                        </button>
                     </div>
                 </div>
 
                 {/* 두 번째 가게 */}
                 <div className="card mb-4" style={{cursor: 'pointer'}}>
+
                     <div className="card-body text-start">
                         <div className="d-flex justify-content-between align-items-center">
                             <h5 className="card-title mb-0 fw-semibold">수프올샐러드</h5>
@@ -125,44 +120,31 @@ function ContentList() {
                             <span className="badge-default bg-light text-muted border">테이블많음</span>
                         </div>
                     </div>
-                    <div id="soupAndSaladCarousel" className="carousel slide" data-bs-ride="carousel">
-                        <div className="carousel-inner rounded position-relative">
 
-                            <div className="carousel-item active">
-                                <img src="/soupandsalad1.jpg" className="d-block w-100" alt="수프올샐러드 음식1"
-                                     style={{height: '100%', objectFit: 'cover'}}/>
+                    <div className="px-3 pb-3">
+                        <div className="d-flex justify-content-between gap-2 position-relative">
+
+                            <div className="rounded overflow-hidden" style={{ width: '33.3%', height: '150px' }}>
+                                <img src="/soupandsalad1.jpg"  alt="수프올샐러드 음식1"
+                                     className="w-100 h-100" style={{ objectFit: 'cover'}}/>
+                            </div>
+                            <div className="rounded overflow-hidden" style={{ width: '33.3%', height: '150px' }}>
+                                <img src="/soupandsalad2.jpg"  alt="수프올샐러드 음식2"
+                                     className="w-100 h-100" style={{ objectFit: 'cover'}}/>
+                            </div>
+                            <div className="rounded overflow-hidden" style={{ width: '33.3%', height: '150px' }}>
+                                <img src="/soupandsalad3.jpg"  alt="수프올샐러드 음식3"
+                                     className="w-100 h-100" style={{ objectFit: 'cover'}}/>
                             </div>
 
-                            <div className="carousel-item">
-                                <img src="/soupandsalad2.jpg" className="d-block w-100" alt="수프올샐러드 음식2"
-                                     style={{height: '100%', objectFit: 'cover'}}/>
+                            {/* 대기팀 오버레이 */}
+                            <div className="overlay-badge">
+                                대기팀 : 1명
                             </div>
-
-                            <div className="carousel-item">
-                                <img src="/soupandsalad3.jpg" className="d-block w-100" alt="수프올샐러드 음식3"
-                                     style={{height: '100%', objectFit: 'cover'}}/>
-                            </div>
-
-                            <div className="carousel-overlay-text">대기팀 : 1명</div>
                         </div>
-
-                        <button className="carousel-control-prev" type="button" data-bs-target="#soupAndSaladCarousel"
-                                data-bs-slide="prev">
-                            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span className="visually-hidden">이전</span>
-                        </button>
-
-                        <button className="carousel-control-next" type="button" data-bs-target="#soupAndSaladCarousel"
-                                data-bs-slide="next">
-                            <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span className="visually-hidden">다음</span>
-                        </button>
                     </div>
                 </div>
-
             </div>
-
-        </div>
     );
 }
 

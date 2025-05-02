@@ -21,7 +21,6 @@ function ContentDetail() {
                     <span className="text-muted">사진</span>
                 </div>
 
-
                 {/* 가게 이름 */}
                 <div className="d-flex justify-content-start text mb-2">
                     <h5 className="fw-bold">가게이름</h5>
