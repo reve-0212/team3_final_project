@@ -5,7 +5,6 @@ import BottomNav from "../JeongSeongYun/layout/BottomNav.jsx";
 import VisitPage from "./page/VisitPage.jsx";
 import SeatPage from "./page/SeatPage.jsx";
 import WaitingRegPage from "./page/WaitingRegPage.jsx";
-import WaitingInfo from "./components/WaitingInfo.jsx";
 import WaitingInfoPage from "./page/WaitingInfoPage.jsx";
 import DateSelectorPage from "./page/DateSelectorPage.jsx";
 import MenuSelectorPage from "./page/MenuSelectorPage.jsx";

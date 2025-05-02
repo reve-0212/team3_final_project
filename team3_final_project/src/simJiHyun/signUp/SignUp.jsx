@@ -28,7 +28,6 @@ function SignUp() {
             userAge: age,
             userCall: call,
             userEmail: email,
-            userLevel: level
         })
         Nv("/");
     }
