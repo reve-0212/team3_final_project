@@ -21,6 +21,8 @@ import BookInfoPage from "../KimNaHyun/page/BookInfoPage.jsx";
 import SjhReview from "../simJiHyun/review/SjhReview.jsx";
 import SjhReviewList from "../simJiHyun/reviewList/SjhReviewList.jsx";
 import WaitingInfoPage from "../KimNaHyun/page/WaitingInfoPage.jsx";
+import AdminLogin from "../JeonKangSan/AdminLogin.jsx";
+import ManagerLogin from "../JeonKangSan/ManagerLogin.jsx";
 
 function main() {
     return (
@@ -59,9 +61,10 @@ function main() {
                         <Route path={"/review"} element={<SjhReview/>}/>
 
                         {/*사장*/}
-
+                        <Route path={"/owner/login"} element={<AdminLogin/>}/>
 
                         {/*관리자*/}
+                        <Route path={"/admin/login"} element={<ManagerLogin/>}/>
                     </Routes>
                 </main>
                 <BottomNav/>

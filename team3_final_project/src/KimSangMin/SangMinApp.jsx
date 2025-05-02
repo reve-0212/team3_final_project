@@ -16,6 +16,10 @@ import TodayWaiting from "../JangDaJung/TodayWaiting.jsx";
 import PastDateReservation from "../JangDaJung/PastDateReservation.jsx";
 import PastDateWaiting from "../JangDaJung/PastDateWaiting.jsx";
 import TodayReservation from "../JangDaJung/TodayReservation.jsx";
+import PreRegPage from "../KimNaHyun/page/PreRegPage.jsx";
+import PreInfoPage from "../KimNaHyun/page/PreInfoPage.jsx";
+import AdminLogin from "../JeonKangSan/AdminLogin.jsx";
+import ManagerLogin from "../JeonKangSan/ManagerLogin.jsx";
 
 function SangMinApp()
 {
@@ -29,6 +33,15 @@ function SangMinApp()
                   {/* 시간 지정하기*/}
                   <Route path="/pre/PreTime" element={<PreTime />} />
                   <Route path="/pre/PreTimeSet" element={<PreTimeSet />} />
+
+                  {/* 관리자 -> 사장님 */}
+
+                  <Route path="/pre/reg" element={<PreRegPage />} /> {/* 사장님 정보 입력 버튼 */}
+                  <Route path="/pre/info" element={<PreInfoPage />} /> {/*  사장님 정보 입력 페이지 */}
+                  <Route path="/pre/admin" element={<AdminLogin />} /> {/*  관리자 로그인 */}
+                  <Route path="/pre/manager" element={<ManagerLogin />} /> {/*  사장님 정보 입력 페이지 */}
+
+
 
                   <Route path="/" element={<PreSelect />} />
                   <Route path="/pre/PreMain" element={<PreMain />} /> {/* 예약가게 메인*/}
