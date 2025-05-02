@@ -18,6 +18,8 @@ import PreRegPage from "../KimNaHyun/page/PreRegPage.jsx";
 import PreInfoPage from "../KimNaHyun/page/PreInfoPage.jsx";
 import AdminLogin from "../JeonKangSan/AdminLogin.jsx";
 import OwnerLogin from "../JeonKangSan/OwnerLogin.jsx";
+import CeoNewMenu from "../JangDaJung/CeoNewMenu.jsx";
+import CeoMenuList from "../JangDaJung/CeoMenuList.jsx";
 
 function SangMinApp()
 {
@@ -47,6 +49,9 @@ function SangMinApp()
                   <Route path="/pre/PrePast" element={<PastDateReservation/>}/>  {/* 과거 예약 */}
                   <Route path="/pre/PreToday" element={<TodayReservation/>}/>  {/* 오늘 예약  */}
                   <Route path="/pre/PreSelect" element={<PreSelect/>}/>  {/* 오늘 예약  */}
+
+                  <Route path="/pre/NewMenu" element={<CeoNewMenu />} />  {/* 메뉴 등록 */}
+                  <Route path="/pre/MenuList" element={<CeoMenuList />} /> {/* 메뉴 리스트 */}
 
 
                   <Route path="/pre/PreWaSet" element={<PreWaSet />} /> {/* 웨이팅 가게 셋팅 */}

@@ -96,6 +96,13 @@ function PastDateWaiting() {
         setSearchKeyword(searchQuery); // 검색 버튼 누르면 확정
     };
 
+    // 엔터 키 눌렀을 때 검색되게 하는 함수
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            setSearchKeyword(searchQuery);
+        }
+    };
+
     return (
         <div className={'ceo-main'}>
             <WaBanner />
@@ -165,6 +172,7 @@ function PastDateWaiting() {
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             placeholder={'검색어를 입력하세요'}
+                            onKeyDown={handleKeyDown}
                             className={'form-control'}
                             style={{ border: 'none', width: '70%', height: '100%' }}
                         />

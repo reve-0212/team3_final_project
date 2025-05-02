@@ -10,6 +10,11 @@ import DateSelectorPage from "./page/DateSelectorPage.jsx";
 import MenuSelectorPage from "./page/MenuSelectorPage.jsx";
 import BookRegPage from "./page/BookRegPage.jsx";
 import BookInfoPage from "./page/BookInfoPage.jsx";
+
+import MainContent from "../JeongSeongYun/layout/MainContent.jsx";
+import MyPageContent from "../JeongSeongYun/layout/MyPageContent.jsx";
+import Bookmark from "../JeongSeongYun/layout/Bookmark.jsx";
+// import MapLocation from "../JeongSeongYun/layout/MapLocation.jsx";
 import PreRegPage from "./page/PreRegPage.jsx";
 import PreInfoPage from "./page/PreInfoPage.jsx";
 

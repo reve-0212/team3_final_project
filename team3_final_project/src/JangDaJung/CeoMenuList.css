@@ -1,0 +1,55 @@
+.menu-item:hover {
+    /*background-color: #f8f9fa; !* hover 시 연한 회색 *!*/
+    /*border-radius: 8px;*/
+    /*transition: background-color 0.2s;*/
+    cursor: pointer;
+}
+
+.menu-list-container {
+    background-color: #fff;
+    padding: 3rem 3.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 2vw rgba(0, 0, 0, 0.1);
+    max-width: 850px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.menu-search-box{
+    background-color: #FFF8E1;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+    height: 3rem;
+}
+
+.menu-search-input{
+    display: block;
+    width: 100%;
+    height: 3.2rem;
+    padding: 0.375rem 0.85rem;
+    font-size: 1.1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #B1B3B5;
+    background-color: #FFF8E1;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.42rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.menu-search-input::placeholder{
+    color: #B1B3B5;
+}
+.menu-search-input:focus {
+    color: #555555;
+    background-color: #FFF8E1;
+    outline: 0;
+    border: 1.5px solid #FFD700;
+    padding-left: 2rem;
+}
+.btn-menu-edit {
+    background-color: #FFCD83;
+}
+.btn-menu-add {
+    background-color: #FFD727;
+}
+

@@ -55,7 +55,7 @@ function WaBanner() {
                     <br/>
 
                     <li className="nav-item">
-                        <a className="nav-link text-black" href="#">가게메뉴</a>
+                        <a className="nav-link text-black" href="/pre/MenuList">가게메뉴</a>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link text-black" href="/pre/PreRe">리뷰관리</a>
