@@ -225,7 +225,7 @@ function ReservationChart() {
                         </LineChart>
                     </ResponsiveContainer>
                 </div>
-            {/*    성별 통계*/}
+                {/*    성별 통계*/}
                 <h4 className={'mb-3'}>방문 성별</h4>
                 <div className="chart-box mb-5 d-flex justify-content-center">
                     <ResponsiveContainer width="100%" height={300}>
