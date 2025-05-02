@@ -98,6 +98,7 @@ section {
 }
 
 /* 데이트피커 팝업 스타일 */
+
 .react-datepicker {
     font-family: 'Segoe UI', sans-serif;
     border: 0px solid #ccc !important;
@@ -155,3 +156,67 @@ section {
 .react-datepicker__week {
     padding: 10px 0 !important;
 }
+
+
+/* 폼 스타일 */
+
+.info-form input[type="text"] {
+    width: 400px;
+    padding: 8px 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.info-form input[type="text"]:focus {
+    border-color: #FFD700;
+    box-shadow: 0 0 5px #fff7c3;
+}
+
+.info-form label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+
+/* 반응형 */
+
+@media screen and (max-width: 767px) {
+    .waiting-title {
+        font-weight: bold;
+        font-size: 20px;
+        text-align: left;
+        color: #5D4037;
+        margin-bottom: 20px;
+    }
+    .waiting-title-sub {
+        color: #5D4037;
+        font-size: 18px;
+        font-weight: bold;
+    }
+    .point-font {
+        font-size: 25px;
+        font-weight: bold;
+        color:  #FFD727;
+    }
+
+    section {
+        padding: 10px 0;
+    }
+
+    .react-datepicker {
+        font-size: 1rem !important;
+
+    }
+
+    .react-datepicker__day {
+        width: 2.6rem !important;
+        line-height: 2.2rem !important;
+    }
+
+}
+
+

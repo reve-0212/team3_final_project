@@ -27,7 +27,7 @@ const TimeSelector = () => {
                   style={{
                     margin: '10px 5px',
                     padding: '7px 20px',
-                    fontSize: '16px',
+                    fontSize: '0.9rem',
                     cursor: 'pointer',
                     border: '1px solid #ccc',
                     borderRadius: '15px',
