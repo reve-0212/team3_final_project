@@ -2,6 +2,7 @@
 import React, {useState} from "react";
 import DatePicker from "react-datepicker";
 import TimeSelector from "../components/TimeSelector.jsx";
+import 'react-datepicker/dist/react-datepicker.css';
 import Button from "../components/Button.jsx";
 import {useNavigate} from "react-router-dom";
 
