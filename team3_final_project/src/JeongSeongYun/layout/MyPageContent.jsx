@@ -21,7 +21,7 @@ function MyPageContent() {
             <div className={'mt-3 pt-3'}>
                 <p className="text-muted small fs-7">이용 정보</p>
                 <div>
-                    <Link className={'text-muted d-flex justify-content-between text-decoration-none'} to={'/user/ReviewList'}>
+                    <Link className={'text-muted d-flex justify-content-between text-decoration-none'} to={'/user/reviewList'}>
                     <p className="mb-1 fs-6 fs-sm-4 ms-1"><span className={'me-3'}><SpeechBubble/></span>내 리뷰 관리</p>
                     <FontAwesomeIcon icon={faAngleRight} className={'me-2'} />
                     </Link>

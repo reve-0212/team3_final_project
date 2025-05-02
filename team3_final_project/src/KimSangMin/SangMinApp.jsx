@@ -30,7 +30,6 @@ function SangMinApp()
                   <Route path="/pre/PreTime" element={<PreTime />} />
                   <Route path="/pre/PreTimeSet" element={<PreTimeSet />} />
 
-
                   <Route path="/" element={<PreSelect />} />
                   <Route path="/pre/PreMain" element={<PreMain />} /> {/* 예약가게 메인*/}
                   <Route path="/pre/PreCh" element={<PreCh />} /> {/* 예약가게 매출 통계 */}
@@ -39,9 +38,6 @@ function SangMinApp()
                   <Route path="/pre/PreReSet" element={<PreReSet />} />  {/* 예약가게 셋팅 */}
                   <Route path="/pre/PrePast" element={<PastDateReservation/>}/>  {/* 과거 예약 */}
                   <Route path="/pre/PreToday" element={<TodayReservation/>}/>  {/* 오늘 예약  */}
-
-
-
 
                   <Route path="/pre/PreWaSet" element={<PreWaSet />} /> {/* 웨이팅 가게 셋팅 */}
                   <Route path="/pre/WaMain" element={<CeoMain/>}/>    {/*웨이팅 메인 */}

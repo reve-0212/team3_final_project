@@ -27,14 +27,14 @@
 
 /*이용 완료*/
 .visitBtnActive {
-  background-color: #FFA31C;
-  color: white;
+  background-color: #FFF8E1;
+  color: #5d4037;
 }
 
 /*이용 예정*/
 .visitBtn {
-  background-color: #FFF8E1;
-  color: #5d4037;
+  background-color: #FFA31C;
+  color: white;
 }
 
 .reservationCardCancel {
@@ -43,4 +43,12 @@
 
 .reservationCard {
   display: block;
+}
+
+.bookmark {
+  color: white;
+}
+
+.bookmarkActive {
+  color: #FFA31C;
 }

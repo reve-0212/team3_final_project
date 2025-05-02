@@ -1,19 +1,20 @@
 import "../css/bookmark.css"
-import {Link} from "react-router-dom";
-
+import {Link, useNavigate} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faStar} from "@fortawesome/free-solid-svg-icons";
 
 function Bookmark() {
+    const nv = useNavigate();
+
     return (
         <div className={'container py-4'}>
-            <div className={'row pb-3 pt-3'}>
+            <div className={'row pb-3 pt-3'} onClick={()=>{nv("/contentDetail")}}>
                 <div className={'col-sm-6 box1 d-flex justify-content-center align-items-center pe-0'}>
                     <div className={'position-relative'}>
                         <div className={'overflow-hidden h-100'}>
-                            <Link to={'/123'}>
+                            {/*<Link to={'/123'}>*/}
                                 <img sizes={'100vw'} src={'https://image.tabling.co.kr/prod/restaurant/c77f069800d7443b2ea40ab06bb86339.jpg?s=396x396&f=webp'} alt="#" className={'position-absolute h-100 w-100'}/>
-                            </Link>
+                            {/*</Link>*/}
                         </div>
                     </div>
                 </div>

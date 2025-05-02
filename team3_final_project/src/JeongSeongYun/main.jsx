@@ -30,12 +30,14 @@ function main() {
                 <Header/>
                 <main className={'content'}>
                     <Routes>
+                        {/*유저*/}
                         <Route path="/" element={<MainContent/>}/>
 
                         <Route path={"/user"} element={<MyPageContent/>}/>
                         <Route path={"/user/login"} element={<Login/>}/>
                         <Route path={"/user/setting"} element={<UserSetting/>}/>
                         <Route path={"/user/signUp"} element={<SignUp/>}/>
+                        <Route path={"/user/reviewList"} element={<SjhReviewList/>}/>
 
                         <Route path={'/latestDetails'} element={<SjhReservation/>}/>
                         <Route path={'/bookmark'} element={<Bookmark/>}/>
@@ -55,7 +57,11 @@ function main() {
                         <Route path={"/book/info"} element={<BookInfoPage/>}/>
 
                         <Route path={"/review"} element={<SjhReview/>}/>
-                        <Route path={"/reviewList"} element={<SjhReviewList/>}/>
+
+                        {/*사장*/}
+
+
+                        {/*관리자*/}
                     </Routes>
                 </main>
                 <BottomNav/>

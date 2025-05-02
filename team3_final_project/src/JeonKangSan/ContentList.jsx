@@ -1,10 +1,23 @@
-// ContentList.jsx
-
 import "./JksSheet.css";
 import {Link, useNavigate} from "react-router-dom";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faBookmark as faBookmarkRegular} from "@fortawesome/free-regular-svg-icons";
+import {faBookmark} from "@fortawesome/free-solid-svg-icons";
+import {useState} from "react";
 
 function ContentList() {
     const Nv = useNavigate();
+    const [bookmarks, setBookmarks] = useState({
+        store1: false,
+        store2: false
+    })
+
+    const toggleBookmark = (storeKey) => {
+        setBookmarks(prev => ({
+            ...prev,
+            [storeKey]: !prev[storeKey]
+        }))
+    }
 
     return (
         <div className="app-container">
@@ -13,7 +26,6 @@ function ContentList() {
             <div className="d-flex gap-2 mb-4">
                 <button className="btn btn-outline-secondary btn-sm"><i className="fa-solid fa-rotate-right"></i> 초기화
                 </button>
-
 
                 {/* 지역 선택 콤보박스 */}
                 <div className="position-relative">
@@ -63,25 +75,33 @@ function ContentList() {
             <div className="mb-5">
 
                 {/* 첫 번째 가게 */}
-                <div className="card mb-4" style={{cursor: 'pointer'}} onClick={() => {
-                    Nv("/contentDetail")
-                }}>
+                <div className="card mb-4" style={{cursor: 'pointer'}}>
                     <div className="card-body text-start">
                         <div className="d-flex justify-content-between align-items-center">
-                            <h5 className="card-title mb-0 fw-semibold">몬베톤</h5>
-                            <button className="btn btn-sm">
-                                <i className="fa-regular fa-bookmark"></i>
+                            <h5 className="card-title mb-0 fw-semibold flex-fill"
+                                onClick={() => {
+                                    Nv("/contentDetail")
+                                }}>몬베톤</h5>
+                            <button className="btn btn-sm" onClick={() => toggleBookmark("store1")}>
+                                <FontAwesomeIcon icon={bookmarks.store1 ? faBookmark : faBookmarkRegular}/>
                             </button>
                         </div>
-                        <p className="card-text my-2">⭐ 4.6 (109)</p>
-                        <small className="text-muted">양식 · 전포동(602m)</small>
+                        <p className="card-text my-2" onClick={() => {
+                            Nv("/contentDetail")
+                        }}>⭐ 4.6 (109)</p>
+                        <small className="text-muted d-flex flex-fill" onClick={() => {
+                            Nv("/contentDetail")
+                        }}>양식 · 전포동(602m)</small>
                         <div className="d-flex gap-2 my-2">
                             <span className="badge-default bg-light text-muted border">원격줄서기</span>
                             <span className="badge-default bg-light text-muted border">현장대기</span>
                             <span className="badge-default bg-light text-muted border">재방문많음</span>
                         </div>
                     </div>
-                    <div id="storeImageCarousel" className="carousel slide" data-bs-ride="carousel">
+                    <div id="storeImageCarousel" className="carousel slide" data-bs-ride="carousel"
+                         onClick={() => {
+                             Nv("/contentDetail")
+                         }}>
                         <div className="carousel-inner rounded">
                             <div className="carousel-item active">
                                 <img src="/monbette.jpg" className="d-block w-100" alt="몬베톤 음식"/>
