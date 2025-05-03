@@ -14,7 +14,8 @@ import SangMinApp from "./KimSangMin/SangMinApp.jsx";
 createRoot(document.getElementById('root')).render(
     <StrictMode>
         {/*<SangMinApp/>*/}
-        <Main/>
+        {/*<Main/>*/}
         {/*<DajungApp/>*/}
+        <SjhApp/>
     </StrictMode>
 )
