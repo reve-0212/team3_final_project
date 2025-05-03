@@ -1,10 +1,15 @@
 import {useEffect, useRef} from "react";
 import useGeolocation from "../../stores/useGeolocation.jsx";
 
+
 function SjhLocationTest() {
   const mapRef = useRef(null);
   const {naver} = window;
   const {currentMyLocation} = useGeolocation();
+  const script = document.createElement("script")
+  script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${import.meta.env.VITE_REACT_APP_NAVER_MAP_API_KEY}`
+  script.async = true;
+  document.head.appendChild(script);
 
   useEffect(() => {
     if (currentMyLocation.lat !== 0 && currentMyLocation.lng !== 0) {
