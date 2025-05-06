@@ -21,6 +21,8 @@ import OwnerLogin from "../JeonKangSan/OwnerLogin.jsx";
 import CeoNewMenu from "../JangDaJung/CeoNewMenu.jsx";
 import CeoMenuList from "../JangDaJung/CeoMenuList.jsx";
 import PreUpdatePage from "./PreUpdatePage.jsx";
+import CeoMenuListEdit from "../JangDaJung/CeoMenuListEdit.jsx";
+import CeoMenuEdit from "../JangDaJung/CeoMenuEdit.jsx";
 
 function SangMinApp() {
     return (
@@ -53,6 +55,8 @@ function SangMinApp() {
 
                     <Route path="/pre/NewMenu" element={<CeoNewMenu/>}/> {/* 메뉴 등록 */}
                     <Route path="/pre/MenuList" element={<CeoMenuList/>}/> {/* 메뉴 리스트 */}
+                    <Route path="/pre/MenuListEdit" element={<CeoMenuListEdit />} /> {/* 메뉴판 수정 */}
+                    <Route path="/pre/MenuEdit/:menuId" element={<CeoMenuEdit />} /> {/* 메뉴 슈정 */}
 
                     <Route path="/pre/PreWaSet" element={<PreWaSet/>}/> {/* 웨이팅 가게 셋팅 */}
                     <Route path="/pre/WaMain" element={<CeoMain/>}/> {/*웨이팅 메인 */}

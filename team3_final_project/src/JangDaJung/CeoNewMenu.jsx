@@ -3,7 +3,6 @@ import "./CeoNewMenu.css";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 
-
 function CeoNewMenu() {
 
     const navigate = useNavigate()
@@ -113,17 +112,14 @@ function CeoNewMenu() {
 
                 {/* 등록 성공 모달 */}
                 {showSuccessModal && (
-                    <div className="modal fade show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-                        <div className="modal-dialog">
-                            <div className="modal-content">
-                                <div className="modal-header">
-                                    <h5 className="modal-title">등록 완료</h5>
+                    <div className="modal fade show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)'}}>
+                        <div className="modal-dialog" style={{width: '25rem'}}>
+                            <div className="modal-content" style={{ border: 'none' }}>
+                                <div className="modal-body mt-4 extra-bold">
+                                    <p style={{ color: '#5D4037'}}>메뉴 등록이 완료되었습니다.</p>
                                 </div>
-                                <div className="modal-body">
-                                    <p>메뉴 등록이 완료되었습니다.</p>
-                                </div>
-                                <div className="modal-footer">
-                                    <button className="btn btn-primary" onClick={goToList}>확인</button>
+                                <div className="modal-footer" style={{border: 'none',  paddingTop: '0px'}}>
+                                    <button className="btn btn-warning text-white" onClick={goToList}>확인</button>
                                 </div>
                             </div>
                         </div>
@@ -133,17 +129,17 @@ function CeoNewMenu() {
                 {/* 취소 확인 모달 */}
                 {showCancelModal && (
                     <div className="modal fade show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-                        <div className="modal-dialog">
+                        <div className="modal-dialog" style={{width: '20rem'}}>
                             <div className="modal-content">
-                                <div className="modal-header">
-                                    <h5 className="modal-title">메뉴 등록 취소</h5>
+                                <div className="modal-menu-header">
+                                    <h5 className="modal-title" style={{ fontWeight: 'bold'}}>메뉴 등록을<br/>취소하시겠습니까?</h5>
                                 </div>
                                 <div className="modal-body">
-                                    <p>메뉴 등록을 취소하시겠습니까?<br />지금까지 입력된 정보는 저장되지 않습니다.</p>
+                                    <p style={{ color: '#87898B', fontSize: '0.85rem',marginTop:'0px', paddingTop: '0px'}}>지금까지 입력된 정보는<br/>저장되지 않습니다.</p>
                                 </div>
-                                <div className="modal-footer">
-                                    <button className="btn btn-secondary" onClick={() => setShowCancelModal(false)}>아니오</button>
-                                    <button className="btn btn-danger" onClick={confirmCancel}>예</button>
+                                <div className="modal-footer" style={{border: 'none', justifyContent: 'center', paddingTop: '0px'}}>
+                                    <button className="btn btn-cancel" style={{width: '4rem'}} onClick={() => setShowCancelModal(false)}>아니오</button>
+                                    <button className="btn btn-warning text-white" style={{width: '4rem'}} onClick={confirmCancel}>예</button>
                                 </div>
                             </div>
                         </div>

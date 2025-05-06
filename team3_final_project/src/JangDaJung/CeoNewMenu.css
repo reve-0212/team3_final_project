@@ -99,3 +99,13 @@ textarea.new-menu-input {
 .btn-cancel:hover {
     background-color: #ffc107;
 }
+.modal-menu-header{
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 1rem 1rem;
+    margin-top: 1rem;
+    border-top-left-radius: 0.3rem;
+    border-top-right-radius: 0.3rem;
+    color: #5D4037;
+}
