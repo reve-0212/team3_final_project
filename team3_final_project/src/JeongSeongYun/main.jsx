@@ -21,6 +21,11 @@ import BookInfoPage from "../KimNaHyun/page/BookInfoPage.jsx";
 import SjhReview from "../simJiHyun/review/SjhReview.jsx";
 import SjhReviewList from "../simJiHyun/reviewList/SjhReviewList.jsx";
 import WaitingInfoPage from "../KimNaHyun/page/WaitingInfoPage.jsx";
+import AdminLogin from "../JeonKangSan/AdminLogin.jsx";
+import OwnerLogin from "../JeonKangSan/OwnerLogin.jsx";
+import PreReserve from "../KimSangMin/PreReserve.jsx";
+import PreWait from "../KimSangMin/PreWait.jsx";
+import OwnerLoginSjh from "../simJiHyun/login/OwnerLoginSjh.jsx";
 
 function main() {
     return (
@@ -28,6 +33,7 @@ function main() {
             <BrowserRouter>
                 {/*<HashRouter>*/}
                 <Header/>
+
                 <main className={'content'}>
                     <Routes>
                         {/*유저*/}
@@ -58,10 +64,12 @@ function main() {
 
                         <Route path={"/review"} element={<SjhReview/>}/>
 
-                        {/*사장*/}
-
-
-                        {/*관리자*/}
+                        {/*모바일 전용 사장 로그인*/}
+                        <Route path={"/pre/login"} element={<OwnerLoginSjh/>}/>
+                        {/*웨이팅 웹앱*/}
+                        <Route path="/pre/PreWait" element={<PreWait/>}/>
+                        {/*예약 웹앱*/}
+                        <Route path="/pre/PreReserve" element={<PreReserve/>}/>
                     </Routes>
                 </main>
                 <BottomNav/>

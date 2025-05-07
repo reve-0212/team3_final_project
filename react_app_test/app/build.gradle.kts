@@ -9,7 +9,7 @@ android {
 
   defaultConfig {
     applicationId = "bitc.fullstack.react_app_test"
-    minSdk = 29
+    minSdk = 28
     targetSdk = 35
     versionCode = 1
     versionName = "1.0"
