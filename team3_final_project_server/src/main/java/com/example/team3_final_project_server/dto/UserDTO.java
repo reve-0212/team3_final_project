@@ -12,5 +12,5 @@ public class UserDTO {
   private int userAge;
   private String userCall;
   private String userEmail;
-  private int userLevel;
+//  private int userLevel;  db에 아직 추가되지 않음
 }

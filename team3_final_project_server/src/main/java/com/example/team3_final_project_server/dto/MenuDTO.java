@@ -7,6 +7,7 @@ public class MenuDTO {
   private int menuIdx;
   private int restaurantIdx;
   private String menuName;
-  private String menuPrice;
+  private int menuPrice;
   private String menuExplanation;
+  private String menuImage;
 }
