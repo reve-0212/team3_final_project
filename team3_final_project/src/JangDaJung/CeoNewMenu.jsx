@@ -2,6 +2,7 @@ import WaBanner from "../KimSangMin/WaBanner.jsx";
 import "./CeoNewMenu.css";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
+import ReBanner from "../KimSangMin/ReBanner.jsx";
 
 function CeoNewMenu() {
 
@@ -50,7 +51,7 @@ function CeoNewMenu() {
     };
     return (
         <div className={'ceo-menu-main'}>
-            <WaBanner />
+            <ReBanner />
             <div style={{ marginTop: '10vh', marginLeft: '200px', position: 'relative' }}>
                 <h2 className={'new-menu-title mb-4'}>메뉴 추가</h2>
                 <hr />
