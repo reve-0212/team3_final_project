@@ -2,6 +2,39 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.team3_final_project_server.KimSangMin.KSMMapper">
+<mapper namespace="com.example.team3_final_project_server.KimSangMin.mapper.OwnerMapper">
+
+<!--    사장님 회원가입 (관리자가) -->
+    <insert id="saveOwner" parameterType="com.example.team3_final_project_server.dto.OwnerDTO">
+        INSERT INTO owner (owner_id, owner_name, owner_pass, owner_number, bs_name, bs_number)
+        VALUES (#{ownerId}, #{ownerName}, #{ownerPass}, #{ownerNumber}, #{bsName}, #{bsNumber})
+    </insert>
+
+<!--    사장님 로그인 -->
+    <select id="loginOwner" resultType="com.example.team3_final_project_server.dto.OwnerDTO">
+        SELECT *
+        FROM owner
+        WHERE owner_id = #{ownerId}
+        AND owner_pass = #{ownerPass}
+    </select>
+
+<!--    사장님 정보 조회 -->
+    <select id="findOwnerId" resultType="com.example.team3_final_project_server.dto.OwnerDTO">
+        select * from owner
+        where owner_id = #{ownerId}
+    </select>
+
+<!--    사장님 정보 수정하기 -->
+    <update id="updateOwner" parameterType="com.example.team3_final_project_server.dto.OwnerDTO">
+        UPDATE owner
+        SET
+        owner_pass = #{ownerPass},
+        owner_name = #{ownerName},
+        owner_number = #{ownerNumber},
+        bs_name = #{bsName},
+        bs_number = #{bsNumber}
+        WHERE owner_id = #{ownerId}
+    </update>
+
 
 </mapper>

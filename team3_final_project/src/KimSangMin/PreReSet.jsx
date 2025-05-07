@@ -161,7 +161,7 @@ function PreReSet() {
         <hr/>
         <br/>
 
-        {/* 가게주소 */}
+        {/* 가게주소1 */}
         <h4 className="text-start"><strong>가게 주소</strong>
           <span style={{color:"#FFD727", fontSize: "14px"}}> *필수</span></h4>
 
@@ -175,7 +175,25 @@ function PreReSet() {
               onChange={(e) => hChange(e,'Address')}
               // required={true}
           />
+
+          {/* 가게주소2 */}
+          <h4 className="text-start"><strong>가게 주소</strong>
+            <span style={{color:"#FFD727", fontSize: "14px"}}> *필수</span></h4>
+
+
+          <input
+              type="text"
+              id="Address"
+              className="form-control"
+              style={{ width: '300px', height: '50px' }}
+              value={Rest[0].Address}
+              onChange={(e) => hChange(e,'Address')}
+              // required={true}
+          />
         </div>
+
+
+
 
         <hr/>
         <br/>
