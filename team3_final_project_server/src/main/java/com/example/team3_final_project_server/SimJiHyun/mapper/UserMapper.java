@@ -10,6 +10,6 @@ public interface UserMapper {
   Optional<UserDTO> findByUserId(String userId);
   boolean existsByUserId(String userId);
   boolean existsByUserEmail(String userEmail);
-  void save(UserDTO user);
+  void saveUser(UserDTO user);
   void deleteByUserId(String userId);
 }

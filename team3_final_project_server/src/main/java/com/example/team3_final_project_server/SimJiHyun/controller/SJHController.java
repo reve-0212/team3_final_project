@@ -24,6 +24,7 @@ public class SJHController {
   @Autowired
   private MemberService memberService;
 
+  //  로그인
   @GetMapping("/api/auth/login")
   public ResponseEntity<?> login(@RequestParam String userId, @RequestParam String userPass) {
 
@@ -43,25 +44,34 @@ public class SJHController {
     }
   }
 
+  //  회원 가입, 클라이언트와의 데이터 전달을 위해 UserDTO 클래스를 사용
+  @PostMapping("/api/auth/signup")
+  public ResponseEntity<?> signup(@RequestBody UserDTO user) {
 
+    System.out.println("signup");
+
+//    예외처리를 통해서 안전하게 회원 가입 실행
+    try {
+//      회원 가입 성공 시 성공 메시지 출력
+      String resData = memberService.signupMember(user);
+
+//      클라이언트에게 200 성공 신호와 성공 메시지를 전달
+      return ResponseEntity.ok().body(resData);
+    }
+//    회원 가입 실패 시 오류 메시지 출력
+    catch (IllegalArgumentException e) {
+      String resData = "회원 가입 실패\n" + e.getMessage();
+      return ResponseEntity.badRequest().body(resData);
+    }
+  }
+
+
+  //  데이터 가져오기
   @PostMapping("/getUserData")
   public UserDTO getUserData(@RequestParam("userId") String userId, @RequestParam("userPass") String userPass) {
     System.out.println(sjhServiceImpl.getUserData(userId, userPass));
     return sjhServiceImpl.getUserData(userId, userPass);
   }
 
-//  @GetMapping("/api/auth/login")
-//  @ResponseBody
-//  public UserDTO login(@RequestParam String userId, @RequestParam String userPass) {
-//    try{
-//      UserDTO user = memberService.validateUser(userId, userPass);
-//      user.setUserPass(null);
-//      System.out.println(userId);
-//      System.out.println(userPass);
-//      System.out.println(user);
-//      return user;
-//    } catch (AuthenticationException | IllegalArgumentException e){
-//      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-//    }
-//  }
+
 }

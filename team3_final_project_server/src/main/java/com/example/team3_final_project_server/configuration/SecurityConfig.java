@@ -94,7 +94,7 @@ public class SecurityConfig {
                 .requestMatchers("/admin/**").hasRole("ADMIN")
 //            사용자 페이지와 /board/** url은 ROLE_MEMBER 권한이 필요함
                 .requestMatchers("/member/**", "/board/**").hasAnyRole("ADMIN", "MEMBER")
-                .requestMatchers("/api/auth/login", "/getUserData").permitAll()
+                .requestMatchers("/api/auth/login","/api/auth/signup").permitAll()
 //            나머지 url은 모두 인증 받은 사용자만 사용 가능
                 .anyRequest().authenticated())
 //        JWT 기반 인증이기 때문에 사용자가 만든 JWT 인증 필터를 사용하도록 등록

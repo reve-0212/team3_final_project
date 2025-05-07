@@ -4,9 +4,9 @@ import axios from "axios";
 
 // 회원 가입
 // 매개변수 memberDTO는 해당 함수를 호출 시 매개변수로 object 타입을 사용함
-const apiSignup = (memberDTO) => {
+const apiSignup = (userDTO) => {
   // axios로 가입할 회원 정보를 전달함
-  axios.post(`/api/auth/signup`, memberDTO, {
+  axios.post(`/api/auth/signup`, userDTO, {
     // headers 의 'Content-Type': 'application/json' 은 axios 가 자동으로 설정, 생략 가능
     headers: {
       'Content-Type': 'application/json'
