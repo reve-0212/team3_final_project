@@ -143,12 +143,6 @@ const MenuSelector = () => {
                     </ul>
                 )}
 
-                {/*<button type={"button"} className={"btn rounded-3"}*/}
-                {/*        style={{color: "#A9A9A9"}}*/}
-                {/*        onClick={() => {*/}
-                {/*            Nv("/book/reg")*/}
-                {/*        }}>다음으로*/}
-                {/*</button>*/}
             </div>
         </div>
     );
