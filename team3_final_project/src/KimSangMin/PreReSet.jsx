@@ -2,6 +2,7 @@ import {useState} from "react";
 import WaBanner from "./WaBanner.jsx";
 import {Link} from "react-router-dom";
 import ReBanner from "./ReBanner.jsx";
+import SeatManager from "./SeatManager.jsx";
 
 
 function PreReSet() {
@@ -254,7 +255,9 @@ function PreReSet() {
               </div>
           ))}
         </div>
-
+          <hr/>
+          <h4>좌석배치</h4>
+          <SeatManager/>
         <hr/>
         <br/>
           <div className="text-end mt-4">
