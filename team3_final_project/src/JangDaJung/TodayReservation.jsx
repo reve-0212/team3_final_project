@@ -1,6 +1,7 @@
 import {useState} from "react";
 import WaBanner from "../KimSangMin/WaBanner.jsx";
 import './TodayReservation.css'
+import ReBanner from "../KimSangMin/ReBanner.jsx";
 
 function TodayReservation() {
   const [tab, setTab] = useState('current');
@@ -34,7 +35,7 @@ function TodayReservation() {
 
   return (
       <div className={'ceo-main'}>
-        <WaBanner />
+        <ReBanner />
         <div style={{ marginTop: '10vh', marginLeft: '200px', position: 'relative'}}>
           <h2 className={'today-waiting-title mb-4'}>오늘의 예약</h2>
           <hr />

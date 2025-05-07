@@ -46,6 +46,13 @@ function ReBanner() {
                     <br/>
 
                     <li className="nav-item">
+                        <a className="nav-link text-black" href="/pre/PreToday">오늘 예약</a>
+                    </li>
+                    <li className="nav-item">
+                        <a className="nav-link text-black" href="/pre/PrePast">지난날짜 예약</a>
+                    </li>
+                    <br/>
+                    <li className="nav-item">
                         <a className="nav-link text-black" href="/pre/MenuList">가게메뉴</a>
                     </li>
                     <li className="nav-item">

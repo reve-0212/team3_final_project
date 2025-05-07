@@ -2,6 +2,7 @@ import WaBanner from "../KimSangMin/WaBanner.jsx";
 import "./CeoNewMenu.css";
 import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
+import ReBanner from "../KimSangMin/ReBanner.jsx";
 
 function CeoMenuEdit() {
   const navigate = useNavigate()
@@ -113,7 +114,7 @@ function CeoMenuEdit() {
 
   return (
       <div className={'ceo-menu-main'}>
-        <WaBanner />
+        <ReBanner />
         <div style={{ marginTop: '10vh', marginLeft: '200px', position: 'relative' }}>
           <h2 className={'new-menu-title mb-4'}>메뉴 수정</h2>
           <hr />

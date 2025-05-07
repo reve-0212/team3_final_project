@@ -4,6 +4,7 @@ import {useState} from "react";
 import 'react-day-picker/dist/style.css';
 import './PastDateReservation.css';
 import {DayPicker} from "react-day-picker";
+import ReBanner from "../KimSangMin/ReBanner.jsx";
 
 function PastDateReservation() {
   // 예약 리스트 (더미데이터)
@@ -111,7 +112,7 @@ function PastDateReservation() {
 
   return (
       <div className={'ceo-main'}>
-        <WaBanner />
+        <ReBanner />
         <div className={'date-range-container'}  style={{ marginTop: '10vh', marginLeft: '200px' }}>
           <h2 className={'past-waiting-title mb-4'}>예약 내역</h2>
           <hr />

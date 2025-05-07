@@ -9,14 +9,14 @@ const stores = [
         check: [
             {
                 reserve: [
-                    { day: '2025-05-02', times: '11:00', count: 6 },
-                    { day: '2025-05-02', times: '12:00', count: 8 },
-                    { day: '2025-05-02', times: '13:00', count: 9 },
-                    { day: '2025-05-02', times: '14:00', count: 4 },
-                    { day: '2025-05-02', times: '15:00', count: 9 },
-                    { day: '2025-05-02', times: '16:00', count: 3 },
-                    { day: '2025-05-02', times: '17:00', count: 11 },
-                    { day: '2025-05-02', times: '18:00', count: 2 },
+                    { day: '2025-05-07', times: '11:00', count: 6 },
+                    { day: '2025-05-07', times: '12:00', count: 8 },
+                    { day: '2025-05-07', times: '13:00', count: 9 },
+                    { day: '2025-05-07', times: '14:00', count: 4 },
+                    { day: '2025-05-07', times: '15:00', count: 9 },
+                    { day: '2025-05-07', times: '16:00', count: 3 },
+                    { day: '2025-05-07', times: '17:00', count: 11 },
+                    { day: '2025-05-07', times: '18:00', count: 2 },
                 ],
             },
         ],
@@ -39,8 +39,6 @@ const waitingData = store.check
 
 // 총 웨이팅 수
 const totalWaitingCount = waitingData.reduce((acc, item) => acc + item.count, 0);
-
-
 
 const reviewScoreData = [
     {score: 5, count: 30},
@@ -68,11 +66,11 @@ function PreMain() {
             <div className={'CeoMain-content'}>
                 <h2 className={'CeoMain-title mb-4'}>{store.storeName}</h2>
                 <div className={'row g-4'}>
-                    {/*  카드 1 - 워에팅 수 */}
+                    {/*  카드 1 - 예약 수 */}
                     <div className={'col-12 col-md-6'}>
+                        <Link to="/pre/PreCh" className={'text-decoration-none'}>
                         <div className={'custom-card'}>
                             <div className={'card-header-text'}>오늘 예약 수</div>
-                            <Link to="/pre/PreCh">
                             <div className={'chart-wrapper'}>
                                 <ResponsiveContainer width={'100%'} height={150}>
                                     <BarChart data={waitingData} barCategoryGap={"5%"}>
@@ -89,8 +87,8 @@ function PreMain() {
                                 </ResponsiveContainer>
                                 <p className={'chart-bottom-text'}>총 {totalWaitingCount}건</p>
                             </div>
-                            </Link>
                         </div>
+                        </Link>
                     </div>
                     {/* 카드 2-리뷰 */}
                     {/* 카드 2 - 리뷰 */}

@@ -1,7 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.team3_final_project_server.JangDaJung.JDJMapper">
+    <!-- INSERT -->
+<!--    <insert id="insertHistory" parameterType="com.example.team3_final_project_server.dto.ReservationHistoryDTO">-->
+<!--        INSERT INTO reservation_history (-->
+<!--        restaurant_idx, reservation_idx, reservation_date,-->
+<!--        male_count, female_count, gender_total_count,-->
+<!--        menu_idx, menu_name, menu_price,-->
+<!--        menu_sold_count, menu_sold_total_price,-->
+<!--        checkout_date, cancel_date, reservation_team_count-->
+<!--        )-->
+<!--        VALUES (-->
+<!--        #{restaurantIdx}, #{reservationIdx}, #{reservationDate},-->
+<!--        #{maleCount}, #{femaleCount}, #{genderTotalCount},-->
+<!--        #{menuIdx}, #{menuName}, #{menuPrice},-->
+<!--        #{menuSoldCount}, #{menuSoldTotalPrice},-->
+<!--        #{checkoutDate}, #{cancelDate}, #{reservationTeamCount}-->
+<!--        )-->
+<!--    </insert>-->
+    
+    <!-- 메뉴 여러개 선택해서 예약할 수  있도록 history 저장 -->
+    <insert id="insertHistories" parameterType="java.util.List">
+        <foreach collection="list" item="history" separator=";">
+            <foreach collection="history.menus" item="menu" separator=";">
+                INSERT INTO reservation_history (
+                restaurant_idx, reservation_idx, reservation_date, male_count, female_count, gender_total_count,
+                menu_idx, menu_name, menu_price, menu_sold_count, menu_sold_total_price, reservation_team_count
+                )
+                VALUES (
+                #{history.restaurantIdx}, #{history.reservationIdx}, #{history.reservationDate}, #{history.maleCount}, #{history.femaleCount}, #{history.genderTotalCount},
+                #{menu.menuIdx}, #{menu.menuName}, #{menu.menuPrice}, #{menu.menuSoldCount}, #{menu.menuSoldTotalPrice}, #{history.reservationTeamCount}
+                )
+            </foreach>
+        </foreach>
+    </insert>
 
+    <!-- 기간 조회 -->
+    <select id="selectHistoryByDate" resultType="com.example.team3_final_project_server.dto.ReservationHistoryDTO">
+        SELECT *
+        FROM reservation_history
+        WHERE reservation_date BETWEEN #{startDate} AND #{endDate}
+    </select>
+
+    <!--  성별-->
+    <select id="selectVisitorGender" resultType="map">
+        SELECT
+            SUM(male_count) AS maleCount,
+            SUM(female_count) AS femaleCount,
+            SUM(gender_total_count) AS genderTotalCount
+        FROM reservation_history
+        WHERE reservation_date BETWEEN #{startDate} AND #{endDate}
+            AND restaurant_idx = #{restaurantIdx}
+    </select>
+
+<!--    매출 총액 -->
+    <select id="selectSalesTotalPrice" resultType="map">
+        SELECT
+            SUM(menu_sold_total_price) AS totalSales
+        FROM reservation_history
+        WHERE reservation_date BETWEEN #{startDate} AND #{endDate}
+            AND restaurant_idx = #{restaurantIdx}
+    </select>
+
+<!--    메뉴별 매출 -->
+    <select id="selectMenuTotalPrice" resultType="map">
+        SELECT
+            menu_idx,
+            menu_name,
+            SUM(menu_sold_count) AS soldCount,
+            SUM(menu_sold_total_price) AS soldTotalPrice
+        FROM reservation_history
+        WHERE reservation_date BETWEEN #{startDate} AND #{endDate}
+            AND restaurant_idx = #{restaurantIdx}
+        GROUP BY menu_idx, menu_name
+    </select>
+
+<!--    시간대별 예약팀 수-->
+    <select id="selectTeamCountByHour" resultType="map">
+        SELECT
+            HOUR(reservation_date) as hour,
+            COUNT(DISTINCT reservation_idx) AS teamCount
+        FROM reservation_history
+        WHERE reservation_date BETWEEN #{startDate} AND #{endDate}
+            AND restaurant_idx = #{restaurantIdx}
+        GROUP BY HOUR(reservation_date)
+        ORDER BY hour
+    </select>
 </mapper>

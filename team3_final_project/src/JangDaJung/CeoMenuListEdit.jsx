@@ -16,6 +16,7 @@ import {
 } from "@dnd-kit/sortable";
 import { GripVertical } from "lucide-react";
 import { CSS } from "@dnd-kit/utilities";
+import ReBanner from "../KimSangMin/ReBanner.jsx";
 
 // 더미
 const dumiList = [
@@ -39,7 +40,7 @@ const dumiList = [
     },
 ];
 
-function SortableItem({ item, onCheckHidden, onCheckSoldOut, checkedHidden, checkedSoldOut }) {
+function SortableItem({ item, onCheck, checked }) {
     const {
         attributes,
         listeners,
@@ -66,25 +67,20 @@ function SortableItem({ item, onCheckHidden, onCheckSoldOut, checkedHidden, chec
             {/*    체크박스*/}
             <input
                 type="checkbox"
-                checked={checkedHidden}
-                onChange={() => onCheckHidden(item.id)}
-                style={{ margin: "0 10px" }}
-            />
-            <input
-                type="checkbox"
-                checked={checkedSoldOut}
-                onChange={() => onCheckSoldOut(item.id)}
+                checked={checked}
+                onChange={() => onCheck(item.id)}
                 style={{ margin: "0 10px" }}
             />
 
             {/*    메뉴 정보*/}
             <div
                 className={"flex-grow-1"}
-                style={{ minWidth: "150px", textDecoration: item.hidden ? "line-through" : "none" }}
+                style={{ minWidth: "150px" }}
             >
                 <h5 className={"mb-1"}>
                     {item.name}{" "}
                     {item.soldOut && <span style={{ color: "red", fontSize: "0.8rem" }}>(품절)</span>}
+                    {item.hidden && <span style={{ color: "red", fontSize: "0.8rem" }}>(숨김)</span>}
                 </h5>
                 <small className={"text-muted"}>{item.price}원</small>
             </div>
@@ -152,20 +148,12 @@ function CeoMenuListEdit() {
         // 나중에 이 부분만 axios.post로 바꾸면 됨
     }
 
-    // 체크된 메뉴 ID들(숨김용)
-    const [selectedHiddenIds, setSelectedHiddenIds] = useState([]);
-    const [selectedSoldOutIds, setSelectedSoldOutIds] = useState([]);
+    // 체크된 메뉴 ID들 (숨김/품절)
+    const [selectedIds, setSelectedIds] = useState([]);
 
-    // 체크박스 선택/해제 (숨김용)
-    const handleCheckHidden = (menuId) => {
-        setSelectedHiddenIds(prev =>
-            prev.includes(menuId) ? prev.filter(id => id !== menuId) : [...prev, menuId]
-        );
-    };
-
-    // 체크박스 선택/해제 (품절용)
-    const handleCheckSoldOut = (menuId) => {
-        setSelectedSoldOutIds(prev =>
+    // 체크박스 선택/해제 (숨김/품절)
+    const handleCheck = (menuId) => {
+        setSelectedIds(prev =>
             prev.includes(menuId) ? prev.filter(id => id !== menuId) : [...prev, menuId]
         );
     };
@@ -174,20 +162,22 @@ function CeoMenuListEdit() {
     const handleHideSelected = () => {
         setMenuList(prevList =>
             prevList.map(menu =>
-                selectedHiddenIds.includes(menu.id)
+                selectedIds.includes(menu.id)
                     ? { ...menu, hidden: true }  // 임시로 hidden 처리
                     : menu
             )
         );
+        setSelectedIds([]); // 체크박스 해제
     };
 
     // 품절하기
     const handleSoldOut = () => {
         setMenuList((prev) =>
             prev.map((item) =>
-                selectedSoldOutIds.includes(item.id) ? { ...item, soldOut: true } : item
+                selectedIds.includes(item.id) ? { ...item, soldOut: true } : item
             )
         );
+        setSelectedIds([]); // 체크박스 해제
     };
 
     // 취소 버튼 -> 리스트 페이지로
@@ -199,8 +189,6 @@ function CeoMenuListEdit() {
     const handleSave = () => {
         // 실제 서버 저장 로직은 여기서 호출
         console.log("저장된 메뉴:", menuList);
-        console.log('숨김 처리할 메뉴 IDs:', selectedHiddenIds);
-        console.log('품절 처리할 메뉴 IDs:', selectedSoldOutIds);
         // 나중에 여기 axios.post 연결
         // axios.post('/api/hide-menus', { ids: selectedHiddenIds });
         navigate("/pre/MenuList");
@@ -208,7 +196,7 @@ function CeoMenuListEdit() {
 
     return (
         <div className={'ceo-menu-main'}>
-            <WaBanner />
+            <ReBanner />
             <div style={{ marginTop: '10vh', marginLeft: '200px', position: 'relative' }}>
                 <h2 className={'new-menu-title mb-4'}>가게 메뉴</h2>
                 <hr />
@@ -232,10 +220,8 @@ function CeoMenuListEdit() {
                                     <SortableItem
                                         key={menu.id}
                                         item={menu}
-                                        checkedHidden={selectedHiddenIds.includes(menu.id)}
-                                        checkedSoldOut={selectedSoldOutIds.includes(menu.id)}
-                                        onCheckHidden={handleCheckHidden}
-                                        onCheckSoldOut={handleCheckSoldOut}
+                                        checked={selectedIds.includes(menu.id)}
+                                        onCheck={handleCheck}
                                     />
                                 ))}
                             </ul>
