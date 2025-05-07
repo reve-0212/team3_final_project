@@ -36,8 +36,8 @@ function SangMinApp() {
                     <Route path="/pre/PreTime" element={<PreTime/>}/>
                     <Route path="/pre/PreTimeSet" element={<PreTimeSet/>}/>
 
-                    {/* 관리자 -> 사장님 */}
-                    <Route path="/pre/admin" element={<AdminLogin/>}/> {/*  관리자 로그인 */}
+
+                  {/* 관리자 -> 사장님 */}<Route path="/pre/admin" element={<AdminLogin/>}/> {/*  관리자 로그인 */}
                     <Route path="/pre/reg" element={<PreRegPage/>}/> {/* 사장님 정보 입력 버튼 */}
                     <Route path="/pre/info" element={<PreInfoPage/>}/> {/*  사장님 정보 입력 페이지 */}
                     <Route path="/pre/login" element={<OwnerLogin/>}/> {/*  사장 로그인 */}

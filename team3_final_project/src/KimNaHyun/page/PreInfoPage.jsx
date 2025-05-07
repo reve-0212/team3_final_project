@@ -1,27 +1,49 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
+import axios from "axios";
 
 function PreInfoPage() {
     const nv = useNavigate();
 
-    const [id, setId] = useState("");
-    const [pass, setPass] = useState("");
-    const [name, setName] = useState("");
-    const [call, setCall] = useState("");
-    const [storeName, setStoreName] = useState("");
-    const [busNum, setBusNum] = useState("");
+    const [ownerId, setOwnerId] = useState("");
+    const [ownerPass, setOwnerPass] = useState("");
+    const [ownerName, setOwnerName] = useState("");
+    const [ownerNumber, setOwnerNumber] = useState("");
+    const [bsName, setBsName] = useState("");
+    const [bsNumber, setBsNumber] = useState("");
 
-    const handleChangeId = (e) => setId(e.target.value);
-    const handleChangePass = (e) => setPass(e.target.value);
-    const handleChangeName = (e) => setName(e.target.value);
-    const handleChangeCall = (e) => setCall(e.target.value);
-    const handleChangeStoreName = (e) => setStoreName(e.target.value);
-    const handleChangeBusNum = (e) => setBusNum(e.target.value);
+    const handleChangeOwnerId = (e) => setOwnerId(e.target.value);
+    const handleChangeOwnerPass = (e) => setOwnerPass(e.target.value);
+    const handleChangeOwnerName = (e) => setOwnerName(e.target.value);
+    const handleChangeOwnerNumber = (e) => setOwnerNumber(e.target.value);
+    const handleChangeBsName = (e) => setBsName(e.target.value);
+    const handleChangeBsNumber = (e) => setBsNumber(e.target.value);
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        const ownerData = {
+            ownerId,ownerPass,ownerName,ownerNumber,bsName,bsNumber
+        }
+
+        axios.post('http://localhost:8080/admin/owner',ownerData)
+            .then( (response) => {
+                const { success, message } = response.data
+
+                if (success){
+                    alert("가입 성공" + message)
+                    nv("/pre/reg");
+                }
+                else{
+                    alert("가입 실패" + message)
+                }
+            })
+            .catch( (error) => {
+                alert("서버 오류가 발생했습니다." + error)
+            });
         // 서버 전송 또는 유효성 검사
-        console.log({id, pass, name, call, storeName, busNum});
+        console.log(ownerData);
     };
 
     return (
@@ -69,8 +91,8 @@ function PreInfoPage() {
                                 className="form-control"
                                 id="preId"
                                 placeholder="아이디를 입력해주세요"
-                                value={id}
-                                onChange={handleChangeId}
+                                value={ownerId}
+                                onChange={handleChangeOwnerId}
                                 required
                             />
                         </div>
@@ -79,13 +101,14 @@ function PreInfoPage() {
                                 비밀번호
                             </label>
                             <input
-                                type="text"
+                                type="password"
                                 className="form-control"
                                 id="prePw"
                                 placeholder="비밀번호를 입력해주세요"
-                                value={pass}
-                                onChange={handleChangePass}
+                                value={ownerPass}
+                                onChange={handleChangeOwnerPass}
                                 required
+                                style={{ width: '400px' }}
                             />
                         </div>
                         <div className="mt-4">
@@ -97,8 +120,8 @@ function PreInfoPage() {
                                 className="form-control"
                                 id="preName"
                                 placeholder="대표자명을 입력해주세요"
-                                value={name}
-                                onChange={handleChangeName}
+                                value={ownerName}
+                                onChange={handleChangeOwnerName}
                                 required
                             />
                         </div>
@@ -111,8 +134,8 @@ function PreInfoPage() {
                                 className="form-control"
                                 id="preCall"
                                 placeholder="대표자 번호를 입력해주세요"
-                                value={call}
-                                onChange={handleChangeCall}
+                                value={ownerNumber}
+                                onChange={handleChangeOwnerNumber}
                                 required
                             />
                         </div>
@@ -125,8 +148,8 @@ function PreInfoPage() {
                                 className="form-control"
                                 id="preStore"
                                 placeholder="사업장 이름을 입력해주세요"
-                                value={storeName}
-                                onChange={handleChangeStoreName}
+                                value={bsName}
+                                onChange={handleChangeBsName}
                                 required
                             />
                         </div>
@@ -139,8 +162,8 @@ function PreInfoPage() {
                                 className="form-control"
                                 id="businessNum"
                                 placeholder="사업자 번호를 입력해주세요"
-                                value={busNum}
-                                onChange={handleChangeBusNum}
+                                value={bsNumber}
+                                onChange={handleChangeBsNumber}
                             />
                         </div>
                     </div>
@@ -150,9 +173,7 @@ function PreInfoPage() {
                             type="submit"
                             className="btn"
                             style={{backgroundColor: "#FFD727", padding: "10px 20px"}}
-                            onClick={() => {
-                                nv("/pre/reg")
-                            }}
+
                         >
                             등록 하기
                         </button>

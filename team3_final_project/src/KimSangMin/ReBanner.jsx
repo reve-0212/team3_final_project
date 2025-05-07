@@ -1,6 +1,29 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import axios from "axios";
 
 function ReBanner() {
+
+    const nv = useNavigate();
+
+    const hLogout = () => {
+        axios.post("http://localhost:8080/owner/logout", {}, { withCredentials: true })
+            .then((response) => {
+                const { success, message } = response.data;
+                alert("로그아웃 되었습니다.");
+
+                if(success) {
+                    alert(message)
+                    nv("/pre/login")
+                }
+                else {
+                    alert("로그아웃 실패")
+                }
+            })
+            .catch( (error) => {
+                alert("서버 오류가 발생했습니다" + error)
+            })
+    }
+
     return (
         <div>
             <div className="fixed-top">
@@ -9,7 +32,7 @@ function ReBanner() {
                     <div className="container-fluid d-flex justify-content-between align-items-center">
                         <div style={{textAlign: 'center'}} className="text-white fs-1">Logo</div>
                         <Link to="/pre/login">
-                            <button type={"button"} className={"flex-end"}>로그아웃</button>
+                            <button type={"button"} onClick={hLogout} className={"flex-end"}>로그아웃</button>
                         </Link>
 
                     </div>
