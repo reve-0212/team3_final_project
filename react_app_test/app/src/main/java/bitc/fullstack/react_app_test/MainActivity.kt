@@ -34,7 +34,6 @@ class MainActivity : AppCompatActivity() {
       allowUniversalAccessFromFileURLs = true
     }
 
-
     // 콘솔 로그 확인용
     webView.webChromeClient = object : WebChromeClient() {
       override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {

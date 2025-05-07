@@ -151,10 +151,10 @@ function PreInfoPage() {
                             className="btn"
                             style={{backgroundColor: "#FFD727", padding: "10px 20px"}}
                             onClick={() => {
-                                nv("/pre/reg")
+                                nv("/pre/PreMain")
                             }}
                         >
-                            등록 하기
+                            수정하기
                         </button>
                     </div>
                 </form>

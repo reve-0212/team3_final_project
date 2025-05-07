@@ -71,7 +71,7 @@ function PreMain() {
                     {/*  카드 1 - 워에팅 수 */}
                     <div className={'col-12 col-md-6'}>
                         <div className={'custom-card'}>
-                            <div className={'card-header-text'}>오늘 웨이팅 수</div>
+                            <div className={'card-header-text'}>오늘 예약 수</div>
                             <Link to="/pre/PreCh">
                             <div className={'chart-wrapper'}>
                                 <ResponsiveContainer width={'100%'} height={150}>

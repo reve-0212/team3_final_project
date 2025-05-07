@@ -24,13 +24,13 @@ function ContentList() {
 
             {/* 상단 필터 버튼 - */}
             <div className="d-flex gap-2 mb-4">
-                <button className="btn btn-outline-secondary btn-sm"><i className="fa-solid fa-rotate-right"></i> 초기화
+                <button className="btn-jks btn-outline-secondary btn-sm"><i className="fa-solid fa-rotate-right"></i> 초기화
                 </button>
 
                 {/* 지역 선택 콤보박스 */}
                 <div className="position-relative">
                     <select
-                        className="btn btn-sm button-seebox me-auto text-start"
+                        className="btn-jks btn-sm button-seebox me-auto text-start"
                         style={{width: 'auto', appearance: 'none'}}
                         aria-label="지역 선택"
                     >
@@ -48,7 +48,7 @@ function ContentList() {
                 {/* 정렬 기준 선택 콤보박스 */}
                 <div className="position-relative d-inline-block">
                     <select
-                        className="btn button-seebox btn-sm text-start"
+                        className="btn-jks button-seebox btn-sm text-start"
                         style={{
                             width: 'auto',
                             appearance: 'none',
@@ -82,7 +82,7 @@ function ContentList() {
                                 onClick={() => {
                                     Nv("/contentDetail")
                                 }}>몬베톤</h5>
-                            <button className="btn btn-sm" onClick={() => toggleBookmark("store1")}>
+                            <button className="btn-jks btn-sm" onClick={() => toggleBookmark("store1")}>
                                 <FontAwesomeIcon icon={bookmarks.store1 ? faBookmark : faBookmarkRegular}/>
                             </button>
                         </div>
@@ -128,7 +128,7 @@ function ContentList() {
                     <div className="card-body text-start">
                         <div className="d-flex justify-content-between align-items-center">
                             <h5 className="card-title mb-0 fw-semibold">수프올샐러드</h5>
-                            <button className="btn btn-sm">
+                            <button className="btn-jks btn-sm">
                                 <i className="fa-regular fa-bookmark"></i>
                             </button>
                         </div>

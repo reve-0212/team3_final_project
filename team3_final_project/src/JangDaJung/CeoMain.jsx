@@ -96,19 +96,6 @@ function CeoMain() {
                             </div>
                         </div>
                     </div>
-
-                    {/* 빈 카드들 */}
-                    <div className={'col-12 col-md-6'}>
-                        <div className={'custom-card'}>
-                            <div className={'card-header-text'}>오늘 웨이팅 수</div>
-                        </div>
-                    </div>
-
-                    <div className={'col-12 col-md-6'}>
-                        <div className={'custom-card'}>
-                            <div className={'card-header-text'}>오늘 웨이팅 수</div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
