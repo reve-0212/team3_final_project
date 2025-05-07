@@ -15,6 +15,9 @@ const useGeolocation = () => {
         lng: location.coords.longitude
       });
       setLocationLoading(false);
+
+      console.log(location.coords.latitude)
+      console.log(location.coords.longitude)
     }
 
     const error = () => {

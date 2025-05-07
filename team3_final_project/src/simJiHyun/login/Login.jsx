@@ -4,102 +4,62 @@ import LoginSignText from "../LoginSignText.jsx";
 import "../SjhCss.css"
 import useUserStore from "../../stores/useUserStore.jsx";
 import {Link, useNavigate} from "react-router-dom";
-import {useState} from "react";
-import axios from "axios";
+import {apiLogin} from "../service/ApiService.js";
 
 function Login() {
-    const setUser = useUserStore((state) => state.setUser);
-    const Nv = useNavigate();
+  const setUser = useUserStore((state) => state.setUser);
+  const Nv = useNavigate();
 
-    const [id, setId] = useState("");
-    const [pass, setPass] = useState("");
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const userId = formData.get('userId')
+    const userPass = formData.get('userPass')
+    console.log(userId)
+    console.log(userPass)
 
-    const handleChangeId = (event) => {
-        setId(event.target.value)
-    }
+    apiLogin(userId, userPass)
+  }
 
-    const handleChangePass = (event) => {
-        setPass(event.target.value)
-    }
+  return (
+    <form className={"container pt-2"} onSubmit={handleSubmit}>
 
-    const isIdAvailable = (userId, userPass, event) => {
-        event.preventDefault();
+      <LoginSignText text={"로그인"}/>
 
-        axios.post("http://localhost:8080/login", null, {
-            params: {userId: userId, userPass: userPass}
-        }).then((res) => {
-            console.log(res.data)
-            // id 와 pass 가 맞는지 count 해서 그 반환값을 가져온다
-            // 반환값이 0 이면 없다는 뜻이므로 아래 알림을 출력한다
-            if (res.data === 0) {
-                alert("아이디 혹은 비밀번호가 틀렸습니다.")
-            } else {
-                // 만일 둘 다 있다면 유저 데이터를 가져온다
-                axios.post("http://localhost:8080/getUserData", null,
-                    {params: {userId: userId, userPass: userPass}})
-                    .then((res) => {
-                        const userData = {
-                            id: res.data.userId,
-                            pass: res.data.userPass,
-                            name: res.data.userName,
-                            gender: res.data.userGender,
-                            age: res.data.userAge,
-                            call: res.data.userCall,
-                            email: res.data.userEmail,
-                            level: res.data.userLevel
-                        }
-                        // 가져온 userData 를 useUserStore 에 저장한다
-                        setUser(userData)
-                        alert("로그인에 성공했습니다!")
-                    }).catch((err) => {
-                    console.log(err)
-                })
-                Nv("/")
-            }
-        }).catch((err) => {
-                console.log(err)
-            }
-        )
-    }
+      <div className={"mt-4 d-flex justify-content-center"}>
+        <div className={"d-flex flex-column gap-4"}>
+          <input type={"text"}
+                 className={"form-control py-3"}
+                 style={{width: '25rem'}}
+                 id={"user-id"}
+                 name={"userId"}
+                 placeholder={"아이디 입력"}/>
+          <input type={"text"}
+                 className={"form-control py-3"}
+                 style={{width: '25rem'}}
+                 id={"user-pass"}
+                 name={"userPass"}
+                 placeholder={"비밀번호 입력"}/>
+        </div>
+      </div>
 
-    // onSubmit={handleSubmit}
-    return (
-        <form className={"container pt-2"} onSubmit={(e) => isIdAvailable(id, pass, e)}>
+      <div className={"mt-4 d-flex justify-content-center"}>
+        <button type={"submit"}
+                className={"btn py-3 fw-bold text-light fs-5 rounded-3"}
+                style={{backgroundColor: "#FFB74D", width: "400px"}}>로그인
+        </button>
+      </div>
 
-            <LoginSignText text={"로그인"}/>
-
-            <div className={"mt-4 d-flex justify-content-center"}>
-                <div className={"d-flex flex-column gap-4"}>
-                    <input type={"text"}
-                           className={"form-control py-3"}
-                           style={{width: '25rem'}}
-                           placeholder={"아이디 입력"}
-                           onChange={handleChangeId}/>
-                    <input type={"text"}
-                           className={"form-control py-3"}
-                           style={{width: '25rem'}}
-                           placeholder={"비밀번호 입력"}
-                           onChange={handleChangePass}/>
-                </div>
-            </div>
-
-            <div className={"mt-4 d-flex justify-content-center"}>
-                <button type={"submit"}
-                        className={"btn py-3 fw-bold text-light fs-5 rounded-3"}
-                        style={{backgroundColor: "#FFB74D", width: "400px"}}>로그인
-                </button>
-            </div>
-
-            <div className={"mt-4 d-flex justify-content-center"}>
-                <div className={"col d-flex justify-content-between fs-6"}
-                     style={{maxWidth: "400px"}}>
-                    <p>아직 아이디가 없으시다면 ? </p>
-                    <p><FontAwesomeIcon icon={faArrowRight}/></p>
-                    <Link to={"/user/signUp"} style={{color: "#FFB74D", textDecorationLine: 'none'}}>가입하기</Link>
-                </div>
-            </div>
-        </form>
-    );
+      <div className={"mt-4 d-flex justify-content-center"}>
+        <div className={"col d-flex justify-content-between fs-6"}
+             style={{maxWidth: "400px"}}>
+          <p>아직 아이디가 없으시다면 ? </p>
+          <p><FontAwesomeIcon icon={faArrowRight}/></p>
+          <Link to={"/user/signUp"} style={{color: "#FFB74D", textDecorationLine: 'none'}}>가입하기</Link>
+        </div>
+      </div>
+    </form>
+  );
 }
 
 export default Login

@@ -1,0 +1,32 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: team3_final_project_server
+
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
+  datasource:
+    hikari:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://58.239.58.243:3306/java503_team3_final_db?characterEncoding=UTF-8&serverTimezone=UTC
+      username: java503_team3_final
+      password: java503_team3_final_1234
+      connection-test-query: SELECT 1
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+
+jwt:
+  issuer: jwttoken@bitc.ac.kr
+  secret_key: bisper-jwt-test-token-secret-key
+
+
+logging:
+  level:
+    org.springframework.security: DEBUG

@@ -38,8 +38,8 @@ function SjhLocationTest() {
 
       const samples = [
         {lat: currentMyLocation.lat, lng: currentMyLocation.lng},
-        {lat: 37.5666103, lng: 126.9783882},
-        {lat: 37.5796103, lng: 126.9772882},
+        // {lat: 37.5666103, lng: 126.9783882},
+        // {lat: 37.5796103, lng: 126.9772882},
       ];  // 좌표 샘플
 
       for (let i = 0; i < samples.length; i++) {
@@ -72,12 +72,6 @@ function SjhLocationTest() {
         infoWindows.push(infoWindow);
       }
 
-      // 모든 마커에 클릭해도 하나의 정보창만 나오는 문제 있엇음
-      // 사유 : getClickHandler(i) 를 호출해 즉시 실행된 결과값이 이벤트 리스너에 들어감
-      // 결국 마지막 i 값만 계속 참조하게 됨
-      // for 안에서 getClickHandler(i)는 함수가 아닌 함수 실행 결과를 넣어서
-      // click 리스너 제대로 동작 x
-
       // 각 마커에 이벤트 발생 시 기능 설정
       // const getClickHandler = (index) => {
       //   if (infoWindows[index].getMap()) {
@@ -86,11 +80,6 @@ function SjhLocationTest() {
       //     infoWindows[index].open(mapRef.current, markers[index]);
       //   }
       // };
-
-      //   각 마커에 이벤트 핸들러 설정 -> void 값 반환
-      // for (let i = 0; i < markers.length; i++) {
-      //   naver.maps.Event.addListener(markers[i], "click", getClickHandler(i))
-      // }
 
       //   각 마커에 이벤트 핸들러 설정
       for (let i = 0; i < markers.length; i++) {
