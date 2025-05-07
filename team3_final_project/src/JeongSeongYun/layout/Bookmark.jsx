@@ -9,7 +9,7 @@ function Bookmark() {
     return (
         <div className={'container py-4'}>
             <div className={'row pb-3 pt-3'} onClick={()=>{nv("/contentDetail")}}>
-                <div className={'col-sm-6 box1 d-flex justify-content-center align-items-center pe-0'}>
+                <div className={'col-7 box1 d-flex justify-content-center align-items-center pe-0'}>
                     <div className={'position-relative'}>
                         <div className={'overflow-hidden h-100'}>
                             {/*<Link to={'/123'}>*/}
@@ -18,7 +18,7 @@ function Bookmark() {
                         </div>
                     </div>
                 </div>
-                <div className={'col-sm ps-0'}>
+                <div className={'col ps-0'}>
                     <p className={'fw-bold mb-0 fs-5'}>트루먼커피 서면</p>
                     <p className={'mb-1 fs-6'}><FontAwesomeIcon icon={faStar} className={'filled-star'}/>
                         <span className={'ps-2 fw-bold'}>4.8</span>
@@ -35,7 +35,7 @@ function Bookmark() {
             </div>
 
             <div className={'row pb-3 pt-3'}>
-                <div className={'col-sm-6 box1 d-flex justify-content-center align-items-center pe-0'}>
+                <div className={'col-7 box1 d-flex justify-content-center align-items-center pe-0'}>
                     <div className={'position-relative'}>
                         <div className={'overflow-hidden h-100'}>
                             <Link to={'/123'}>
@@ -44,7 +44,7 @@ function Bookmark() {
                         </div>
                     </div>
                 </div>
-                <div className={'col-sm ps-0'}>
+                <div className={'col ps-0'}>
                     <p className={'fw-bold mb-0 fs-5'}>맛찬들왕소금구이 서면점</p>
                     <p className={'mb-1 fs-6'}><FontAwesomeIcon icon={faStar} className={'filled-star'}/>
                         <span className={'ps-2 fw-bold'}>4.7</span>
@@ -60,7 +60,7 @@ function Bookmark() {
             </div>
 
             <div className={'row pb-3 pt-3'}>
-                <div className={'col-sm-6 box1 d-flex justify-content-center align-items-center pe-0'}>
+                <div className={'col-7 box1 d-flex justify-content-center align-items-center pe-0'}>
                     <div className={'position-relative'}>
                         <div className={'overflow-hidden h-100'}>
                             <Link to={'/123'}>
@@ -69,7 +69,7 @@ function Bookmark() {
                         </div>
                     </div>
                 </div>
-                <div className={'col-sm ps-0'}>
+                <div className={'col ps-0'}>
                     <p className={'fw-bold mb-0 fs-5'}>블랙업커피 서면</p>
                     <p className={'mb-1 fs-6'}><FontAwesomeIcon icon={faStar} className={'filled-star'}/>
                         <span className={'ps-2 fw-bold'}>4.1</span>

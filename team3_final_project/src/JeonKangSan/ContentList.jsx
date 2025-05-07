@@ -1,11 +1,28 @@
 import "./JksSheet.css";
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBookmark as faBookmarkRegular} from "@fortawesome/free-regular-svg-icons";
 import {faBookmark} from "@fortawesome/free-solid-svg-icons";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import axios from "axios";
+import noImage from '../JeongSeongYun/img/noimage.jpg';
+
 
 function ContentList() {
+
+    // JSY 작업
+    const { category } = useParams();
+    const [restaurants, setRestaurants] = useState([]);
+
+    useEffect(() => {
+        axios.get(`http://localhost:8080/jsy/contents/${category}`)
+            .then(res => {
+                setRestaurants(res.data);
+                console.log(res.data);
+            }).catch(err => console.log('데이터 가져오기 오류 :', err));
+    }, [category]);
+
+
     const Nv = useNavigate();
     const [bookmarks, setBookmarks] = useState({
         store1: false,
@@ -74,97 +91,59 @@ function ContentList() {
             {/* 가게 리스트 */}
             <div className="mb-5">
 
-                {/* 첫 번째 가게 */}
-                <div className="card mb-4" style={{cursor: 'pointer'}}>
+            {restaurants.map((res, index) => (
+                <div className="card mb-4" style={{ cursor: 'pointer' }} key={index}>
                     <div className="card-body text-start">
                         <div className="d-flex justify-content-between align-items-center">
                             <h5 className="card-title mb-0 fw-semibold flex-fill"
-                                onClick={() => {
-                                    Nv("/contentDetail")
-                                }}>몬베톤</h5>
-                            <button className="btn-jks btn-sm" onClick={() => toggleBookmark("store1")}>
-                                <FontAwesomeIcon icon={bookmarks.store1 ? faBookmark : faBookmarkRegular}/>
+                                onClick={() => Nv(`/contentDetail/${res.restaurantIdx}`)}>
+                                {res.restaurantIntroduce || "식당 이름"}
+                            </h5>
+                            <button className="btn-jks btn-sm" onClick={() => toggleBookmark(res.restaurantIdx)}>
+                                <FontAwesomeIcon icon={bookmarks[res.restaurantIdx] ? faBookmark : faBookmarkRegular} />
                             </button>
                         </div>
-                        <p className="card-text my-2" onClick={() => {
-                            Nv("/contentDetail")
-                        }}>⭐ 4.6 (109)</p>
-                        <small className="text-muted d-flex flex-fill" onClick={() => {
-                            Nv("/contentDetail")
-                        }}>양식 · 전포동(602m)</small>
+                        <p className="card-text my-2" onClick={() => Nv(`/contentDetail/${res.restaurantIdx}`)}>
+                            ⭐ {res.avgRating || "0.0"} {`(${res.rvCount ?? 0})`} {/* 별점은 임시 값이므로 필요하면 백엔드에 컬럼 추가 */}
+                        </p>
+                        <small className="text-muted d-flex flex-fill" onClick={() => Nv(`/contentDetail/${res.restaurantIdx}`)}>
+                            {res.categoryName || "카테고리"} · {res.restaurantAddr || "주소"}
+                        </small>
                         <div className="d-flex gap-2 my-2">
-                            <span className="badge-default bg-light text-muted border">원격줄서기</span>
-                            <span className="badge-default bg-light text-muted border">현장대기</span>
-                            <span className="badge-default bg-light text-muted border">재방문많음</span>
+                            {res.reserveOrWaiting === 'R' ? (
+                                <span className="badge-default bg-light text-muted border">원격줄서기</span>
+                            ) : res.reserveOrWaiting === 'W' ? (
+                                <span className="badge-default bg-light text-muted border">예약</span>
+                            ) : null}
+                            {res.restOption1 === 'Y' && (
+                                <span className="badge-default bg-light text-muted border">현장대기</span>
+                            )}
                         </div>
                     </div>
-                    <div className="px-3 pb-3"
-                         onClick={() => {
-                             Nv("/contentDetail")
-                         }}>
+
+                    <div className="px-3 pb-3" onClick={() => Nv(`/contentDetail/${res.restaurantIdx}`)}>
                         <div className="d-flex justify-content-between gap-2 position-relative">
-                            <div className="rounded overflow-hidden" style={{ width: '33.3%', height: '150px' }}>
-                                <img src="/monbette.jpg" alt="몬베톤 음식1" className="w-100 h-100" style={{ objectFit: 'cover' }}/>
-                            </div>
-                            <div className="rounded overflow-hidden" style={{ width: '33.3%', height: '150px' }}>
-                                <img src="/monbette2.jpg" alt="몬베톤 음식2" className="w-100 h-100" style={{ objectFit: 'cover' }}/>
-                            </div>
-                            <div className="rounded overflow-hidden" style={{ width: '33.3%', height: '150px' }}>
-                                <img src="/monbette3.jpg" alt="몬베톤 음식3" className="w-100 h-100" style={{ objectFit: 'cover' }}/>
-                            </div>
+                            {[res.restaurantImage1, res.restaurantImage2, res.restaurantImage3].map((imgSrc, i) => (
+                                <div className="rounded overflow-hidden" style={{ width: '33.3%', height: '150px' }} key={i}>
+                                    <img
+                                        src={imgSrc || noImage}
+                                        alt={`음식${i + 1}`}
+                                        className="w-100 h-100"
+                                        style={{ objectFit: 'cover' }}
+                                    />
+                                </div>
+                            ))}
+
                             {/* 대기팀 오버레이 */}
                             <div className="overlay-badge">
                                 대기팀 : 3명
                             </div>
                         </div>
                     </div>
-
-                    </div>
                 </div>
-
-                {/* 두 번째 가게 */}
-                <div className="card mb-4" style={{cursor: 'pointer'}}>
-
-                    <div className="card-body text-start">
-                        <div className="d-flex justify-content-between align-items-center">
-                            <h5 className="card-title mb-0 fw-semibold">수프올샐러드</h5>
-                            <button className="btn-jks btn-sm">
-                                <i className="fa-regular fa-bookmark"></i>
-                            </button>
-                        </div>
-                        <p className="card-text my-2">⭐ 4.7 (241)</p>
-                        <small className="text-muted">카페/베이커리 · 전포동(806m)</small>
-                        <div className="d-flex gap-2 my-2">
-                            <span className="badge-default bg-light text-muted border">원격줄서기</span>
-                            <span className="badge-default bg-light text-muted border">현장대기</span>
-                            <span className="badge-default bg-light text-muted border">테이블많음</span>
-                        </div>
-                    </div>
-
-                    <div className="px-3 pb-3">
-                        <div className="d-flex justify-content-between gap-2 position-relative">
-
-                            <div className="rounded overflow-hidden" style={{ width: '33.3%', height: '150px' }}>
-                                <img src="/soupandsalad1.jpg"  alt="수프올샐러드 음식1"
-                                     className="w-100 h-100" style={{ objectFit: 'cover'}}/>
-                            </div>
-                            <div className="rounded overflow-hidden" style={{ width: '33.3%', height: '150px' }}>
-                                <img src="/soupandsalad2.jpg"  alt="수프올샐러드 음식2"
-                                     className="w-100 h-100" style={{ objectFit: 'cover'}}/>
-                            </div>
-                            <div className="rounded overflow-hidden" style={{ width: '33.3%', height: '150px' }}>
-                                <img src="/soupandsalad3.jpg"  alt="수프올샐러드 음식3"
-                                     className="w-100 h-100" style={{ objectFit: 'cover'}}/>
-                            </div>
-
-                            {/* 대기팀 오버레이 */}
-                            <div className="overlay-badge">
-                                대기팀 : 1명
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            ))}
             </div>
+        </div>
     );
 }
 

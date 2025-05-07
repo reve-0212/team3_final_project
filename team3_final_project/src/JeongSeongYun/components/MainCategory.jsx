@@ -4,7 +4,7 @@ function MainCategory() {
     const Nv = useNavigate();
 
     const categoryList = [
-        {name: '한식', eng: "korean", img: 'https://www.tabling.co.kr/images/home/normal/korean.svg'},
+        {name: '한식', eng: "한식", img: 'https://www.tabling.co.kr/images/home/normal/korean.svg'},
         {name: '중식', eng: "chinese", img: 'https://www.tabling.co.kr/images/home/normal/chinese.svg'},
         {name: '양식', eng: "western", img: 'https://www.tabling.co.kr/images/home/normal/western.svg'},
         {name: '일식', eng: "japanese", img: 'https://www.tabling.co.kr/images/home/normal/japanese.svg'},
@@ -21,7 +21,7 @@ function MainCategory() {
                     Nv(`/contentList/${category.eng}`)
                 }}>
                     <div className="rounded p-3 d-flex flex-column align-items-center">
-                        <div className={'mb-1'} style={{width: '48px', height: '48px'}}>
+                        <div className={'mb-1'} style={{width: '48px', height: '48px', cursor: 'pointer'}}>
                             <img
                                 style={{width: '48px', height: '48px'}}
                                 src={category.img}
