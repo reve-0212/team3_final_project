@@ -5,7 +5,6 @@ import { faHome, faUser, faClipboard, faStar } from "@fortawesome/free-solid-svg
 
 function BottomNav() {
 
-    // ✅ useMatch로 하위 경로까지 포함 매칭
     const matchHome = useMatch("/");
     const matchDetails = useMatch("/latestDetails");
     const matchBookmark = useMatch("/bookmark");

@@ -3,5 +3,44 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.team3_final_project_server.JeonSeongYun.JSYMapper">
-
+    <select id="getRstListByCategory" resultType="com.example.team3_final_project_server.dto.RestaurantListDTO">
+        SELECT
+            b.category_name,
+            ROUND(AVG(rv.review_rating), 1) AS avg_rating,
+            COUNT(rv.review_idx) AS rv_count,
+            a.rest_option_1,
+            a.restaurant_idx,
+            a.restaurant_addr,
+            a.restaurant_introduce,
+            a.restaurant_price_range,
+            a.reserve_or_waiting,
+            a.restaurant_image_1,
+            a.restaurant_image_2,
+            a.restaurant_image_3
+        FROM
+            category b
+        JOIN
+            restaurant a
+        ON
+            b.restaurant_idx = a.restaurant_idx
+        LEFT JOIN
+            review rv
+        ON
+            a.restaurant_idx = rv.restaurant_idx
+        WHERE
+            b.category_name = #{category}
+        GROUP BY
+        b.category_name,
+        a.restaurant_idx,
+        a.restaurant_addr,
+        a.restaurant_call,
+        a.restaurant_lat,
+        a.restaurant_lng,
+        a.restaurant_introduce,
+        a.restaurant_price_range,
+        a.reserve_or_waiting,
+        a.restaurant_image_1,
+        a.restaurant_image_2,
+        a.restaurant_image_3
+    </select>
 </mapper>
