@@ -11,7 +11,7 @@ function SeatPage() {
             <h3 className={'waiting-title'}>좌석을 선택하세요.</h3>
             <SeatImg/>
             <Button btnName={'다음'} onClick={() => {
-                Nv("/waiting/reg")
+                Nv("/book/date")
             }}/>
         </div>
     );

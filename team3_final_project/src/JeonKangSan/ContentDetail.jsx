@@ -257,10 +257,10 @@ function ContentDetail() {
                         Nv("/book/visit")
                     }}>예약하기
                     </button>
-                    <button className="common-btn w-100" onClick={() => {
-                        Nv("/waiting/visit")
-                    }}>웨이팅하기
-                    </button>
+                    {/*<button className="common-btn w-100" onClick={() => {*/}
+                    {/*    Nv("/waiting/visit")*/}
+                    {/*}}>웨이팅하기*/}
+                    {/*</button>*/}
                 </div>
 
             </div>
