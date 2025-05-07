@@ -4,4 +4,26 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.team3_final_project_server.KimNaHyun.KNHMapper">
 
+    <insert id="insertReservation" parameterType="com.example.team3_final_project_server.dto.ReservationDTO">
+        INSERT INTO reservation (
+        user_idx,
+        restaurant_idx,
+        menu_idx,
+        reservation_date_time,
+        reservation_people,
+        rsv_man,
+        rsv_woman,
+        rsv_baby
+        ) VALUES (
+        1,
+        3,
+        6,
+        NOW(),
+        #{reservationPeople},
+        #{rsvMan},
+        #{rsvWoman},
+        #{rsvBaby}
+        )
+    </insert>
+
 </mapper>

@@ -12,10 +12,15 @@ import Main from "./JeongSeongYun/main.jsx";
 import SangMinApp from "./KimSangMin/SangMinApp.jsx";
 
 createRoot(document.getElementById('root')).render(
-    <StrictMode>
-        {/*<SangMinApp/>*/}
-        <Main/>
-        {/*<DajungApp/>*/}
-        {/*<SjhApp/>*/}
-    </StrictMode>
+  <StrictMode>
+      {/*<DajungApp/>*/}
+      {/*<SjhApp/>*/}
+      {/*<JksApp/>*/}
+      {/*<KnhApp/>*/}
+      {/*<SangMinApp/>*/}
+      <Main />
+      {/*<KnhApp/>*/}
+      {/*<SangMinApp/>*/}
+      {/*<Main/>*/}
+  </StrictMode>
 )
