@@ -17,8 +17,8 @@ public class JKSServiceImpl implements JKSService {
 
     System.out.println("DTO테스트1");
     System.out.println(jksMapper.getAllRestaurants());
-    return jksMapper.getAllRestaurants();
 
+    return jksMapper.getAllRestaurants();
 
   }
 }

@@ -15,8 +15,7 @@ public class JKSController {
   @Autowired
   private JKSService jksService;
 
-
-  @GetMapping("/")
+  @GetMapping("/test22")
   @ResponseBody
   public String test() {
     List<RestaurantDTO> restaurants = jksService.getAllRestaurants();
