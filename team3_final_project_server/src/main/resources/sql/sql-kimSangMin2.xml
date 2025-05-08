@@ -13,4 +13,11 @@
         </foreach>
     </insert>
 
+
+
+<!--    가게 정보 저장 -->
+    <insert id="insertRes" parameterType="com.example.team3_final_project_server.dto.RestaurantDTO">
+    INSERT INTO restaurant (res_name, res_call, res_address1, res_address2, res_introduce, res_reserve_time)
+    VALUES ( #{resName}, #{resCall}, #{resAddress1}, #{resAddress2}, #{resIntroduce}, #{resReserveTime} )
+    </insert>
 </mapper>

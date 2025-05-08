@@ -5,64 +5,64 @@ import axios from "axios";
 
 function PreReSet() {
   const [restData, setRestData] = useState({
-    Title: "가게이름",
-    Phone: "가게번호",
+    Name: "가게이름",
+    Call: "가게번호",
     Address1: "가게주소",
     Address2: "가게 해시태그",
-    Content: "가게 소개",
-    Function: "가게 기능",
+    Introduce: "가게 소개",
+    resTime:"시간"
   });
 
 
   const options = [
-    { value: "dong1", label: "중앙동" },
-    { value: "dong2", label: "대청동" },
-    { value: "dong3", label: "동광동" },
-    { value: "dong4", label: "남포동" },
-    { value: "dong5", label: "영주동" },
-    { value: "dong6", label: "대신동" },
-    { value: "dong7", label: "초량동" },
-    { value: "dong8", label: "부평동" },
-    { value: "dong9", label: "동삼동" },
-    { value: "dong10", label: "동대신동" },
-    { value: "dong11", label: "서대신동" },
-    { value: "dong12", label: "충무동" },
-    { value: "dong13", label: "아미동" },
-    { value: "dong14", label: "서서동" },
-    { value: "dong15", label: "범일동" },
-    { value: "dong16", label: "좌천동" },
-    { value: "dong17", label: "만덕동" },
-    { value: "dong18", label:  "영도동" },
-    { value: "dong19", label: "해양동" },
-    { value: "dong20", label: "동삼동" },
-    { value: "dong21", label: "부전동" },
-    { value: "dong22", label: "전포동" },
-    { value: "dong23", label: "범천동" },
-    { value: "dong24", label: "온천동" },
-    { value: "dong25", label: "명장동" },
-    { value: "dong26", label: "사직동" },
-    { value: "dong27", label: "용호동" },
-    { value: "dong28", label: "대연동" },
-    { value: "dong29", label: "감만동" },
-    { value: "dong30", label: "구포동" },
-    { value: "dong31", label: "만덕동" },
-    { value: "dong32", label: "덕천동" },
-    { value: "dong33", label: "우동" },
-    { value: "dong34", label: "중동" },
-    { value: "dong35", label: "송정동" },
-    { value: "dong36", label: "하단동" },
-    { value: "dong37", label: "괴정동" },
-    { value: "dong38", label: "신평동" },
-    { value: "dong39", label: "장전동" },
-    { value: "dong40", label: "부곡동" },
-    { value: "dong41", label: "대저동" },
-    { value: "dong42", label: "녹산동" },
-    { value: "dong43", label:  "거제동" },
-    { value: "dong44", label: "연산동" },
-    { value: "dong45", label: "수영동" },
-    { value: "dong46", label: "민락동" },
-    { value: "dong47", label: "괘법동" },
-    { value: "dong48", label: "감전동" },
+    { value: "중앙동", label: "중앙동" },
+    { value: "대청동", label: "대청동" },
+    { value: "동광동", label: "동광동" },
+    { value: "남포동", label: "남포동" },
+    { value: "영주동", label: "영주동" },
+    { value: "대신동", label: "대신동" },
+    { value: "초량동", label: "초량동" },
+    { value: "부평동", label: "부평동" },
+    { value: "동삼동", label: "동삼동" },
+    { value: "동대신동", label: "동대신동" },
+    { value: "서대신동", label: "서대신동" },
+    { value: "충무동", label: "충무동" },
+    { value: "아미동", label: "아미동" },
+    { value: "서서동", label: "서서동" },
+    { value: "범일동", label: "범일동" },
+    { value: "좌천동", label: "좌천동" },
+    { value: "만덕동", label: "만덕동" },
+    { value: "영도동", label:  "영도동" },
+    { value: "해양동", label: "해양동" },
+    { value: "동삼동", label: "동삼동" },
+    { value: "부전동", label: "부전동" },
+    { value: "전포동", label: "전포동" },
+    { value: "범천동", label: "범천동" },
+    { value: "온천동", label: "온천동" },
+    { value: "명장동", label: "명장동" },
+    { value: "사직동", label: "사직동" },
+    { value: "용호동", label: "용호동" },
+    { value: "대연동", label: "대연동" },
+    { value: "감만동", label: "감만동" },
+    { value: "구포동", label: "구포동" },
+    { value: "만덕동", label: "만덕동" },
+    { value: "덕천동", label: "덕천동" },
+    { value: "우동", label: "우동" },
+    { value: "중동", label: "중동" },
+    { value: "송정동", label: "송정동" },
+    { value: "하단동", label: "하단동" },
+    { value: "괴정동", label: "괴정동" },
+    { value: "신평동", label: "신평동" },
+    { value: "장전동", label: "장전동" },
+    { value: "부곡동", label: "부곡동" },
+    { value: "대저동", label: "대저동" },
+    { value: "녹산동", label: "녹산동" },
+    { value: "거제동", label:  "거제동" },
+    { value: "연산동", label: "연산동" },
+    { value: "수영동", label: "수영동" },
+    { value: "민락동", label: "민락동" },
+    { value: "괘법동", label: "괘법동" },
+    { value: "감전동", label: "감전동" },
   ];
 
   //  이미지 업로드
@@ -145,14 +145,17 @@ function PreReSet() {
     e.preventDefault();
 
     const storeData = {
-      ...restData,
-      availableTimes: resTime,
-      dong : dongOption,
+   resName: restData.Name,
+      resCall: restData.Call,
+      resAddress1: restData.Address1,
+      resAddress2: dongOption,
+      resIntroduce: restData.Introduce,
+      resReserveTime: Array.isArray(restData.resTime) ? restData.resTime.join(",") : "",
     };
 
     console.log("저장할 데이터: ", storeData);
 
-    axios.post("http://localhost:8080/",storeData)
+    axios.post("http://localhost:8080/pre/resave",storeData)
         .then((response) => {
           console.log("저장성공", response.data)
           alert("가게 정보가 저장되었습니다.")
@@ -230,11 +233,11 @@ function PreReSet() {
           <div className="mb-4">
             <input
                 type="text"
-                id="Title"
+                id="Name"
                 className="form-control"
                 style={{ width: "300px", height: "50px" }}
-                value={restData.Title}
-                onChange={(e) => hfChange(e, "Title")}
+                value={restData.Name}
+                onChange={(e) => hfChange(e, "Name")}
             />
           </div>
 
@@ -250,11 +253,11 @@ function PreReSet() {
           <div className="mb-4">
             <input
                 type="text"
-                id="Phone"
+                id="Call"
                 className="form-control"
                 style={{ width: "300px", height: "50px" }}
-                value={restData.Phone}
-                onChange={(e) => hfChange(e, "Phone")}
+                value={restData.Call}
+                onChange={(e) => hfChange(e, "Call")}
             />
           </div>
           <hr />
@@ -338,11 +341,11 @@ function PreReSet() {
           </h4>
           <div className="mb-4">
             <textarea
-                id="Content"
+                id="Introduce"
                 className="form-control"
                 style={{ width: "800px", height: "100px" }}
-                value={restData.Content}
-                onChange={(e) => hfChange(e, "Content")}
+                value={restData.Introduce}
+                onChange={(e) => hfChange(e, "Introduce")}
             />
           </div>
 
