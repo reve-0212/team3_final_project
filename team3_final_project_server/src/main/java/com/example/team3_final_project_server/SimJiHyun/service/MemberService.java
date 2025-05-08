@@ -40,7 +40,10 @@ public class MemberService {
     return ResponseDTO.builder()
             .accessToken(accessToken)
             .refreshToken(refreshToken)
-            .userName(user.getUserName())
+            .userId(user.getUserId())
+            .userNick(user.getUserNick())
+            .userCall(user.getUserCall())
+            .userEmail(user.getUserEmail())
             .build();
   }
 
@@ -78,7 +81,7 @@ public class MemberService {
             .userId(user.getUserId())
 //        암호화된 비밀번호 저장
             .userPass(encodedPassword)
-            .userName(user.getUserName())
+            .userNick(user.getUserNick())
             .userGender(user.getUserGender())
             .userAge(user.getUserAge())
             .userCall(user.getUserCall())

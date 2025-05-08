@@ -38,7 +38,7 @@ function Header() {
       <header className="header">
         {user ? (
           <div className="login-title" onClick={handleSetting}>
-            <span>{user.userName}님</span>&nbsp;
+            <span>{user.userNick}님</span>&nbsp;
             <FontAwesomeIcon icon={faAngleRight} className="loginIcon"/>
           </div>
         ) : (

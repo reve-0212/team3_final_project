@@ -8,7 +8,7 @@ const useUserStore = create(persist((set) => ({
     clearUser: () => set({user: null})
   }),
   {
-    name: 'user-storage',
-    getStorage: () => localStorage,
+    name: 'user-storage', // 로컬 스토리지 키 이름
+    getStorage: () => localStorage, //사용할 스토리지
   }))
 export default useUserStore;

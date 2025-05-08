@@ -44,9 +44,9 @@ const apiLogin = async (userId, userPass) => {
   } catch (err) {
     // 서버에서 4xx 응답 오면 여기로 들어옴
     if (err.response && err.response.status === 401) {
-      throw new Error("아이디 또는 비밀번호가 잘못되었습니다.");
+      throw new Error(`서버에 문제가 있습니다. ${err.message}`);
     } else {
-      throw new Error(`로그인 요청 중 오류 발생\n${err.message}`);
+      throw new Error(`아이디 혹은 비밀번호가 잘못되었습니다`);
     }
   }
 }
