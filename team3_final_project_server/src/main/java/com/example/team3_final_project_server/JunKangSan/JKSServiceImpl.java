@@ -14,11 +14,6 @@ public class JKSServiceImpl implements JKSService {
 
   @Override
   public List<RestaurantDTO> getAllRestaurants() {
-
-    System.out.println("DTO테스트1");
-    System.out.println(jksMapper.getAllRestaurants());
-
     return jksMapper.getAllRestaurants();
-
   }
 }
