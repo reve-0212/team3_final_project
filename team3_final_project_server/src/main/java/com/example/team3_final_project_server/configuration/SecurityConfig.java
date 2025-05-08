@@ -19,6 +19,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
+import static org.springframework.http.HttpMethod.GET;
 
 @Configuration
 @RequiredArgsConstructor
@@ -96,10 +97,11 @@ public class SecurityConfig {
 //                    모든 사용자용
                     .requestMatchers("/user/**", "/latestDetails", "/bookmark", "/contentDetail", "/review", "/").permitAll()
                     .requestMatchers("/jsy/contents/**","/jsy/ownerLogin").permitAll()
-                    .requestMatchers("/api/auth/login", "/auth/**", "/api/auth/signup").permitAll()
+                    .requestMatchers("/api/**", "/auth/**", "/api/auth/signup").permitAll()
                     .requestMatchers("/api/visitors/**").permitAll()
 //                    로그인한 사용자용
-                    .requestMatchers("/waiting/**", "/book/**").hasRole("USER")
+                    .requestMatchers("/waiting/**", "/book/**","/latestDetails").hasRole("USER")
+                    .requestMatchers(GET,"/userReservation").hasRole("USER")
 //                    사장 전용
                     .requestMatchers("/pre/**").hasRole("OWNER")
 //                    관리자 전용 페이지
