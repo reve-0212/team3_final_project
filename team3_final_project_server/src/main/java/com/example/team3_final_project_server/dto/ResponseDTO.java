@@ -14,6 +14,7 @@ public class ResponseDTO<T> {
   private String userNick;
   private String userCall;
   private String userEmail;
+  private String role;
 }
 
 

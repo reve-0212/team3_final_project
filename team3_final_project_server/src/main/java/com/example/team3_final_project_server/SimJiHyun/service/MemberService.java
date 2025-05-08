@@ -44,6 +44,7 @@ public class MemberService {
             .userNick(user.getUserNick())
             .userCall(user.getUserCall())
             .userEmail(user.getUserEmail())
+            .role(user.getRole())
             .build();
   }
 
