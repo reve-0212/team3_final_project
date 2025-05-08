@@ -10,7 +10,7 @@ function PreReSet() {
     Address1: "가게주소",
     Address2: "가게 해시태그",
     Introduce: "가게 소개",
-    resTime:"시간"
+    resTime:[]
   });
 
 
@@ -150,7 +150,7 @@ function PreReSet() {
       resAddress1: restData.Address1,
       resAddress2: dongOption,
       resIntroduce: restData.Introduce,
-      resReserveTime: Array.isArray(restData.resTime) ? restData.resTime.join(",") : "",
+      resReserveTime: resTime.filter(Boolean).join(","),
     };
 
     console.log("저장할 데이터: ", storeData);
@@ -158,6 +158,7 @@ function PreReSet() {
     axios.post("http://localhost:8080/pre/resave",storeData)
         .then((response) => {
           console.log("저장성공", response.data)
+          console.log("restData.resTime: ", restData.resTime);
           alert("가게 정보가 저장되었습니다.")
         })
         .catch((error) => {
@@ -324,10 +325,8 @@ function PreReSet() {
                 className="form-control"
                 style={{ width: "150px", height: "50px", marginLeft: "10px" }}
             >
-              {options.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
+              {options.map((opt, i) => (
+                  <option key={i} value={opt.value}>{opt.label}</option>
               ))}
             </select>
           </div>
@@ -361,7 +360,6 @@ function PreReSet() {
             {resTime.map((time, index) => (
                 <div key={index} style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
                   <input
-                      id="time"
                       type="time"
                       value={time}
                       onChange={(e) => chTime(index, e.target.value)}
