@@ -1,13 +1,27 @@
 // ContentDetail.jsx
 
-import {useState} from "react";
+import {useEffect,useState} from "react";
 import "./JksSheet.css";
+import axios from "axios";
 import {useNavigate} from "react-router-dom";
 
 function ContentDetail() {
     const [ActTab, setActTab] = useState("상세정보");
     const [RevTab, setRevTab] = useState("rev"); // 기본값: 리뷰(rev)
     const Nv = useNavigate();
+    const [storeInfo, setStoreInfo] = useState("");
+
+
+    useEffect(() => {
+        axios.get("http://localhost:8080/test22")
+            .then((res) => {
+                console.log("받은 데이터:", res.data);
+                setStoreInfo(res.data[0]); // 리스트라면 [0], 객체면 그대로
+            })
+            .catch((err) => {
+                console.error("요청 실패:", err);
+            });
+    }, []);
 
 
     return (
@@ -23,15 +37,16 @@ function ContentDetail() {
 
                 {/* 가게 이름 */}
                 <div className="d-flex justify-content-start text mb-2">
-                    <h5 className="fw-bold">가게이름</h5>
+                    <h5 className="fw-bold">
+                        {storeInfo ? storeInfo.resName : "로딩 중..."}</h5>
                 </div>
 
                 {/* 별점 및 영업정보 */}
                 <div className="text-start mb-4">
                     <small className="fw-bold">별점 0.0 / 리뷰 갯수</small><br/>
                     <hr/>
-                    <small className="fw-bold">영업중 오늘 11:00 ~ 22:00 ▼</small><br/>
-                    <small className="fw-bold">전화번호 051-1234-5678</small>
+                    <small className="fw-bold">영업중 {storeInfo ? storeInfo.resReserveTime : "-"}</small><br/>
+                    <small className="fw-bold">전화번호 {storeInfo ? storeInfo.resCall : "-"}</small>
                     <hr/>
                 </div>
                 {/* 탭메뉴 */}
@@ -63,7 +78,7 @@ function ContentDetail() {
                 {ActTab === "상세정보" && (
                     <div className="mb-5 text-start">
                         <br/>
-                        <h4 className="extra-bold">매장소개</h4>
+                        <h4 className="extra-bold">매장소개 {storeInfo ? storeInfo.resIntroduce : "-"}</h4>
                         <div className="mb-3">
                             <small className="notice-text">알림</small>
                             <p className="small mt-1">
@@ -97,7 +112,7 @@ function ContentDetail() {
                             <div className="location-box">
                             </div>
                             <div className="mt-2">
-                                부산 해운대구 구남로 24번길 8 (우동) 1층
+                                {storeInfo ? storeInfo.resAddress1 : "-"}
                             </div>
                         </div>
 
@@ -107,7 +122,7 @@ function ContentDetail() {
                             <h4 className="extra-bold">#해시태그</h4>
 
                             <div className="d-flex flex-wrap gap-2 ps-2 pt-2">
-                                <div><span className="badge">#혼술 맛집</span></div>
+                                <div><span className="badge">#혼술맛집</span></div>
                                 <div><span className="badge">#안주맛집</span></div>
                                 <div><span className="badge">#친절함</span></div>
                                 <div><span className="badge">#청결함</span></div>

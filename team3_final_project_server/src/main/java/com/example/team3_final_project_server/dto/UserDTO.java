@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import lombok.*;
 
 @Data
 @Builder
@@ -26,8 +27,6 @@ public class UserDTO implements UserDetails {
   private String userCall;
   private String userEmail;
   private String role;
-<<<<<<< HEAD
-=======
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -63,5 +62,4 @@ public class UserDTO implements UserDetails {
   public boolean isEnabled() {
     return true;
   }
->>>>>>> 01721d95845cc54f8c0e821c05b1775f834dd746
 }

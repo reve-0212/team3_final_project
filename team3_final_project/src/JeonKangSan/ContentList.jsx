@@ -96,6 +96,12 @@ function ContentList() {
                     <div className="card-body text-start">
                         <div className="d-flex justify-content-between align-items-center">
                             <h5 className="card-title mb-0 fw-semibold flex-fill"
+                                onClick={() => Nv(`/contentDetail/${res.restaurantIdx}`)}>
+                                {res.restaurantIntroduce || "식당 이름"}
+                            </h5>
+                            <button className="btn-jks btn-sm" onClick={() => toggleBookmark(res.restaurantIdx)}>
+                                <FontAwesomeIcon icon={bookmarks[res.restaurantIdx] ? faBookmark : faBookmarkRegular} />
+                            <h5 className="card-title mb-0 fw-semibold flex-fill"
                                 onClick={() => Nv(`/contentDetail/${res.resIdx}`)}>
                                 {res.resName || "식당 이름"}
                             </h5>
@@ -103,6 +109,12 @@ function ContentList() {
                                 <FontAwesomeIcon icon={bookmarks[res.resIdx] ? faBookmark : faBookmarkRegular} />
                             </button>
                         </div>
+                        <p className="card-text my-2" onClick={() => Nv(`/contentDetail/${res.restaurantIdx}`)}>
+                            ⭐ {res.avgRating || "0.0"} {`(${res.rvCount ?? 0})`} {/* 별점은 임시 값이므로 필요하면 백엔드에 컬럼 추가 */}
+                        </p>
+                        <small className="text-muted d-flex flex-fill" onClick={() => Nv(`/contentDetail/${res.restaurantIdx}`)}>
+                            {res.categoryName || "카테고리"} · {res.restaurantAddr || "주소"}
+                        </small>
                         <p className="card-text my-2" onClick={() => Nv(`/contentDetail/${res.resIdx}`)}>
                             ⭐ {res.avgRating || "0.0"} {`(${res.rvCount ?? 0})`} {/* 별점은 임시 값이므로 필요하면 백엔드에 컬럼 추가 */}
                         </p>
@@ -115,14 +127,35 @@ function ContentList() {
                             ) : res.reserveOrWaiting === 'W' ? (
                                 <span className="badge-default bg-light text-muted border">예약</span>
                             ) : null}
+                            {res.restOption1 === 'Y' && (
+                                <span className="badge-default bg-light text-muted border">현장대기</span>
+                            )}
+                            {res.reserveOrWaiting === 'R' ? (
+                                <span className="badge-default bg-light text-muted border">원격줄서기</span>
+                            ) : res.reserveOrWaiting === 'W' ? (
+                                <span className="badge-default bg-light text-muted border">예약</span>
+                            ) : null}
                             {res.resOption1 === 'Y' && (
                                 <span className="badge-default bg-light text-muted border">현장대기</span>
                             )}
                         </div>
                     </div>
 
+                    <div className="px-3 pb-3" onClick={() => Nv(`/contentDetail/${res.restaurantIdx}`)}>
+
                     <div className="px-3 pb-3" onClick={() => Nv(`/contentDetail/${res.resIdx}`)}>
                         <div className="d-flex justify-content-between gap-2 position-relative">
+                            {[res.restaurantImage1, res.restaurantImage2, res.restaurantImage3].map((imgSrc, i) => (
+                                <div className="rounded overflow-hidden" style={{ width: '33.3%', height: '150px' }} key={i}>
+                                    <img
+                                        src={imgSrc || noImage}
+                                        alt={`음식${i + 1}`}
+                                        className="w-100 h-100"
+                                        style={{ objectFit: 'cover' }}
+                                    />
+                                </div>
+                            ))}
+
                             {[res.resImage1, res.resImage2, res.resImage3].map((imgSrc, i) => (
                                 <div className="rounded overflow-hidden" style={{ width: '33.3%', height: '150px' }} key={i}>
                                     <img
