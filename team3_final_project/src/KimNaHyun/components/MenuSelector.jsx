@@ -1,38 +1,27 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Button from "./Button.jsx";
 import {useNavigate} from "react-router-dom";
+import axios from "axios";
 
 const MenuSelector = () => {
     const Nv = useNavigate();
 
-    const menuItems = [
-        {
-            id: 1,
-            name: '기본 베이글',
-            description: '담백하고 쫄깃한 기본 베이글입니다.',
-            image: 'https://upload.wikimedia.org/wikipedia/commons/9/98/Bagel.jpg',
-        },
-        {
-            id: 2,
-            name: '블루베리 베이글',
-            description: '상큼한 블루베리로 채워진 베이글입니다.',
-            image: 'https://m.shinjinbakery.com/web/product/big/202310/577012d6dd81a7e5759dd4a0b4a78b78.jpg',
-        },
-        {
-            id: 3,
-            name: '치즈 베이글',
-            description: '고소한 치즈가 듬뿍 들어간 베이글입니다.',
-            image: 'https://upload.wikimedia.org/wikipedia/commons/9/98/Bagel.jpg',
-        },
-        {
-            id: 4,
-            name: '초코맛 베이글',
-            description: '달콤한 초콜릿이 가득한 베이글입니다.',
-            image: 'https://upload.wikimedia.org/wikipedia/commons/9/98/Bagel.jpg',
-        },
-    ];
+    const [menuItems, setMenuItems] = useState([]);
+    const [quantities, setQuantities] = useState([]);
 
-    const [quantities, setQuantities] = useState({});
+    // 메뉴 데이터 로드
+    useEffect(() => {
+        axios
+            .get("http://localhost:8080/api/menus")
+            .then(res => {
+                setMenuItems(res.data);
+            })
+            .catch(err => {
+                console.log(err);
+                alert("메뉴 데이터를 불러오는 데 실패했습니다.");
+            });
+    },[]);
+
 
     const handleIncrease = (id) => {
         setQuantities((prev) => ({
@@ -62,58 +51,65 @@ const MenuSelector = () => {
             <div style={{padding: '20px'}}>
                 <h2 className="waiting-title-sub">메뉴 선택</h2>
 
-                {menuItems.map((item) => (
-                    <div
-                        key={item.id}
-                        style={{
-                            display: 'flex',
-                            alignItems: 'flex-start',
-                            borderBottom: '1px solid #eee',
-                            paddingBottom: '20px',
-                            marginBottom: '20px',
-                        }}
-                    >
-                        {/* 이미지 + 수량 버튼 (세로) */}
-                        <div style={{
-                            marginRight: '15px',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'flex-start'
-                        }}>
-                            <img
-                                src={item.image}
-                                alt={item.name}
+                {menuItems.length === 0 ? (
+                    <p>메뉴를 불러오는 중입니다...</p>
+                ) : (
+                    menuItems.map((item) => (
+                        <div
+                            key={item.id}
+                            style={{
+                                display: 'flex',
+                                alignItems: 'flex-start',
+                                borderBottom: '1px solid #eee',
+                                paddingBottom: '20px',
+                                marginBottom: '20px',
+                            }}
+                        >
+                            {/* 이미지 + 수량 버튼 (세로) */}
+                            <div
                                 style={{
                                     marginRight: '15px',
                                     display: 'flex',
-                                    width: "120px",
-                                    borderRadius: '10px',
                                     flexDirection: 'column',
                                     alignItems: 'flex-start',
-                                    justifyContent: 'center',
                                 }}
-                            />
-                            <div style={{
-                                marginTop: '10px',
-                                border: '1px solid #dddddd',
-                                padding: '0 10px',
-                                borderRadius: '10px'
-                            }}>
-                                <button className="prev-btn" onClick={() => handleDecrease(item.id)}>-</button>
-                                <span style={{margin: '0 10px'}}>{quantities[item.id] || 0}</span>
-                                <button className="next-btn" onClick={() => handleIncrease(item.id)}>+</button>
+                            >
+                                <img
+                                    src={item.image}
+                                    alt={item.name}
+                                    style={{
+                                        width: '120px',
+                                        borderRadius: '10px',
+                                    }}
+                                />
+                                <div
+                                    style={{
+                                        marginTop: '10px',
+                                        border: '1px solid #dddddd',
+                                        padding: '0 10px',
+                                        borderRadius: '10px',
+                                    }}
+                                >
+                                    <button className="prev-btn" onClick={() => handleDecrease(item.id)}>-</button>
+                                    <span style={{ margin: '0 10px' }}>
+                                        {quantities[item.id] || 0}
+                                    </span>
+                                    <button className="next-btn" onClick={() => handleIncrease(item.id)}>+</button>
+                                </div>
                             </div>
-                        </div>
 
-                        {/* 이름 + 설명 */}
-                        <div style={{flex: 1}}>
-                            <div style={{fontWeight: 'bold', fontSize: '16px'}}>{item.name}</div>
-                            <div style={{fontSize: '14px', color: '#555', marginTop: '4px'}}>
-                                {item.description}
+                            {/* 이름 + 설명 */}
+                            <div style={{ flex: 1 }}>
+                                <div style={{ fontWeight: 'bold', fontSize: '16px' }}>
+                                    {item.name}
+                                </div>
+                                <div style={{ fontSize: '14px', color: '#555', marginTop: '4px' }}>
+                                    {item.description}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                ))}
+                    ))
+                )}
 
                 {Object.keys(quantities).length === 0 ? (
                     <p className="waiting-title-sub">메뉴를 선택해주세요.</p>
@@ -122,7 +118,10 @@ const MenuSelector = () => {
                         {Object.entries(quantities).map(([id, quantity]) => {
                             const menu = menuItems.find((item) => item.id.toString() === id);
                             return (
-                                <li key={id} style={{marginBottom: '12px', display: 'flex', alignItems: 'center'}}>
+                                <li
+                                    key={id}
+                                    style={{ marginBottom: '12px', display: 'flex', alignItems: 'center' }}
+                                >
                                     <img
                                         src={menu.image}
                                         alt=""
@@ -130,19 +129,16 @@ const MenuSelector = () => {
                                             width: '60px',
                                             height: '60px',
                                             marginRight: '10px',
-                                            borderRadius: '8px'
+                                            borderRadius: '8px',
                                         }}
                                     />
                                     <span>{menu.name} {quantity}개</span>
                                 </li>
                             );
                         })}
-                        <Button btnName={'다음'} onClick={() => {
-                            Nv("/book/reg")
-                        }}/>
+                        <Button btnName={'다음'} onClick={() => Nv("/book/reg")} />
                     </ul>
                 )}
-
             </div>
         </div>
     );

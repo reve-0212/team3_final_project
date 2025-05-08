@@ -26,4 +26,22 @@
         )
     </insert>
 
+    <update id="updateRsvDateTime" parameterType="com.example.team3_final_project_server.dto.ReservationDTO">
+        UPDATE reservation
+        SET rsv_date = #{rsvDate},
+        rsv_time = #{rsvTime}
+        WHERE reservation_idx = 43
+    </update>
+
+    <select id="getAllMenus" resultType="com.example.team3_final_project_server.dto.MenuDTO">
+        SELECT
+        menu_idx,
+        restaurant_idx,
+        menu_name,
+        menu_price,
+        menu_explanation,
+        menu_image
+        FROM menu
+    </select>
+
 </mapper>

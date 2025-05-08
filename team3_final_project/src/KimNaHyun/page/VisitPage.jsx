@@ -39,7 +39,7 @@ function VisitPage() {
                 Nv('/waiting/seat')
             }).catch(() => {
                 alert('전송 실패');
-        })
+        });
     };
 
     return (

@@ -1,8 +1,11 @@
 package com.example.team3_final_project_server.KimNaHyun;
 
+import com.example.team3_final_project_server.dto.MenuDTO;
 import com.example.team3_final_project_server.dto.ReservationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class KNHServiceImpl implements KNHService {
@@ -19,4 +22,19 @@ public class KNHServiceImpl implements KNHService {
   public void saveReservation(ReservationDTO dto) {
     knhMapper.insertReservation(dto);
   }
+
+
+  @Override
+  public void saveDateTime(ReservationDTO dto) {
+    knhMapper.updateRsvDateTime(dto);
+  }
+
+  @Override
+  public List<MenuDTO> getAllMenus() {
+    return knhMapper.getAllMenus();
+  }
+
+
+
+
 }
