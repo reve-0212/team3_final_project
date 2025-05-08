@@ -94,13 +94,15 @@ public class SecurityConfig {
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorizeRequests -> authorizeRequests
 //                    모든 사용자용
-                    .requestMatchers("/user/**", "/latestDetails", "/bookmark", "/contentList/**", "/contentDetail", "/review", "/").permitAll()
-                    .requestMatchers("/api/auth/login", "/auth/**").permitAll()
+                    .requestMatchers("/user/**", "/latestDetails", "/bookmark", "/contentDetail", "/review", "/").permitAll()
+                    .requestMatchers("/jsy/contents/**","/jsy/ownerLogin").permitAll()
+                    .requestMatchers("/api/auth/login", "/auth/**", "/api/auth/signup").permitAll()
 //                    로그인한 사용자용
                     .requestMatchers("/waiting/**", "/book/**").hasRole("USER")
 //                    사장 전용
                     .requestMatchers("/pre/**").hasRole("OWNER")
-//                    매니저 전용
+//                    관리자 전용 페이지
+                    .requestMatchers("/pre/admin").permitAll()
 //                    .requestMatchers("/auth/**", "/contentList/**", "/jsy/contents/**", "/pre/**", "/api/**", "/user/**").permitAll()
 //                    .requestMatchers("/admin/**").hasRole("ADMIN")
 //                    .requestMatchers("/member/**", "/board/**").hasAnyRole("ADMIN", "MEMBER")

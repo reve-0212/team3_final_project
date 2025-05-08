@@ -8,39 +8,44 @@
             b.category_name,
             ROUND(AVG(rv.review_rating), 1) AS avg_rating,
             COUNT(rv.review_idx) AS rv_count,
-            a.rest_option_1,
-            a.restaurant_idx,
-            a.restaurant_addr,
-            a.restaurant_introduce,
-            a.restaurant_price_range,
+            a.res_option_1,
+            a.res_idx,
+            a.res_address2,
+            a.res_introduce,
+            a.res_price_range,
             a.reserve_or_waiting,
-            a.restaurant_image_1,
-            a.restaurant_image_2,
-            a.restaurant_image_3
+            a.res_image1,
+            a.res_image2,
+            a.res_image3,
+            a.res_name
         FROM
             category b
         JOIN
             restaurant a
         ON
-            b.restaurant_idx = a.restaurant_idx
+            b.res_idx = a.res_idx
         LEFT JOIN
             review rv
         ON
-            a.restaurant_idx = rv.restaurant_idx
+            a.res_idx = rv.res_idx
         WHERE
             b.category_name = #{category}
         GROUP BY
         b.category_name,
-        a.restaurant_idx,
-        a.restaurant_addr,
-        a.restaurant_call,
-        a.restaurant_lat,
-        a.restaurant_lng,
-        a.restaurant_introduce,
-        a.restaurant_price_range,
+        a.res_option_1,
+        a.res_idx,
+        a.res_address2,
+        a.res_introduce,
+        a.res_price_range,
         a.reserve_or_waiting,
-        a.restaurant_image_1,
-        a.restaurant_image_2,
-        a.restaurant_image_3
+        a.res_image1,
+        a.res_image2,
+        a.res_image3,
+        a.res_name
     </select>
+
+    <select id="findByOwnerId" resultType="com.example.team3_final_project_server.dto.UserDTO">
+        SELECT * FROM user WHERE user_id = #{userId}
+    </select>
+
 </mapper>

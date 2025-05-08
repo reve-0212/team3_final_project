@@ -1,12 +1,22 @@
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import LoginSignText from "../simJiHyun/LoginSignText.jsx";
-import LoginText from "../simJiHyun/login/LoginText.jsx";
-import SjhNav from "../simJiHyun/nav/SjhNav.jsx";
-// import "../simJiHyun/SjhCss.css"
+import LoginSignText from "../../simJiHyun/LoginSignText.jsx";
+import LoginText from "../../simJiHyun/login/LoginText.jsx";
 import {useNavigate} from "react-router-dom";
+import {OwnerLoginCheck} from "../Login/LgCheckService.jsx";
+
 
 function AdminLogin() {
     const nv = useNavigate();
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const OwnerId = formData.get('OwnerId')
+        const OwnerPw = formData.get('OwnerPw')
+        console.log(OwnerId)
+        console.log(OwnerPw)
+
+        OwnerLoginCheck(OwnerId, OwnerPw);
+    }
 
     return (
         <div
@@ -36,13 +46,13 @@ function AdminLogin() {
                     </nav>
                 </div>
 
-                <form className={"container"}>
+                <form className={"container"} onSubmit={handleSubmit}>
                     <div className={"row"} style={{paddingRight: '1rem'}}>
                         <LoginSignText text={"관리자 로그인"}/>
                     </div>
 
-                    <LoginText holder={"관리자 아이디 입력"}/>
-                    <LoginText holder={"관리자 비밀번호 입력"}/>
+                    <LoginText holder={"관리자 아이디 입력"} name={'OwnerId'}/>
+                    <LoginText holder={"관리자 비밀번호 입력"} name={'OwnerPw'} type={'password'}/>
 
 
                     <div className={"mt-4 d-flex justify-content-center"}>
@@ -50,22 +60,10 @@ function AdminLogin() {
                             type={"submit"}
                             className={"py-3 fw-bold text-light fs-5 flex-fill rounded-3 border-0"}
                             style={{backgroundColor: "#FFB74D", maxWidth: "400px"}}
-                            onClick={() => {
-                                nv("/pre/reg")
-                            }}
                         >
                             로그인
                         </button>
                     </div>
-
-                    {/*<div className={"mt-4 ms-4 me-4 d-flex justify-content-center"}>*/}
-                    {/*    <div className={"col d-flex flex-row justify-content-between fs-6"}*/}
-                    {/*         style={{maxWidth: "400px"}}>*/}
-                    {/*        <p>아직 아이디가 없으시다면 ? </p>*/}
-                    {/*        <p><FontAwesomeIcon icon={faArrowRight}/></p>*/}
-                    {/*        <a href="/signUp" style={{color: "#FFB74D", textDecorationLine: 'none'}}> 가입하기</a>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
                 </form>
             </div>
         </div>

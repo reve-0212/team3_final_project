@@ -14,15 +14,15 @@ import TodayWaiting from "../JangDaJung/TodayWaiting.jsx";
 import PastDateReservation from "../JangDaJung/PastDateReservation.jsx";
 import PastDateWaiting from "../JangDaJung/PastDateWaiting.jsx";
 import TodayReservation from "../JangDaJung/TodayReservation.jsx";
-import PreRegPage from "../KimNaHyun/page/PreRegPage.jsx";
 import PreInfoPage from "../KimNaHyun/page/PreInfoPage.jsx";
-import AdminLogin from "../JeonKangSan/AdminLogin.jsx";
+import AdminLogin from "../JeongSeongYun/layout/AdminLogin.jsx";
 import OwnerLogin from "../JeonKangSan/OwnerLogin.jsx";
 import CeoNewMenu from "../JangDaJung/CeoNewMenu.jsx";
 import CeoMenuList from "../JangDaJung/CeoMenuList.jsx";
 import PreUpdatePage from "./PreUpdatePage.jsx";
 import CeoMenuListEdit from "../JangDaJung/CeoMenuListEdit.jsx";
 import CeoMenuEdit from "../JangDaJung/CeoMenuEdit.jsx";
+import PreRegPage from "../JeongSeongYun/layout/PreRegPage.jsx";
 
 function SangMinApp() {
     return (
