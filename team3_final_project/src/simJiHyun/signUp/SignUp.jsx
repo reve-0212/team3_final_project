@@ -17,7 +17,7 @@ function SignUp() {
     const formData = new FormData(e.target);
     const userId = formData.get("userId");
     const userPass = formData.get("userPass");
-    const userName = formData.get("userName");
+    const userNick = formData.get("userNick");
     const userGender = gender
     const userAge = age
     const userCall = formData.get("userCall");
@@ -25,14 +25,14 @@ function SignUp() {
 
     console.log(userId)
     console.log(userPass)
-    console.log(userName)
+    console.log(userNick)
     console.log(userGender)
     console.log(userAge)
     console.log(userCall)
     console.log(userEmail)
 
     apiSignup({
-      userId: userId, userPass: userPass, userName: userName, userGender: userGender,
+      userId: userId, userPass: userPass, userNick: userNick, userGender: userGender,
       userAge: userAge, userCall: userCall, userEmail: userEmail
     });
 
@@ -74,9 +74,9 @@ function SignUp() {
         </div>
 
         <div className={"mt-4"}>
-          <label htmlFor={"userName"} className={"form-label fs-4"}>이름</label>
+          <label htmlFor={"userNick"} className={"form-label fs-4"}>이름</label>
           <input type={"text"} className={"form-control py-3 input-box"}
-                 id={"userName"} placeholder={"이름을 입력해주세요"} name={"userName"}/>
+                 id={"userNick"} placeholder={"이름을 입력해주세요"} name={"userNick"}/>
         </div>
 
         <div className={"mt-4"}>

@@ -12,4 +12,6 @@ public interface UserMapper {
   boolean existsByUserEmail(String userEmail);
   void saveUser(UserDTO user);
   void deleteByUserId(String userId);
+  void updatePassword(String userId, String hashed);
+  void updateField(String userId, String field, String value);
 }

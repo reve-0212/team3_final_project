@@ -25,6 +25,7 @@ public class MemberService {
   private final PasswordEncoder passwordEncoder;
   private final AuthenticationManager authenticationManager;
 
+//  로그인용 토큰 주기
   public ResponseDTO getJwtAuthentication(String userId, String userPass) {
     UserDTO user = userMapper.findByUserId(userId)
             .orElseThrow(()->new IllegalArgumentException("사용자를 찾을 수 없습니다"));
@@ -39,6 +40,11 @@ public class MemberService {
     return ResponseDTO.builder()
             .accessToken(accessToken)
             .refreshToken(refreshToken)
+            .userId(user.getUserId())
+            .userNick(user.getUserNick())
+            .userCall(user.getUserCall())
+            .userEmail(user.getUserEmail())
+            .role(user.getRole())
             .build();
   }
 
@@ -76,7 +82,7 @@ public class MemberService {
             .userId(user.getUserId())
 //        암호화된 비밀번호 저장
             .userPass(encodedPassword)
-            .userName(user.getUserName())
+            .userNick(user.getUserNick())
             .userGender(user.getUserGender())
             .userAge(user.getUserAge())
             .userCall(user.getUserCall())
@@ -87,7 +93,6 @@ public class MemberService {
 
 //    사용자 정보를 데이터베이스에 저장
     userMapper.saveUser(newUser);
-
     return "회원 가입 성공";
   }
 }

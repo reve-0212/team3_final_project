@@ -35,6 +35,7 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
 
 //    클라이언트에서 전달받은 request 객체에서 Authorization 키에 저장된 문자열을 가져옴
     String authorizationHeader = request.getHeader(HEADER_AUTHORIZATION);
+
 //    'Bearer ' 를 제거한 JWT 토큰 문자열을 가져옴
     String token = getAccessToken(authorizationHeader);
 
@@ -42,6 +43,7 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
     if (jwtTokenProvider.validToken(token)) {
 //      JWT 토큰에 저장된 사용자 인증 정보를 출력
       Authentication authentication = jwtTokenProvider.getAuthentication(token);
+
 //      가져온 인증 정보를 스프링 시큐리티에 저장
 //      SecurityContextHolder : 스프링 시큐리티에서 인증 정보를 보관하는 클래스
 //      getContext() : 스프링 시큐리티의 현재 사용자의 context를 가져옴
@@ -60,7 +62,6 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
 //      매개변수로 전달받은 문자열 중에서 Bearer 로 시작하는 문자열 중 Bearer 글자를 삭제하고 나머지 문자열만 가져옴
       return authorizationHeader.substring(TOKEN_PREFIX.length());
     }
-
     return null;
   }
 }

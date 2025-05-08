@@ -20,12 +20,22 @@
 
   <!-- 회원 정보 저장 -->
   <insert id="saveUser" parameterType="com.example.team3_final_project_server.dto.UserDTO">
-    INSERT INTO user (user_id, user_pass, user_name, user_gender, user_age, user_call, user_email, role)
-    VALUES (#{userId}, #{userPass}, #{userName}, #{userGender}, #{userAge}, #{userCall}, #{userEmail}, #{role})
+    INSERT INTO user (user_id, user_pass, user_nick, user_gender, user_age, user_call, user_email, role)
+    VALUES (#{userId}, #{userPass}, #{userNick}, #{userGender}, #{userAge}, #{userCall}, #{userEmail}, #{role})
   </insert>
 
   <!-- 사용자 삭제 -->
   <delete id="deleteByUserId">
     DELETE FROM user WHERE user_id = #{userId}
   </delete>
+
+  <!--  비밀번호 변경-->
+  <update id="updatePassword">
+    update user set user_pass = #{hashed} where user_id = #{userId}
+  </update>
+
+  <!--  회원 정보 수정-->
+  <update id="updateField">
+    update user set ${field} = #{value} where user_id = #{userId}
+  </update>
 </mapper>
