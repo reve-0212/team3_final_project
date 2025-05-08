@@ -9,6 +9,8 @@ function VisitorBtn(props) {
             props.onChange(props.gender, newQuantity); // 부모에게 전달
             return newQuantity;
         });
+
+
     };
 
     const decrease = () => {

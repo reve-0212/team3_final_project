@@ -19,4 +19,9 @@ public class KNHServiceImpl implements KNHService {
   public void saveReservation(ReservationDTO dto) {
     knhMapper.insertReservation(dto);
   }
+
+  @Override
+  public void saveDateTime(ReservationDTO dto) {
+    knhMapper.insertReservation(dto);
+  }
 }

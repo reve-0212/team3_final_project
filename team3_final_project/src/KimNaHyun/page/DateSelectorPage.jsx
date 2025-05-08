@@ -40,8 +40,8 @@ function DateTimeSelectorPage() {
                 alert("예약 정보가 저장되었습니다.");
                 Nv("/book/menu"); // 페이지 이동
             })
-            .catch((err) => {
-                console.error(err);
+            .catch(() => {
+                console.log(formattedDate,selectedTime);
                 alert("예약 저장에 실패했습니다.");
             });
     };

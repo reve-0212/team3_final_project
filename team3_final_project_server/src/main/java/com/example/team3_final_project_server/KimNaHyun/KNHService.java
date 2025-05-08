@@ -5,4 +5,5 @@ import org.springframework.stereotype.Service;
 
 public interface KNHService {
     void saveReservation(ReservationDTO dto);
+    void saveDateTime(ReservationDTO dto);
 }

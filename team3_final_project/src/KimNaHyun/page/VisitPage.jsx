@@ -14,6 +14,8 @@ function VisitPage() {
         baby: 0,
     });
 
+
+
     // 수 변경 함수 (VisitorBtn에서 호출)
     const handleCountChange = (gender, quantity) => {
         setVisitors((prev) => ({
@@ -35,10 +37,11 @@ function VisitPage() {
 
         axios.post('http://localhost:8080/api/visitors', payload)
             .then(() => {
-                console.log(payload);
+
                 Nv('/waiting/seat')
             }).catch(() => {
                 alert('전송 실패');
+            console.log(payload);
         })
     };
 

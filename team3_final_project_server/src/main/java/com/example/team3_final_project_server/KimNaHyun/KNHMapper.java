@@ -7,4 +7,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface KNHMapper {
     void insertReservation(ReservationDTO dto);
 
+
 }

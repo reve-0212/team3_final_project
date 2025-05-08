@@ -23,8 +23,9 @@ public class KNHController {
   knhService.saveReservation(dto);
  }
  @PostMapping("/date")
- public void saveDate(@RequestBody ReservationDTO dto) {
+ public void saveDateTime(@RequestBody ReservationDTO dto) {
   System.out.println(dto);
+  knhService.saveDateTime(dto);
 
  }
 
