@@ -22,16 +22,16 @@ public class OwnerServiceImpl implements OwnerService {
     return ownerMapper.loginOwner(ownerDTO);
   }
 
-//  사장님 정보 조회
-  @Override
-  public boolean ownerInfo(OwnerDTO ownerDTO) {
-    OwnerDTO owner = ownerMapper.findOwnerId(ownerDTO);
-    return owner != null;
-  }
-// 사장님 정보 수정
-  @Override
-  public boolean updateOwner(OwnerDTO ownerDTO) {
-    int result = ownerMapper.updateOwner(ownerDTO);
-    return result > 0;
-  }
+////  사장님 정보 조회
+//  @Override
+//  public boolean ownerInfo(OwnerDTO ownerDTO) {
+//    OwnerDTO owner = ownerMapper.findOwnerId(ownerDTO);
+//    return owner != null;
+//  }
+//// 사장님 정보 수정
+//  @Override
+//  public boolean updateOwner(OwnerDTO ownerDTO) {
+//    int result = ownerMapper.updateOwner(ownerDTO);
+//    return result > 0;
+//  }
 }

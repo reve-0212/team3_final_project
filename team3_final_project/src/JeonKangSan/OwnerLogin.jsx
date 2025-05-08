@@ -21,12 +21,24 @@ function OwnerLogin() {
         const ownerData = {ownerId, ownerPass};
 
 
-        axios.post("http://localhost:8080/owner/login", ownerData , { withCredentials: true })
+        axios.post("http://localhost:8080/owner/login", ownerData , )
             .then((response) => {
                 const { success, message } = response.data;
 
                 if(success) {
                     alert(message)
+                    localStorage.setItem("jwtToken",token)
+                    axios.get("http://localhost:8080/owner/info",{
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    })
+                        .then(res => {
+                            console.log("사장님 정보:",res.data);
+                        })
+                        .catch(err =>{
+                            console.log("사장님 정보 불러오기 실패",err)
+                        });
                     nv("/pre/PreSelect")
                 }
                 else {

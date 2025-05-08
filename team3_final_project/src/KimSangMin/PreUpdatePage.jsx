@@ -5,6 +5,7 @@ import axios from "axios";
 function PreInfoPage() {
     const nv = useNavigate();
 
+    // 사장님 정보 초기 설정
     const [ownerData, setOwnerData] = useState({
         ownerId: "",
         ownerPass: "",
@@ -14,19 +15,23 @@ function PreInfoPage() {
         bsNumber: ""
     });
 
-    // 입력값을 처리하는 공통 함수
+    // 입력값 변경 처리  ( 각 input에 onChange에 handleChange 적용 )
     const handleChange = (e) => {
+        // input에 값을 입력할 때, 그 값을 ownerData 상태에 반영한다.
+        // e.target은 이벤트가 발생한 input 태그 / name : input 태그에 설정된 name / value : 사용자가 입력한 실제 값
         const { name, value } = e.target;
+        // prevData : 이전값
         setOwnerData((prevData) => {
             console.log("Updating:", name, value); // 변경 전값 로그 확인
             return {
+            // ...prevData : 기존의 상태 값을 복사
                 ...prevData,
                 [name]: value,
             };
         });
     };
 
-    // 컴포넌트가 마운트 될 때 사장님 정보 가져오기
+    // 처음화면에 나타날때 로그인된 사장님 정보를 가져와 상태에 저장한다.
     useEffect(() => {
         axios.get('http://localhost:8080/owner/info', { withCredentials: true })
             .then(response => {
