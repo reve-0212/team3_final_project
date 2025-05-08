@@ -37,7 +37,7 @@ function DateTimeSelectorPage() {
         };
 
         axios
-            .post("http://localhost:8080/api/date", payload)
+            .post("http://localhost:8080/api/visitors/date/menus", payload)
             .then(() => {
                 console.log(payload);
                 alert("예약 정보가 저장되었습니다.");

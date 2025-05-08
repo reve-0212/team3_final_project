@@ -27,13 +27,13 @@ public class KNHController {
 
  }
 
- @PostMapping("/date")
+ @PostMapping("/visitors/date")
  public void saveDateTime(@RequestBody ReservationDTO dto) {
   System.out.println(dto);
   knhService.saveDateTime(dto);
  }
 
- @GetMapping("/menus")
+ @GetMapping("/visitors/date/menus")
  public List<MenuDTO> getAllMenus() {
   System.out.println("메서드 호출됨: getAllMenus");  // 메서드 호출 여부 확인용
   List<MenuDTO> menus = knhService.getAllMenus();

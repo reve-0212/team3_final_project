@@ -52,7 +52,7 @@ function main() {
                         <Route path={"/contentDetail"} element={<ContentDetail/>}/>
 
                         <Route path={"/waiting/visit"} element={<VisitPage/>}/>
-                        <Route path={"/waiting/seat"} element={<SeatPage/>}/>
+                        <Route path={"/book/seat"} element={<SeatPage/>}/>
                         <Route path={"/waiting/reg"} element={<WaitingRegPage/>}/>
                         <Route path={"/waiting/info"} element={<WaitingInfoPage/>}/>
 

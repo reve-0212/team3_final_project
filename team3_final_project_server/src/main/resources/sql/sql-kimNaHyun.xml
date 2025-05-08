@@ -7,19 +7,17 @@
     <insert id="insertReservation" parameterType="com.example.team3_final_project_server.dto.ReservationDTO">
         INSERT INTO reservation (
         user_idx,
-        restaurant_idx,
+        res_idx,
         menu_idx,
-        reservation_date_time,
-        reservation_people,
+        rsv_people,
         rsv_man,
         rsv_woman,
         rsv_baby
         ) VALUES (
         1,
-        3,
-        6,
-        NOW(),
-        #{reservationPeople},
+        1,
+        1,
+        #{rsvPeople},
         #{rsvMan},
         #{rsvWoman},
         #{rsvBaby}
@@ -30,18 +28,14 @@
         UPDATE reservation
         SET rsv_date = #{rsvDate},
         rsv_time = #{rsvTime}
-        WHERE reservation_idx = 43
+        WHERE reservation_idx =
     </update>
 
     <select id="getAllMenus" resultType="com.example.team3_final_project_server.dto.MenuDTO">
         SELECT
-        menu_idx,
-        restaurant_idx,
-        menu_name,
-        menu_price,
-        menu_explanation,
-        menu_image
-        FROM menu
+            menu_idx, res_idx, menu_name, menu_price, menu_explanation, menu_image
+        FROM
+            menu
     </select>
 
 </mapper>

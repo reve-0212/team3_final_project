@@ -96,6 +96,7 @@ public class SecurityConfig {
 //                    모든 사용자용
                     .requestMatchers("/user/**", "/latestDetails", "/bookmark", "/contentList/**", "/contentDetail", "/review", "/").permitAll()
                     .requestMatchers("/api/auth/login", "/auth/**").permitAll()
+                    .requestMatchers("/api/visitors/**").permitAll()
 //                    로그인한 사용자용
                     .requestMatchers("/waiting/**", "/book/**").hasRole("USER")
 //                    사장 전용

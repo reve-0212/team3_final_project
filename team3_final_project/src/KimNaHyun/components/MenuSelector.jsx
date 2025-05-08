@@ -12,7 +12,7 @@ const MenuSelector = () => {
     // 메뉴 데이터 로드
     useEffect(() => {
         axios
-            .get("http://localhost:8080/api/menus")
+            .get("http://localhost:8080/api/visitors/menus")
             .then(res => {
                 setMenuItems(res.data);
             })
