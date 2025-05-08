@@ -52,11 +52,7 @@ public class JwtTokenProvider {
     claims.put("userAge", userDTO.getUserAge());
     claims.put("userCall", userDTO.getUserCall());
     claims.put("userEmail", userDTO.getUserEmail());
-<<<<<<< HEAD
-//    claims.put("userRole", userDTO.getRole());
-=======
     claims.put("role", userDTO.getRole());
->>>>>>> 01721d95845cc54f8c0e821c05b1775f834dd746
 //    빌더 패턴을 사용하여 JWT 객체 생성
 
 //    setHeaderParam() : 토큰 타입을 설정
@@ -128,11 +124,7 @@ public class JwtTokenProvider {
             .userAge(((Number) claims.get("userAge")).intValue())
             .userCall(claims.get("userCall").toString())
             .userEmail(claims.get("userEmail").toString())
-<<<<<<< HEAD
-//            .role(claims.get("userRole").toString())
-=======
             .role(claims.get("role").toString())
->>>>>>> 01721d95845cc54f8c0e821c05b1775f834dd746
             .build();
 
 //    사용자 인증 정보를 생성 후 반환

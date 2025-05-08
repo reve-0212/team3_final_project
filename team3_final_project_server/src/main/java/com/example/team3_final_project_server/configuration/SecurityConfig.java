@@ -86,28 +86,6 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     return http
-<<<<<<< HEAD
-//        JWT 기반 인증이기 때문에 csrf 사용 중지
-        .csrf(csrf -> csrf.disable())
-//        JWT 기반 인증이기 때문에 cors가 필요없지만 현재와 같은 형태로 동작 시 웹 브라우저에서는 cors 규칙 위반이라고 출력되기 때문에 cors 설정이 필요함
-//        스프링 빈으로 등록한 cors 설정을 스프링 시큐리티에 적용
-        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-//        JWT 기반 인증이기 때문에 기본 form 사용 중지
-        .httpBasic(httpBasic -> httpBasic.disable())
-//        JWT 기반 인증이기 때문에 기본 로그아웃 사용 중지
-        .logout(logout -> logout.disable())
-//        JWT 기반 인증이기 때문에 세션 사용 중지
-        .sessionManagement(sessionManagementConfigurer -> sessionManagementConfigurer
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//        회원 가입, login을 위한 /auth/** url과 게시물 목록을 위한 /board url은 인증없이 사용 가능
-        .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                .requestMatchers("/auth/**", "/board","/contentList/**","/jsy/contents/**").permitAll()
-//            관리자 페이지는 관리자 권한이 필요함
-                .requestMatchers("/admin/**").hasRole("ADMIN")
-//            사용자 페이지와 /board/** url은 ROLE_MEMBER 권한이 필요함
-                .requestMatchers("/member/**", "/board/**").hasAnyRole("ADMIN", "MEMBER")
-                .requestMatchers("/api/auth/login","/api/auth/signup","/jsy/ownerLogin").permitAll()
-=======
             .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .httpBasic(httpBasic -> httpBasic.disable())
@@ -116,18 +94,19 @@ public class SecurityConfig {
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorizeRequests -> authorizeRequests
 //                    모든 사용자용
-                    .requestMatchers("/user/**", "/latestDetails", "/bookmark", "/contentList/**", "/contentDetail", "/review", "/").permitAll()
-                    .requestMatchers("/api/auth/login", "/auth/**").permitAll()
+                    .requestMatchers("/user/**", "/latestDetails", "/bookmark", "/contentDetail", "/review", "/").permitAll()
+                    .requestMatchers("/jsy/contents/**","/jsy/ownerLogin").permitAll()
+                    .requestMatchers("/api/auth/login", "/auth/**", "/api/auth/signup").permitAll()
 //                    로그인한 사용자용
                     .requestMatchers("/waiting/**", "/book/**").hasRole("USER")
 //                    사장 전용
                     .requestMatchers("/pre/**").hasRole("OWNER")
-//                    매니저 전용
+//                    관리자 전용 페이지
+                    .requestMatchers("/pre/admin").permitAll()
 //                    .requestMatchers("/auth/**", "/contentList/**", "/jsy/contents/**", "/pre/**", "/api/**", "/user/**").permitAll()
 //                    .requestMatchers("/admin/**").hasRole("ADMIN")
 //                    .requestMatchers("/member/**", "/board/**").hasAnyRole("ADMIN", "MEMBER")
 //                    .requestMatchers("/pre/**").hasRole("OWNER")
->>>>>>> 01721d95845cc54f8c0e821c05b1775f834dd746
 //            나머지 url은 모두 인증 받은 사용자만 사용 가능
                     .anyRequest().authenticated())
 

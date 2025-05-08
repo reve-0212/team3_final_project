@@ -45,6 +45,11 @@ public class JSYServiceImpl implements JSYService {
     return ResponseDTO.builder()
             .accessToken(accessToken)
             .refreshToken(refreshToken)
+            .userId(user.getUserId())
+            .userNick(user.getUserNick())
+            .userCall(user.getUserCall())
+            .userEmail(user.getUserEmail())
+            .role(user.getRole())
             .build();
   }
 }

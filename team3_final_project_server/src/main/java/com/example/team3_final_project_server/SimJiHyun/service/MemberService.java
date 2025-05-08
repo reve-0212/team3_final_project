@@ -88,7 +88,7 @@ public class MemberService {
             .userCall(user.getUserCall())
             .userEmail(user.getUserEmail())
 //        사용자 권한으로 ROLE_MEMBER 를 기본으로 사용, 다른 권한을 사용하고자 할 경우 다른 로직에서 권한 추가
-//            .role("ROLE_USER")
+            .role("ROLE_USER")
             .build();
 
 //    사용자 정보를 데이터베이스에 저장
