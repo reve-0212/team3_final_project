@@ -1,4 +1,5 @@
 function UseOrNoShow(props) {
+  console.log(props.isUsed)
     // true : 이용 예정/완료 , false : 취소/노쇼
     return (
         <div className={"d-flex justify-content-start gap-3"}>

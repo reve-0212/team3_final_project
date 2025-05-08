@@ -2,23 +2,22 @@ package com.example.team3_final_project_server.SimJiHyun.service;
 
 import com.example.team3_final_project_server.SimJiHyun.mapper.UserMapper;
 import com.example.team3_final_project_server.configuration.jwt.JwtTokenProvider;
+import com.example.team3_final_project_server.dto.ReservationDTO;
 import com.example.team3_final_project_server.dto.ResponseDTO;
 import com.example.team3_final_project_server.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
+import java.util.List;
 
 // 회원 가입 및 인증을 위한 서비스
 @RequiredArgsConstructor
 @Service
-public class MemberService {
+public class UserService {
 
   private final UserMapper userMapper;
   private final JwtTokenProvider jwtTokenProvider;
@@ -40,6 +39,7 @@ public class MemberService {
     return ResponseDTO.builder()
             .accessToken(accessToken)
             .refreshToken(refreshToken)
+            .userIdx(user.getUserIdx())
             .userId(user.getUserId())
             .userNick(user.getUserNick())
             .userCall(user.getUserCall())
@@ -94,5 +94,9 @@ public class MemberService {
 //    사용자 정보를 데이터베이스에 저장
     userMapper.saveUser(newUser);
     return "회원 가입 성공";
+  }
+
+  public List<ReservationDTO> userReservation(int userIdx) {
+    return userMapper.userReservation(userIdx);
   }
 }
