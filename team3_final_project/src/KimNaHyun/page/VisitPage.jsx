@@ -38,11 +38,11 @@ function VisitPage() {
         axios.post('http://localhost:8080/api/visitors', payload)
             .then(() => {
 
-                Nv('/waiting/seat')
+                Nv('/book/seat')
             }).catch(() => {
                 alert('전송 실패');
             console.log(payload);
-        })
+        });
     };
 
     return (

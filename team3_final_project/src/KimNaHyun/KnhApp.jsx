@@ -26,12 +26,12 @@ function KnhApp() {
         <BrowserRouter>
             <Header/>
             <Routes>
-                <Route path={"/waiting/visit"} element={<VisitPage/>}/>
-                <Route path={'/waiting/seat'} element={<SeatPage/>}/>
+                {/*<Route path={"/waiting/visit"} element={<VisitPage/>}/>*/}
                 <Route path={'/waiting/reg'} element={<WaitingRegPage/>}/>
                 <Route path={'/waiting/info'} element={<WaitingInfoPage/>}/>
 
                 <Route path={"/book/visit"} element={<VisitPage/>}/>
+                <Route path={'/book/seat'} element={<SeatPage/>}/>
                 <Route path={'/book/date'} element={<DateSelectorPage/>}/>
                 <Route path={'/book/menu'} element={<MenuSelectorPage/>}/>
                 <Route path={'/book/reg'} element={<BookRegPage/>}/>

@@ -28,20 +28,24 @@ function DateTimeSelectorPage() {
             return;
         }
 
-        const formattedDate = selectedDate.toISOString().split("T")[0]; // yyyy-MM-dd
+        // 날짜 포맷 (KST 기준)
+        const formattedDate = selectedDate.toLocaleDateString('sv-SE'); // yyyy-MM-dd
+
         const payload = {
-            reservationDate: formattedDate,
-            reservationTime: selectedTime, // HH:mm
+            rsvDate: formattedDate,
+            rsvTime: `${formattedDate} ${selectedTime}:00`, // DATETIME용
         };
 
         axios
-            .post("http://localhost:8080/api/date", payload)
+            .post("http://localhost:8080/api/visitors/date/menus", payload)
             .then(() => {
+                console.log(payload);
                 alert("예약 정보가 저장되었습니다.");
-                Nv("/book/menu"); // 페이지 이동
+                Nv("/book/menu");
             })
             .catch(() => {
                 console.log(formattedDate,selectedTime);
+                console.log(payload);
                 alert("예약 저장에 실패했습니다.");
             });
     };
