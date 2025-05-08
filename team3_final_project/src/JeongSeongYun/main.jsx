@@ -21,7 +21,7 @@ import BookInfoPage from "../KimNaHyun/page/BookInfoPage.jsx";
 import SjhReview from "../simJiHyun/review/SjhReview.jsx";
 import SjhReviewList from "../simJiHyun/reviewList/SjhReviewList.jsx";
 import WaitingInfoPage from "../KimNaHyun/page/WaitingInfoPage.jsx";
-import AdminLogin from "../JeonKangSan/AdminLogin.jsx";
+import AdminLogin from "./layout/AdminLogin.jsx";
 import OwnerLogin from "../JeonKangSan/OwnerLogin.jsx";
 import PreReserve from "../KimSangMin/PreReserve.jsx";
 import PreWait from "../KimSangMin/PreWait.jsx";
