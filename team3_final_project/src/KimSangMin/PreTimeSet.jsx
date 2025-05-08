@@ -31,8 +31,15 @@ function PreTimeSet() {
         }}>
             <WaBanner />
             <div className="d-flex">
-                <Link to={"/pre/PreReSet"} style={{ textDecoration: 'none',color:'black' }}><h4 className="text-start me-5">가게정보</h4></Link>
-                <Link to={"/pre/PreTimeSet"} style={{ textDecoration: 'none',color:'black' }}><h4 className="text-start me-5">운영정보</h4></Link>
+                <Link to="/pre/PreReSet" style={{ textDecoration: "none", color: "black" }}>
+                    <h4 className="text-start me-4">가게정보</h4>
+                </Link>
+                <Link to="/pre/PreTimeSet" style={{ textDecoration: "none", color: "black" }}>
+                    <h4 className="text-start me-4">운영정보</h4>
+                </Link>
+                <Link to="/pre/PreFucn" style={{ textDecoration: "none", color: "black" }}>
+                    <h4>부가기능</h4>
+                </Link>
             </div>
             <hr />
 

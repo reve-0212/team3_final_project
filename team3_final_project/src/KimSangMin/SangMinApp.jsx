@@ -22,6 +22,7 @@ import CeoMenuList from "../JangDaJung/CeoMenuList.jsx";
 import PreUpdatePage from "./PreUpdatePage.jsx";
 import CeoMenuListEdit from "../JangDaJung/CeoMenuListEdit.jsx";
 import CeoMenuEdit from "../JangDaJung/CeoMenuEdit.jsx";
+import PreFunction from "./PreFunction.jsx";
 import PreRegPage from "../JeongSeongYun/layout/PreRegPage.jsx";
 
 function SangMinApp() {
@@ -37,7 +38,7 @@ function SangMinApp() {
                     <Route path="/pre/PreTimeSet" element={<PreTimeSet/>}/>
 
 
-                  {/* 관리자 -> 사장님 */}<Route path="/pre/admin" element={<AdminLogin/>}/> {/*  관리자 로그인 */}
+                  {/* 관리자 -> 사장님 */}<Route path="/pre/admin" element={<OwnerLogin/>}/> {/*  관리자 로그인 */}
                     <Route path="/pre/reg" element={<PreRegPage/>}/> {/* 사장님 정보 입력 버튼 */}
                     <Route path="/pre/info" element={<PreInfoPage/>}/> {/*  사장님 정보 입력 페이지 */}
                     <Route path="/pre/login" element={<OwnerLogin/>}/> {/*  사장 로그인 */}
@@ -49,6 +50,7 @@ function SangMinApp() {
                     <Route path="/pre/PreRe" element={<PreRe/>}/> {/* 예약가게 리뷰 보기*/}
                     <Route path="/pre/PreDayCh" element={<PreDayCh/>}/> {/* 예약 날짜 차트 */}
                     <Route path="/pre/PreReSet" element={<PreReSet/>}/> {/* 예약가게 셋팅 */}
+                    <Route path="/pre/PreFucn" element={<PreFunction/>}/> {/* 예약가게 메인*/}
                     <Route path="/pre/PrePast" element={<PastDateReservation/>}/> {/* 과거 예약 */}
                     <Route path="/pre/PreToday" element={<TodayReservation/>}/> {/* 오늘 예약  */}
                     <Route path="/pre/PreSelect" element={<PreSelect/>}/> {/* 오늘 예약  */}

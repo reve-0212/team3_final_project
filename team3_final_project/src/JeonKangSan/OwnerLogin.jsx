@@ -1,5 +1,4 @@
 import LoginSignText from "../simJiHyun/LoginSignText.jsx";
-import LoginText from "../simJiHyun/login/LoginText.jsx";
 import "../simJiHyun/SjhCss.css"
 import {useNavigate} from "react-router-dom";
 import React, {useState} from "react";

@@ -2,6 +2,7 @@ import {useState} from "react";
 import WaBanner from "./WaBanner.jsx";
 import AdminSeatEditor from "./AdminSeatEditor.jsx";
 import UserSeatReservation from "./UserSeatReservation.jsx";
+import {Link} from "react-router-dom";
 
 
 function PreSetting() {
@@ -61,10 +62,17 @@ function PreSetting() {
             }}
         >
 
-            <WaBanner/>
+            <ReBanner/>
             <div className="d-flex">
-                <h4 className="text-start me-5">가게정보</h4>
-                <h4 className="text-start">운영정보</h4>
+                <Link to="/pre/PreReSet" style={{ textDecoration: "none", color: "black" }}>
+                    <h4 className="text-start me-4">가게정보</h4>
+                </Link>
+                <Link to="/pre/PreTimeSet" style={{ textDecoration: "none", color: "black" }}>
+                    <h4 className="text-start me-4">운영정보</h4>
+                </Link>
+                <Link to="/pre/PreFucn" style={{ textDecoration: "none", color: "black" }}>
+                    <h4>부가기능</h4>
+                </Link>
             </div>
             <hr/>
             <br/>

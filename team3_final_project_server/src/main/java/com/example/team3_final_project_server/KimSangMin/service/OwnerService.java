@@ -7,7 +7,6 @@ public interface OwnerService {
 //    사장님 회원가입
     boolean signOwner(OwnerDTO ownerDTO);
 
-
 //    사장님 로그인
     OwnerDTO loginOwner(OwnerDTO ownerDTO);
 

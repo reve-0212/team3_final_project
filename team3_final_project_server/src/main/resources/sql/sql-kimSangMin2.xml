@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.team3_final_project_server.KimSangMin.mapper.PreMapper">
+
+    <!--    좌석 저장 -->
+    <insert id="saveSeats">
+        INSERT INTO seat_table (res_idx, type, name, x, y, image, is_selected)
+        VALUES
+        <foreach collection="seats" item="seat" separator=",">
+            (#{seat.resIdx}, #{seat.type}, #{seat.name}, #{seat.x}, #{seat.y}, #{seat.image}, #{seat.isSelected})
+        </foreach>
+    </insert>
+
+
+
+<!--    가게 정보 저장 -->
+    <insert id="insertRes" parameterType="com.example.team3_final_project_server.dto.RestaurantDTO">
+    INSERT INTO restaurant (res_name, res_call, res_address1, res_address2, res_introduce, res_reserve_time, res_image1, res_image2, res_image3)
+    VALUES ( #{resName}, #{resCall}, #{resAddress1}, #{resAddress2}, #{resIntroduce}, #{resReserveTime}, #{resImage1}, #{resImage2}, #{resImage3} )
+    </insert>
+</mapper>
