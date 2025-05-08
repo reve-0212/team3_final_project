@@ -1,5 +1,4 @@
 import LoginSignText from "../simJiHyun/LoginSignText.jsx";
-import LoginText from "../simJiHyun/login/LoginText.jsx";
 import "../simJiHyun/SjhCss.css"
 import {useNavigate} from "react-router-dom";
 import React, {useState} from "react";
@@ -21,24 +20,12 @@ function OwnerLogin() {
         const ownerData = {ownerId, ownerPass};
 
 
-        axios.post("http://localhost:8080/owner/login", ownerData , )
+        axios.post("http://localhost:8080/owner/login", ownerData , { withCredentials: true })
             .then((response) => {
                 const { success, message } = response.data;
 
                 if(success) {
                     alert(message)
-                    localStorage.setItem("jwtToken",token)
-                    axios.get("http://localhost:8080/owner/info",{
-                        headers: {
-                            Authorization: `Bearer ${token}`
-                        }
-                    })
-                        .then(res => {
-                            console.log("사장님 정보:",res.data);
-                        })
-                        .catch(err =>{
-                            console.log("사장님 정보 불러오기 실패",err)
-                        });
                     nv("/pre/PreSelect")
                 }
                 else {

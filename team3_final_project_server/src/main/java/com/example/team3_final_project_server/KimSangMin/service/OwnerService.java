@@ -10,9 +10,9 @@ public interface OwnerService {
 //    사장님 로그인
     OwnerDTO loginOwner(OwnerDTO ownerDTO);
 
-////    사장님 정보 조회
-//    boolean ownerInfo(OwnerDTO ownerDTO);
-//
-//    boolean updateOwner(OwnerDTO ownerDTO);
+//    사장님 정보 조회
+    boolean ownerInfo(OwnerDTO ownerDTO);
+
+    boolean updateOwner(OwnerDTO ownerDTO);
 
 }

@@ -1,18 +1,19 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import ReBanner from "./ReBanner.jsx";
-import SeatManager from "./SeatManager.jsx";
 import axios from "axios";
 
 function PreReSet() {
   const [restData, setRestData] = useState({
     Title: "가게이름",
     Phone: "가게번호",
-    Address: "가게주소",
-    HashTag: "가게 해시태그",
+    Address1: "가게주소",
+    Address2: "가게 해시태그",
     Content: "가게 소개",
     Function: "가게 기능",
   });
+
+
   const options = [
     { value: "dong1", label: "중앙동" },
     { value: "dong2", label: "대청동" },
@@ -69,7 +70,6 @@ function PreReSet() {
   const [img, setImg] = useState([]);
   const [address, setAddress] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const [input, setInput] = useState([""]);
   const [resTime, setReTime] = useState([""]);
   const [dongOption, setDongOption] = useState("option1"); // 기본 옵션 설정
 
@@ -122,15 +122,7 @@ function PreReSet() {
 
 
 
-  const chInput = (e, index) => {
-    const updatedInput = [...input];
-    updatedInput[index] = e.target.value;
-    setInput(updatedInput);
-  };
 
-  // input 추가 삭제 기능
-  const addInput = () => setInput([...input, ""]);
-  const removeInput = () => setInput(input.slice(0, -1));
 
   // 예약시간 input 추가 / 삭제 기능
   const addTime = () => setReTime([...resTime, ""]);
@@ -152,21 +144,23 @@ function PreReSet() {
   const hSubmit = (e) => {
     e.preventDefault();
 
-    const { Title, Phone, Address, Content } = restData;
-
-    if (!Title || !Phone || !Address || !Content || resTime.some((t) => !t) || input.some((i) => i.trim() === "")) {
-      alert("필수 항목이 입력되지 않았습니다.");
-      return;
-    }
-
     const storeData = {
       ...restData,
-      facilities: input,
       availableTimes: resTime,
       dong : dongOption,
     };
 
     console.log("저장할 데이터: ", storeData);
+
+    axios.post("http://localhost:8080/",storeData)
+        .then((response) => {
+          console.log("저장성공", response.data)
+          alert("가게 정보가 저장되었습니다.")
+        })
+        .catch((error) => {
+          console.log("오류 발생 " + error)
+          alert("오류가 발생했습니다.")
+        })
 
   };
 
@@ -187,7 +181,10 @@ function PreReSet() {
               <h4 className="text-start me-4">가게정보</h4>
             </Link>
             <Link to="/pre/PreTimeSet" style={{ textDecoration: "none", color: "black" }}>
-              <h4>운영정보</h4>
+              <h4 className="text-start me-4">운영정보</h4>
+            </Link>
+            <Link to="/pre/PreFucn" style={{ textDecoration: "none", color: "black" }}>
+              <h4>부가기능</h4>
             </Link>
           </div>
           <hr />
@@ -200,7 +197,7 @@ function PreReSet() {
           <div className="mb-4">
             <input
                 type="file"
-                id="imageUpload"
+                id="image"
                 accept="image/*"
                 className="form-control"
                 multiple
@@ -349,42 +346,10 @@ function PreReSet() {
             />
           </div>
 
-
           <hr />
           <br />
 
 
-          <h4 className="text-start">
-            <strong>편의시설</strong>
-            <span style={{ color: "#FFD727", fontSize: "14px" }}> *필수</span>
-          </h4>
-          <div className="mb-4">
-            {input.map((val, index) => (
-                <div key={index} style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
-                  <input
-                      type="text"
-                      value={val}
-                      onChange={(e) => chInput(e, index)}
-                      className="form-control"
-                      style={{ width: "300px", height: "50px" }}
-                  />
-                  {index === input.length - 1 && (
-                      <div style={{ marginLeft: "10px" }}>
-                        <button className="btn btn-sm" onClick={addInput} style={{ marginRight: "5px", border: "1px solid #FFD727" }}>
-                          추가
-                        </button>
-                        <button className="btn btn-sm" style={{ border: "1px solid #FFD727" }} onClick={removeInput}>
-                          삭제
-                        </button>
-                      </div>
-                  )}
-                </div>
-            ))}
-          </div>
-
-
-          <hr />
-          <br />
           <h4 className="text-start">
             <strong>예약 가능한 시간</strong>
             <span style={{ color: "#FFD727", fontSize: "14px" }}> *필수</span>
@@ -417,10 +382,7 @@ function PreReSet() {
 
           <hr />
           <br />
-          <h4 className="text-start">
-            <strong>좌석배치도</strong>
-          </h4>
-          <SeatManager/>
+
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
             <button type="submit" className="btn btn-warning btn-lg mb-3">
               저장

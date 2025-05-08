@@ -4,12 +4,17 @@ import lombok.Data;
 
 @Data
 public class RestaurantDTO {
-  private int restaurantIdx;
-  private String restaurantAddr;
-  private String restaurantCall;
-  private String restaurantHour;
-  private double restaurantLatitude;
-  private double restaurantLongitude;
-  private String restaurantPriceRange;
-  private String restaurantIntroduce;
+  private int resIdx;
+  private String resAddress1;
+  private String resAddress2;
+  private String resName;
+  private String resIntroduce;
+  private String resImage1;
+  private String resImage2;
+  private String resImage3;
+  private double resLat;
+  private double resLng;
+  private String resPriceRange;
+  private String reserveOrWaiting;
+  private String resOption;
 }

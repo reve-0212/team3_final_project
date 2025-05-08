@@ -53,45 +53,45 @@ public class OwnerController {
 
 
 
-//    //  사장님 정보 받아오기
-//    @GetMapping("/owner/info")
-//    public ResponseEntity<PreResponse> ownerInfo(HttpSession session) {
-//        OwnerDTO ownerDTO = (OwnerDTO) session.getAttribute("owner");
-//
-//        session.setAttribute("owner", ownerDTO); // 세션에 ownerDTO를 저장
-//        System.out.println("Owner saved in session: " + ownerDTO);
-//
-//        if (ownerDTO != null) {
-//            boolean success = ownerService.ownerInfo(ownerDTO);
-//            PreResponse response = new PreResponse(success, "조회성공", ownerDTO);
-//            return ResponseEntity.ok(response);
-//        } else {
-//            PreResponse response = new PreResponse(false, "조회실패", null);
-//            return ResponseEntity.badRequest().body(response);
-//        }
-//    }
-//
-//    //  사장님 정보 수정하기
-//    @PutMapping("/owner/update")
-//    public ResponseEntity<PreResponse> updateOwner(@RequestBody OwnerDTO ownerDTO, HttpSession session) {
-//        OwnerDTO sessionOwner = (OwnerDTO) session.getAttribute("owner");
-//
-//        if (sessionOwner != null && sessionOwner.getOwnerId().equals(ownerDTO.getOwnerId())) {
-//            boolean success = ownerService.updateOwner(ownerDTO);
-//            if (success) {
-//                session.setAttribute("owner", ownerDTO);
-//
-//                PreResponse response = new PreResponse(success, "정보 수정 성공", ownerDTO);
-//                return ResponseEntity.ok(response);
-//            } else {
-//                PreResponse response = new PreResponse(false, "정보 수정 실패", null);
-//                return ResponseEntity.badRequest().body(response);
-//            }
-//        } else {
-//            PreResponse response = new PreResponse(false, "정보 불일치", null);
-//            return ResponseEntity.badRequest().body(response);
-//        }
-//    }
+    //  사장님 정보 받아오기
+    @GetMapping("/owner/info")
+    public ResponseEntity<PreResponse> ownerInfo(HttpSession session) {
+        OwnerDTO ownerDTO = (OwnerDTO) session.getAttribute("owner");
+
+        session.setAttribute("owner", ownerDTO); // 세션에 ownerDTO를 저장
+        System.out.println("Owner saved in session: " + ownerDTO);
+
+        if (ownerDTO != null) {
+            boolean success = ownerService.ownerInfo(ownerDTO);
+            PreResponse response = new PreResponse(success, "조회성공", ownerDTO);
+            return ResponseEntity.ok(response);
+        } else {
+            PreResponse response = new PreResponse(false, "조회실패", null);
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+    //  사장님 정보 수정하기
+    @PutMapping("/owner/update")
+    public ResponseEntity<PreResponse> updateOwner(@RequestBody OwnerDTO ownerDTO, HttpSession session) {
+        OwnerDTO sessionOwner = (OwnerDTO) session.getAttribute("owner");
+
+        if (sessionOwner != null && sessionOwner.getOwnerId().equals(ownerDTO.getOwnerId())) {
+            boolean success = ownerService.updateOwner(ownerDTO);
+            if (success) {
+                session.setAttribute("owner", ownerDTO);
+
+                PreResponse response = new PreResponse(success, "정보 수정 성공", ownerDTO);
+                return ResponseEntity.ok(response);
+            } else {
+                PreResponse response = new PreResponse(false, "정보 수정 실패", null);
+                return ResponseEntity.badRequest().body(response);
+            }
+        } else {
+            PreResponse response = new PreResponse(false, "정보 불일치", null);
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
 
 
 }

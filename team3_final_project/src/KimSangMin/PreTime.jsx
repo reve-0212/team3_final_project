@@ -1,6 +1,7 @@
 import WaBanner from "./WaBanner.jsx";
 import {useState} from "react";
 import {Link} from "react-router-dom";
+import ReBanner from "./ReBanner.jsx";
 // import PreTimeSet from "./PreTimeSet.jsx";
 // import {Link} from "react-router-dom";
 
@@ -41,10 +42,17 @@ function PreTime() {
                 maxWidth: '1000px'
 
         }}>
-            <WaBanner/>
+            <ReBanner/>
             <div className="d-flex">
-                <Link to={"/pre/PreReSet"} style={{ textDecoration: 'none',color:'black' }}><h4 className="text-start me-5">가게정보</h4></Link>
-                <Link to={"/pre/PreTimeSet"} style={{ textDecoration: 'none',color:'black' }}><h4 className="text-start me-5">운영정보</h4></Link>
+                <Link to="/pre/PreReSet" style={{ textDecoration: "none", color: "black" }}>
+                    <h4 className="text-start me-4">가게정보</h4>
+                </Link>
+                <Link to="/pre/PreTimeSet" style={{ textDecoration: "none", color: "black" }}>
+                    <h4 className="text-start me-4">운영정보</h4>
+                </Link>
+                <Link to="/pre/PreFucn" style={{ textDecoration: "none", color: "black" }}>
+                    <h4>부가기능</h4>
+                </Link>
             </div>
             <hr/><h4 className="text-start"><strong>운영 시간</strong>
                 <span style={{color:"#FFD727", fontSize: "14px"}}> *필수</span>
