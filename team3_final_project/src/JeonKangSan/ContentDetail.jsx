@@ -1,13 +1,28 @@
 // ContentDetail.jsx
 
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import "./JksSheet.css";
 import {useNavigate} from "react-router-dom";
+import axios from "axios";
 
 function ContentDetail() {
     const [ActTab, setActTab] = useState("상세정보");
     const [RevTab, setRevTab] = useState("rev"); // 기본값: 리뷰(rev)
     const Nv = useNavigate();
+    const [storeInfo, setStoreInfo] = useState("");
+
+
+    useEffect(() => {
+        axios.get("http://localhost:8080/test22")
+            .then((res) => {
+                console.log("받은 데이터:", res.data);
+                setStoreInfo(res.data[0]); // 리스트라면 [0], 객체면 그대로
+            })
+            .catch((err) => {
+                console.error("요청 실패:", err);
+            });
+    }, []);
+
 
 
     return (
@@ -23,7 +38,8 @@ function ContentDetail() {
 
                 {/* 가게 이름 */}
                 <div className="d-flex justify-content-start text mb-2">
-                    <h5 className="fw-bold">가게이름</h5>
+                    <h5 className="fw-bold">
+                        {storeInfo ? storeInfo.resName : "로딩 중..."}</h5>
                 </div>
 
                 {/* 별점 및 영업정보 */}
