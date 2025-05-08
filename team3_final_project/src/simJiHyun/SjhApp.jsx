@@ -10,6 +10,9 @@ import BottomNav from "../JeongSeongYun/layout/BottomNav.jsx";
 import SjhReview from "./review/SjhReview.jsx";
 import SjhReviewList from "./reviewList/SjhReviewList.jsx";
 import SjhLocationTest from "./location/SjhLocationTest.jsx";
+import OwnerLoginSjh from "./login/OwnerLoginSjh.jsx";
+import PreWait from "../KimSangMin/PreWait.jsx";
+import PreReserve from "../KimSangMin/PreReserve.jsx";
 
 function SjhApp() {
   return (
@@ -18,14 +21,12 @@ function SjhApp() {
         <Header/>
 
         <Routes>
-          <Route index element={<SjhLocationTest/>}/>
-          <Route path={"/logIn"} element={<Login/>}/>
-          <Route path={"/signUp"} element={<SignUp/>}/>
-          <Route path={"/reservation"} element={<SjhReservation/>}/>
-          <Route path={"/popUp"} element={<CancelPopup/>}/>
-          <Route path={"/review"} element={<SjhReview/>}/>
-          <Route path={"/reviewList"} element={<SjhReviewList/>}/>
-          <Route path={"/locationTest"} element={<SjhLocationTest/>}/>
+          {/*모바일 전용 사장 로그인*/}
+          <Route path={"/"} element={<OwnerLoginSjh/>}/>
+          {/*웨이팅 웹앱*/}
+          {/*<Route path="/pre/PreWait" element={<PreWait/>}/>*/}
+          {/*예약 웹앱*/}
+          <Route path="/pre/reserve" element={<PreReserve/>}/>
         </Routes>
 
         <BottomNav/>

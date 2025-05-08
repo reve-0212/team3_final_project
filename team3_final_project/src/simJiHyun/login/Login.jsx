@@ -4,21 +4,26 @@ import LoginSignText from "../LoginSignText.jsx";
 import "../SjhCss.css"
 import useUserStore from "../../stores/useUserStore.jsx";
 import {Link, useNavigate} from "react-router-dom";
-import {apiLogin} from "../service/ApiService.js";
+import {apiLogin} from "../service/ApiService.js"
 
 function Login() {
   const setUser = useUserStore((state) => state.setUser);
   const Nv = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const userId = formData.get('userId')
     const userPass = formData.get('userPass')
-    console.log(userId)
-    console.log(userPass)
 
-    apiLogin(userId, userPass)
+    try {
+      const userData = await apiLogin(userId, userPass);
+      setUser(userData)
+      alert("로그인 완료!")
+      Nv("/")
+    } catch (err) {
+      alert(`로그인 실패 : ${err}`)
+    }
   }
 
   return (
