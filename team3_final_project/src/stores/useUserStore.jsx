@@ -1,9 +1,14 @@
-import { create } from 'zustand';
+import {create} from 'zustand';
+import {persist} from "zustand/middleware";
 
-const useUserStore = create((set) => ({
-    user: null, // 초기값: 로그인 안된 상태
-    setUser: (userData) => set({ user: userData }),
-    clearUser: () => set({ user: null }),
-}));
-
+// persist 로 새로고침해도 데이터가 안날아가게
+const useUserStore = create(persist((set) => ({
+    user: null,
+    setUser: (user) => set({user}),
+    clearUser: () => set({user: null})
+  }),
+  {
+    name: 'user-storage',
+    getStorage: () => localStorage,
+  }))
 export default useUserStore;

@@ -9,5 +9,4 @@ import org.springframework.web.bind.annotation.RestController;
 public class PreController {
 
 //   사장님 가게 정보 설정
-    @PostMapping
 }

@@ -33,8 +33,6 @@ public class SJHController {
 //      사용자 인정 정보 및 jwt 토큰 정보를 가져오기
 //      ResponseDTO에는 jwt를 통해서 생성된 엑세스 토큰과 리플레시 토큰이 저장되어 있음
       ResponseDTO jwtToken = memberService.getJwtAuthentication(userId, userPass);
-
-      System.out.println("authLogin");
 //      가져온 jwt 토큰 정보를 클라이언트로 전달
       return ResponseEntity.ok().body(jwtToken);
     }

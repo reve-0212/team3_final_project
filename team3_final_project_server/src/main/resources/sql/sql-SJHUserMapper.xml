@@ -20,8 +20,8 @@
 
   <!-- 회원 정보 저장 -->
   <insert id="saveUser" parameterType="com.example.team3_final_project_server.dto.UserDTO">
-    INSERT INTO user (user_id, user_pass, user_name, user_gender, user_age, user_call, user_email, role)
-    VALUES (#{userId}, #{userPass}, #{userName}, #{userGender}, #{userAge}, #{userCall}, #{userEmail}, #{role})
+    INSERT INTO user (user_id, user_pass, user_name, user_gender, user_age, user_call, user_email)
+    VALUES (#{userId}, #{userPass}, #{userName}, #{userGender}, #{userAge}, #{userCall}, #{userEmail})
   </insert>
 
   <!-- 사용자 삭제 -->
