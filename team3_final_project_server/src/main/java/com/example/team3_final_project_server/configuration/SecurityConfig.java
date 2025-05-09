@@ -95,10 +95,10 @@ public class SecurityConfig {
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorizeRequests -> authorizeRequests
 //                    모든 사용자용
-                    .requestMatchers("/user/**", "/latestDetails", "/bookmark", "/contentDetail", "/review", "/").permitAll()
+                    .requestMatchers("/user/**", "/latestDetails", "/bookmark", "/contentDetail", "/review", "/","/api/visitors").permitAll()
                     .requestMatchers("/jsy/contents/**","/jsy/ownerLogin").permitAll()
                     .requestMatchers("/api/**", "/auth/**", "/api/auth/signup").permitAll()
-                    .requestMatchers("/api/visitors/**").permitAll()
+                    .requestMatchers("/api/visitors","/api/visitors/**").permitAll()
 //                    로그인한 사용자용
                     .requestMatchers("/waiting/**", "/book/**","/latestDetails").hasRole("USER")
                     .requestMatchers(GET,"/userReservation").hasRole("USER")

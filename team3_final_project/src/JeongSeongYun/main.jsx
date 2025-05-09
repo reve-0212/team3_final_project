@@ -51,13 +51,13 @@ function main() {
                         <Route path={"/contentList/:category"} element={<ContentList/>}/>
                         <Route path={"/contentDetail"} element={<ContentDetail/>}/>
 
-                        <Route path={"/waiting/visit"} element={<VisitPage/>}/>
-                        <Route path={"/book/seat"} element={<SeatPage/>}/>
+                        <Route path={"/waiting/visit/:reservationIdx"} element={<VisitPage/>}/>
+                        <Route path={"/book/seat/:reservationIdx"} element={<SeatPage/>}/>
                         <Route path={"/waiting/reg"} element={<WaitingRegPage/>}/>
                         <Route path={"/waiting/info"} element={<WaitingInfoPage/>}/>
 
-                        <Route path={"/book/visit"} element={<VisitPage/>}/>
-                        <Route path={"/book/date"} element={<DateSelectorPage/>}/>
+                        <Route path={"/book/visit/:userIdx/:restIdx"} element={<VisitPage/>}/>
+                        <Route path={"/book/date/:reservationIdx"} element={<DateSelectorPage/>}/>
                         <Route path={"/book/menu"} element={<MenuSelectorPage/>}/>
                         <Route path={"/book/reg"} element={<BookRegPage/>}/>
                         <Route path={"/book/info"} element={<BookInfoPage/>}/>
