@@ -10,174 +10,141 @@ import noImage from '../JeongSeongYun/img/noimage.jpg';
 
 function ContentList() {
 
-    // JSY 작업
-    const { category } = useParams();
-    const [restaurants, setRestaurants] = useState([]);
+  // JSY 작업
+  const { category } = useParams();
+  const [restaurants, setRestaurants] = useState([]);
 
-    useEffect(() => {
-        axios.get(`http://localhost:8080/jsy/contents/${category}`)
-            .then(res => {
-                setRestaurants(res.data);
-                console.log(res.data);
-            }).catch(err => console.log('데이터 가져오기 오류 :', err));
-    }, [category]);
+  useEffect(() => {
+    axios.get(`http://localhost:8080/jsy/contents/${category}`)
+      .then(res => {
+        setRestaurants(res.data);
+        console.log(res.data);
+      }).catch(err => console.log('데이터 가져오기 오류 :', err));
+  }, [category]);
 
 
-    const Nv = useNavigate();
-    const [bookmarks, setBookmarks] = useState({
-        store1: false,
-        store2: false
-    })
+  const Nv = useNavigate();
+  const [bookmarks, setBookmarks] = useState({
+    store1: false,
+    store2: false
+  })
 
-    const toggleBookmark = (storeKey) => {
-        setBookmarks(prev => ({
-            ...prev,
-            [storeKey]: !prev[storeKey]
-        }))
-    }
+  const toggleBookmark = (storeKey) => {
+    setBookmarks(prev => ({
+      ...prev,
+      [storeKey]: !prev[storeKey]
+    }))
+  }
 
-    return (
-        <div className="app-container">
+  return (
+    <div className="app-container">
 
-            {/* 상단 필터 버튼 - */}
-            <div className="d-flex gap-2 mb-4">
-                <button className="btn-jks btn-outline-secondary btn-sm"><i className="fa-solid fa-rotate-right"></i> 초기화
-                </button>
+      {/* 상단 필터 버튼 - */}
+      <div className="d-flex gap-2 mb-4">
+        <button className="btn-jks btn-outline-secondary btn-sm"><i className="fa-solid fa-rotate-right"></i> 초기화
+        </button>
 
-                {/* 지역 선택 콤보박스 */}
-                <div className="position-relative">
-                    <select
-                        className="btn-jks btn-sm button-seebox me-auto text-start"
-                        style={{width: 'auto', appearance: 'none'}}
-                        aria-label="지역 선택"
-                    >
-                        <option>지역 선택</option>
-                        <option>전포동</option>
-                        <option>서면</option>
-                        <option>해운대</option>
-                        <option>남포동</option>
-                    </select>
-                    <i
-                        className="fa-solid fa-chevron-down position-absolute top-50 end-0 translate-middle-y me-3 text-white"
-                        style={{pointerEvents: 'none'}}></i>
-                </div>
-
-                {/* 정렬 기준 선택 콤보박스 */}
-                <div className="position-relative d-inline-block">
-                    <select
-                        className="btn-jks button-seebox btn-sm text-start"
-                        style={{
-                            width: 'auto',
-                            appearance: 'none',
-                            paddingRight: '2rem'
-                        }}
-                        aria-label="정렬 기준 선택"
-                    >
-                        <option>가까운 순</option>
-                        <option>별점 높은 순</option>
-                        <option>대기 짧은 순</option>
-                        <option>리뷰 많은 순</option>
-                    </select>
-                    <i
-                        className="fa-solid fa-chevron-down position-absolute top-50 translate-middle-y me-1 text-white"
-                        style={{right: '10px', pointerEvents: 'none'}}
-                    ></i>
-                </div>
-
-            </div>
-            <hr></hr>
-            <br></br>
-
-            {/* 가게 리스트 */}
-            <div className="mb-5">
-
-            {restaurants.map((res, index) => (
-                <div className="card mb-4" style={{ cursor: 'pointer' }} key={index}>
-                    <div className="card-body text-start">
-                        <div className="d-flex justify-content-between align-items-center">
-                            <h5 className="card-title mb-0 fw-semibold flex-fill"
-                                onClick={() => Nv(`/contentDetail/${res.restaurantIdx}`)}>
-                                {res.restaurantIntroduce || "식당 이름"}
-                            </h5>
-                            <button className="btn-jks btn-sm" onClick={() => toggleBookmark(res.restaurantIdx)}>
-                                <FontAwesomeIcon icon={bookmarks[res.restaurantIdx] ? faBookmark : faBookmarkRegular} />
-                            <h5 className="card-title mb-0 fw-semibold flex-fill"
-                                onClick={() => Nv(`/contentDetail/${res.resIdx}`)}>
-                                {res.resName || "식당 이름"}
-                            </h5>
-                            <button className="btn-jks btn-sm" onClick={() => toggleBookmark(res.resIdx)}>
-                                <FontAwesomeIcon icon={bookmarks[res.resIdx] ? faBookmark : faBookmarkRegular} />
-                            </button>
-                        </div>
-                        <p className="card-text my-2" onClick={() => Nv(`/contentDetail/${res.restaurantIdx}`)}>
-                            ⭐ {res.avgRating || "0.0"} {`(${res.rvCount ?? 0})`} {/* 별점은 임시 값이므로 필요하면 백엔드에 컬럼 추가 */}
-                        </p>
-                        <small className="text-muted d-flex flex-fill" onClick={() => Nv(`/contentDetail/${res.restaurantIdx}`)}>
-                            {res.categoryName || "카테고리"} · {res.restaurantAddr || "주소"}
-                        </small>
-                        <p className="card-text my-2" onClick={() => Nv(`/contentDetail/${res.resIdx}`)}>
-                            ⭐ {res.avgRating || "0.0"} {`(${res.rvCount ?? 0})`} {/* 별점은 임시 값이므로 필요하면 백엔드에 컬럼 추가 */}
-                        </p>
-                        <small className="text-muted d-flex flex-fill" onClick={() => Nv(`/contentDetail/${res.resIdx}`)}>
-                            {res.categoryName || "카테고리"} · {res.resAddress2 || "OO동"}
-                        </small>
-                        <div className="d-flex gap-2 my-2">
-                            {res.reserveOrWaiting === 'R' ? (
-                                <span className="badge-default bg-light text-muted border">원격줄서기</span>
-                            ) : res.reserveOrWaiting === 'W' ? (
-                                <span className="badge-default bg-light text-muted border">예약</span>
-                            ) : null}
-                            {res.restOption1 === 'Y' && (
-                                <span className="badge-default bg-light text-muted border">현장대기</span>
-                            )}
-                            {res.reserveOrWaiting === 'R' ? (
-                                <span className="badge-default bg-light text-muted border">원격줄서기</span>
-                            ) : res.reserveOrWaiting === 'W' ? (
-                                <span className="badge-default bg-light text-muted border">예약</span>
-                            ) : null}
-                            {res.resOption1 === 'Y' && (
-                                <span className="badge-default bg-light text-muted border">현장대기</span>
-                            )}
-                        </div>
-                    </div>
-
-                    <div className="px-3 pb-3" onClick={() => Nv(`/contentDetail/${res.restaurantIdx}`)}>
-
-                    <div className="px-3 pb-3" onClick={() => Nv(`/contentDetail/${res.resIdx}`)}>
-                        <div className="d-flex justify-content-between gap-2 position-relative">
-                            {[res.restaurantImage1, res.restaurantImage2, res.restaurantImage3].map((imgSrc, i) => (
-                                <div className="rounded overflow-hidden" style={{ width: '33.3%', height: '150px' }} key={i}>
-                                    <img
-                                        src={imgSrc || noImage}
-                                        alt={`음식${i + 1}`}
-                                        className="w-100 h-100"
-                                        style={{ objectFit: 'cover' }}
-                                    />
-                                </div>
-                            ))}
-
-                            {[res.resImage1, res.resImage2, res.resImage3].map((imgSrc, i) => (
-                                <div className="rounded overflow-hidden" style={{ width: '33.3%', height: '150px' }} key={i}>
-                                    <img
-                                        src={imgSrc || noImage}
-                                        alt={`음식${i + 1}`}
-                                        className="w-100 h-100"
-                                        style={{ objectFit: 'cover' }}
-                                    />
-                                </div>
-                            ))}
-
-                            {/* 대기팀 오버레이 */}
-                            <div className="overlay-badge">
-                                대기팀 : 3명
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            ))}
-            </div>
+        {/* 지역 선택 콤보박스 */}
+        <div className="position-relative">
+          <select
+            className="btn-jks btn-sm button-seebox me-auto text-start"
+            style={{width: 'auto', appearance: 'none'}}
+            aria-label="지역 선택"
+          >
+            <option>지역 선택</option>
+            <option>전포동</option>
+            <option>서면</option>
+            <option>해운대</option>
+            <option>남포동</option>
+          </select>
+          <i
+            className="fa-solid fa-chevron-down position-absolute top-50 end-0 translate-middle-y me-3 text-white"
+            style={{pointerEvents: 'none'}}></i>
         </div>
-    );
+
+        {/* 정렬 기준 선택 콤보박스 */}
+        <div className="position-relative d-inline-block">
+          <select
+            className="btn-jks button-seebox btn-sm text-start"
+            style={{
+              width: 'auto',
+              appearance: 'none',
+              paddingRight: '2rem'
+            }}
+            aria-label="정렬 기준 선택"
+          >
+            <option>가까운 순</option>
+            <option>별점 높은 순</option>
+            <option>대기 짧은 순</option>
+            <option>리뷰 많은 순</option>
+          </select>
+          <i
+            className="fa-solid fa-chevron-down position-absolute top-50 translate-middle-y me-1 text-white"
+            style={{right: '10px', pointerEvents: 'none'}}
+          ></i>
+        </div>
+
+      </div>
+      <hr></hr>
+      <br></br>
+
+      {/* 가게 리스트 */}
+      <div className="mb-5">
+
+        {restaurants.map((res, index) => (
+          <div className="card mb-4" style={{ cursor: 'pointer' }} key={index}>
+            <div className="card-body text-start">
+              <div className="d-flex justify-content-between align-items-center">
+                <h5 className="card-title mb-0 fw-semibold flex-fill"
+                    onClick={() => Nv(`/contentDetail/${res.restaurantIdx}`)}>
+                  {res.restaurantIntroduce || "식당 이름"}
+                </h5>
+                <button className="btn-jks btn-sm" onClick={() => toggleBookmark(res.restaurantIdx)}>
+                  <FontAwesomeIcon icon={bookmarks[res.restaurantIdx] ? faBookmark : faBookmarkRegular} />
+                </button>
+              </div>
+              <p className="card-text my-2" onClick={() => Nv(`/contentDetail/${res.restaurantIdx}`)}>
+                ⭐ {res.avgRating || "0.0"} {`(${res.rvCount ?? 0})`} {/* 별점은 임시 값이므로 필요하면 백엔드에 컬럼 추가 */}
+              </p>
+              <small className="text-muted d-flex flex-fill" onClick={() => Nv(`/contentDetail/${res.restaurantIdx}`)}>
+                {res.categoryName || "카테고리"} · {res.restaurantAddr || "주소"}
+              </small>
+              <div className="d-flex gap-2 my-2">
+                {res.reserveOrWaiting === 'R' ? (
+                  <span className="badge-default bg-light text-muted border">원격줄서기</span>
+                ) : res.reserveOrWaiting === 'W' ? (
+                  <span className="badge-default bg-light text-muted border">예약</span>
+                ) : null}
+                {res.restOption1 === 'Y' && (
+                  <span className="badge-default bg-light text-muted border">현장대기</span>
+                )}
+              </div>
+            </div>
+
+            <div className="px-3 pb-3" onClick={() => Nv(`/contentDetail/${res.restaurantIdx}`)}>
+              <div className="d-flex justify-content-between gap-2 position-relative">
+                {[res.restaurantImage1, res.restaurantImage2, res.restaurantImage3].map((imgSrc, i) => (
+                  <div className="rounded overflow-hidden" style={{ width: '33.3%', height: '150px' }} key={i}>
+                    <img
+                      src={imgSrc || noImage}
+                      alt={`음식${i + 1}`}
+                      className="w-100 h-100"
+                      style={{ objectFit: 'cover' }}
+                    />
+                  </div>
+                ))}
+
+                {/* 대기팀 오버레이 */}
+                <div className="overlay-badge">
+                  대기팀 : 3명
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export default ContentList;
