@@ -10,6 +10,10 @@ function ContentDetail() {
     const [RevTab, setRevTab] = useState("rev"); // 기본값: 리뷰(rev)
     const Nv = useNavigate();
     const [storeInfo, setStoreInfo] = useState("");
+    const [bestMenus, setBestMenus] = useState([]);
+    const [reviews, setReviews] = useState([]);
+    const [announce, setAnnounce] = useState(null);
+
 
 
     useEffect(() => {
@@ -21,6 +25,28 @@ function ContentDetail() {
             .catch((err) => {
                 console.error("요청 실패:", err);
             });
+    }, []);
+
+    useEffect(() => {
+        if (ActTab === "대표메뉴" && storeInfo?.resIdx) {
+            axios.get(`http://localhost:8080/bestmenu?resIdx=${storeInfo.resIdx}`)
+                .then((res) => setBestMenus(res.data))
+                .catch((err) => console.error("대표메뉴 오류:", err));
+        }
+    }, [ActTab, storeInfo]);
+
+    useEffect(() => {
+        if (ActTab === "리뷰" && storeInfo?.resIdx) {
+            axios.get(`http://localhost:8080/reviews?resIdx=${storeInfo.resIdx}`)
+                .then((res) => setReviews(res.data))
+                .catch((err) => console.error("리뷰 오류:", err));
+        }
+    }, [ActTab, storeInfo]);
+
+    useEffect(() => {
+        axios.get("http://localhost:8080/announce")
+            .then((res) => setAnnounce(res.data))
+            .catch((err) => console.error("공지사항 불러오기 실패", err));
     }, []);
 
 
@@ -43,7 +69,9 @@ function ContentDetail() {
 
                 {/* 별점 및 영업정보 */}
                 <div className="text-start mb-4">
-                    <small className="fw-bold">별점 0.0 / 리뷰 갯수</small><br/>
+                    <small className="fw-bold">
+                        별점 {reviews[0] ? reviews[0].reviewRating : "0.0"} / 리뷰갯수 {reviews.length}
+                    </small><br/>
                     <hr/>
                     <small className="fw-bold">영업중 {storeInfo ? storeInfo.resReserveTime : "-"}</small><br/>
                     <small className="fw-bold">전화번호 {storeInfo ? storeInfo.resCall : "-"}</small>
@@ -82,13 +110,7 @@ function ContentDetail() {
                         <div className="mb-3">
                             <small className="notice-text">알림</small>
                             <p className="small mt-1">
-                                월 ~ 목 브레이크 타임 15:00 ~ 17:00<br/>
-                                금토일 브레이크 타임 없이 운영됩니다.<br/>
-                                시즌 한정 메뉴를 제외한 전 메뉴 포장 가능합니다.<br/>
-                                해목은 나고야식 히츠마부시(장어덮밥) 전문점 입니다. <br/>
-                                그외 카이센동과 마구로동, 튀김 등<br/>
-                                다양한 메뉴도 함께 즐길 수 있습니다.<br/>
-                                항상 해목을 사랑해 주셔서 감사합니다.<br/>
+                                {announce ? announce.announceContent : "공지사항을 불러오는 중입니다..."}
                             </p>
                         </div>
 
@@ -97,11 +119,7 @@ function ContentDetail() {
                         <div className="mb-3">
                             <h4 className="extra-bold">편의시설</h4>
                             <ul>
-                                <li>단체석 구비</li>
-                                <li>콜키지 서비스 가능</li>
-                                <li>유아용 의자 구비</li>
-                                <li>테라스 시설 구비</li>
-                                <li>남녀 화장실 구분</li>
+                                <li>준비중</li>
                             </ul>
                         </div>
 
@@ -109,10 +127,11 @@ function ContentDetail() {
                         <br/>
                         <div className="mb-3">
                             <h4 className="extra-bold mb-2">위치</h4>
-                            <div className="location-box">
-                            </div>
                             <div className="mt-2">
                                 {storeInfo ? storeInfo.resAddress1 : "-"}
+                            </div>
+                            <div className="location-box">
+                                지도 준비중
                             </div>
                         </div>
 
@@ -145,22 +164,15 @@ function ContentDetail() {
                 {ActTab === "대표메뉴" && (
                     <div className="mb-5">
                         <h5 className="mb-3 fw-bold text-start">대표메뉴</h5>
-
-                        {[1, 2, 3].map((idx) => (
-                            <div key={idx}
-                                 className="d-flex justify-content-between align-items-center border-bottom py-3">
-                                {/* 메뉴 설명 영역 */}
+                        {bestMenus.map((menu, idx) => (
+                            <div key={idx} className="d-flex justify-content-between align-items-center border-bottom py-3">
                                 <div className="text-start">
-                                    <div className="fw-bold">메뉴이름</div>
-                                    <div className="text-muted small">메뉴설명</div>
-                                    <div className="fw-bold mt-3">39,000 원</div>
+                                    <div className="fw-bold">{menu.testmenuName}</div>
+                                    <div className="text-muted small">{menu.testmenuDesc}</div>
+                                    <div className="fw-bold mt-3">{menu.testmenuPrice} 원</div>
                                 </div>
-
-                                {/* 이미지 박스 */}
-                                <div
-                                    className="bg-light d-flex justify-content-center align-items-center"
-                                    style={{width: "64px", height: "64px", borderRadius: "6px"}}
-                                >
+                                <div className="bg-light d-flex justify-content-center align-items-center"
+                                     style={{width: "64px", height: "64px", borderRadius: "6px"}}>
                                     <span className="text-muted small">사진</span>
                                 </div>
                             </div>
@@ -247,13 +259,12 @@ function ContentDetail() {
                         </div>
 
                         {/* 리뷰 리스트 (더미) */}
-                        {[1, 2, 3, 4].map((_, idx) => (
-                            <div key={idx}
-                                 className="d-flex justify-content-between align-items-start border-bottom py-3">
+                        {reviews.map((review, idx) => (
+                            <div key={idx} className="d-flex justify-content-between align-items-start border-bottom py-3">
                                 <div className="flex-grow-1 pe-2">
-                                    <div className="fw-bold">김또깡 <span className="text-warning">★★★★★</span></div>
-                                    <div className="small text-muted">2025.04.23</div>
-                                    <div className="small">리뷰</div>
+                                    <div className="fw-bold">{review.userName || "사용자"} <span className="text-warning">★{review.reviewRating}</span></div>
+                                    <div className="small text-muted">{review.reviewWriteDate}</div>
+                                    <div className="small">{review.reviewContent}</div>
                                 </div>
                                 <div className="bg-light d-flex justify-content-center align-items-center"
                                      style={{width: "60px", height: "60px", borderRadius: "6px"}}>
