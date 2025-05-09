@@ -1,212 +1,240 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { DayPicker } from "react-day-picker";
 import './css/PreDay.css';
 import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis
+    Bar,
+    BarChart,
+    CartesianGrid,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis,
+    YAxis
 } from "recharts";
 import ReBanner from "../KimSangMin/ReBanner.jsx";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 function PreDayCh() {
-  const stores = [
-    {
-      storeName: '김또깡 식당',
-      check: [
-        {
-          reserve: [
-            { day: '2025-04-27', times: '11:00', count: 6 },
-            { day: '2025-04-27', times: '12:00', count: 8 },
-            { day: '2025-04-27', times: '13:00', count: 9 },
-            { day: '2025-04-27', times: '14:00', count: 4 },
-            { day: '2025-04-27', times: '15:00', count: 9 },
-            { day: '2025-04-27', times: '16:00', count: 3 },
-            { day: '2025-04-27', times: '17:00', count: 11 },
-            { day: '2025-04-27', times: '18:00', count: 2 },
-          ],
-        },
-        {
-          reserve: [
-            { day: '2025-04-28', times: '11:00', count: 0 },
-            { day: '2025-04-28', times: '12:00', count: 4 },
-            { day: '2025-04-28', times: '13:00', count: 2 },
-            { day: '2025-04-28', times: '14:00', count: 14 },
-            { day: '2025-04-28', times: '15:00', count: 6 },
-            { day: '2025-04-28', times: '16:00', count: 9 },
-            { day: '2025-04-28', times: '17:00', count: 9 },
-            { day: '2025-04-28', times: '18:00', count: 8 },
-          ],
-        },
-        {
-          reserve: [
-            { day: '2025-04-29', times: '11:00', count: 4 },
-            { day: '2025-04-29', times: '12:00', count: 3 },
-            { day: '2025-04-29', times: '13:00', count: 7 },
-            { day: '2025-04-29', times: '14:00', count: 2 },
-            { day: '2025-04-29', times: '15:00', count: 5 },
-            { day: '2025-04-29', times: '16:00', count: 11 },
-            { day: '2025-04-29', times: '17:00', count: 14 },
-            { day: '2025-04-29', times: '18:00', count: 8 },
-          ],
-        },
-      ],
-    },
-  ];
+    // const stores = [
+    //     {
+    //         storeName: '김또깡 식당',
+    //         check: [
+    //             {
+    //                 reserve: [
+    //                     { day: '2025-04-27', times: '11:00', count: 6 },
+    //                     { day: '2025-04-27', times: '12:00', count: 8 },
+    //                     { day: '2025-04-27', times: '13:00', count: 9 },
+    //                     { day: '2025-04-27', times: '14:00', count: 4 },
+    //                     { day: '2025-04-27', times: '15:00', count: 9 },
+    //                     { day: '2025-04-27', times: '16:00', count: 3 },
+    //                     { day: '2025-04-27', times: '17:00', count: 11 },
+    //                     { day: '2025-04-27', times: '18:00', count: 2 },
+    //                 ],
+    //             },
+    //             {
+    //                 reserve: [
+    //                     { day: '2025-04-28', times: '11:00', count: 0 },
+    //                     { day: '2025-04-28', times: '12:00', count: 4 },
+    //                     { day: '2025-04-28', times: '13:00', count: 2 },
+    //                     { day: '2025-04-28', times: '14:00', count: 14 },
+    //                     { day: '2025-04-28', times: '15:00', count: 6 },
+    //                     { day: '2025-04-28', times: '16:00', count: 9 },
+    //                     { day: '2025-04-28', times: '17:00', count: 9 },
+    //                     { day: '2025-04-28', times: '18:00', count: 8 },
+    //                 ],
+    //             },
+    //             {
+    //                 reserve: [
+    //                     { day: '2025-04-29', times: '11:00', count: 4 },
+    //                     { day: '2025-04-29', times: '12:00', count: 3 },
+    //                     { day: '2025-04-29', times: '13:00', count: 7 },
+    //                     { day: '2025-04-29', times: '14:00', count: 2 },
+    //                     { day: '2025-04-29', times: '15:00', count: 5 },
+    //                     { day: '2025-04-29', times: '16:00', count: 11 },
+    //                     { day: '2025-04-29', times: '17:00', count: 14 },
+    //                     { day: '2025-04-29', times: '18:00', count: 8 },
+    //                 ],
+    //             },
+    //         ],
+    //     },
+    // ];
 
-  const timeSlots = ['11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'];
+    const timeSlots = ['9시', '10시', '11시', '12시', '13시', '14시', '15시', '16시', '17시', '18시', '19시'];
 
-  const today = new Date();
-  const [seDay, setSeDay] = useState({ from: today, to: today });
-  const [yetDay, setYetDay] = useState({ from: today, to: today });
-  const [cal, setCal] = useState(false);
+    const [chartData, setChartData] = useState([]);
 
-  const formatDate = (date) => {
-    if (!date) return '';
-    return date.toISOString().split('T')[0];
-  };
+    // 달력
+    const today = new Date();
+    const [seDay, setSeDay] = useState({ from: today, to: today });
+    const [yetDay, setYetDay] = useState({ from: today, to: today });
+    const [cal, setCal] = useState(false);
 
-  const isInRange = (dateStr, from, to) => {
-    const d = new Date(dateStr);
-    return (!from || d >= from) && (!to || d <= to);
-  };
-
-  const filteredCountData = timeSlots.map(time => {
-    const totalCount = stores[0].check
-        .flatMap(store => store.reserve)
-        .filter(item => item.times === time && isInRange(item.day, seDay.from, seDay.to))
-        .reduce((sum, item) => sum + item.count, 0);
-
-    return {
-      time,
-      count: totalCount,
+    const formatDate = (date) => {
+        if (!date) return '';
+        return date.toISOString().split('T')[0];
     };
-  });
 
-  return (
-      <div className={'ceo-main'}>
-        <ReBanner />
-        <div style={{ marginTop: '10vh', marginLeft: '200px', position: 'relative' }}>
-          <div style={{ display: "flex", position: 'relative' }}>
-            <Link to="/pre/PreCh" style={{ textDecoration: 'none', color: 'black' }}>
-              <h4 className="me-5">매출통계</h4>
-            </Link>
-            <Link to="/pre/PreDayCh" style={{ textDecoration: 'none', color: 'black' }}>
-              <h4>예약통계</h4>
-            </Link>
-          </div>
-          <br />
-          <hr />
-          <div className={'d-flex align-items-center gap-3 flex-wrap mb-4'}>
-            <h2 className={'waiting-chart-title'}>예약 통계</h2>
-            <hr />
-            <div
-                className={'date-box d-flex align-items-center justify-content-center ms-3'}
-                style={{ width: '300px', position: 'relative', cursor: 'pointer' }}
-                onClick={() => {
-                  setCal(true);
-                  setYetDay(seDay);
-                }}
-            >
-              <p style={{ margin: 0 }}>
-                {seDay.from && seDay.to ? `${formatDate(seDay.from)} ~ ${formatDate(seDay.to)}` : '날짜 선택'}
-              </p>
-              {cal && (
-                  <div className={'calendar-popup'} onClick={(e) => e.stopPropagation()}>
-                    <DayPicker
-                        mode="range"
-                        selected={yetDay}
-                        onSelect={setYetDay}
-                        pagedNavigation
-                    />
-                    <div className="d-flex justify-content-end mt-3" style={{ gap: '10px' }}>
-                      <button
-                          className="btn btn-secondary"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setCal(false);
-                          }}
-                      >
-                        취소
-                      </button>
-                      <button
-                          className="btn btn-primary"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setSeDay(yetDay);
-                            setCal(false);
-                          }}
-                      >
-                        확인
-                      </button>
+    // const isInRange = (dateStr, from, to) => {
+    //     const d = new Date(dateStr);
+    //     return (!from || d >= from) && (!to || d <= to);
+    // };
+
+    const fetchData = async () => {
+        if (!seDay.from || !seDay.to) return;
+
+        try {
+            const response  =await axios.get('http://localhost:8080/api/history/reservation/hour', {
+                params: {
+                    startDate: formatDate(seDay.from),
+                    endDate: formatDate(seDay.to),
+                    resIdx: 1
+                }
+            });
+            // 받아온 데이터 시간대 맞게정렬
+            const raw = response.data;
+            // 시간 포맷 맞추기(11:00)
+            const formatted = timeSlots.map(slot => {
+                const hour = parseInt(slot.split(':')[0]); // 09:00 ➔ 9
+                const found = raw.find(item => item.hour === hour);
+                return {
+                    time: slot,
+                    visitorCount: found ? found.visitorCount : 0,
+                    teamCount: found ? found.teamCount : 0
+                };
+            });
+            //   응답받은 데이터 상태ㅐ에 저장
+            setChartData(formatted);
+        }
+        catch (error) {
+            console.error("시간대별 예약 가져오기 실패", error);
+        }
+    };
+
+    // 컴포넌트 마운트 시 데이터 가져오기
+    useEffect(() => {
+        fetchData();  // 컴포넌트가 처음 렌더링 될 때 호출
+    }, [seDay]);  // 빈 배열을 두 번째 인자로 주면 한 번만 호출됨
+
+    return (
+        <div className={'ceo-main'}>
+            <ReBanner />
+            <div style={{ marginTop: '10vh', marginLeft: '200px', position: 'relative' }}>
+                <div style={{ display: "flex", position: 'relative' }}>
+                    <Link to="/pre/PreCh" style={{ textDecoration: 'none', color: 'black' }}>
+                        <h4 className="me-5">매출통계</h4>
+                    </Link>
+                    <Link to="/pre/PreDayCh" style={{ textDecoration: 'none', color: 'black' }}>
+                        <h4>예약통계</h4>
+                    </Link>
+                </div>
+                <br />
+                <hr />
+                <div className={'d-flex align-items-center gap-3 flex-wrap mb-4'}>
+                    <h2 className={'waiting-chart-title'}>예약 통계</h2>
+                    <hr />
+                    <div
+                        className={'date-box d-flex align-items-center justify-content-center ms-3'}
+                        style={{ width: '300px', position: 'relative', cursor: 'pointer' }}
+                        onClick={() => {
+                            setCal(true);
+                            setYetDay(seDay);
+                        }}
+                    >
+                        <p style={{ margin: 0 }}>
+                            {seDay.from && seDay.to ? `${formatDate(seDay.from)} ~ ${formatDate(seDay.to)}` : '날짜 선택'}
+                        </p>
+                        {cal && (
+                            <div className={'calendar-popup'} onClick={(e) => e.stopPropagation()}>
+                                <DayPicker
+                                    mode="range"
+                                    selected={yetDay}
+                                    onSelect={setYetDay}
+                                    pagedNavigation
+                                />
+                                <div className="d-flex justify-content-end mt-3" style={{ gap: '10px' }}>
+                                    <button
+                                        className="btn btn-secondary"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setCal(false);
+                                        }}
+                                    >
+                                        취소
+                                    </button>
+                                    <button
+                                        className="btn btn-primary"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setSeDay(yetDay);
+                                            setCal(false);
+                                        }}
+                                    >
+                                        확인
+                                    </button>
+                                </div>
+                            </div>
+                        )}
                     </div>
-                  </div>
-              )}
-            </div>
-          </div>
-          <hr />
+                </div>
+                <hr />
 
-          <h4 className={'mt-5 mb-3'}>시간대별 예약 수</h4>
-          <div className={'d-flex gap-4 justify-content-center align-items-center mb-5 flex-wrap'}>
-            <div style={{ flex: 4, minWidth: '300px' }}>
-              <ResponsiveContainer width={'100%'} height={250}>
-                <BarChart data={filteredCountData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="time" />
-                  <YAxis />
-                  <Tooltip contentStyle={{ backgroundColor: '#FFF8E1', border: 'none' }} itemStyle={{ color: '#5D4037' }} cursor={{ fill: 'transparent' }} />
-                  <Bar dataKey={"count"} fill={'#FFCD83'} barSize={25} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-            <div style={{ flex: 3, minWidth: '200px' }}>
-              <div className={'mb-3 p-3 bg-light rounded d-flex justify-content-between align-items-center'}>
-                <h5 className={'mb-0'}>총 예약팀 수</h5>
-                <h3 className={'mb-0'} style={{ color: '#FFCD83' }}>
-                  {filteredCountData.reduce((sum, item) => sum + item.count, 0)}명
-                </h3>
-              </div>
+                <h4 className={'mt-5 mb-3'}>시간대별 예약 수</h4>
+                <div className={'d-flex gap-4 justify-content-center align-items-center mb-5 flex-wrap'}>
+                    <div style={{ flex: 4, minWidth: '300px' }}>
+                        <ResponsiveContainer width={'100%'} height={250}>
+                            <BarChart data={chartData}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="time" />
+                                <YAxis />
+                                <Tooltip contentStyle={{ backgroundColor: '#FFF8E1', border: 'none' }} itemStyle={{ color: '#5D4037' }} cursor={{ fill: 'transparent' }} />
+                                <Bar dataKey={"teamCount"} fill={'#FFCD83'} barSize={25} />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
+                    <div style={{ flex: 3, minWidth: '200px' }}>
+                        <div className={'mb-3 p-3 bg-light rounded d-flex justify-content-between align-items-center'}>
+                            <h5 className={'mb-0'}>총 예약팀 수</h5>
+                            <h3 className={'mb-0'} style={{ color: '#FFCD83' }}>
+                                {chartData.reduce((sum, item) => sum + item.teamCount, 0)}명
+                            </h3>
+                        </div>
 
-              <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
-                {[0, 1].map((tableIndex) => {
-                  const half = Math.ceil(filteredCountData.length / 2);
-                  const slicedData = tableIndex === 0
-                      ? filteredCountData.slice(0, half)
-                      : filteredCountData.slice(half);
-
-                  return (
-                      <table
-                          key={tableIndex}
-                          className={'table table-bordered table-sm text-center'}
-                          style={{ tableLayout: 'fixed', width: '45%', fontSize: '14px' }}
-                      >
-                        <thead>
-                        <tr>
-                          <th>시간</th>
-                          <th>예약수</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {slicedData.map((item, idx) => (
-                            <tr key={idx}>
-                              <td>{item.time}</td>
-                              <td>{item.count}팀</td>
+                        <table
+                            className={'table table-bordered table-sm text-center'}
+                            style={{ tableLayout: 'fixed', width: '100%', fontSize: '14px' }}
+                        >
+                            <thead>
+                            <tr>
+                                <th style={{ width: '25%', padding: '6px' }}>시간</th>
+                                <th style={{ width: '25%', padding: '6px' }}>인원수</th>
+                                <th style={{ width: '25%', padding: '6px' }}>시간</th>
+                                <th style={{ width: '25%', padding: '6px' }}>인원수</th>
                             </tr>
-                        ))}
-                        </tbody>
-                      </table>
-                  );
-                })}
-              </div>
+                            </thead>
+                            <tbody>
+                            {Array.from({ length: 6 }).map((_, idx) => {
+                                const leftSlot = timeSlots[idx];
+                                const rightSlot = timeSlots[idx + 6];
+
+                                const leftData = chartData.find(item => item.time === leftSlot);
+                                const rightData = chartData.find(item => item.time === rightSlot);
+
+                                return (
+                                    <tr key={idx}>
+                                        <td style={{ width: '25%', padding: '6px' }}>{leftSlot}</td>
+                                        <td style={{ width: '25%', padding: '6px' }}>{leftData ? leftData.visitorCount : 0}명</td>
+                                        <td style={{ width: '25%', padding: '6px' }}>{rightSlot}</td>
+                                        <td style={{ width: '25%', padding: '6px' }}>{rightData ? rightData.visitorCount : 0}명</td>
+                                    </tr>
+                                );
+                            })}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-  );
+    );
 }
 
 export default PreDayCh;

@@ -22,11 +22,11 @@ public interface JDJMapper {
     );
 
 //    성별
-    Map<String, Object> selectVisitorGender(String startDate, String endDate, int restaurantIdx);
+    Map<String, Object> selectVisitorGender(String startDate, String endDate, int resIdx);
 //    총 매출
-    Map<String, Object> selectSalesTotalPrice(String startDate, String endDate, int restaurantIdx);
+    Map<String, Object> selectSalesTotalPrice(String startDate, String endDate, int resIdx);
 //    매뉴별 매출
-    List<Map<String, Object>> selectMenuTotalPrice(String startDate, String endDate, int restaurantIdx);
+    List<ReservationHistoryDTO> selectMenuTotalPrice(String startDate, String endDate, int resIdx);
 //    시간대별 예약팀 수
-    List<Map<String, Object>> selectTeamCountByHour(String startDate, String endDate, int restaurantIdx);
+    List<Map<String, Object>> selectTeamCountByHour(String startDate, String endDate, int resIdx);
 }

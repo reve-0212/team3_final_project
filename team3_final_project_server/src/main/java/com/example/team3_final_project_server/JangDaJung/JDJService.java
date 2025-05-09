@@ -10,12 +10,12 @@ public interface JDJService {
     List<ReservationHistoryDTO> getHistoryByDate(String startDate, String endDate);
 
 //    성별
-    Map<String, Object> getVisitorGender(String startDate, String endDate, int restaurantIdx);
+    Map<String, Object> getVisitorGender(String startDate, String endDate, int resIdx);
 //    매출 총액
-    Map<String, Object> getSalesTotalPrice(String startDate, String endDate, int restaurantIdx);
+    Map<String, Object> getSalesTotalPrice(String startDate, String endDate, int resIdx);
 //    메뉴별 매출
-    List<Map<String, Object>> getMenuTotalPrice(String startDate, String endDate, int restaurantIdx);
+    List<ReservationHistoryDTO> getMenuTotalPrice(String startDate, String endDate, int resIdx);
 //    시간대별 예약팀 수
-    List<Map<String, Object>> getTeamCountByHour(String startDate, String endDate, int restaurantIdx);
+    List<Map<String, Object>> getTeamCountByHour(String startDate, String endDate, int resIdx);
 
 }

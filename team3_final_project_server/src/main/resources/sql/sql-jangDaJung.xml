@@ -6,14 +6,14 @@
     <!-- INSERT -->
 <!--    <insert id="insertHistory" parameterType="com.example.team3_final_project_server.dto.ReservationHistoryDTO">-->
 <!--        INSERT INTO reservation_history (-->
-<!--        restaurant_idx, reservation_idx, reservation_date,-->
+<!--        res_idx, reservation_idx, reservation_date,-->
 <!--        male_count, female_count, gender_total_count,-->
 <!--        menu_idx, menu_name, menu_price,-->
 <!--        menu_sold_count, menu_sold_total_price,-->
 <!--        checkout_date, cancel_date, reservation_team_count-->
 <!--        )-->
 <!--        VALUES (-->
-<!--        #{restaurantIdx}, #{reservationIdx}, #{reservationDate},-->
+<!--        #{resIdx}, #{reservationIdx}, #{reservationDate},-->
 <!--        #{maleCount}, #{femaleCount}, #{genderTotalCount},-->
 <!--        #{menuIdx}, #{menuName}, #{menuPrice},-->
 <!--        #{menuSoldCount}, #{menuSoldTotalPrice},-->
@@ -22,18 +22,19 @@
 <!--    </insert>-->
     
     <!-- 메뉴 여러개 선택해서 예약할 수  있도록 history 저장 -->
-    <insert id="insertHistories" parameterType="java.util.List">
-        <foreach collection="list" item="history" separator=";">
-            <foreach collection="history.menus" item="menu" separator=";">
-                INSERT INTO reservation_history (
-                restaurant_idx, reservation_idx, reservation_date, male_count, female_count, gender_total_count,
-                menu_idx, menu_name, menu_price, menu_sold_count, menu_sold_total_price, reservation_team_count
-                )
-                VALUES (
-                #{history.restaurantIdx}, #{history.reservationIdx}, #{history.reservationDate}, #{history.maleCount}, #{history.femaleCount}, #{history.genderTotalCount},
-                #{menu.menuIdx}, #{menu.menuName}, #{menu.menuPrice}, #{menu.menuSoldCount}, #{menu.menuSoldTotalPrice}, #{history.reservationTeamCount}
-                )
-            </foreach>
+    <insert id="insertHistories" parameterType="list">
+        INSERT INTO reservation_history (
+        res_idx, reservation_idx, reservation_date, male_count, female_count, gender_total_count,
+        menu_idx, menu_name, menu_price, menu_sold_count, menu_sold_total_price, reservation_team_count
+        )
+        VALUES
+        <foreach collection="list" item="history" separator=",">
+            (
+            #{history.resIdx}, #{history.reservationIdx}, #{history.reservationDate},
+            #{history.maleCount}, #{history.femaleCount}, #{history.genderTotalCount},
+            #{history.menuIdx}, #{history.menuName}, #{history.menuPrice}, #{history.menuSoldCount},
+            #{history.menuSoldTotalPrice}, #{history.reservationTeamCount}
+            )
         </foreach>
     </insert>
 
@@ -52,7 +53,7 @@
             SUM(gender_total_count) AS genderTotalCount
         FROM reservation_history
         WHERE reservation_date BETWEEN #{startDate} AND #{endDate}
-            AND restaurant_idx = #{restaurantIdx}
+            AND res_idx = #{resIdx}
     </select>
 
 <!--    매출 총액 -->
@@ -61,7 +62,7 @@
             SUM(menu_sold_total_price) AS totalSales
         FROM reservation_history
         WHERE reservation_date BETWEEN #{startDate} AND #{endDate}
-            AND restaurant_idx = #{restaurantIdx}
+            AND res_idx = #{resIdx}
     </select>
 
 <!--    메뉴별 매출 -->
@@ -69,22 +70,24 @@
         SELECT
             menu_idx,
             menu_name,
+            menu_price,
             SUM(menu_sold_count) AS soldCount,
             SUM(menu_sold_total_price) AS soldTotalPrice
         FROM reservation_history
         WHERE reservation_date BETWEEN #{startDate} AND #{endDate}
-            AND restaurant_idx = #{restaurantIdx}
-        GROUP BY menu_idx, menu_name
+            AND res_idx = #{resIdx}
+        GROUP BY menu_idx, menu_name, menu_price
     </select>
 
 <!--    시간대별 예약팀 수-->
     <select id="selectTeamCountByHour" resultType="map">
         SELECT
             HOUR(reservation_date) as hour,
-            COUNT(DISTINCT reservation_idx) AS teamCount
+            COUNT(DISTINCT reservation_idx) AS teamCount,
+            SUM(gender_total_count) AS visitorCount
         FROM reservation_history
         WHERE reservation_date BETWEEN #{startDate} AND #{endDate}
-            AND restaurant_idx = #{restaurantIdx}
+            AND res_idx = #{resIdx}
         GROUP BY HOUR(reservation_date)
         ORDER BY hour
     </select>
