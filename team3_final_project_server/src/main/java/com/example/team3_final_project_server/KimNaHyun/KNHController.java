@@ -3,6 +3,7 @@ package com.example.team3_final_project_server.KimNaHyun;
 
 import com.example.team3_final_project_server.dto.MenuDTO;
 import com.example.team3_final_project_server.dto.ReservationDTO;
+import com.example.team3_final_project_server.dto.RestaurantListDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,13 +20,20 @@ public class KNHController {
  @Autowired
  private KNHService knhService;
 
- @PostMapping("/visitors")
- public void saveReservation(@RequestBody ReservationDTO dto) {
 
-  System.out.println(dto);
-  knhService.saveReservation(dto);
-
+ @GetMapping("/visitors/{userIdx}/{reservationIdx}")
+ public List<ReservationDTO> getRsvIdx(
+         @PathVariable("userIdx") String userIdx,
+         @PathVariable("reservationIdx") String reservationIdx)
+         throws Exception {
+  System.out.println("/visitors/{userIdx}/{reservationIdx} 받아온 값 : " + reservationIdx);
+  return knhService.getRsvIdx(userIdx, reservationIdx);
  }
+
+// 1. userIdx, reservationIdx 순서 거꾸로
+
+
+
 
  @PostMapping("/visitors/date")
  public void saveDateTime(@RequestBody ReservationDTO dto) {

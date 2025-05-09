@@ -1,9 +1,10 @@
 // ContentDetail.jsx
 
-import {useEffect,useState} from "react";
+import {useEffect, useState} from "react";
 import "./JksSheet.css";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import useUserStore from "../stores/useUserStore.jsx";
 
 function ContentDetail() {
     const [ActTab, setActTab] = useState("상세정보");
@@ -15,17 +16,21 @@ function ContentDetail() {
     const [announce, setAnnounce] = useState(null);
 
 
+    const user = useUserStore((state) => state.user)
+    const userIdx = user.userIdx
 
-    useEffect(() => {
-        axios.get("http://localhost:8080/test22")
-            .then((res) => {
-                console.log("받은 데이터:", res.data);
-                setStoreInfo(res.data[0]); // 리스트라면 [0], 객체면 그대로
-            })
-            .catch((err) => {
-                console.error("요청 실패:", err);
-            });
-    }, []);
+    const restIdx = 1
+
+    // useEffect(() => {
+    //     axios.get("http://localhost:8080/test22")
+    //         .then((res) => {
+    //             console.log("받은 데이터:", res.data);
+    //             setStoreInfo(res.data[0]); // 리스트라면 [0], 객체면 그대로
+    //         })
+    //         .catch((err) => {
+    //             console.error("요청 실패:", err);
+    //         });
+    // }, []);
 
     useEffect(() => {
         if (ActTab === "대표메뉴" && storeInfo?.resIdx) {
@@ -60,7 +65,6 @@ function ContentDetail() {
                      style={{height: '250px'}}>
                     <span className="text-muted">사진</span>
                 </div>
-
                 {/* 가게 이름 */}
                 <div className="d-flex justify-content-start text mb-2">
                     <h5 className="fw-bold">
@@ -280,7 +284,7 @@ function ContentDetail() {
                     <div className="text-start"><h4 className="extra-bold">예약 시간</h4></div>
                     <div className="location-box"></div>
                     <button className="common-btn w-100" onClick={() => {
-                        Nv("/book/visit")
+                        Nv(`/book/visit/${userIdx}/${restIdx}`)
                     }}>예약하기
                     </button>
                     {/*<button className="common-btn w-100" onClick={() => {*/}
