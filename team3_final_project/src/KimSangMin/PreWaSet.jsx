@@ -1,6 +1,6 @@
 import {useState} from "react";
 import WaBanner from "./WaBanner.jsx";
-import SeatManager from "./SeatManager.jsx";
+import SeatManager from "./Seat/SeatManager.jsx";
 import {Link} from "react-router-dom";
 
 
