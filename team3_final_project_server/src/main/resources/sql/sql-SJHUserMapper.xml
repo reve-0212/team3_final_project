@@ -65,7 +65,7 @@
     join restaurant as res
     on rsv.res_idx = res.res_idx
     where rsv.user_idx=#{userIdx}
-    order by rsv.rsv_come_datetime asc;
+    order by rsv.rsv_date desc;
   </select>
 
   <!--  조인용 map-->
