@@ -1,25 +1,16 @@
 import {useState} from "react";
-import PreReSet from "../../KimSangMin/PreReSet.jsx";
-import PreTimeSet from "../../KimSangMin/PreTimeSet.jsx";
-import PreFunction from "../../KimSangMin/PreFunction.jsx";
-import PreTime from "../../KimSangMin/PreTime.jsx";
+import PreCh from "../../KimSangMin/PreCh.jsx";
+import PreDayCh from "../../KimSangMin/PreDayCh.jsx";
 
-const OwnerTabs = () => {
-    const [activeTab, setActiveTab] = useState("info");
-    const [subTab, setSubTab] = useState("view");
+const PreReSetTabs = () => {
+    const [activeTab, setActiveTab] = useState("Ch");
 
     const renderTabs = () => {
         switch (activeTab) {
-            case "info":
-                return <PreReSet/>;
-            case "time":
-                return subTab === "view" ? (
-                    <PreTimeSet onEditClick={() => setSubTab("edit")} />
-                ) : (
-                    <PreTime onClose={() => setSubTab("view")} />
-                );
-            case "func":
-                return <PreFunction/>;
+            case "Ch":
+                return <PreCh/>
+            case "dayCh":
+                return <PreDayCh/>
             default:
                 return null;
         }
@@ -28,19 +19,19 @@ const OwnerTabs = () => {
     return (
         <div
             style={{
-            marginLeft: "250px",
-            paddingTop: "8rem",
-            paddingLeft: "1rem",
-            width: "calc(100% - 200px)",
-            maxWidth: "1000px",
-            }}
+                marginLeft: "250px",
+                paddingTop: "8rem",
+                paddingLeft: "1rem",
+                width: "calc(100% - 200px)",
+                // maxWidth: "1000px",
+                minHeight: "100vh",
+            }} className={'container'}
         >
             {/* 상단 탭 */}
             <div style={{display: "flex"}}>
                 {[
-                    {key: "info", label: "가게정보"},
-                    {key: "time", label: "운영정보"},
-                    {key: "func", label: "부가기능"},
+                    {key: "Ch", label: "매출통계"},
+                    {key: "dayCh", label: "예약통계"},
                 ].map((tab) => (
                     <div
                         key={tab.key}
@@ -68,4 +59,4 @@ const OwnerTabs = () => {
 
 }
 
-export default OwnerTabs;
+export default PreReSetTabs;

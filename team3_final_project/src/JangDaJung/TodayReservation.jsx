@@ -34,89 +34,97 @@ function TodayReservation() {
   });
 
   return (
-      <div className={'ceo-main'}>
+      <>
         <ReBanner />
-        <div style={{ marginTop: '10vh', marginLeft: '200px', position: 'relative'}}>
-          <h2 className={'today-waiting-title mb-4'}>오늘의 예약</h2>
-          <hr />
-          {/*    탭 */}
-          <div className={'d-flex flex-wrap gap-3 mb-4 justify-content-center'}>
-            <button
-                className={`custom-tab-btn ${tab === 'current' ? 'active' : ''}`}
-                onClick={() => setTab('current')}
-            >
-              현재 예약
-            </button>
-            <button
-                className={`custom-tab-btn ${tab === 'past' ? 'active' : ''}`}
-                onClick={() => setTab('past')}
-            >
-              지난 예약
-            </button>
-            <button
-                className={`custom-tab-btn ${tab === 'canceled' ? 'active' : ''}`}
-                onClick={() => setTab('canceled')}
-            >
-              취소 예약
-            </button>
-          </div>
-          {/*    리스트 */}
-          <div className={'table-responsive'}>
-            <table className={'table text-center align-middle table-background'}>
-              <colgroup>
-                <col style={{ width: '10%' }} />
-                <col style={{ width: '10%'}} />
-                <col style={{ width: '10%' }} />
-                <col style={{ width: '20%' }} />
-                <col style={{ width: '20%' }} />
-                <col style={{ width: '10%' }} />
-              </colgroup>
-              <thead className={'table-light'}>
-              <tr>
-                <th>번호</th>
-                <th>이름</th>
-                <th>인원수</th>
-                <th>전화번호</th>
-                <th>예약정보</th>
-                <th>방문횟수</th>
-                {tab === 'current' && <th>동작</th>}
-              </tr>
-              </thead>
-              <tbody style={{backgroundColor: '#f5f5f5'}}>
-              {filteredList.length === 0 ? (
-                  <tr>
-                    <td colSpan={tab === 'current' ? 6 : 5}>등록된 웨이팅이 없습니다.</td>
-                  </tr>
-              ) : (
-                  filteredList.map((item) => (
-                      <tr key={item.id}>
-                        <td>No. {item.id}</td>
-                        <td>{item.name}</td>
-                        <td>{item.people}</td>
-                        <td>{item.phone}</td>
-                        <td>{item.date}</td>
-                        <td>{item.visits}</td>
-                        {tab === 'current' && (
-                            <td>
-                              <div className="d-flex flex-wrap justify-content-center gap-2">
-                                <button className="ceo-btn btn-sm btn-done" onClick={() => handleStatusChange(item.id, '완료')}>
-                                  완료
-                                </button>
-                                <button className="ceo-btn btn-sm btn-cancel" onClick={() => handleStatusChange(item.id, '취소')}>
-                                  취소
-                                </button>
-                              </div>
-                            </td>
-                        )}
-                      </tr>
-                  ))
-              )}
-              </tbody>
-            </table>
+        <div style={{
+          marginLeft: "250px",
+          paddingTop: "8rem",
+          paddingLeft: "1rem",
+          width: "calc(100% - 200px)",
+        }} className={'container'}>
+          <div>
+            <h2 className={'today-waiting-title mb-4'}>오늘의 예약</h2>
+            <hr/>
+            {/*    탭 */}
+            <div className={'d-flex flex-wrap gap-3 mb-4 justify-content-center'}>
+              <button
+                  className={`custom-tab-btn ${tab === 'current' ? 'active' : ''}`}
+                  onClick={() => setTab('current')}
+              >
+                현재 예약
+              </button>
+              <button
+                  className={`custom-tab-btn ${tab === 'past' ? 'active' : ''}`}
+                  onClick={() => setTab('past')}
+              >
+                지난 예약
+              </button>
+              <button
+                  className={`custom-tab-btn ${tab === 'canceled' ? 'active' : ''}`}
+                  onClick={() => setTab('canceled')}
+              >
+                취소 예약
+              </button>
+            </div>
+            {/*    리스트 */}
+            <div className={'table-responsive'}>
+              <table className={'table text-center align-middle table-background'}>
+                <colgroup>
+                  <col style={{width: '10%'}}/>
+                  <col style={{width: '10%'}}/>
+                  <col style={{width: '10%'}}/>
+                  <col style={{width: '20%'}}/>
+                  <col style={{width: '20%'}}/>
+                  <col style={{width: '10%'}}/>
+                </colgroup>
+                <thead className={'table-light'}>
+                <tr>
+                  <th>번호</th>
+                  <th>이름</th>
+                  <th>인원수</th>
+                  <th>전화번호</th>
+                  <th>예약정보</th>
+                  <th>방문횟수</th>
+                  {tab === 'current' && <th>동작</th>}
+                </tr>
+                </thead>
+                <tbody style={{backgroundColor: '#f5f5f5'}}>
+                {filteredList.length === 0 ? (
+                    <tr>
+                      <td colSpan={tab === 'current' ? 6 : 5}>등록된 웨이팅이 없습니다.</td>
+                    </tr>
+                ) : (
+                    filteredList.map((item) => (
+                        <tr key={item.id}>
+                          <td>No. {item.id}</td>
+                          <td>{item.name}</td>
+                          <td>{item.people}</td>
+                          <td>{item.phone}</td>
+                          <td>{item.date}</td>
+                          <td>{item.visits}</td>
+                          {tab === 'current' && (
+                              <td>
+                                <div className="d-flex flex-wrap justify-content-center gap-2">
+                                  <button className="ceo-btn btn-sm btn-done"
+                                          onClick={() => handleStatusChange(item.id, '완료')}>
+                                    완료
+                                  </button>
+                                  <button className="ceo-btn btn-sm btn-cancel"
+                                          onClick={() => handleStatusChange(item.id, '취소')}>
+                                    취소
+                                  </button>
+                                </div>
+                              </td>
+                          )}
+                        </tr>
+                    ))
+                )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-
-      </div>
+      </>
   );
 }
 

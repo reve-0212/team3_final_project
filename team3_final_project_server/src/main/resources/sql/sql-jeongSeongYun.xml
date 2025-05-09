@@ -45,7 +45,7 @@
     </select>
 
     <select id="findByOwnerId" resultType="com.example.team3_final_project_server.dto.UserDTO">
-        SELECT * FROM user WHERE user_id = #{userId}
+        SELECT * FROM user WHERE user_id = #{userId} AND role = 'ROLE_OWNER'
     </select>
 
 </mapper>

@@ -77,32 +77,39 @@ function PreRe() {
   return (
       <div
           style={{
-            marginLeft: '200px',
-            marginTop: '10vh',
-            paddingTop: '2rem',
-            paddingLeft: '1rem',
-            width: 'calc(100% - 200px)',
-            maxWidth: '1000px'
-          }}
+            marginLeft: "250px",
+            paddingTop: "8rem",
+            paddingLeft: "1rem",
+            width: "calc(100% - 200px)",
+            // maxWidth: "1000px",
+            minHeight: "100vh",
+          }} className={'container'}
       >
         <ReBanner/>
-        <h2 className="text-start">리뷰</h2>
-        <hr />
+        <div className={'d-flex gap-3 justify-content-start align-items-center me-5'}>
+          <h2 className={'new-menu-title'}>리뷰 관리</h2>
 
-        <p className="text-start">리뷰목록 관리</p>
-        <hr />
-
-
-        <div className="mb-3 d-flex align-items-center" style={{ gap: '1rem' }}>
-          <input
-              type="text"
-              className="form-control"
-              placeholder="리뷰를 검색하세요"
-              style={{ maxWidth: '300px' }}
-          />
-          <button className="btn btn-primary">검색</button>
+          {/*검색창*/}
+          <div className={'menu-search-box d-flex align-items-center'} style={{
+            borderRadius: '2rem',
+            overflow: 'hidden',
+            width: '500px',
+            paddingRight: '5px',
+            marginLeft: '3rem'
+          }}>
+            <input
+                type="text"
+                placeholder={'검색어를 입력하세요'}
+                className={'menu-search-input'}
+                style={{border: 'none', width: '100%', height: '100%'}}
+            />
+            <button className="btn"
+                    style={{height: '3.5vw', whiteSpace: 'nowrap', paddingRight: '2rem'}}
+                    >검색
+            </button>
+          </div>
         </div>
-
+        <hr/>
         <ul className="list-group">
           {reviews.map((review, index) => (
               <li key={index} className="list-group-item d-flex justify-content-between align-items-start">
@@ -116,9 +123,9 @@ function PreRe() {
                     <strong>답글:</strong>
                     {edIndex === index ? (
                         <textarea
-                          value={chReply}
-                          onChange={(e) => setChReply(e.target.value)}
-                          className="form-control mt-1"
+                            value={chReply}
+                            onChange={(e) => setChReply(e.target.value)}
+                            className="form-control mt-1"
                         />
                     ) : (
                         <div>{review.reply}</div>
@@ -127,11 +134,11 @@ function PreRe() {
                 </div>
 
                 {/* 오른쪽 - 사진 + 버튼 */}
-                <div className="d-flex flex-column align-items-end ms-3" style={{ minWidth: '120px' }}>
+                <div className="d-flex flex-column align-items-end ms-3" style={{minWidth: '120px'}}>
                   <img
                       src={review.ImageUrl}
                       alt="리뷰 이미지"
-                      style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '8px' }}
+                      style={{width: '100px', height: '100px', objectFit: 'cover', borderRadius: '8px' }}
                   />
                   <div className="mt-2 d-flex gap-2">
                     {edIndex === index ? (
