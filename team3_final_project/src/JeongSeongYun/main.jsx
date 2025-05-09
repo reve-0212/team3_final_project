@@ -56,94 +56,92 @@ function main() {
   const isPrePath = pathName.includes("/pre")
 
   return (
-    <div>
-      <BrowserRouter>
-        {isPrePath ? (
-          <Routes>
-            {/*<Route path="/pre/PreWait" element={<PreWait />} />  /!* 웨이팅 웹앱  *!/*/}
-            {/*<Route path="/pre/PreReserve" element={<PreReserve />} />   예약 웹앱*/}
+    <BrowserRouter>
+      {isPrePath ? (
+        <Routes>
+          {/*<Route path="/pre/PreWait" element={<PreWait />} />  /!* 웨이팅 웹앱  *!/*/}
+          {/*<Route path="/pre/PreReserve" element={<PreReserve />} />   예약 웹앱*/}
 
-            {/* 시간 지정하기*/}
-            <Route path="/pre/PreTime" element={<PreTime/>}/>
-            <Route path="/pre/PreTimeSet" element={<PreTimeSet/>}/>
+          {/* 시간 지정하기*/}
+          <Route path="/pre/PreTime" element={<PreTime/>}/>
+          <Route path="/pre/PreTimeSet" element={<PreTimeSet/>}/>
 
-            {/* 관리자 -> 사장님 */}<Route path="/pre/admin" element={<OwnerLogin/>}/> {/*  관리자 로그인 */}
-            <Route path="/pre/reg" element={<PreRegPage/>}/> {/* 사장님 정보 입력 버튼 */}
-            <Route path="/pre/info" element={<PreInfoPage/>}/> {/*  사장님 정보 입력 페이지 */}
-            <Route path="/pre/login" element={<OwnerLogin/>}/> {/*  사장 로그인 */}
-            <Route path="/pre/update" element={<PreUpdatePage/>}/> {/*  사장 정보 수정 */}
+          {/* 관리자 -> 사장님 */}<Route path="/pre/admin" element={<OwnerLogin/>}/> {/*  관리자 로그인 */}
+          <Route path="/pre/reg" element={<PreRegPage/>}/> {/* 사장님 정보 입력 버튼 */}
+          <Route path="/pre/info" element={<PreInfoPage/>}/> {/*  사장님 정보 입력 페이지 */}
+          <Route path="/pre/login" element={<OwnerLogin/>}/> {/*  사장 로그인 */}
+          <Route path="/pre/update" element={<PreUpdatePage/>}/> {/*  사장 정보 수정 */}
 
-            <Route path="/pre" element={<OwnerLogin/>}/>
-            <Route path="/pre/PreMain" element={<PreMain/>}/> {/* 예약가게 메인*/}
-            <Route path="/pre/PreCh" element={<PreCh/>}/> {/* 예약가게 매출 통계 */}
-            <Route path="/pre/PreRe" element={<PreRe/>}/> {/* 예약가게 리뷰 보기*/}
-            <Route path="/pre/PreDayCh" element={<PreDayCh/>}/> {/* 예약 날짜 차트 */}
-            <Route path="/pre/PreReSet" element={<PreReSet/>}/> {/* 예약가게 셋팅 */}
-            <Route path="/pre/PreFucn" element={<PreFunction/>}/> {/* 예약가게 메인*/}
-            <Route path="/pre/PrePast" element={<PastDateReservation/>}/> {/* 과거 예약 */}
-            <Route path="/pre/PreToday" element={<TodayReservation/>}/> {/* 오늘 예약  */}
-            <Route path="/pre/PreSelect" element={<PreSelect/>}/> {/* 오늘 예약  */}
+          <Route path="/pre" element={<OwnerLogin/>}/>
+          <Route path="/pre/PreMain" element={<PreMain/>}/> {/* 예약가게 메인*/}
+          <Route path="/pre/PreCh" element={<PreCh/>}/> {/* 예약가게 매출 통계 */}
+          <Route path="/pre/PreRe" element={<PreRe/>}/> {/* 예약가게 리뷰 보기*/}
+          <Route path="/pre/PreDayCh" element={<PreDayCh/>}/> {/* 예약 날짜 차트 */}
+          <Route path="/pre/PreReSet" element={<PreReSet/>}/> {/* 예약가게 셋팅 */}
+          <Route path="/pre/PreFucn" element={<PreFunction/>}/> {/* 예약가게 메인*/}
+          <Route path="/pre/PrePast" element={<PastDateReservation/>}/> {/* 과거 예약 */}
+          <Route path="/pre/PreToday" element={<TodayReservation/>}/> {/* 오늘 예약  */}
+          <Route path="/pre/PreSelect" element={<PreSelect/>}/> {/* 오늘 예약  */}
 
-            <Route path="/pre/NewMenu" element={<CeoNewMenu/>}/> {/* 메뉴 등록 */}
-            <Route path="/pre/MenuList" element={<CeoMenuList/>}/> {/* 메뉴 리스트 */}
-            <Route path="/pre/MenuListEdit" element={<CeoMenuListEdit/>}/> {/* 메뉴판 수정 */}
-            <Route path="/pre/MenuEdit/:menuId" element={<CeoMenuEdit/>}/> {/* 메뉴 슈정 */}
+          <Route path="/pre/NewMenu" element={<CeoNewMenu/>}/> {/* 메뉴 등록 */}
+          <Route path="/pre/MenuList" element={<CeoMenuList/>}/> {/* 메뉴 리스트 */}
+          <Route path="/pre/MenuListEdit" element={<CeoMenuListEdit/>}/> {/* 메뉴판 수정 */}
+          <Route path="/pre/MenuEdit/:menuId" element={<CeoMenuEdit/>}/> {/* 메뉴 슈정 */}
 
-            <Route path="/pre/PreWaSet" element={<PreWaSet/>}/> {/* 웨이팅 가게 셋팅 */}
-            <Route path="/pre/WaMain" element={<CeoMain/>}/> {/*웨이팅 메인 */}
-            <Route path="/pre/WaToday" element={<TodayWaiting/>}/> {/* 현재 웨이팅 */}
-            <Route path="/pre/WaPast" element={<PastDateWaiting/>}/> {/* 과거 웨이팅 */}
-            <Route path="/pre/WaChart" element={<ReservationChart/>}/> {/* 웨이팅 차트 */}
-          </Routes>
-        ) : (
-          <div className={'mobile-wrapper'}>
-            {/*<HashRouter>*/}
-            <Header/>
+          <Route path="/pre/PreWaSet" element={<PreWaSet/>}/> {/* 웨이팅 가게 셋팅 */}
+          <Route path="/pre/WaMain" element={<CeoMain/>}/> {/*웨이팅 메인 */}
+          <Route path="/pre/WaToday" element={<TodayWaiting/>}/> {/* 현재 웨이팅 */}
+          <Route path="/pre/WaPast" element={<PastDateWaiting/>}/> {/* 과거 웨이팅 */}
+          <Route path="/pre/WaChart" element={<ReservationChart/>}/> {/* 웨이팅 차트 */}
+        </Routes>
+      ) : (
+        <div className={'mobile-wrapper'}>
+          {/*<HashRouter>*/}
+          <Header/>
 
-            <main className={'content'}>
-              <Routes>
-                {/*유저*/}
-                <Route path="/" element={<MainContent/>}/>
+          <main className={'content'}>
+            <Routes>
+              {/*유저*/}
+              <Route path="/" element={<MainContent/>}/>
 
-                <Route path={"/user"} element={<MyPageContent/>}/>
-                <Route path={"/user/login"} element={<Login/>}/>
-                <Route path={"/user/setting"} element={<UserSetting/>}/>
-                <Route path={"/user/signUp"} element={<SignUp/>}/>
-                <Route path={"/user/reviewList"} element={<SjhReviewList/>}/>
+              <Route path={"/user"} element={<MyPageContent/>}/>
+              <Route path={"/user/login"} element={<Login/>}/>
+              <Route path={"/user/setting"} element={<UserSetting/>}/>
+              <Route path={"/user/signUp"} element={<SignUp/>}/>
+              <Route path={"/user/reviewList"} element={<SjhReviewList/>}/>
 
-                <Route path={'/latestDetails'} element={<SjhReservation/>}/>
-                <Route path={'/bookmark'} element={<Bookmark/>}/>
+              <Route path={'/latestDetails'} element={<SjhReservation/>}/>
+              <Route path={'/bookmark'} element={<Bookmark/>}/>
 
-                <Route path={"/contentList/:category"} element={<ContentList/>}/>
-                <Route path={"/contentDetail"} element={<ContentDetail/>}/>
+              <Route path={"/contentList/:category"} element={<ContentList/>}/>
+              <Route path={"/contentDetail"} element={<ContentDetail/>}/>
 
-                <Route path={"/waiting/visit"} element={<VisitPage/>}/>
-                <Route path={"/book/seat"} element={<SeatPage/>}/>
-                <Route path={"/waiting/reg"} element={<WaitingRegPage/>}/>
-                <Route path={"/waiting/info"} element={<WaitingInfoPage/>}/>
+              <Route path={"/waiting/visit"} element={<VisitPage/>}/>
+              <Route path={"/book/seat"} element={<SeatPage/>}/>
+              <Route path={"/waiting/reg"} element={<WaitingRegPage/>}/>
+              <Route path={"/waiting/info"} element={<WaitingInfoPage/>}/>
 
-                <Route path={"/book/visit"} element={<VisitPage/>}/>
-                <Route path={"/book/date"} element={<DateSelectorPage/>}/>
-                <Route path={"/book/menu"} element={<MenuSelectorPage/>}/>
-                <Route path={"/book/reg"} element={<BookRegPage/>}/>
-                <Route path={"/book/info/:resIdx"} element={<BookInfoPage/>}/>
+              <Route path={"/book/visit"} element={<VisitPage/>}/>
+              <Route path={"/book/date"} element={<DateSelectorPage/>}/>
+              <Route path={"/book/menu"} element={<MenuSelectorPage/>}/>
+              <Route path={"/book/reg"} element={<BookRegPage/>}/>
+              <Route path={"/book/info/:resIdx"} element={<BookInfoPage/>}/>
 
-                <Route path={"/review"} element={<SjhReview/>}/>
+              <Route path={"/review"} element={<SjhReview/>}/>
 
-                {/*모바일 전용 사장 로그인*/}
-                <Route path={"/pre/login"} element={<OwnerLoginSjh/>}/>
-                {/*웨이팅 웹앱*/}
-                <Route path="/pre/PreWait" element={<PreWait/>}/>
-                {/*예약 웹앱*/}
-                <Route path="/pre/PreReserve" element={<PreReserve/>}/>
-              </Routes>
-            </main>
-            <BottomNav/>
-            {/*</HashRouter>*/}
-          </div>
-        )}
-      </BrowserRouter>
-    </div>
+              {/*모바일 전용 사장 로그인*/}
+              <Route path={"/pre/login"} element={<OwnerLoginSjh/>}/>
+              {/*웨이팅 웹앱*/}
+              <Route path="/pre/PreWait" element={<PreWait/>}/>
+              {/*예약 웹앱*/}
+              <Route path="/pre/PreReserve" element={<PreReserve/>}/>
+            </Routes>
+          </main>
+          <BottomNav/>
+          {/*</HashRouter>*/}
+        </div>
+      )}
+    </BrowserRouter>
   );
 }
 

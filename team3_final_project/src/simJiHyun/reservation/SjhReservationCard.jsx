@@ -85,8 +85,7 @@ function SjhReservationCard(props) {
         )}
 
         {openModal && <CancelPopup
-          restName={props.restName}
-          onClose={() => setOpenModal(false)}/>
+          restName={props.restName}/>
         }
 
       </div>

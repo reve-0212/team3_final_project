@@ -7,6 +7,7 @@ import {useEffect, useState} from "react";
 import useReservationStore from "../../stores/useReservationStore.jsx";
 import axios from "axios";
 import useRestaurantStore from "../../stores/useRestaurantStore.jsx";
+import {useNavigate} from "react-router-dom";
 
 function BookInfo() {
   // 모달을 열지 말지 결정한다
@@ -14,6 +15,7 @@ function BookInfo() {
   const reservationIdx = useReservationStore(state => state.reservationIdx)
   const restaurantIdx = useRestaurantStore(state => state.restaurantIdx)
   const [reservations, setReservations] = useState({})
+  const Nv = useNavigate();
 
   useEffect(() => {
     // 예약 번호
@@ -105,6 +107,8 @@ function BookInfo() {
               headers: {Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`}
             }).then((res) => {
             console.log(res)
+            alert("예약이 취소되었습니다")
+            Nv("/latestDetails")
           }).catch((err) => {
             console.log(err)
           })

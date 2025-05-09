@@ -76,7 +76,9 @@ function SjhReservation() {
             )
           )
         ) : (
-          <p>예약 내역이 없습니다</p>
+          <div className={"d-flex justify-content-center align-items-center"}>
+            <p>내역이 없습니다</p>
+          </div>
         )
         }
       </div>
