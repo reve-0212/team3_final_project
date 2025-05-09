@@ -20,4 +20,49 @@
     INSERT INTO restaurant (res_name, res_call, res_address1, res_address2, res_introduce, res_reserve_time, res_image1, res_image2, res_image3)
     VALUES ( #{resName}, #{resCall}, #{resAddress1}, #{resAddress2}, #{resIntroduce}, #{resReserveTime}, #{resImage1}, #{resImage2}, #{resImage3} )
     </insert>
+
+<!--    가게 정보 수정 -->
+    <update id="updateRest" parameterType="com.example.team3_final_project_server.dto.RestaurantDTO">
+        UPDATE restaurant SET
+        res_image1 = #{resImage1},
+        res_image2 = #{resImage2},
+        res_image3 = #{resImage3},
+        res_name = #{resName},
+        res_call = #{resCall},
+        res_address1 = #{resAddress1},
+        res_address2 = #{resAddress2},
+        res_introduce = #{resIntroduce},
+        res_reserve_time = #{resReserveTime}
+        WHERE res_idx = #{resIdx}
+    </update>
+
+<!--    가게 시간 정보 저장 -->
+    <insert id="insertTime" parameterType="com.example.team3_final_project_server.dto.TimeDTO">
+        INSERT INTO restaurant_time (  day, start_time, end_time )
+        VALUES (  #{day}, #{startTime} ,#{endTime} )
+    </insert>
+
+<!--    가게 정보 조회 -->
+    <select id="getRest" parameterType="com.example.team3_final_project_server.dto.RestaurantDTO">
+        SELECT res_name, res_call, res_address1, res_address2, res_introduce, res_reserve_time, res_image1, res_image2, res_image3
+        from restaurant
+        WHERE res_idx = #{resIdx}
+    </select>
+
+
+<!--    좌석 정보 불러오기 -->
+    <select id="loadSeat" parameterType="int" resultType="com.example.team3_final_project_server.dto.SeatDTO">
+        SELECT
+        seat_id As sId,
+        res_idx AS rId,
+        type,
+        name,
+        x,
+        y,
+        image,
+        is_selected As isSelected
+        FROM seat_table
+        WHERE res_idx = #{resIdx}
+    </select>
+
 </mapper>

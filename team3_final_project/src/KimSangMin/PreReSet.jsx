@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import ReBanner from "./ReBanner.jsx";
 import axios from "axios";
@@ -23,7 +23,6 @@ function PreReSet() {
     {value: "대신동", label: "대신동"},
     {value: "초량동", label: "초량동"},
     {value: "부평동", label: "부평동"},
-    {value: "동삼동", label: "동삼동"},
     {value: "동대신동", label: "동대신동"},
     {value: "서대신동", label: "서대신동"},
     {value: "충무동", label: "충무동"},
@@ -35,7 +34,6 @@ function PreReSet() {
     {value: "영도동", label: "영도동"},
     {value: "해양동", label: "해양동"},
     {value: "동삼동", label: "동삼동"},
-    {value: "부전동", label: "부전동"},
     {value: "전포동", label: "전포동"},
     {value: "범천동", label: "범천동"},
     {value: "온천동", label: "온천동"},
@@ -45,7 +43,6 @@ function PreReSet() {
     {value: "대연동", label: "대연동"},
     {value: "감만동", label: "감만동"},
     {value: "구포동", label: "구포동"},
-    {value: "만덕동", label: "만덕동"},
     {value: "덕천동", label: "덕천동"},
     {value: "우동", label: "우동"},
     {value: "중동", label: "중동"},
@@ -73,7 +70,8 @@ function PreReSet() {
   const [address, setAddress] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [resTime, setReTime] = useState([""]);
-  const [dongOption, setDongOption] = useState("option1"); // 기본 옵션 설정
+  const [dongOption, setDongOption] = useState(""); // 기본 옵션 설정
+  const [isSave,setIsSave] = useState(false);
 
 
   //-----------------------------  주소 검색 api로 요청받아오기------------------------
@@ -163,18 +161,57 @@ function PreReSet() {
 
       console.log("저장할 데이터: ", storeData);
 
-      axios.post("http://localhost:8080/pre/resave", storeData)
-          .then((response) => {
-            console.log("저장성공", response.data)
-            console.log("restData.resTime: ", restData.resTime);
-            alert("가게 정보가 저장되었습니다.")
-          })
-          .catch((error) => {
-            console.log("오류 발생 " + error)
-            alert("오류가 발생했습니다.")
-          })
 
-    };
+      //  가게 저장 시 수정 기능으로 체인지
+      if (isSave) {
+        const resIdx = 1;
+        axios.put(`http://localhost:8080/pre/updateRest/${resIdx}`, storeData)
+            .then( (response) => {
+              console.log("수정 성공", response.data);
+              alert("가게 정보가 수정되었습니다.")
+            })
+            .catch( (error) => {
+              console.log("오류 발생", error)
+              alert("수정 중 오류가 발생했습니다.")
+            })
+      } else {
+        // 저장이 안되있을 시에는 기본적으로 저장 버튼 활성화
+        axios.post("http://localhost:8080/pre/resave", storeData)
+            .then((response) => {
+              console.log("저장성공", response.data)
+              console.log("restData.resTime: ", restData.resTime);
+              alert("가게 정보가 저장되었습니다.")
+              setIsSave(true)
+            })
+            .catch((error) => {
+              console.log("오류 발생 " + error)
+              alert("오류가 발생했습니다.")
+            });
+      }
+    }
+    // 데이터 불러오기
+  useEffect(() => {
+    const resIdx = 1;
+    axios.get(`http://localhost:8080/pre/getRest/${resIdx}`)
+        .then( (response) => {
+          const data = response.data;
+          setRestData({
+            Name: data.resName,
+            Call: data.resCall,
+            Address1: data.resAddress1,
+            Address2: data.resAddress2,
+            Introduce: data.resIntroduce,
+            resTime: data.resReserveTime.split(","),
+          });
+          setImg([data.resImage1, data.resImage2, data.resImage3]);
+          setDongOption(data.resAddress2);
+        })
+        .catch((error) => {
+          console.log("데이터 조회 실패",error)
+          alert("데이터를 불러오는데 실패했습니다.")
+        })
+  }, []);
+
 
     return (
         <div
@@ -324,6 +361,7 @@ function PreReSet() {
               <input
                   type="text"
                   id="Address"
+                  disabled={true}
                   className="form-control"
                   style={{width: "300px", height: "50px"}}
                   value={restData.Address}
@@ -335,6 +373,7 @@ function PreReSet() {
                   className="form-control"
                   style={{width: "150px", height: "50px", marginLeft: "10px"}}
               >
+                <option value="" disabled>동을 선택하세요</option>
                 {options.map((opt, i) => (
                     <option key={i} value={opt.value}>{opt.label}</option>
                 ))}
@@ -396,9 +435,14 @@ function PreReSet() {
             <br/>
 
             <div style={{display: "flex", justifyContent: "flex-end"}}>
+              {isSave ? (
+              <button type="submit" className="btn btn-warning btn-lg mb-3">
+              수정
+            </button> ) : (
               <button type="submit" className="btn btn-warning btn-lg mb-3">
                 저장
               </button>
+              )}
             </div>
           </form>
         </div>

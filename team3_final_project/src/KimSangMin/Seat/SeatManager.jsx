@@ -19,7 +19,7 @@ function SeatManager() {
     // 각 아이콘마다 사이즈 / 그리고 덮어씌우기 금지
     const isOverlapping = (x, y, width, height) => {
         return elements.some(el => {
-            const elSize = (el.type === "단체석" || el.type === "단체룸") ? 100 : 60;
+            const elSize = (el.type === "단체석" || el.type === "단체룸") ? 80 : 60;
             return (
                 x < el.x + elSize &&
                 x + width > el.x &&
@@ -59,7 +59,6 @@ function SeatManager() {
                 y,
                 shape: "circle",
                 image: elementImages[type] || "",
-                isSelected: false,
                 isReserved: false, // 추가!
             }
         ]);
@@ -71,11 +70,11 @@ function SeatManager() {
 
     const hDr = (id, e, data) => {
         const currentEl = elements.find(el => el.id === id);
-        const size = (currentEl.type === "단체석" || currentEl.type === "단체룸") ? 100 : 60;
+        const size = (currentEl.type === "단체석" || currentEl.type === "단체룸") ? 80 : 60;
 
         const overlapping = elements.some(el => {
             if (el.id === id) return false;
-            const elSize = (el.type === "단체석" || el.type === "단체룸") ? 100 : 60;
+            const elSize = (el.type === "단체석" || el.type === "단체룸") ? 80 : 60;
             return (
                 data.x < el.x + elSize &&
                 data.x + size > el.x &&
@@ -88,7 +87,7 @@ function SeatManager() {
 
         setElements(prev => prev.map(el =>
             el.id === id
-                ? { ...el, x: Math.min(Math.max(0, data.x), 810), y: Math.min(Math.max(0, data.y), 537) }
+                ? { ...el, x: Math.min(Math.max(0, data.x), 553), y: Math.min(Math.max(0, data.y), 290) }
                 : el
         ));
     };
@@ -99,11 +98,7 @@ function SeatManager() {
         ));
     };
 
-    const toggleSelect = (id) => {
-        setElements(prev => prev.map(el =>
-            el.id === id && el.type === "좌석" ? { ...el, isSelected: !el.isSelected } : el
-        ));
-    };
+
 
     const undo = () => {
         setElements(prev => prev.slice(0, -1));
@@ -128,9 +123,17 @@ function SeatManager() {
     };
 
     return (
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "80vh" }}>
-            <div>
-                <div style={{ marginBottom: "10px" }}>
+        <div
+            style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "600px",       // 높이 고정
+                padding: "2rem",
+            }}
+        >
+            <div style={{ maxWidth: "900px", width: "100%" }}>
+                <div style={{ marginBottom: "10px", textAlign: "center" }}>
                     <button onClick={() => addEl("좌석")}>+ 좌석 추가</button>
                     <button onClick={() => addEl("창문")}>+ 창가 추가</button>
                     <button onClick={() => addEl("카운터")}>+ 카운터 추가</button>
@@ -141,7 +144,15 @@ function SeatManager() {
                     <button onClick={saveToServer}>💾 저장</button>
                 </div>
 
-                <div style={{ width: "100%", height: "600px", border: "1px solid #ccc", position: "relative" }}>
+                <div
+                    style={{
+                        width: "70%",
+                        height: "350px", // 줄인 작업 영역
+                        border: "1px solid #ccc",
+                        position: "relative",
+                        margin: "0 auto",
+                    }}
+                >
                     {elements.map(el => (
                         <Draggable
                             key={el.id}
@@ -151,7 +162,6 @@ function SeatManager() {
                         >
                             <div
                                 ref={elRef.current[el.id]}
-                                onClick={() => el.type === "좌석" && toggleSelect(el.id)}
                                 onDoubleClick={() => {
                                     if (el.type === "좌석") {
                                         const newName = prompt("좌석 이름을 입력하세요", el.name);
@@ -166,7 +176,6 @@ function SeatManager() {
                                     width: el.type === "단체석" || el.type === "단체룸" ? 100 : 60,
                                     height: el.type === "단체석" || el.type === "단체룸" ? 100 : 60,
                                     borderRadius: el.shape === "square" ? "50%" : "0%",
-                                    backgroundColor: el.isSelected ? "red" : "#ccc",
                                     backgroundImage: `url(${el.image})`,
                                     backgroundSize: "cover",
                                     color: "white",
@@ -178,7 +187,6 @@ function SeatManager() {
                                     textAlign: "center",
                                     fontSize: "12px",
                                     userSelect: "none",
-                                    border: el.isSelected ? "3px solid red" : "1px solid #ccc",
                                 }}
                             >
                                 {el.name}
@@ -188,6 +196,7 @@ function SeatManager() {
                 </div>
             </div>
         </div>
+
     );
 }
 

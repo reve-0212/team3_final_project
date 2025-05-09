@@ -2,6 +2,7 @@ import WaBanner from "./WaBanner.jsx";
 import {useState} from "react";
 import {Link} from "react-router-dom";
 import ReBanner from "./ReBanner.jsx";
+import axios from "axios";
 // import PreTimeSet from "./PreTimeSet.jsx";
 // import {Link} from "react-router-dom";
 
@@ -27,8 +28,34 @@ function PreTime() {
     };
 
     // 설정한 데이터 저장(서버로 전송 )
-    const hSubmit = async (e) => {
+    const hSubmit = (e) => {
         e.preventDefault();
+
+        const formatted = input.map(item => ({
+            day: item.day,
+            startTime: item.startHo && item.startMi ? `${item.startHo}:${item.startMi}` : null,
+            endTime: item.endHo && item.endMi ? `${item.endHo}:${item.endMi}` : null
+        }));
+
+        axios.post("http://localhost:8080/pre/timeset",{
+            resIdx: 123,
+            timeList: formatted,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then( (res) => {
+                if (res.data.success) {
+                    alert("저장 성공")
+                }
+                else {
+                    alert("저장 실패" + res.data.message);
+                }
+            })
+            .catch((error) => {
+                console.log("서버 오류" + error)
+                alert("오류 발생" + error)
+            })
     }
 
     return (

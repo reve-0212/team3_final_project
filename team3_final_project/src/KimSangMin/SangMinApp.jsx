@@ -24,6 +24,9 @@ import CeoMenuListEdit from "../JangDaJung/CeoMenuListEdit.jsx";
 import CeoMenuEdit from "../JangDaJung/CeoMenuEdit.jsx";
 import PreFunction from "./PreFunction.jsx";
 import PreRegPage from "../JeongSeongYun/layout/PreRegPage.jsx";
+import ReservationPage from "./Seat/ReservationPage.jsx";
+import SeatLayout from "./Seat/SeatLayout.jsx";
+import SeatManager from "./Seat/SeatManager.jsx";
 
 function SangMinApp() {
     return (
@@ -44,7 +47,8 @@ function SangMinApp() {
                     <Route path="/pre/login" element={<OwnerLogin/>}/> {/*  사장 로그인 */}
                     <Route path="/pre/update" element={<PreUpdatePage/>}/> {/*  사장 정보 수정 */}
 
-                    <Route path="/" element={<OwnerLogin/>}/>
+                    <Route path="/" element={<SeatManager/>}/>
+                    <Route path="/pre/loadSeat/:resIdx" element={<SeatLayout />} />
                     <Route path="/pre/PreMain" element={<PreMain/>}/> {/* 예약가게 메인*/}
                     <Route path="/pre/PreCh" element={<PreCh/>}/> {/* 예약가게 매출 통계 */}
                     <Route path="/pre/PreRe" element={<PreRe/>}/> {/* 예약가게 리뷰 보기*/}

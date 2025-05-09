@@ -1,7 +1,7 @@
 import ReBanner from "./ReBanner.jsx";
 import {useState} from "react";
 import axios from "axios";
-import SeatManager from "./SeatManager.jsx";
+import SeatManager from "./Seat/SeatManager.jsx";
 
 function PreFunction() {
 
