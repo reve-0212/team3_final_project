@@ -1,6 +1,9 @@
 package com.example.team3_final_project_server.JunKangSan;
 
+import com.example.team3_final_project_server.dto.AnnounceDTO;
+import com.example.team3_final_project_server.dto.BestMenuDTO;
 import com.example.team3_final_project_server.dto.RestaurantDTO;
+import com.example.team3_final_project_server.dto.ReviewDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,5 +18,21 @@ public class JKSServiceImpl implements JKSService {
   @Override
   public List<RestaurantDTO> getAllRestaurants() {
     return jksMapper.getAllRestaurants();
+  }
+
+  @Override
+  public List<BestMenuDTO> getBestMenusByResIdx(int resIdx) {
+    return jksMapper.getAllBestMenus(resIdx);
+  }
+
+
+  @Override
+  public List<ReviewDTO> getReviewsByResIdx(int resIdx) {
+    return jksMapper.getAllReviews(resIdx);
+  }
+
+  @Override
+  public AnnounceDTO getLatestAnnounce() {
+    return jksMapper.getLatestAnnounce();
   }
 }

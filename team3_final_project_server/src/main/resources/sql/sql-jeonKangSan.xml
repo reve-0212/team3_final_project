@@ -11,4 +11,24 @@
         FROM restaurant
     </select>
 
+    <select id="getAllBestMenus" parameterType="int" resultType="com.example.team3_final_project_server.dto.BestMenuDTO">
+        SELECT *
+        FROM bestmenu
+        WHERE testres_idx = #{resIdx}
+        LIMIT 3
+    </select>
+
+    <select id="getAllReviews" parameterType="int" resultType="com.example.team3_final_project_server.dto.ReviewDTO">
+        SELECT *
+        FROM review
+        WHERE res_idx = #{resIdx}
+    </select>
+
+    <select id="getLatestAnnounce" resultType="com.example.team3_final_project_server.dto.AnnounceDTO">
+        SELECT *
+        FROM announce
+        ORDER BY announce_idx DESC
+        LIMIT 1
+    </select>
+
 </mapper>

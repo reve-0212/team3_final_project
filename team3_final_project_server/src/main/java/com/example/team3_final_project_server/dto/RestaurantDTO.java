@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class RestaurantDTO {
+
 //  05-08 14:18
   private int resIdx;
   private String resImage1;
@@ -21,6 +22,7 @@ public class RestaurantDTO {
   private String reserveOrWating;
   private String restOption1;
 
+
 //  05-07
 //  private int restaurantIdx;
 //  private String restaurantNumber;
@@ -36,4 +38,5 @@ public class RestaurantDTO {
 //  private String restaurantImage1;
 //  private String restaurantImage2;
 //  private String restaurantImage3;
+
 }
