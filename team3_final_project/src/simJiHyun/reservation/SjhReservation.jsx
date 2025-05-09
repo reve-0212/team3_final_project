@@ -7,68 +7,12 @@ import axios from "axios";
 
 // state
 function SjhReservation() {
-  // true : 이용예정/완료 , false : 취소/노쇼
-  const [isUsed, setIsUsed] = useState(true)
+  // expected : 이용 예정 , completed : 이용 완료 , cancelled : 취소
+  const [filterType, setFilterType] = useState("expected")
+  const [reservations, setReservations] = useState([])
   const user = useUserStore((state) => state.user)
-  console.log(user)
-  // true : 예약 , false : 웨이팅
-  const [isReservation, setIsReservation] = useState(true)
 
-  const allReservations = [
-    // isUse : true(이용예정/완료), false(취소/노쇼)
-    // isUse -> true
-    // isVisit : true(이용 완료), false(이용 예정)
-    // isUse -> false
-    // isCancel : true(취소함), false(노쇼)
-    // 예약 (isReservation:true)
-    // 왔다 간 가게
-    {
-      id: 1,
-      isUse: true,
-      isVisit: true,
-      isCancel: false,
-      restName: "해운대 암소 갈비집 (이용 완료/예약)",
-      date: "2024-05-02",
-      time: "00:00",
-      people: 2
-    },
-    // 아직 안간 가게
-    {
-      id: 2,
-      isUse: true,
-      isVisit: false,
-      isCancel: false,
-      restName: "블랙업 커피 (이용 예정/예약)",
-      date: "2024-05-02",
-      time: "00:00",
-      people: 4
-    },
-    // 취소한 가게
-    {
-      id: 3,
-      isUse: false,
-      isVisit: false,
-      isCancel: true,
-      restName: "간장게장 (취소/예약)",
-      date: "2024-05-02",
-      time: "00:00",
-      people: 1
-    },
-    // 노쇼한 가게
-    {
-      id: 4,
-      isUse: false,
-      isVisit: false,
-      isCancel: false,
-      restName: "장춘동왕족발보쌈 (노쇼/예약)",
-      date: "2024-05-02",
-      time: "00:00",
-      people: 4
-    },
-  ]
-
-  const reservationList = []
-
+  // 예약 여부 보기
   const userReservation = () => {
     axios.get(`http://localhost:8080/userReservation`, {
       params: {
@@ -79,9 +23,7 @@ function SjhReservation() {
       }
     }).then(res => {
       console.log(res.data)
-      reservationList.push(res.data)
-      console.log("--------reservationList------------")
-      console.log(reservationList)
+      setReservations(res.data)
     }).catch(err => {
       console.log(err)
     })
@@ -91,33 +33,52 @@ function SjhReservation() {
     userReservation()
   }, [])
 
-  const filteredReservations = allReservations.filter(r => r.isUse === isUsed)
+  const filteredReservations = reservations.filter(r => {
+      // comeDatetime 에 값이 있으면 이용한거
+      // cancelDatetime 에 값이 있으면 취소한거
+      const isVisited = r.reservation.rsvComeDatetime !== null
+      const isCancelled = r.reservation.rsvCancelDatetime !== null
+
+      switch (filterType) {
+        case "expected":
+          return !isVisited && !isCancelled
+        case "completed":
+          return isVisited && !isCancelled
+        case "cancelled":
+          return isCancelled
+        default:
+          return false
+      }
+    }
+  )
 
   return (
     <div className={"container py-4"}>
 
       <UseOrNoShow
-        switchUN={(val) => setIsUsed(val)}
-        isUsed={isUsed}/>
-
-      {/*<ReservationOrWaiting*/}
-      {/*    switchRW={(val) => setIsReservation(val)}*/}
-      {/*    isReservation={isReservation}/>*/}
+        switchUN={(val) => setFilterType(val)}
+        filterType={filterType}/>
 
       <div>
-        {filteredReservations.map(r => (
-          <SjhReservationCard
-            key={r.id}
-            isUse={r.isUse}
-            isVisit={r.isVisit}
-            isCancel={r.isCancel}
-            restName={r.restName}
-            date={r.date}
-            time={r.time}
-            visitTime={r.visitTime}
-            number={r.number}
-            people={r.people}/>
-        ))}
+        {filteredReservations.length > 0 ? (
+          filteredReservations.map(r => (
+              <SjhReservationCard
+                key={r.index}
+                filterType={r.filterType}
+                reservationIdx={r.reservation.reservationIdx}
+                restaurantIdx={r.restaurant.resIdx}
+                isUse={r.reservation.rsvComeDatetime}
+                isCancel={r.reservation.rsvCancelDatetime}
+                restName={r.restaurant.resName}
+                date={r.reservation.rsvDate}
+                time={r.reservation.rsvTime}
+                people={r.reservation.rsvPeople}/>
+            )
+          )
+        ) : (
+          <p>예약 내역이 없습니다</p>
+        )
+        }
       </div>
     </div>
   );

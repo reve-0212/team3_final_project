@@ -5,6 +5,8 @@ import com.example.team3_final_project_server.SimJiHyun.service.UserService;
 import com.example.team3_final_project_server.dto.ReservationDTO;
 import com.example.team3_final_project_server.dto.ResponseDTO;
 import com.example.team3_final_project_server.dto.UserDTO;
+import com.example.team3_final_project_server.dto.join.ResvJoinRestDTO;
+import com.example.team3_final_project_server.dto.join.ResvRestMenuJoinDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,14 +23,12 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 public class UserController {
-
-//  @Autowired
-//  private SjhServiceImpl sjhServiceImpl;
-
   @Autowired
   private UserService userService;
+
   @Autowired
   private PasswordEncoder passwordEncoder;
+
   @Autowired
   private UserMapper userMapper;
 
@@ -67,7 +67,7 @@ public class UserController {
     }
   }
 
-//  비밀번호 바꾸기
+  //  비밀번호 바꾸기
   @PutMapping("/api/auth/updatePassword")
   public ResponseEntity<?> updatePassword(@RequestBody Map<String, String> body, Authentication auth) {
     String userId = auth.getName();
@@ -80,7 +80,7 @@ public class UserController {
     return ResponseEntity.ok("비밀번호 변경 완료");
   }
 
-//  정보 수정하기
+  //  정보 수정하기
   @PutMapping("/api/user/updateInfo")
   public ResponseEntity<?> updateInfo(@RequestBody Map<String, String> body, Authentication auth) {
     String userId = auth.getName();
@@ -90,10 +90,10 @@ public class UserController {
     System.out.println("field : " + field);
     System.out.println("value : " + value);
 
-    userMapper.updateField(userId, field,value);
+    userMapper.updateField(userId, field, value);
     return ResponseEntity.ok("회원 정보 수정 완료");
   }
-//
+
 //  //  데이터 가져오기
 //  @PostMapping("/getUserData")
 //  public UserDTO getUserData(@RequestParam("userId") String userId, @RequestParam("userPass") String userPass) {
@@ -101,9 +101,24 @@ public class UserController {
 //    return sjhServiceImpl.getUserData(userId, userPass);
 //  }
 
+  //  예약 정보 리스트 가져오기
   @GetMapping("/userReservation")
-  public List<ReservationDTO> userReservation(@RequestParam int userIdx) {
-//    System.out.println("userIdx : " + userIdx);
+  public List<ResvJoinRestDTO> userReservation(@RequestParam int userIdx) {
     return userService.userReservation(userIdx);
+  }
+
+  //  예약 상세 정보 가져오기
+  @GetMapping("/getBook")
+  public ResvRestMenuJoinDTO getBook(@RequestParam int reservationIdx, @RequestParam int restaurantIdx) {
+    System.out.println("reservationIdx : " + reservationIdx);
+    System.out.println("restaurantIdx : " + restaurantIdx);
+    return userService.getBook(reservationIdx,restaurantIdx);
+  }
+
+//  예약 취소하기
+  @PutMapping("/cancelBook")
+  public void cancelBook(@RequestParam int reservationIdx){
+    System.out.println("reservationIdx : " + reservationIdx);
+    userService.cancelBook(reservationIdx);
   }
 }

@@ -52,7 +52,7 @@ public class JwtTokenProvider {
     claims.put("userAge", userDTO.getUserAge());
     claims.put("userCall", userDTO.getUserCall());
     claims.put("userEmail", userDTO.getUserEmail());
-//    claims.put("role", userDTO.getRole());
+    claims.put("role", userDTO.getRole());
 //    빌더 패턴을 사용하여 JWT 객체 생성
 
 //    setHeaderParam() : 토큰 타입을 설정
@@ -113,6 +113,7 @@ public class JwtTokenProvider {
 
 //    JWT 토큰에 저장되어 있었던 사용자 권한 정보를 가져와서 스프링 시큐리티에서 사용하는 권한 타입으로 변환
     Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(claims.get("role").toString()));
+    System.out.println("authorities : " + authorities);
 
 //    jwt 토큰을 통해서 가져온 데이터로 UserDTO 객체 생성
     UserDTO member = UserDTO.builder()
@@ -124,7 +125,7 @@ public class JwtTokenProvider {
             .userAge(((Number) claims.get("userAge")).intValue())
             .userCall(claims.get("userCall").toString())
             .userEmail(claims.get("userEmail").toString())
-//            .role(claims.get("role").toString())
+            .role(claims.get("role").toString())
             .build();
 
 //    사용자 인증 정보를 생성 후 반환

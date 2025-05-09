@@ -1,4 +1,4 @@
-function CancelPopup({restName, isReservation, onClose}) {
+function CancelPopup({restName,onClose}) {
     // onClose 함수를 받는다
     return (
         <div className="position-fixed top-0 start-0 w-100 h-100
@@ -7,7 +7,7 @@ function CancelPopup({restName, isReservation, onClose}) {
             <div className="bg-white p-4 text-center rounded-4"
                  style={{maxWidth: "400px", width: "100%"}}>
                 <p className="fs-5 mb-0">{restName}</p>
-                <p className="fs-5">{isReservation ? "예약을 취소할까요?" : "웨이팅을 취소할까요?"}</p>
+                <p className="fs-5">예약을 취소할까요?</p>
 
                 <div className="d-flex flex-row justify-content-center gap-3 mt-3">
                     {/*버튼을 누르면 onClose 로 인해서 openModal 의 값이 false 가 된다

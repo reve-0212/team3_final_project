@@ -5,6 +5,8 @@ import com.example.team3_final_project_server.configuration.jwt.JwtTokenProvider
 import com.example.team3_final_project_server.dto.ReservationDTO;
 import com.example.team3_final_project_server.dto.ResponseDTO;
 import com.example.team3_final_project_server.dto.UserDTO;
+import com.example.team3_final_project_server.dto.join.ResvJoinRestDTO;
+import com.example.team3_final_project_server.dto.join.ResvRestMenuJoinDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -33,7 +35,7 @@ public class UserService {
       throw new BadCredentialsException("비밀번호가 일치하지 않습니다");
     }
 
-    String accessToken = jwtTokenProvider.generateToken(user, Duration.ofMinutes(30));
+    String accessToken = jwtTokenProvider.generateToken(user, Duration.ofMinutes(60));
     String refreshToken = jwtTokenProvider.generateRefreshToken(user, Duration.ofDays(7));
 
     return ResponseDTO.builder()
@@ -88,7 +90,7 @@ public class UserService {
             .userCall(user.getUserCall())
             .userEmail(user.getUserEmail())
 //        사용자 권한으로 ROLE_MEMBER 를 기본으로 사용, 다른 권한을 사용하고자 할 경우 다른 로직에서 권한 추가
-//            .role("ROLE_USER")
+            .role("ROLE_USER")
             .build();
 
 //    사용자 정보를 데이터베이스에 저장
@@ -96,7 +98,18 @@ public class UserService {
     return "회원 가입 성공";
   }
 
-  public List<ReservationDTO> userReservation(int userIdx) {
+//  예약 리스트 가져오기
+  public List<ResvJoinRestDTO> userReservation(int userIdx) {
     return userMapper.userReservation(userIdx);
+  }
+
+//  예약 상세 정보 가져오기
+  public ResvRestMenuJoinDTO getBook(int reservationIdx, int restaurantIdx) {
+    return userMapper.getBook(reservationIdx,restaurantIdx);
+  }
+
+//  예약 취소하기
+  public void cancelBook(int reservationIdx) {
+    userMapper.cancelBook(reservationIdx);
   }
 }
