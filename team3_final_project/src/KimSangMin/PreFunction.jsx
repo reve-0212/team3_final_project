@@ -41,13 +41,15 @@ function PreFunction() {
 
 
     return (
-        <div style={{
-            marginLeft: "300px",
-            paddingTop: "8rem",
-            paddingLeft: "1rem",
-            width: "calc(100% - 200px)",
-            maxWidth: "1000px",
-        }}>
+        <div
+            // style={{
+            // marginLeft: "300px",
+            // paddingTop: "8rem",
+            // paddingLeft: "1rem",
+            // width: "calc(100% - 200px)",
+            // maxWidth: "1000px",
+            // }}
+        >
             <ReBanner/>
 
             <h4 className="text-start">

@@ -106,7 +106,7 @@ public class SecurityConfig {
                     .requestMatchers(PUT,"/cancelBook").hasRole("USER")
 
 //                    사장 전용
-                    .requestMatchers("/pre/**").hasRole("OWNER")
+                    .requestMatchers("/pre/getRest/**").permitAll()
 
 //                    관리자 전용 페이지
                     .requestMatchers("/pre/admin").permitAll()

@@ -75,30 +75,44 @@ function PreReSet() {
 
 
   //-----------------------------  주소 검색 api로 요청받아오기------------------------
-  const hSearch = (e) => {
-    e.preventDefault();
+  // const hSearch = (e) => {
+  //   e.preventDefault();
+  //
+  //   if (!address) {
+  //     alert("주소를 입력해주세요.");
+  //     return;
+  //   }
+  //
+  //   const apiKey = "36bd79108879c504308c80d28fe7829d";
+  //   const url = `https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURIComponent(address)}`;
+  //
+  //   axios
+  //       .get(url, {
+  //         headers: {
+  //           Authorization: `KakaoAK ${apiKey}`,
+  //         },
+  //       })
+  //       .then((response) => {
+  //         setSearchResults(response.data.documents);
+  //       })
+  //       .catch((error) => {
+  //         console.error("주소 검색 중 오류 발생:", error);
+  //         alert("주소 검색에 실패했습니다.");
+  //       });
+  // };
 
-    if (!address) {
-      alert("주소를 입력해주세요.");
-      return;
-    }
-
-    const apiKey = "36bd79108879c504308c80d28fe7829d";
-    const url = `https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURIComponent(address)}`;
-
-    axios
-        .get(url, {
-          headers: {
-            Authorization: `KakaoAK ${apiKey}`,
-          },
-        })
-        .then((response) => {
-          setSearchResults(response.data.documents);
-        })
-        .catch((error) => {
-          console.error("주소 검색 중 오류 발생:", error);
-          alert("주소 검색에 실패했습니다.");
-        });
+  const openDaumPostcode = () => {
+    new window.daum.Postcode({
+      oncomplete: function (data) {
+        const fullAddress = data.address;
+        setRestData((prevData) => ({
+          ...prevData,
+          Address1: fullAddress,
+        }));
+      },
+    }).open({
+      q: address
+    });
   };
 // ------------------------------------------------------------------------------------------------
 
@@ -137,7 +151,6 @@ function PreReSet() {
       updatedTime[index] = value;
       setReTime(updatedTime);
     };
-
 
     const hfChange = (e, field) => {
       setRestData({...restData, [field]: e.target.value});
@@ -192,19 +205,30 @@ function PreReSet() {
     // 데이터 불러오기
   useEffect(() => {
     const resIdx = 1;
-    axios.get(`http://localhost:8080/pre/getRest/${resIdx}`)
+    axios.get(`http://localhost:8080/pre/getRest/${resIdx}`,{
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`
+      }
+    })
         .then( (response) => {
-          const data = response.data;
+          const responseData = response.data;
+          const data = responseData.data;
+
           setRestData({
             Name: data.resName,
             Call: data.resCall,
             Address1: data.resAddress1,
             Address2: data.resAddress2,
             Introduce: data.resIntroduce,
-            resTime: data.resReserveTime.split(","),
+            resTime: data.resReserveTime?.split(",") || [],
           });
           setImg([data.resImage1, data.resImage2, data.resImage3]);
           setDongOption(data.resAddress2);
+
+
+          console.log(response.data);
+
         })
         .catch((error) => {
           console.log("데이터 조회 실패",error)
@@ -215,30 +239,16 @@ function PreReSet() {
 
     return (
         <div
-            style={{
-              marginLeft: "300px",
-              paddingTop: "8rem",
-              paddingLeft: "1rem",
-              width: "calc(100% - 200px)",
-              maxWidth: "1000px",
-            }}
+            // style={{
+            //   marginLeft: "300px",
+            //   paddingTop: "8rem",
+            //   paddingLeft: "1rem",
+            //   width: "calc(100% - 200px)",
+            //   maxWidth: "1000px",
+            // }}
         >
+          <ReBanner/>
           <form onSubmit={hSubmit}>
-            <ReBanner/>
-            <div style={{display: "flex"}}>
-              <Link to="/pre/PreReSet" style={{textDecoration: "none", color: "black"}}>
-                <h4 className="text-start me-4">가게정보</h4>
-              </Link>
-              <Link to="/pre/PreTimeSet" style={{textDecoration: "none", color: "black"}}>
-                <h4 className="text-start me-4">운영정보</h4>
-              </Link>
-              <Link to="/pre/PreFucn" style={{textDecoration: "none", color: "black"}}>
-                <h4>부가기능</h4>
-              </Link>
-            </div>
-            <hr/>
-            <br/>
-
             {/* 가게 이미지 설정 */}
             <h4 className="text-start">
               <strong>가게 대표 이미지</strong>
@@ -326,26 +336,29 @@ function PreReSet() {
                   className="form-control"
                   style={{width: "300px", height: "50px", display: "inline-block", marginRight: "10px"}}
               />
-              <button type="button" onClick={hSearch} className="btn btn-outline-warning btn-sm">
+              {/*<button type="button" onClick={hSearch} className="btn btn-outline-warning btn-sm">*/}
+              {/*  검색*/}
+              {/*</button>*/}
+              <button type="button" onClick={openDaumPostcode} className="btn btn-outline-warning btn-sm">
                 검색
               </button>
 
-              {/* 검색 후 결과 선택 시 값 입력됨 */}
-              <ul style={{marginTop: "10px"}}>
-                {searchResults.map((result, index) => (
-                    <li
-                        key={index}
-                        style={{cursor: "pointer"}}
-                        onClick={() => {
-                          hfChange({target: {value: result.address_name}}, "Address");
-                          setSearchResults([]);
-                          setAddress("");
-                        }}
-                    >
-                      📍 {result.address_name}
-                    </li>
-                ))}
-              </ul>
+              {/*/!* 검색 후 결과 선택 시 값 입력됨 *!/*/}
+              {/*<ul style={{marginTop: "10px"}}>*/}
+              {/*  {searchResults.map((result, index) => (*/}
+              {/*      <li*/}
+              {/*          key={index}*/}
+              {/*          style={{cursor: "pointer"}}*/}
+              {/*          onClick={() => {*/}
+              {/*            hfChange({target: {value: result.address_name}}, "Address1");*/}
+              {/*            setSearchResults([]);*/}
+              {/*            setAddress("");*/}
+              {/*          }}*/}
+              {/*      >*/}
+              {/*        📍 {result.address_name}*/}
+              {/*      </li>*/}
+              {/*  ))}*/}
+              {/*</ul>*/}
             </div>
 
             <hr/>
@@ -364,7 +377,7 @@ function PreReSet() {
                   disabled={true}
                   className="form-control"
                   style={{width: "300px", height: "50px"}}
-                  value={restData.Address}
+                  value={restData.Address1}
                   onChange={(e) => hfChange(e, "Address")}
               />
               <select
@@ -436,16 +449,17 @@ function PreReSet() {
 
             <div style={{display: "flex", justifyContent: "flex-end"}}>
               {isSave ? (
-              <button type="submit" className="btn btn-warning btn-lg mb-3">
-              수정
-            </button> ) : (
-              <button type="submit" className="btn btn-warning btn-lg mb-3">
-                저장
-              </button>
+                  <button type="submit" className="btn btn-warning btn-lg mb-3">
+                    수정
+                  </button>) : (
+                  <button type="submit" className="btn btn-warning btn-lg mb-3">
+                    저장
+                  </button>
               )}
             </div>
           </form>
         </div>
     );
-  }
+}
+
 export default PreReSet;

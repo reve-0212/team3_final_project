@@ -15,7 +15,7 @@ public interface PreService {
      boolean updateRest(int resIdx, RestaurantDTO rest);
 
     //    가게 정보 불러오기
-    boolean getRest(int resIdx, RestaurantDTO rest);
+    RestaurantDTO getRest(int resIdx);
 
     //    가게 운영시간 기입하기
     boolean insertTime(List<TimeDTO> timeList);
@@ -25,8 +25,6 @@ public interface PreService {
 
 // 좌석 불러오기
     List<SeatDTO> loadSeat(int resIdx);
-
-
 
 
 

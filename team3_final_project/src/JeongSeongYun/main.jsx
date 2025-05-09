@@ -28,7 +28,6 @@ import OwnerLoginSjh from "../simJiHyun/login/OwnerLoginSjh.jsx";
 import PreTime from "../KimSangMin/PreTime.jsx";
 import PreTimeSet from "../KimSangMin/PreTimeSet.jsx";
 import PreRegPage from "./layout/PreRegPage.jsx";
-import PreInfoPage from "../KimNaHyun/page/PreInfoPage.jsx";
 import PreUpdatePage from "../KimSangMin/PreUpdatePage.jsx";
 import PreMain from "../KimSangMin/PreMain.jsx";
 import PreCh from "../KimSangMin/PreCh.jsx";
@@ -48,6 +47,9 @@ import CeoMain from "../JangDaJung/CeoMain.jsx";
 import TodayWaiting from "../JangDaJung/TodayWaiting.jsx";
 import PastDateWaiting from "../JangDaJung/PastDateWaiting.jsx";
 import ReservationChart from "../JangDaJung/ReservationChart.jsx";
+import AdminLogin from "./layout/AdminLogin.jsx";
+import PreInfoPage from "./layout/PreInfoPage.jsx";
+import OwnerTabs from "./Owner/OwnerTabs.jsx";
 
 function main() {
   // pre 가 있으면 사장님 웹으로
@@ -67,7 +69,7 @@ function main() {
             <Route path="/pre/PreTime" element={<PreTime/>}/>
             <Route path="/pre/PreTimeSet" element={<PreTimeSet/>}/>
 
-            {/* 관리자 -> 사장님 */}<Route path="/pre/admin" element={<OwnerLogin/>}/> {/*  관리자 로그인 */}
+            {/* 관리자 -> 사장님 */}<Route path="/pre/admin" element={<AdminLogin/>}/> {/*  관리자 로그인 */}
             <Route path="/pre/reg" element={<PreRegPage/>}/> {/* 사장님 정보 입력 버튼 */}
             <Route path="/pre/info" element={<PreInfoPage/>}/> {/*  사장님 정보 입력 페이지 */}
             <Route path="/pre/login" element={<OwnerLogin/>}/> {/*  사장 로그인 */}
@@ -78,7 +80,12 @@ function main() {
             <Route path="/pre/PreCh" element={<PreCh/>}/> {/* 예약가게 매출 통계 */}
             <Route path="/pre/PreRe" element={<PreRe/>}/> {/* 예약가게 리뷰 보기*/}
             <Route path="/pre/PreDayCh" element={<PreDayCh/>}/> {/* 예약 날짜 차트 */}
-            <Route path="/pre/PreReSet" element={<PreReSet/>}/> {/* 예약가게 셋팅 */}
+            {/*<Route path="/pre/PreReSet" element={<PreReSet/>}/> /!* 예약가게 셋팅 *!/*/}
+
+
+              <Route path="/pre/PreReSet" element={<OwnerTabs/>} /> {/* 예약가게 셋팅 */}
+
+
             <Route path="/pre/PreFucn" element={<PreFunction/>}/> {/* 예약가게 메인*/}
             <Route path="/pre/PrePast" element={<PastDateReservation/>}/> {/* 과거 예약 */}
             <Route path="/pre/PreToday" element={<TodayReservation/>}/> {/* 오늘 예약  */}

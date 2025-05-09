@@ -84,14 +84,13 @@ public ResponseEntity<PreResponse> updateRest(
 
 // 가게 정보 불러오기
     @GetMapping("/pre/getRest/{resIdx}")
-    public ResponseEntity<PreResponse> getRest(@PathVariable("resIdx") int resIdx, @RequestBody RestaurantDTO rest) {
-        boolean success = preService.getRest(resIdx, rest);
+    public ResponseEntity<PreResponse> getRest(@PathVariable("resIdx") int resIdx) {
+        RestaurantDTO rest = preService.getRest(resIdx);
 
-        if (success) {
+        if (rest != null) {
             PreResponse response = new PreResponse(true, "가게 정보 조회 성공", rest);
             return ResponseEntity.ok(response);
-        }
-        else {
+        } else {
             PreResponse response = new PreResponse(false, "가게 정보 조회 실패", null);
             return ResponseEntity.badRequest().body(response);
         }
