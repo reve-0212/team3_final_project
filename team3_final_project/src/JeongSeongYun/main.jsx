@@ -96,6 +96,7 @@ function main() {
         </Routes>
       ) : (
         <div className={'mobile-wrapper'}>
+
           {/*<HashRouter>*/}
           <Header/>
 
@@ -138,6 +139,7 @@ function main() {
             </Routes>
           </main>
           <BottomNav/>
+
           {/*</HashRouter>*/}
         </div>
       )}

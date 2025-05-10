@@ -13,6 +13,8 @@ import SjhLocationTest from "./location/SjhLocationTest.jsx";
 import OwnerLoginSjh from "./login/OwnerLoginSjh.jsx";
 import PreWait from "../KimSangMin/PreWait.jsx";
 import PreReserve from "../KimSangMin/PreReserve.jsx";
+import PreTime from "../KimSangMin/PreTime.jsx";
+import KakaoMapTest from "./location/KakaoMapTest.jsx";
 
 function SjhApp() {
   return (
@@ -21,12 +23,8 @@ function SjhApp() {
         <Header/>
 
         <Routes>
-          {/*모바일 전용 사장 로그인*/}
-          <Route path={"/"} element={<OwnerLoginSjh/>}/>
-          {/*웨이팅 웹앱*/}
-          {/*<Route path="/pre/PreWait" element={<PreWait/>}/>*/}
-          {/*예약 웹앱*/}
-          <Route path="/pre/reserve" element={<PreReserve/>}/>
+          <Route path="/" element={<KakaoMapTest/>}/>
+
         </Routes>
 
         <BottomNav/>

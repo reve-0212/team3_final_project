@@ -6,6 +6,7 @@ import "../SjhCss.css"
 import {apiSignup} from "../service/ApiService.js";
 
 function SignUp() {
+
   const [gender, setGender] = useState("male")
   const [age, setAge] = useState(10)
   const [btnActive, setBtnActive] = useState("male");
@@ -35,9 +36,7 @@ function SignUp() {
       userId: userId, userPass: userPass, userNick: userNick, userGender: userGender,
       userAge: userAge, userCall: userCall, userEmail: userEmail
     });
-
   }
-
 
   const handleMale = () => {
     setGender("male")
@@ -56,6 +55,7 @@ function SignUp() {
     console.log(age)
   }
 
+
   return (
     <form className={"container py-2"} onSubmit={handleSubmit}>
       <LoginSignText text={"회원가입"}/>
@@ -64,19 +64,22 @@ function SignUp() {
         <div>
           <label htmlFor={"userId"} className={"form-label fs-4"}>아이디</label>
           <input type={"text"} className={"form-control py-3 input-box"}
-                 id={"userId"} placeholder={"아이디를 입력해주세요"} name={"userId"}/>
+                 id={"userId"} placeholder={"아이디를 입력해주세요"}
+                 name={"userId"}/>
         </div>
 
         <div className={"mt-4"}>
           <label htmlFor={"userPass"} className={"form-label fs-4"}>비밀번호</label>
           <input type={"text"} className={"form-control py-3 input-box"}
-                 id={"userPass"} placeholder={"비밀번호를 입력해주세요"} name={"userPass"}/>
+                 id={"userPass"} placeholder={"비밀번호를 입력해주세요"}
+                 name={"userPass"}/>
         </div>
 
         <div className={"mt-4"}>
           <label htmlFor={"userNick"} className={"form-label fs-4"}>이름</label>
           <input type={"text"} className={"form-control py-3 input-box"}
-                 id={"userNick"} placeholder={"이름을 입력해주세요"} name={"userNick"}/>
+                 id={"userNick"} placeholder={"이름을 입력해주세요"}
+                 name={"userNick"}/>
         </div>
 
         <div className={"mt-4"}>
@@ -97,7 +100,9 @@ function SignUp() {
 
         <div className={"mt-4"}>
           <label htmlFor="userAge" className="form-label fs-4 text-start">나이대</label>
-          <select value={age} className="form-select py-3 input-box text-center" style={{maxWidth: "400px"}}
+          <select value={age}
+                  className="form-select py-3 input-box text-center"
+                  style={{maxWidth: "400px"}}
                   onChange={handleChangeAge}>
             <option value={10}>10대</option>
             <option value={20}>20대</option>
@@ -111,13 +116,15 @@ function SignUp() {
         <div className={"mt-4"}>
           <label htmlFor={"userCall"} className={"form-label fs-4"}>연락처</label>
           <input type={"text"} className={"form-control py-3 input-box"}
-                 id={"userCall"} placeholder={"010-1234-5678"} name={"userCall"}/>
+                 id={"userCall"} placeholder={"010-1234-5678"}
+                 name={"userCall"}/>
         </div>
 
         <div className={"mt-4"}>
           <label htmlFor={"userEmail"} className={"form-label fs-4"}>이메일</label>
           <input type={"text"} className={"form-control py-3 input-box"}
-                 id={"userEmail"} placeholder={"이메일을 입력해주세요"} name={"userEmail"}/>
+                 id={"userEmail"} placeholder={"이메일을 입력해주세요"}
+                 name={"userEmail"}/>
         </div>
       </div>
 
