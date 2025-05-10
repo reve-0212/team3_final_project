@@ -69,7 +69,7 @@ function PreCh() {
   const fetchData = async () => {
     try {
     //   서버에서 데이터 받아옴
-      const response = await axios.get('http://localhost:8080/api/history/sales/menu', {
+      const response = await axios.get('http://localhost:8080/api/history/sales', {
         params: {
           startDate: formatDate(seDay.from),
           endDate: formatDate(seDay.to),

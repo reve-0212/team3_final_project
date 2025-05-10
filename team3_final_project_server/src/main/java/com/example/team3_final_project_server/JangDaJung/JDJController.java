@@ -14,63 +14,73 @@ import java.util.Map;
 @CrossOrigin(origins ="http://localhost:5173")
 public class JDJController {
 
-  @Autowired
-  private JDJService jdjService;
+    @Autowired
+    private JDJService jdjService;
 
 //  @Autowired
 //  private DummyDataInsert dummyDataInsert;
 
-  // 기간별 조회 API
-  @GetMapping("/date")
-  public List<ReservationHistoryDTO> getHistoryByPeriod(
-      @RequestParam String startDate,
-      @RequestParam String endDate
-  ) {
-    return jdjService.getHistoryByDate(startDate, endDate);
-  }
+    // 기간별 조회 API
+    @GetMapping("/date")
+    public List<ReservationHistoryDTO> getHistoryByPeriod(
+        @RequestParam String startDate,
+        @RequestParam String endDate
+    ) {
+        return jdjService.getHistoryByDate(startDate, endDate);
+    }
 
-//  성별
-  @GetMapping("/visitors")
-  public Map<String, Object> getVisitorGender(
-      @RequestParam String startDate,
-      @RequestParam String endDate,
-      @RequestParam int resIdx
-  ) {
-    return jdjService.getVisitorGender(startDate, endDate, resIdx);
-  }
+    //  성별
+    @GetMapping("/visitors")
+    public Map<String, Object> getVisitorGender(
+        @RequestParam String startDate,
+        @RequestParam String endDate,
+        @RequestParam int resIdx
+    ) {
+        return jdjService.getVisitorGender(startDate, endDate, resIdx);
+    }
 
-//  매출 총액
-  @GetMapping("/sales/total")
-  public Map<String, Object> getSalesTotalPrice(
-      @RequestParam String startDate,
-      @RequestParam String endDate,
-      @RequestParam int resIdx
-  ) {
-    return jdjService.getSalesTotalPrice(startDate, endDate, resIdx);
-  }
+    //  메뉴 정보 불러와서 판매량 계산
+    @GetMapping("/sales")
+    public List<Map<String,Object>> getMenuSales(
+        @RequestParam String startDate,
+        @RequestParam String endDate,
+        @RequestParam int resIdx
+    ) {
+        return jdjService.getMenuSales(startDate, endDate, resIdx);
+    }
 
-//  메뉴별 매출
-  @GetMapping("/sales/menu")
-  public List<ReservationHistoryDTO> getMenuTotalPrice(
-      @RequestParam String startDate,
-      @RequestParam String endDate,
-      @RequestParam int resIdx
-  ) {
-    return jdjService.getMenuTotalPrice(startDate, endDate, resIdx);
-  }
+    //  시간대별 예약팀 수
+    @GetMapping("reservation/hour")
+    public List<Map<String, Object>> getTeamCountByHour(
+        @RequestParam String startDate,
+        @RequestParam String endDate,
+        @RequestParam int resIdx
+    ) {
+        System.out.println("startDate = " + startDate);
+        System.out.println("endDate = " + endDate);
+        System.out.println("resIdx = " + resIdx);
+        return jdjService.getTeamCountByHour(startDate, endDate, resIdx);
+    }
 
-//  시간대별 예약팀 수
-  @GetMapping("reservation/hour")
-  public List<Map<String, Object>> getTeamCountByHour(
-      @RequestParam String startDate,
-      @RequestParam String endDate,
-      @RequestParam int resIdx
-  ) {
-    System.out.println("startDate = " + startDate);
-    System.out.println("endDate = " + endDate);
-    System.out.println("resIdx = " + resIdx);
-    return jdjService.getTeamCountByHour(startDate, endDate, resIdx);
-  }
+//    //  매출 총액
+//    @GetMapping("/sales/total")
+//    public Map<String, Object> getSalesTotalPrice(
+//        @RequestParam String startDate,
+//        @RequestParam String endDate,
+//        @RequestParam int resIdx
+//    ) {
+//        return jdjService.getSalesTotalPrice(startDate, endDate, resIdx);
+//    }
+//
+//    //  메뉴별 매출
+//    @GetMapping("/sales/menu")
+//    public List<ReservationHistoryDTO> getMenuTotalPrice(
+//        @RequestParam String startDate,
+//        @RequestParam String endDate,
+//        @RequestParam int resIdx
+//    ) {
+//        return jdjService.getMenuTotalPrice(startDate, endDate, resIdx);
+//    }
 
 //  @GetMapping("/api/dummy/insert")
 //  public String insertDummyData() {

@@ -23,10 +23,15 @@ public interface JDJMapper {
 
 //    성별
     Map<String, Object> selectVisitorGender(String startDate, String endDate, int resIdx);
-//    총 매출
-    Map<String, Object> selectSalesTotalPrice(String startDate, String endDate, int resIdx);
-//    매뉴별 매출
-    List<ReservationHistoryDTO> selectMenuTotalPrice(String startDate, String endDate, int resIdx);
-//    시간대별 예약팀 수
+
+//    메뉴 정보 불러와서 판매량 계산
+    List<Map<String, Object>> selectMenuSales(@Param("startDate") String startDate, @Param("endDate") String endDate, @Param("resIdx") int resIdx);
+
+    //    시간대별 예약팀 수
     List<Map<String, Object>> selectTeamCountByHour(String startDate, String endDate, int resIdx);
+
+////    총 매출
+//    Map<String, Object> selectSalesTotalPrice(String startDate, String endDate, int resIdx);
+////    매뉴별 매출
+//    List<ReservationHistoryDTO> selectMenuTotalPrice(String startDate, String endDate, int resIdx);
 }

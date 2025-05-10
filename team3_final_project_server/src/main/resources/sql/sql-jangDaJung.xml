@@ -56,28 +56,43 @@
             AND res_idx = #{resIdx}
     </select>
 
-<!--    매출 총액 -->
-    <select id="selectSalesTotalPrice" resultType="map">
+<!--    메뉴 불러와서 판매량 계산 -->
+    <select id="selectMenuSales" resultType="map">
         SELECT
-            SUM(menu_sold_total_price) AS totalSales
-        FROM reservation_history
-        WHERE reservation_date BETWEEN #{startDate} AND #{endDate}
-            AND res_idx = #{resIdx}
+            m.menu_name,
+            m.menu_price,
+            IFNULL(SUM(h.menu_sold_count), 0) AS soldCount,
+            IFNULL(SUM(h.menu_sold_total_price), 0) AS soldTotalPrice
+        FROM menu m
+        LEFT JOIN reservation_history h
+            ON m.menu_idx = h.menu_idx
+            AND h.reservation_date BETWEEN #{startDate} AND #{endDate}
+        WHERE m.res_idx = #{resIdx}
+        GROUP BY m.menu_idx
     </select>
 
-<!--    메뉴별 매출 -->
-    <select id="selectMenuTotalPrice" resultType="map">
-        SELECT
-            menu_idx,
-            menu_name,
-            menu_price,
-            SUM(menu_sold_count) AS soldCount,
-            SUM(menu_sold_total_price) AS soldTotalPrice
-        FROM reservation_history
-        WHERE reservation_date BETWEEN #{startDate} AND #{endDate}
-            AND res_idx = #{resIdx}
-        GROUP BY menu_idx, menu_name, menu_price
-    </select>
+<!--&lt;!&ndash;    매출 총액, 이거는 그냥 react 안에서 해결했음  &ndash;&gt;-->
+<!--    <select id="selectSalesTotalPrice" resultType="map">-->
+<!--        SELECT-->
+<!--            SUM(menu_sold_total_price) AS totalSales-->
+<!--        FROM reservation_history-->
+<!--        WHERE reservation_date BETWEEN #{startDate} AND #{endDate}-->
+<!--            AND res_idx = #{resIdx}-->
+<!--    </select>-->
+
+<!--&lt;!&ndash;    메뉴별 매출 &ndash;&gt;-->
+<!--    <select id="selectMenuTotalPrice" resultType="map">-->
+<!--        SELECT-->
+<!--            menu_idx,-->
+<!--            menu_name,-->
+<!--            menu_price,-->
+<!--            SUM(menu_sold_count) AS soldCount,-->
+<!--            SUM(menu_sold_total_price) AS soldTotalPrice-->
+<!--        FROM reservation_history-->
+<!--        WHERE reservation_date BETWEEN #{startDate} AND #{endDate}-->
+<!--            AND res_idx = #{resIdx}-->
+<!--        GROUP BY menu_idx, menu_name, menu_price-->
+<!--    </select>-->
 
 <!--    시간대별 예약팀 수-->
     <select id="selectTeamCountByHour" resultType="map">
