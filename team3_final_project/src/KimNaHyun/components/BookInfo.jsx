@@ -78,6 +78,7 @@ function BookInfo() {
           <li><FontAwesomeIcon icon={faLocationDot}/></li>
           <li style={{paddingLeft: '6px'}}>매장 위치</li>
         </ul>
+
         <StoreMap
           resLat={reservations.restaurant?.resLat}
           resLng={reservations.restaurant?.resLng}/>

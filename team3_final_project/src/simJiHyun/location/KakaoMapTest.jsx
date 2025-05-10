@@ -1,41 +1,43 @@
 import {CustomOverlayMap, Map, MapMarker, MarkerClusterer, useKakaoLoader} from "react-kakao-maps-sdk";
-import {useEffect, useState} from "react";
-import useGeolocation from "../../stores/useGeolocation.jsx";
+import {useEffect, useMemo, useState} from "react";
 
 function KakaoMapTest() {
-  const {currentMyLocation} = useGeolocation();
   useKakaoLoader({appkey: import.meta.env.VITE_REACT_APP_KAKAO_MAP_API_KEY})
 
-  const [state, setState] = useState({
-    center: {lat: 33.450701, lng: 126.570667},
-    isPanto: false
+  // 지도 중심좌표
+  const [center, setCenter] = useState({
+    lat: 33.450701,
+    lng: 126.570667
   })
+
+  // 현재 위치
+  const [position, setPosition] = useState({
+    lat: 33.450701,
+    lng: 126.570667
+  })
+
+  // 지도가 처음 렌더링 되면 중심좌표를 현재위치로 설정하고 위치 변화 감지
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((pos) => {
+      setCenter({lat: pos.coords.latitude, lng: pos.coords.longitude})
+    })
+
+    navigator.geolocation.watchPosition((pos) => {
+      setPosition({lat: pos.coords.latitude, lng: pos.coords.longitude})
+    })
+  }, []);
 
 
   return (
-    <Map id="map" center={state.center}
-         isPanto={state.isPanto}
-         style={{width: "100%", height: "350px",}}
-         level={3}>
-      <p>
-        <button onClick={() => {
-          setState({
-            center: {lat: 33.452613, lng: 126.570888},
-            isPanto: false,
-          })
-        }}> 지도 중심좌표 이동
-        </button>
-        {" "}
+    <div>
+      <Map id="map"
+           center={center}
+           style={{width: "100%", height: "350px",}}
+           level={3}>
+        <MapMarker position={position}/>
+      </Map>
+    </div>
 
-        <button onClick={() => {
-          setState({
-            center: {lat: 33.45058, lng: 126.574942},
-            isPanto: true,
-          })
-        }}>지도 중심좌표 부드럽게 이동
-        </button>
-      </p>
-    </Map>
   )
 }
 
