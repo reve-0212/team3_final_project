@@ -4,6 +4,7 @@ import com.example.team3_final_project_server.dto.ReservationHistoryDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,14 @@ public class JDJServiceImpl implements JDJService {
 
   @Autowired
   private JDJMapper jdjMapper;
+
+//  ----- 통계 페이지
+
+  @Override
+  @Transactional
+  public void bookReservation(List<ReservationHistoryDTO> historyList) {
+    jdjMapper.insertHistories(historyList);
+  }
 
   @Override
   public List<ReservationHistoryDTO> getHistoryByDate(String startDate, String endDate) {
@@ -38,14 +47,12 @@ public class JDJServiceImpl implements JDJService {
     return jdjMapper.selectTeamCountByHour(startDate, endDate, resIdx);
   }
 
-//  //  매출 총액
+//  ---- 메뉴 페이지
+
 //  @Override
-//  public Map<String, Object> getSalesTotalPrice(String startDate, String endDate, int resIdx) {
-//    return jdjMapper.selectSalesTotalPrice(startDate, endDate, resIdx);
+//  public void selectMenuList(int resIdx) {
+//    jdjMapper.selectMenuList(resIdx);
 //  }
-////  메뉴별 매출
-//  @Override
-//  public List<ReservationHistoryDTO> getMenuTotalPrice(String startDate, String endDate, int resIdx) {
-//    return jdjMapper.selectMenuTotalPrice(startDate, endDate, resIdx);
-//  }
+
+
 }

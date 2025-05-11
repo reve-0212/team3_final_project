@@ -2,7 +2,7 @@ import WaBanner from "../KimSangMin/WaBanner.jsx";
 import {useState} from "react";
 
 import 'react-day-picker/dist/style.css';
-import './PastDateReservation.css';
+import './css/PastDateReservation.css';
 import {DayPicker} from "react-day-picker";
 import ReBanner from "../KimSangMin/ReBanner.jsx";
 

@@ -1,6 +1,6 @@
 import {useState} from "react";
 import WaBanner from "../KimSangMin/WaBanner.jsx";
-import './TodayReservation.css'
+import './css/TodayReservation.css'
 import ReBanner from "../KimSangMin/ReBanner.jsx";
 
 function TodayReservation() {

@@ -1,7 +1,7 @@
 import {useState} from "react";
 import WaBanner from "../KimSangMin/WaBanner.jsx";
 import {DayPicker} from "react-day-picker";
-import './ReservationChart.css';
+import './css/ReservationChart.css';
 import {
     Bar,
     BarChart,

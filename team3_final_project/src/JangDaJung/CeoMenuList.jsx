@@ -1,6 +1,6 @@
 import WaBanner from "../KimSangMin/WaBanner.jsx";
 import {useState} from "react";
-import "./CeoMenuList.css"
+import "./css/CeoMenuList.css"
 import {useNavigate} from "react-router-dom";
 import ReBanner from "../KimSangMin/ReBanner.jsx";
 

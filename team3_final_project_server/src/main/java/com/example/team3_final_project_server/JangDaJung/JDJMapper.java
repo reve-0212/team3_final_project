@@ -9,11 +9,14 @@ import java.util.Map;
 
 @Mapper
 public interface JDJMapper {
+
+//    -----통계 페이지
+
 //    insert
 //    void insertHistory(ReservationHistoryDTO historyDto);
 
 //    메뉴 여러개 일때 insert 여러번 할 수 있도록 list 타입
-    void insertHistories(@Param("list") List<ReservationHistoryDTO> list);
+    void insertHistories(List<ReservationHistoryDTO> historyList);
 
 //    날짜 기간으로 조회
     List<ReservationHistoryDTO> selectHistoryByDate(
@@ -30,8 +33,7 @@ public interface JDJMapper {
     //    시간대별 예약팀 수
     List<Map<String, Object>> selectTeamCountByHour(String startDate, String endDate, int resIdx);
 
-////    총 매출
-//    Map<String, Object> selectSalesTotalPrice(String startDate, String endDate, int resIdx);
-////    매뉴별 매출
-//    List<ReservationHistoryDTO> selectMenuTotalPrice(String startDate, String endDate, int resIdx);
+//    ---- 메뉴 페이지
+//    void selectMenuList(@Param("resIdx") int rexIdx);
+
 }

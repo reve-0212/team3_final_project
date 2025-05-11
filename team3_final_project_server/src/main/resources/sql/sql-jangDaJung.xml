@@ -20,7 +20,9 @@
 <!--        #{checkoutDate}, #{cancelDate}, #{reservationTeamCount}-->
 <!--        )-->
 <!--    </insert>-->
-    
+
+<!--    통계 페이지 -->
+
     <!-- 메뉴 여러개 선택해서 예약할 수  있도록 history 저장 -->
     <insert id="insertHistories" parameterType="list">
         INSERT INTO reservation_history (
@@ -72,39 +74,24 @@
         GROUP BY m.menu_idx
     </select>
 
-<!--&lt;!&ndash;    매출 총액, 이거는 그냥 react 안에서 해결했음  &ndash;&gt;-->
-<!--    <select id="selectSalesTotalPrice" resultType="map">-->
-<!--        SELECT-->
-<!--            SUM(menu_sold_total_price) AS totalSales-->
-<!--        FROM reservation_history-->
-<!--        WHERE reservation_date BETWEEN #{startDate} AND #{endDate}-->
-<!--            AND res_idx = #{resIdx}-->
-<!--    </select>-->
-
-<!--&lt;!&ndash;    메뉴별 매출 &ndash;&gt;-->
-<!--    <select id="selectMenuTotalPrice" resultType="map">-->
-<!--        SELECT-->
-<!--            menu_idx,-->
-<!--            menu_name,-->
-<!--            menu_price,-->
-<!--            SUM(menu_sold_count) AS soldCount,-->
-<!--            SUM(menu_sold_total_price) AS soldTotalPrice-->
-<!--        FROM reservation_history-->
-<!--        WHERE reservation_date BETWEEN #{startDate} AND #{endDate}-->
-<!--            AND res_idx = #{resIdx}-->
-<!--        GROUP BY menu_idx, menu_name, menu_price-->
-<!--    </select>-->
-
-<!--    시간대별 예약팀 수-->
+    <!--    시간대별 예약팀 수-->
     <select id="selectTeamCountByHour" resultType="map">
         SELECT
-            HOUR(reservation_date) as hour,
-            COUNT(DISTINCT reservation_idx) AS teamCount,
-            SUM(rsv_people) AS visitorCount
+        HOUR(reservation_date) as hour,
+        COUNT(DISTINCT reservation_idx) AS teamCount,
+        SUM(rsv_people) AS visitorCount
         FROM reservation_history
         WHERE reservation_date BETWEEN #{startDate} AND #{endDate}
-            AND res_idx = #{resIdx}
+        AND res_idx = #{resIdx}
         GROUP BY HOUR(reservation_date)
         ORDER BY hour
+    </select>
+
+<!--    메뉴 페이지-->
+
+    <select id="selectMenuList" resultType="map">
+        SELECT *
+        FROM menu
+        WHERE res_idx = #{resIdx}
     </select>
 </mapper>

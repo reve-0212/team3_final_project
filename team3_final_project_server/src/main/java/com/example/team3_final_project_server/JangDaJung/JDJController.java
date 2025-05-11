@@ -3,6 +3,8 @@ package com.example.team3_final_project_server.JangDaJung;
 import com.example.team3_final_project_server.dto.ReservationHistoryDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,8 +19,14 @@ public class JDJController {
     @Autowired
     private JDJService jdjService;
 
-//  @Autowired
-//  private DummyDataInsert dummyDataInsert;
+//    통계 페이지
+
+//    예약하기 -> 히스토리 테이블에 저장
+    @PostMapping("/booking")
+    public ResponseEntity<String> bookReservation(@RequestBody List<ReservationHistoryDTO> historyList) {
+        jdjService.bookReservation(historyList);
+        return ResponseEntity.ok("예약이 완료되었습니다.");
+    }
 
     // 기간별 조회 API
     @GetMapping("/date")
@@ -62,24 +70,10 @@ public class JDJController {
         return jdjService.getTeamCountByHour(startDate, endDate, resIdx);
     }
 
-//    //  매출 총액
-//    @GetMapping("/sales/total")
-//    public Map<String, Object> getSalesTotalPrice(
-//        @RequestParam String startDate,
-//        @RequestParam String endDate,
-//        @RequestParam int resIdx
-//    ) {
-//        return jdjService.getSalesTotalPrice(startDate, endDate, resIdx);
-//    }
-//
-//    //  메뉴별 매출
-//    @GetMapping("/sales/menu")
-//    public List<ReservationHistoryDTO> getMenuTotalPrice(
-//        @RequestParam String startDate,
-//        @RequestParam String endDate,
-//        @RequestParam int resIdx
-//    ) {
-//        return jdjService.getMenuTotalPrice(startDate, endDate, resIdx);
+////    메뉴 페이지
+//    @GetMapping("/menuList")
+//    public void selectMenuList(@RequestParam int resIdx) {
+//        jdjService.selectMenuList(resIdx);
 //    }
 
 //  @GetMapping("/api/dummy/insert")
