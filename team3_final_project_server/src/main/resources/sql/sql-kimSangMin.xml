@@ -4,37 +4,81 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.team3_final_project_server.KimSangMin.mapper.OwnerMapper">
 
-<!--    사장님 회원가입 (관리자가) -->
-    <insert id="saveOwner" parameterType="com.example.team3_final_project_server.dto.OwnerDTO">
-        INSERT INTO owner (owner_id, owner_name, owner_pass, owner_number, bs_name, bs_number)
-        VALUES (#{ownerId}, #{ownerName}, #{ownerPass}, #{ownerNumber}, #{bsName}, #{bsNumber})
+
+    <!-- 아이디로 사용자 조회 (로그인용) -->
+    <select id="findByUserId" resultType="com.example.team3_final_project_server.dto.UserDTO">
+        SELECT * FROM user WHERE user_id = #{userId}
+    </select>
+
+    <!-- 아이디로 사용자 존재 여부 확인 -->
+    <select id="existsByUserId" resultType="boolean">
+        SELECT COUNT(*) > 0 FROM user WHERE user_id = #{userId}
+    </select>
+
+    <!-- 회원 정보 저장 -->
+    <insert id="saveUser" parameterType="com.example.team3_final_project_server.dto.UserDTO">
+        INSERT INTO user (user_id, user_pass, user_nick, user_gender, user_age, user_call, bs_name, bs_number, role)
+        VALUES (#{userId}, #{userPass}, #{userNick}, #{userGender}, #{userAge}, #{userCall}, #{bsName}, #{bsNumber}, #{role})
     </insert>
 
-<!--    사장님 로그인 -->
-    <select id="loginOwner" resultType="com.example.team3_final_project_server.dto.OwnerDTO">
-        SELECT *
-        FROM owner
-        WHERE owner_id = #{ownerId}
-        AND owner_pass = #{ownerPass}
-    </select>
 
-<!--    사장님 정보 조회 -->
-    <select id="findOwnerId" resultType="com.example.team3_final_project_server.dto.OwnerDTO">
-        select * from owner
-        where owner_id = #{ownerId}
-    </select>
-
-<!--    사장님 정보 수정하기 -->
-    <update id="updateOwner" parameterType="com.example.team3_final_project_server.dto.OwnerDTO">
-        UPDATE owner
-        SET
-        owner_pass = #{ownerPass},
-        owner_name = #{ownerName},
-        owner_number = #{ownerNumber},
-        bs_name = #{bsName},
-        bs_number = #{bsNumber}
-        WHERE owner_id = #{ownerId}
+    <!--  비밀번호 변경-->
+    <update id="updatePassword">
+        update user set user_pass = #{hashed} where user_id = #{userId}
     </update>
+
+    <!--  회원 정보 수정-->
+    <update id="updateField">
+        update user set ${field} = #{value} where user_id = #{userId}
+    </update>
+
+
+
+
+
+
+<!--    사장님 회원가입 (관리자가) -->
+<!--    <insert id="saveOwner" parameterType="com.example.team3_final_project_server.dto.OwnerDTO">-->
+<!--        INSERT INTO owner (owner_id, owner_name, owner_pass, owner_number, bs_name, bs_number)-->
+<!--        VALUES (#{ownerId}, #{ownerName}, #{ownerPass}, #{ownerNumber}, #{bsName}, #{bsNumber})-->
+<!--    </insert>-->
+
+<!--    사장님 로그인 -->
+<!--    <select id="loginOwner" resultType="com.example.team3_final_project_server.dto.OwnerDTO">-->
+<!--        SELECT *-->
+<!--        FROM owner-->
+<!--        WHERE owner_id = #{ownerId}-->
+<!--        AND owner_pass = #{ownerPass}-->
+<!--    </select>-->
+
+    <!-- 이메일로 사용자 존재 여부 확인 -->
+<!--    <select id="existsByUserEmail" resultType="boolean">-->
+<!--        SELECT COUNT(*) > 0 FROM user WHERE user_email = #{userEmail}-->
+<!--    </select>-->
+
+    <!-- 아이디로 사용자 존재 여부 확인 -->
+<!--    <select id="existsByUserId" resultType="boolean">-->
+<!--        SELECT COUNT(*) > 0 FROM user WHERE user_id = #{userId}-->
+<!--    </select>-->
+
+
+<!--    &lt;!&ndash;    사장님 정보 조회 &ndash;&gt;-->
+<!--    <select id="findOwnerId" resultType="com.example.team3_final_project_server.dto.OwnerDTO">-->
+<!--        select * from owner-->
+<!--        where owner_id = #{ownerId}-->
+<!--    </select>-->
+
+<!--&lt;!&ndash;    사장님 정보 수정하기 &ndash;&gt;-->
+<!--    <update id="updateOwner" parameterType="com.example.team3_final_project_server.dto.OwnerDTO">-->
+<!--        UPDATE owner-->
+<!--        SET-->
+<!--        owner_pass = #{ownerPass},-->
+<!--        owner_name = #{ownerName},-->
+<!--        owner_number = #{ownerNumber},-->
+<!--        bs_name = #{bsName},-->
+<!--        bs_number = #{bsNumber}-->
+<!--        WHERE owner_id = #{ownerId}-->
+<!--    </update>-->
 
 
 

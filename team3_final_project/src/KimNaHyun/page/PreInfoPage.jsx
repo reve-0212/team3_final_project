@@ -1,76 +1,69 @@
-import React, {useState} from "react";
-import {useNavigate} from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function PreInfoPage() {
     const nv = useNavigate();
 
-    const [ownerId, setOwnerId] = useState("");
-    const [ownerPass, setOwnerPass] = useState("");
-    const [ownerName, setOwnerName] = useState("");
-    const [ownerNumber, setOwnerNumber] = useState("");
+    const [userId, setUserId] = useState("");
+    const [userPass, setUserPass] = useState("");
+    const [userNick, setUserNick] = useState("");
+    const [userCall, setUserCall] = useState("");
     const [bsName, setBsName] = useState("");
     const [bsNumber, setBsNumber] = useState("");
 
-    const handleChangeOwnerId = (e) => setOwnerId(e.target.value);
-    const handleChangeOwnerPass = (e) => setOwnerPass(e.target.value);
-    const handleChangeOwnerName = (e) => setOwnerName(e.target.value);
-    const handleChangeOwnerNumber = (e) => setOwnerNumber(e.target.value);
+    const handleChangeUserId = (e) => setUserId(e.target.value);
+    const handleChangeUserPass = (e) => setUserPass(e.target.value);
+    const handleChangeUserNick = (e) => setUserNick(e.target.value);
+    const handleChangeUserCall = (e) => setUserCall(e.target.value);
     const handleChangeBsName = (e) => setBsName(e.target.value);
     const handleChangeBsNumber = (e) => setBsNumber(e.target.value);
-
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const ownerData = {
-            ownerId,ownerPass,ownerName,ownerNumber,bsName,bsNumber
+        // 서버로 보낼 데이터 객체 (DB 컬럼 이름에 맞게 수정)
+        const userData = {
+            userId, userPass, userNick, userCall, bsName, bsNumber
         }
 
-        axios.post('http://localhost:8080/admin/owner',ownerData)
-            .then( (response) => {
-                const { success, message } = response.data
+        // 회원가입 요청
+        axios.post('http://localhost:8080/pre/signup', userData)
+            .then((response) => {
+                console.log(response.data); // 응답 데이터 확인
+                const { success, message } = response.data;
 
-                if (success){
-                    alert("가입 성공" + message)
+                if (success) {
+                    alert("가입 성공: " + message);
                     nv("/pre/reg");
-                }
-                else{
-                    alert("가입 실패" + message)
+                } else {
+                    alert("가입 실패: " + message);
                 }
             })
-            .catch( (error) => {
-                alert("서버 오류가 발생했습니다." + error)
+            .catch((error) => {
+                const errorMessage = error.response?.data || "서버 오류가 발생했습니다.";
+                alert(errorMessage);
             });
-        // 서버 전송 또는 유효성 검사
-        console.log(ownerData);
     };
 
     return (
-        <div
-            style={{
+        <div style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "100vh",
+        }}>
+            <div style={{
                 display: "flex",
                 flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                height: "100vh",
-            }}
-        >
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "1rem",
-                    marginTop: "2rem",
-                }}
-            >
+                gap: "1rem",
+                marginTop: "2rem",
+            }}>
                 <div className="fixed-top">
-                    <nav
-                        className="navbar navbar-expand-lg navbar-dark"
-                        style={{height: "10vh", backgroundColor: "#FFD700"}}
-                    >
+                    <nav className="navbar navbar-expand-lg navbar-dark" style={{ height: "10vh", backgroundColor: "#FFD700" }}>
                         <div className="container-fluid d-flex justify-content-between align-items-center">
-                            <div style={{textAlign: "center"}} className="text-white fs-1">
+                            <div style={{ textAlign: "center" }} className="text-white fs-1">
                                 Logo
                             </div>
                         </div>
@@ -78,75 +71,65 @@ function PreInfoPage() {
                 </div>
 
                 <form className="info-form" onSubmit={handleSubmit}>
-                    <h3 style={{fontWeight: "bold"}} className="pt-5 text-center">
+                    <h3 style={{ fontWeight: "bold" }} className="pt-5 text-center">
                         사장님 정보등록
                     </h3>
                     <div className="mt-4 d-flex justify-content-center flex-column align-items-center">
                         <div className="mt-4">
-                            <label htmlFor="preId" className="form-label">
-                                아이디
-                            </label>
+                            <label htmlFor="userId" className="form-label">아이디</label>
                             <input
                                 type="text"
                                 className="form-control"
-                                id="preId"
+                                id="userId"
                                 placeholder="아이디를 입력해주세요"
-                                value={ownerId}
-                                onChange={handleChangeOwnerId}
+                                value={userId}
+                                onChange={handleChangeUserId}
                                 required
                             />
                         </div>
                         <div className="mt-4">
-                            <label htmlFor="prePw" className="form-label">
-                                비밀번호
-                            </label>
+                            <label htmlFor="userPass" className="form-label">비밀번호</label>
                             <input
                                 type="password"
                                 className="form-control"
-                                id="prePw"
+                                id="userPass"
                                 placeholder="비밀번호를 입력해주세요"
-                                value={ownerPass}
-                                onChange={handleChangeOwnerPass}
+                                value={userPass}
+                                onChange={handleChangeUserPass}
                                 required
                                 style={{ width: '400px' }}
                             />
                         </div>
                         <div className="mt-4">
-                            <label htmlFor="preName" className="form-label">
-                                대표자 명
-                            </label>
+                            <label htmlFor="userNick" className="form-label">대표자 명</label>
                             <input
                                 type="text"
                                 className="form-control"
-                                id="preName"
+                                id="userNick"
                                 placeholder="대표자명을 입력해주세요"
-                                value={ownerName}
-                                onChange={handleChangeOwnerName}
+                                value={userNick}
+                                onChange={handleChangeUserNick}
                                 required
                             />
                         </div>
                         <div className="mt-4">
-                            <label htmlFor="preCall" className="form-label">
-                                대표자 번호
-                            </label>
+                            <label htmlFor="userCall" className="form-label">대표자 번호</label>
                             <input
                                 type="text"
                                 className="form-control"
-                                id="preCall"
+                                id="userCall"
                                 placeholder="대표자 번호를 입력해주세요"
-                                value={ownerNumber}
-                                onChange={handleChangeOwnerNumber}
+                                value={userCall}
+                                onChange={handleChangeUserCall}
                                 required
                             />
                         </div>
                         <div className="mt-4">
-                            <label htmlFor="preStore" className="form-label">
-                                사업장 이름
-                            </label>
+                            <label htmlFor="bsName" className="form-label">사업장 이름</label>
                             <input
                                 type="text"
                                 className="form-control"
-                                id="preStore"
+                                id="bsName"
                                 placeholder="사업장 이름을 입력해주세요"
                                 value={bsName}
                                 onChange={handleChangeBsName}
@@ -154,13 +137,11 @@ function PreInfoPage() {
                             />
                         </div>
                         <div className="mt-4">
-                            <label htmlFor="businessNum" className="form-label">
-                                사업자 번호
-                            </label>
+                            <label htmlFor="bsNumber" className="form-label">사업자 번호</label>
                             <input
                                 type="text"
                                 className="form-control"
-                                id="businessNum"
+                                id="bsNumber"
                                 placeholder="사업자 번호를 입력해주세요"
                                 value={bsNumber}
                                 onChange={handleChangeBsNumber}
@@ -172,8 +153,7 @@ function PreInfoPage() {
                         <button
                             type="submit"
                             className="btn"
-                            style={{backgroundColor: "#FFD727", padding: "10px 20px"}}
-
+                            style={{ backgroundColor: "#FFD727", padding: "10px 20px" }}
                         >
                             등록 하기
                         </button>
@@ -185,9 +165,3 @@ function PreInfoPage() {
 }
 
 export default PreInfoPage;
-
-
-
-
-
-
