@@ -18,9 +18,11 @@ function SeatManager() {
 
     // 각 아이콘마다 사이즈 / 그리고 덮어씌우기 금지
     const isOverlapping = (x, y, width, height) => {
+        // 요소중 단체석, 단체룸이 있으면 좌석 크기 80, 60 으로 지정
         return elements.some(el => {
             const elSize = (el.type === "단체석" || el.type === "단체룸") ? 80 : 60;
             return (
+                // 좌석충돌 방지
                 x < el.x + elSize &&
                 x + width > el.x &&
                 y < el.y + elSize &&
@@ -29,6 +31,7 @@ function SeatManager() {
         });
     };
 
+    // 좌석추가 기능. 시작 x,y 좌표지정
     const addEl = (type) => {
         const size = (type === "단체석" || type === "단체룸") ? 100 : 60;
         let x = 100;
@@ -47,19 +50,23 @@ function SeatManager() {
             return;
         }
 
+        // 새 좌표 추가하기 (겹치지 않은 id 생성)
         const id = Date.now();
         elRef.current[id] = React.createRef();
+        // elements에 좌석 정보를 담는 객체
+
+        // 기존의 elements 상태를 유지하면서, 그 뒤에 새로운 좌석을 추가.
         setElements(prev => [
             ...prev,
             {
-                id,
-                type,
-                name: type === "좌석" ? "좌석" : type,
-                x,
-                y,
-                shape: "circle",
-                image: elementImages[type] || "",
-                isReserved: false, // 추가!
+                id, // 고유 식별자
+                type, // 좌석 종류
+                name: type === "좌석" ? "좌석" : type, // 좌석이름
+                x, // 경도
+                y, // 위도
+                shape: "circle", // 좌석의 모양
+                image: elementImages[type] || "", // 좌석의 이미지
+                isReserved: false, // 예약되어있는지
             }
         ]);
     };
@@ -68,11 +75,17 @@ function SeatManager() {
         setElements(prev => prev.map(el => el.id === id ? { ...el, name: newName } : el));
     };
 
+    // 드래그로 위치 이동
+    // data 는 드래그블에서 자동으로 전달되는 매개변수
+    // data : 드래그 후 새 위치 정보를 담고 있는 객체
     const hDr = (id, e, data) => {
+        // elements 배열에서 id가 일치하는 요소 찾기.
         const currentEl = elements.find(el => el.id === id);
         const size = (currentEl.type === "단체석" || currentEl.type === "단체룸") ? 80 : 60;
 
+        // .some() : 하나라도 조건을 만족하면 true 반환
         const overlapping = elements.some(el => {
+            // 자기 자신과 겹쳐지는것은 무시.
             if (el.id === id) return false;
             const elSize = (el.type === "단체석" || el.type === "단체룸") ? 80 : 60;
             return (
@@ -85,12 +98,15 @@ function SeatManager() {
 
         if (overlapping) return;
 
+        // 현재 드래그중인 좌석만을 업데이트하고, 나머지 좌석은 그대로 유지
         setElements(prev => prev.map(el =>
             el.id === id
+                // 각 좌석의 최대 x,y 위치 설정
                 ? { ...el, x: Math.min(Math.max(0, data.x), 553), y: Math.min(Math.max(0, data.y), 290) }
                 : el
         ));
     };
+
 
     const chSp = (id) => {
         setElements(prev => prev.map(el =>
@@ -98,16 +114,17 @@ function SeatManager() {
         ));
     };
 
-
-
+    // 직전 좌석 제거
     const undo = () => {
         setElements(prev => prev.slice(0, -1));
     };
 
     const saveToServer = () => {
+        // elements : 배열에 담긴 데이터 객체
         axios.post("http://localhost:8080/seats/save", elements,{
         },{
             headers:{
+                // 요청 본문 JSON형식으로 받도록
                 'Content-Type':'application/json'
             }
         })
@@ -128,7 +145,7 @@ function SeatManager() {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                height: "600px",       // 높이 고정
+                height: "600px",
                 padding: "2rem",
             }}
         >
@@ -155,7 +172,9 @@ function SeatManager() {
                 >
                     {elements.map(el => (
                         <Draggable
+                            /* elements id 값으로 key 설정 */
                             key={el.id}
+                            /* db에 들어갈 위치값 */
                             position={{ x: el.x, y: el.y }}
                             onDrag={(e, data) => hDr(el.id, e, data)}
                             nodeRef={elRef.current[el.id]}

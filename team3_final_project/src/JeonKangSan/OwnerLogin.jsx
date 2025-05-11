@@ -1,41 +1,46 @@
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import axios from 'axios';
 import LoginSignText from "../simJiHyun/LoginSignText.jsx";
-import "../simJiHyun/SjhCss.css"
-import {useNavigate} from "react-router-dom";
-import React, {useState} from "react";
-import axios from "axios";
-
 
 function OwnerLogin() {
     const nv = useNavigate();
 
-    const [ownerId, setOwnerId] = useState("");
-    const [ownerPass, setOwnerPass] = useState("");
+    const [userId, setUserId] = useState("");
+    const [userPass, setUserPass] = useState("");
 
-    const hcOwnerId = (e) => setOwnerId(e.target.value);
-    const hcOwnerPass = (e) => setOwnerPass(e.target.value);
+    const hcUserId = (e) => setUserId(e.target.value);
+    const hcUserPass = (e) => setUserPass(e.target.value);
 
     const hSubmit = (e) => {
         e.preventDefault();
 
-        const ownerData = {ownerId, ownerPass};
+        const userData = { userId, userPass };
+        console.log(userData);
 
-
-        axios.post("http://localhost:8080/owner/login", ownerData , { withCredentials: true })
+        axios.post("http://localhost:8080/pre/login", userData,{
+            headers : {
+                'Content-Type': 'application/json'
+            }})
             .then((response) => {
-                const { success, message } = response.data;
+                const { success, message, token } = response.data;  // 서버에서 토큰을 반환받음
 
-                if(success) {
-                    alert(message)
-                    nv("/pre/PreSelect")
-                }
-                else {
-                    alert("로그인 실패")
+                if (success) {
+                    alert(message);
+
+                    // JWT 토큰을 로컬 스토리지에 저장
+                    localStorage.setItem('jwtToken', token);
+
+                    nv("/pre/PreSelect");
+                } else {
+                    alert("로그인 실패");
                 }
             })
-            .catch( (error) => {
-                alert("서버 오류가 발생했습니다" + error)
-            })
-    }
+            .catch((error) => {
+                alert("서버 오류가 발생했습니다: " + error);
+            });
+    };
+
     return (
         <div
             style={{
@@ -45,29 +50,25 @@ function OwnerLogin() {
                 justifyContent: "center",
                 height: "100vh",
             }}>
-
             <div
                 style={{
                     display: "flex",
                     flexDirection: 'column',
                     gap: "1rem",
                     marginTop: "2rem",
-                }}
-            >
-
-
+                }}>
                 <div className="fixed-top">
                     <nav className="navbar navbar-expand-lg navbar-dark"
-                         style={{height: '10vh', backgroundColor: '#FFD700'}}>
+                         style={{ height: '10vh', backgroundColor: '#FFD700' }}>
                         <div className="container-fluid d-flex justify-content-between align-items-center">
-                            <div style={{textAlign: 'center'}} className="text-white fs-1">Logo</div>
+                            <div style={{ textAlign: 'center' }} className="text-white fs-1">Logo</div>
                         </div>
                     </nav>
                 </div>
 
                 <form className={"container"} onSubmit={hSubmit}>
-                    <div className={"row"} style={{paddingRight: '1rem'}}>
-                        <LoginSignText text={"사장님 로그인"}/>
+                    <div className={"row"} style={{ paddingRight: '1rem' }}>
+                        <LoginSignText text={"사장님 로그인"} />
                     </div>
 
                     <div className="mt-4">
@@ -79,8 +80,8 @@ function OwnerLogin() {
                             className="form-control"
                             id="preId"
                             placeholder="아이디를 입력해주세요"
-                            value={ownerId}
-                            onChange={hcOwnerId}
+                            value={userId}
+                            onChange={hcUserId}
                             required
                         />
                     </div>
@@ -93,8 +94,8 @@ function OwnerLogin() {
                             className="form-control"
                             id="prePw"
                             placeholder="비밀번호를 입력해주세요"
-                            value={ownerPass}
-                            onChange={hcOwnerPass}
+                            value={userPass}
+                            onChange={hcUserPass}
                             required
                             style={{ width: '400px' }}
                         />
@@ -104,7 +105,7 @@ function OwnerLogin() {
                         <button
                             type={"submit"}
                             className={"btn py-3 fw-bold text-light fs-5 flex-fill"}
-                            style={{backgroundColor: "#FFB74D", maxWidth: "400px"}}
+                            style={{ backgroundColor: "#FFB74D", maxWidth: "400px" }}
                         >
                             로그인
                         </button>

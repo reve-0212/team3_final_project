@@ -106,10 +106,12 @@ public class SecurityConfig {
                     .requestMatchers(PUT,"/cancelBook").hasRole("USER")
 
 //                    사장 전용
-                    .requestMatchers("/pre/**").hasRole("OWNER")
+//                    .requestMatchers("/pre/**").hasRole("OWNER")
+                    .requestMatchers("/pre/**").permitAll()
+
 
 //                    관리자 전용 페이지
-                    .requestMatchers("/pre/admin").permitAll()
+                    .requestMatchers("/pre/admin/**").permitAll()
 //                    .requestMatchers("/auth/**", "/contentList/**", "/jsy/contents/**", "/pre/**", "/api/**", "/user/**").permitAll()
 //                    .requestMatchers("/admin/**").hasRole("ADMIN")
 //                    .requestMatchers("/member/**", "/board/**").hasAnyRole("ADMIN", "MEMBER")

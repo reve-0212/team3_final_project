@@ -28,6 +28,11 @@ public class UserDTO implements UserDetails {
   private String userEmail;
   private String role;
 
+
+//  사장전용
+  private String bsName;
+  private String bsNumber;
+
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return Collections.singleton(new SimpleGrantedAuthority(this.role));

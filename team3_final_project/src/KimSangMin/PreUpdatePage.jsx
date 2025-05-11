@@ -6,11 +6,11 @@ function PreInfoPage() {
     const nv = useNavigate();
 
     // 사장님 정보 초기 설정
-    const [ownerData, setOwnerData] = useState({
-        ownerId: "",
-        ownerPass: "",
-        ownerName: "",
-        ownerNumber: "",
+    const [userData, setUserData] = useState({
+        userId: "",
+        userPass: "",
+        userNick: "",
+        userCall: "",
         bsName: "",
         bsNumber: ""
     });
@@ -21,7 +21,7 @@ function PreInfoPage() {
         // e.target은 이벤트가 발생한 input 태그 / name : input 태그에 설정된 name / value : 사용자가 입력한 실제 값
         const { name, value } = e.target;
         // prevData : 이전값
-        setOwnerData((prevData) => {
+        setUserData((prevData) => {
             console.log("Updating:", name, value); // 변경 전값 로그 확인
             return {
             // ...prevData : 기존의 상태 값을 복사
@@ -33,17 +33,25 @@ function PreInfoPage() {
 
     // 처음화면에 나타날때 로그인된 사장님 정보를 가져와 상태에 저장한다.
     useEffect(() => {
-        axios.get('http://localhost:8080/owner/info', { withCredentials: true })
+        // 로컬 스토리지나 쿠키에서 토큰을 가져옵니다.
+        const token = localStorage.getItem('token'); // 예시로 로컬 스토리지에 저장된 토큰 사용
+
+        // 토큰이 존재하는 경우, 헤더에 Authorization을 추가해서 요청
+        axios.get('http://localhost:8080/pre/getInfo', {
+            headers: {
+                Authorization: `Bearer ${token}`  // Bearer 방식으로 토큰을 전송
+            }
+        })
             .then(response => {
-                console.log(response.data)
-                const ownerData = response.data.data;
-                setOwnerData({
-                    ownerId: ownerData.ownerId,
-                    ownerPass: ownerData.ownerPass,
-                    ownerName: ownerData.ownerName,
-                    ownerNumber: ownerData.ownerNumber,
-                    bsName: ownerData.bsName,
-                    bsNumber: ownerData.bsNumber,
+                console.log(response.data);
+                const userData = response.data.data;
+                setUserData({
+                    userId: userData.userId,
+                    userPass: userData.userPass,
+                    userNick: userData.userNick,
+                    userCall: userData.userCall,
+                    bsName: userData.bsName,
+                    bsNumber: userData.bsNumber,
                 });
             })
             .catch(error => {
@@ -55,22 +63,22 @@ function PreInfoPage() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        axios.put('http://localhost:8080/owner/update', ownerData, { withCredentials: true })
+        axios.put('http://localhost:8080/owner/update', userData)
             .then(response => {
                 const { success, message, data } = response.data;  // 서버 응답에서 data 추가
                 if (success) {
                     alert("정보 수정 성공: " + message);
 
                     // 수정된 데이터를 상태에 반영
-                    setOwnerData({
-                        ownerId: data.ownerId,
-                        ownerPass: data.ownerPass,
-                        ownerName: data.ownerName,
-                        ownerNumber: data.ownerNumber,
+                    setUserData({
+                        userId: data.userId,
+                        userPass: data.userPass,
+                        userNick: data.userNick,
+                        userCall: data.userCall,
                         bsName: data.bsName,
                         bsNumber: data.bsNumber
                     });
-                    console.log("Updated owner data:", data);  // 수정된 데이터 확인
+                    console.log("Updated user data:", data);  // 수정된 데이터 확인
 
                     // 수정 후 페이지 이동
                     nv("/pre/PreMain");
@@ -120,58 +128,58 @@ function PreInfoPage() {
                     </h3>
                     <div className="mt-4 d-flex justify-content-center flex-column align-items-center">
                         <div className="mt-4">
-                            <label htmlFor="ownerId" className="form-label">
+                            <label htmlFor="userId" className="form-label">
                                 아이디
                             </label>
                             <input
                                 type="text"
                                 className="form-control"
-                                id="ownerId"
-                                name="ownerId"
+                                id="userId"
+                                name="userId"
                                 placeholder="아이디를 입력해주세요"
-                                value={ownerData.ownerId || ""}
+                                value={userData.userId || ""}
                                 onChange={handleChange}
                             />
                         </div>
                         <div className="mt-4">
-                            <label htmlFor="ownerPass" className="form-label">
+                            <label htmlFor="userPass" className="form-label">
                                 비밀번호
                             </label>
                             <input
                                 type="text"
                                 className="form-control"
-                                id="ownerPass"
-                                name="ownerPass"
+                                id="userPass"
+                                name="userPass"
                                 placeholder="비밀번호를 입력해주세요"
-                                value={ownerData.ownerPass || ""}
+                                value={userData.userPass || ""}
                                 onChange={handleChange}
                             />
                         </div>
                         <div className="mt-4">
-                            <label htmlFor="ownerName" className="form-label">
+                            <label htmlFor="userNick" className="form-label">
                                 대표자 명
                             </label>
                             <input
                                 type="text"
                                 className="form-control"
-                                id="ownerName"
-                                name="ownerName"
+                                id="userNick"
+                                name="userNick"
                                 placeholder="대표자명을 입력해주세요"
-                                value={ownerData.ownerName || ""}
+                                value={userData.userNick || ""}
                                 onChange={handleChange}
                             />
                         </div>
                         <div className="mt-4">
-                            <label htmlFor="ownerNumber" className="form-label">
+                            <label htmlFor="userCall" className="form-label">
                                 대표자 번호
                             </label>
                             <input
                                 type="text"
                                 className="form-control"
-                                id="ownerNumber"
-                                name="ownerNumber"
+                                id="userCall"
+                                name="userCall"
                                 placeholder="대표자 번호를 입력해주세요"
-                                value={ownerData.ownerNumber || ""}
+                                value={userData.userCall || ""}
                                 onChange={handleChange}
                             />
                         </div>
@@ -185,7 +193,7 @@ function PreInfoPage() {
                                 id="bsName"
                                 name="bsName"
                                 placeholder="사업장 이름을 입력해주세요"
-                                value={ownerData.bsName || ""}
+                                value={userData.bsName || ""}
                                 onChange={handleChange}
                                 required
                             />
@@ -200,7 +208,7 @@ function PreInfoPage() {
                                 id="bsNumber"
                                 name="bsNumber"
                                 placeholder="사업자 번호를 입력해주세요"
-                                value={ownerData.bsNumber || ""}
+                                value={userData.bsNumber || ""}
                                 onChange={handleChange}
                             />
                         </div>

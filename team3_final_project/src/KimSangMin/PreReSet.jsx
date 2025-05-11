@@ -4,6 +4,7 @@ import ReBanner from "./ReBanner.jsx";
 import axios from "axios";
 
 function PreReSet() {
+  // restData : 가게에 입력하고자하는 기본정보 저장객체
   const [restData, setRestData] = useState({
     Name: "가게이름",
     Call: "가게번호",
@@ -104,9 +105,9 @@ function PreReSet() {
 
   // 이미지 업로드
   const chImage = (e, index) => {
-    const newImg = [...img];
-    newImg[index] = e.target.value;
-    setImg(newImg);
+    const newImg = [...img]; // ..img 는 현재이미지 배열을 복사, newImg에 저장
+    newImg[index] = e.target.value; // 주어진 index에 해당하는 이미지를 업데이트한다.
+    setImg(newImg); // 새로운 이미지를 기존에 이미지 상태에 저장
   }
   const hPreview = () => {
     // 입력된 URL을 미리보기 배열에 추가
@@ -146,6 +147,7 @@ function PreReSet() {
     // 데이터 저장 폼
     const hSubmit = (e) => {
       e.preventDefault();
+
 
       const storeData = {
         resName: restData.Name,

@@ -52,6 +52,8 @@ public class JwtTokenProvider {
     claims.put("userAge", userDTO.getUserAge());
     claims.put("userCall", userDTO.getUserCall());
     claims.put("userEmail", userDTO.getUserEmail());
+    claims.put("bsName", userDTO.getBsName());
+    claims.put("bsNumber", userDTO.getBsNumber());
     claims.put("role", userDTO.getRole());
 //    빌더 패턴을 사용하여 JWT 객체 생성
 
@@ -125,6 +127,8 @@ public class JwtTokenProvider {
             .userAge(((Number) claims.get("userAge")).intValue())
             .userCall(claims.get("userCall").toString())
             .userEmail(claims.get("userEmail").toString())
+            .bsName(claims.get("bsName").toString())
+            .bsNumber(claims.get("bsNumber").toString())
             .role(claims.get("role").toString())
             .build();
 

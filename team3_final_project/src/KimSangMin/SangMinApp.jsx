@@ -47,7 +47,7 @@ function SangMinApp() {
                     <Route path="/pre/login" element={<OwnerLogin/>}/> {/*  사장 로그인 */}
                     <Route path="/pre/update" element={<PreUpdatePage/>}/> {/*  사장 정보 수정 */}
 
-                    <Route path="/" element={<ReservationPage/>}/>
+                    <Route path="/" element={<PreInfoPage/>}/>
                     <Route path="/pre/loadSeat/:resIdx" element={<SeatLayout />} />
                     <Route path="/pre/PreMain" element={<PreMain/>}/> {/* 예약가게 메인*/}
                     <Route path="/pre/PreCh" element={<PreCh/>}/> {/* 예약가게 매출 통계 */}

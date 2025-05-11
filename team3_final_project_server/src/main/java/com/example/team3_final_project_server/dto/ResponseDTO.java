@@ -16,6 +16,10 @@ public class ResponseDTO<T> {
   private String userCall;
   private String userEmail;
   private String role;
+
+//  사장
+  private String bsName;
+  private String bsNumber;
 }
 
 
