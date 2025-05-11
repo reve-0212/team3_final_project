@@ -48,6 +48,7 @@ import CeoMain from "../JangDaJung/CeoMain.jsx";
 import TodayWaiting from "../JangDaJung/TodayWaiting.jsx";
 import PastDateWaiting from "../JangDaJung/PastDateWaiting.jsx";
 import ReservationChart from "../JangDaJung/ReservationChart.jsx";
+import ContentDetail from "../JeonKangSan/ContentDetail.jsx";
 
 function main() {
   // pre 가 있으면 사장님 웹으로
@@ -103,7 +104,7 @@ function main() {
           <main className={'content'}>
             <Routes>
               {/*유저*/}
-              <Route path="/" element={<MainContent/>}/>
+              <Route path="/resdetail/:resIdx" element={<ContentDetail />}/>
 
               <Route path={"/user"} element={<MyPageContent/>}/>
               <Route path={"/user/login"} element={<Login/>}/>

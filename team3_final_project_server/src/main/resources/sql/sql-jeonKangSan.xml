@@ -31,4 +31,64 @@
         LIMIT 1
     </select>
 
+    <select id="getAmenitiesByResIdx" resultType="com.example.team3_final_project_server.dto.AmenitiesDTO">
+        SELECT
+        amenities_idx,
+        res_idx,
+        has_parking,
+        parking_info,
+        no_deposit,
+        deposit_info,
+        has_group_seat,
+        group_seat_info,
+        has_coronation,
+        coronation_info,
+        has_corkage,
+        corkage_info,
+        has_kids_zone,
+        kids_zone_info,
+        has_wifi,
+        wifi_info,
+        has_waiting_area,
+        waiting_area_info
+        FROM amenities
+        WHERE res_idx = #{resIdx}
+    </select>
+
+    <select id="getRestaurantsByResIdx" resultType="com.example.team3_final_project_server.dto.RestaurantDTO">
+        SELECT
+        res_idx,
+        res_image1,
+        res_image2,
+        res_image3,
+        res_name,
+        res_call,
+        res_address1,
+        res_address2,
+        res_introduce,
+        res_reserve_time,
+        res_lat,
+        res_lng,
+        res_price_range,
+        reserve_or_waiting,
+        res_option_1
+        FROM restaurant
+        WHERE res_idx = #{resIdx}
+    </select>
+
+    <select id="getAvgRatingByResIdx" resultType="Double">
+        SELECT ROUND(AVG(review_rating), 1)
+        FROM review
+        WHERE res_idx = #{resIdx}
+    </select>
+
+    <select id="getAvgRatingByType" resultType="map">
+        SELECT
+        review_type,
+        ROUND(AVG(review_rating), 1) AS avg_rating
+        FROM review
+        WHERE res_idx = #{resIdx}
+        GROUP BY review_type
+    </select>
+
 </mapper>

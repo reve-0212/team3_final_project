@@ -24,6 +24,7 @@
     "bootstrap": "^5.3.5",
     "date-fns": "^4.1.0",
     "lucide-react": "^0.507.0",
+    "build": "^0.1.4",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.9",
     "react-datepicker": "^8.3.0",
