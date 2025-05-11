@@ -11,9 +11,10 @@ public class ReservationHistoryDTO {
   private int reservationIdx;
   private int resIdx;
   private LocalDateTime reservationDate;
-  private int maleCount;
-  private int femaleCount;
-  private int genderTotalCount;
+  private int rsvMan;
+  private int rsvWoman;
+  private int rsvPeople;
+  private int rsvBaby;
 
 //  private List<ReservationHistoryMenuDTO> menus;  // 여러 메뉴를 담을 리스트
 
