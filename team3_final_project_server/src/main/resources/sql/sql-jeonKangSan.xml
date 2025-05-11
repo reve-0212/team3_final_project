@@ -76,4 +76,19 @@
         WHERE res_idx = #{resIdx}
     </select>
 
+    <select id="getAvgRatingByResIdx" resultType="Double">
+        SELECT ROUND(AVG(review_rating), 1)
+        FROM review
+        WHERE res_idx = #{resIdx}
+    </select>
+
+    <select id="getAvgRatingByType" resultType="map">
+        SELECT
+        review_type,
+        ROUND(AVG(review_rating), 1) AS avg_rating
+        FROM review
+        WHERE res_idx = #{resIdx}
+        GROUP BY review_type
+    </select>
+
 </mapper>

@@ -12,12 +12,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+
 @CrossOrigin(origins = "http://localhost:5173")
 @Controller
 public class JKSController {
 
   @Autowired
   private JKSService jksService;
+
+
+//  http://localhost:5173/resdetail/1 과 같은 형식으로 접속
 
 
   // 식당 단일 상세보기
@@ -53,6 +58,22 @@ public AmenitiesDTO getAmenities(@PathVariable int resIdx) {
   @ResponseBody
   public List<ReviewDTO> getReviews(@RequestParam int resIdx) {
     return jksService.getReviewsByResIdx(resIdx);
+  }
+
+
+//  리뷰 평균
+  @GetMapping("/reviews/average/{resIdx}")
+  @ResponseBody
+  public Double getAvgRating(@PathVariable int resIdx) {
+    return jksService.getAvgRatingByResIdx(resIdx);
+  }
+
+
+//  종류별 리뷰 평균(음식, 가격, 서비스, 청결)
+  @GetMapping("/reviews/average/type/{resIdx}")
+  @ResponseBody
+  public Map<String, Double> getAvgByType(@PathVariable int resIdx) {
+    return jksService.getAvgRatingByType(resIdx);
   }
 
 
