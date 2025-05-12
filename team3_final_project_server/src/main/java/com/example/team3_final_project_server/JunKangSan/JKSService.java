@@ -10,15 +10,15 @@ public interface JKSService {
 
     List<RestaurantDTO> getAllRestaurants();
 
-    List<BestMenuDTO> getBestMenusByResIdx(int resIdx);
+//    List<BestMenuDTO> getBestMenusByResIdx(int resIdx);
 
     List<ReviewDTO> getReviewsByResIdx(int resIdx);
 
-    AnnounceDTO getLatestAnnounce();
+//    AnnounceDTO getLatestAnnounce();
 
     RestaurantDTO getRestaurantsByResIdx(int resIdx);
 
-    AmenitiesDTO getAmenitiesByResIdx(int resIdx);
+//    AmenitiesDTO getAmenitiesByResIdx(int resIdx);
 
     Double getAvgRatingByResIdx(@Param("resIdx") int resIdx);
 

@@ -11,15 +11,15 @@ import java.util.Map;
 public interface JKSMapper {
     List<RestaurantDTO> getAllRestaurants();
 
-    List<BestMenuDTO> getAllBestMenus(int resIdx);
+//    List<BestMenuDTO> getAllBestMenus(int resIdx);
 
     List<ReviewDTO> getAllReviews(int resIdx);
 
-    AnnounceDTO getLatestAnnounce();
+//    AnnounceDTO getLatestAnnounce();
 
     RestaurantDTO getRestaurantsByResIdx(int resIdx);
 
-    AmenitiesDTO getAmenitiesByResIdx(int resIdx);
+//    AmenitiesDTO getAmenitiesByResIdx(int resIdx);
 
     Double getAvgRatingByResIdx(@Param("resIdx") int resIdx);
 
