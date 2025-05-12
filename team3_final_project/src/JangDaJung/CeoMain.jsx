@@ -1,5 +1,5 @@
 import {Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
-import './CeoMain.css';
+import './css/CeoMain.css';
 import WaBanner from "../KimSangMin/WaBanner.jsx";
 
 const waitingData = [

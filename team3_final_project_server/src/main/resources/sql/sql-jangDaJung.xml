@@ -6,34 +6,37 @@
     <!-- INSERT -->
 <!--    <insert id="insertHistory" parameterType="com.example.team3_final_project_server.dto.ReservationHistoryDTO">-->
 <!--        INSERT INTO reservation_history (-->
-<!--        restaurant_idx, reservation_idx, reservation_date,-->
+<!--        res_idx, reservation_idx, reservation_date,-->
 <!--        male_count, female_count, gender_total_count,-->
 <!--        menu_idx, menu_name, menu_price,-->
 <!--        menu_sold_count, menu_sold_total_price,-->
 <!--        checkout_date, cancel_date, reservation_team_count-->
 <!--        )-->
 <!--        VALUES (-->
-<!--        #{restaurantIdx}, #{reservationIdx}, #{reservationDate},-->
+<!--        #{resIdx}, #{reservationIdx}, #{reservationDate},-->
 <!--        #{maleCount}, #{femaleCount}, #{genderTotalCount},-->
 <!--        #{menuIdx}, #{menuName}, #{menuPrice},-->
 <!--        #{menuSoldCount}, #{menuSoldTotalPrice},-->
 <!--        #{checkoutDate}, #{cancelDate}, #{reservationTeamCount}-->
 <!--        )-->
 <!--    </insert>-->
-    
+
+<!--    통계 페이지 -->
+
     <!-- 메뉴 여러개 선택해서 예약할 수  있도록 history 저장 -->
-    <insert id="insertHistories" parameterType="java.util.List">
-        <foreach collection="list" item="history" separator=";">
-            <foreach collection="history.menus" item="menu" separator=";">
-                INSERT INTO reservation_history (
-                restaurant_idx, reservation_idx, reservation_date, male_count, female_count, gender_total_count,
-                menu_idx, menu_name, menu_price, menu_sold_count, menu_sold_total_price, reservation_team_count
-                )
-                VALUES (
-                #{history.restaurantIdx}, #{history.reservationIdx}, #{history.reservationDate}, #{history.maleCount}, #{history.femaleCount}, #{history.genderTotalCount},
-                #{menu.menuIdx}, #{menu.menuName}, #{menu.menuPrice}, #{menu.menuSoldCount}, #{menu.menuSoldTotalPrice}, #{history.reservationTeamCount}
-                )
-            </foreach>
+    <insert id="insertHistories" parameterType="list">
+        INSERT INTO reservation_history (
+        res_idx, reservation_idx, reservation_date, rsv_man, rsv_woman, rsv_people, rsv_baby,
+        menu_idx, menu_name, menu_price, menu_sold_count, menu_sold_total_price, reservation_team_count
+        )
+        VALUES
+        <foreach collection="list" item="history" separator=",">
+            (
+            #{history.resIdx}, #{history.reservationIdx}, #{history.reservationDate},
+            #{history.rsvMan}, #{history.rsvWoman}, #{history.rsvPeople}, #{history.rsvBaby},
+            #{history.menuIdx}, #{history.menuName}, #{history.menuPrice}, #{history.menuSoldCount},
+            #{history.menuSoldTotalPrice}, #{history.reservationTeamCount}
+            )
         </foreach>
     </insert>
 
@@ -47,45 +50,48 @@
     <!--  성별-->
     <select id="selectVisitorGender" resultType="map">
         SELECT
-            SUM(male_count) AS maleCount,
-            SUM(female_count) AS femaleCount,
-            SUM(gender_total_count) AS genderTotalCount
+            SUM(rsv_man) AS totalMan,
+            SUM(rsv_woman) AS totalWoman,
+            SUM(rsv_people) AS totalPeople,
+            SUM(rsv_baby) AS totalBaby
         FROM reservation_history
         WHERE reservation_date BETWEEN #{startDate} AND #{endDate}
-            AND restaurant_idx = #{restaurantIdx}
+            AND res_idx = #{resIdx}
     </select>
 
-<!--    매출 총액 -->
-    <select id="selectSalesTotalPrice" resultType="map">
+<!--    메뉴 불러와서 판매량 계산 -->
+    <select id="selectMenuSales" resultType="map">
         SELECT
-            SUM(menu_sold_total_price) AS totalSales
-        FROM reservation_history
-        WHERE reservation_date BETWEEN #{startDate} AND #{endDate}
-            AND restaurant_idx = #{restaurantIdx}
+            m.menu_name,
+            m.menu_price,
+            IFNULL(SUM(h.menu_sold_count), 0) AS soldCount,
+            IFNULL(SUM(h.menu_sold_total_price), 0) AS soldTotalPrice
+        FROM menu m
+        LEFT JOIN reservation_history h
+            ON m.menu_idx = h.menu_idx
+            AND h.reservation_date BETWEEN #{startDate} AND #{endDate}
+        WHERE m.res_idx = #{resIdx}
+        GROUP BY m.menu_idx
     </select>
 
-<!--    메뉴별 매출 -->
-    <select id="selectMenuTotalPrice" resultType="map">
-        SELECT
-            menu_idx,
-            menu_name,
-            SUM(menu_sold_count) AS soldCount,
-            SUM(menu_sold_total_price) AS soldTotalPrice
-        FROM reservation_history
-        WHERE reservation_date BETWEEN #{startDate} AND #{endDate}
-            AND restaurant_idx = #{restaurantIdx}
-        GROUP BY menu_idx, menu_name
-    </select>
-
-<!--    시간대별 예약팀 수-->
+    <!--    시간대별 예약팀 수-->
     <select id="selectTeamCountByHour" resultType="map">
         SELECT
-            HOUR(reservation_date) as hour,
-            COUNT(DISTINCT reservation_idx) AS teamCount
+        HOUR(reservation_date) as hour,
+        COUNT(DISTINCT reservation_idx) AS teamCount,
+        SUM(rsv_people) AS visitorCount
         FROM reservation_history
         WHERE reservation_date BETWEEN #{startDate} AND #{endDate}
-            AND restaurant_idx = #{restaurantIdx}
+        AND res_idx = #{resIdx}
         GROUP BY HOUR(reservation_date)
         ORDER BY hour
+    </select>
+
+<!--    메뉴 페이지-->
+
+    <select id="selectMenuList" resultType="map">
+        SELECT *
+        FROM menu
+        WHERE res_idx = #{resIdx}
     </select>
 </mapper>

@@ -1,80 +1,76 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { DayPicker } from "react-day-picker";
 import './css/PreDay.css';
 import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis
+    Bar,
+    BarChart,
+    CartesianGrid,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis,
+    YAxis
 } from "recharts";
 import ReBanner from "../KimSangMin/ReBanner.jsx";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 function PreCh() {
-  const stores = [
-    {
-      storeName: '김또깡 식당',
-      menus: [
-        {
-          menuName: '김치찌개',
-          price: 8000,
-          sales: [
-            { date: '2025-04-27', count: 5 },
-            { date: '2025-04-28', count: 4 },
-          ],
-        },
-        {
-          menuName: '된장찌개',
-          price: 9000,
-          sales: [
-            { date: '2025-04-27', count: 3 },
-          ],
-        },
-        {
-          menuName: '제육볶음',
-          price: 10000,
-          sales: [
-            { date: '2025-04-28', count: 7 },
-          ],
-        },
-      ],
-    },
-  ];
 
-  const today = new Date();
-  const [seDay, setSeDay] = useState({ from: today, to: today });
-  const [yetDay, setYetDay] = useState({ from: today, to: today });
-  const [cal, setCal] = useState(false);
+    const [storeData, setStoreData] = useState([]);
+    const today = new Date();
+    // 확정 날짜
+    const [seDay, setSeDay] = useState({ from: today, to: today });
+    // 확정 전 날짜
+    const [yetDay, setYetDay] = useState({ from: today, to: today });
+    // 캘린더
+    const [cal, setCal] = useState(false);
+    // 로딩중
+    const [loading, setLoading] = useState(false);
 
-  const formatDate = (date) => {
-    if (!date) return '';
-    return date.toISOString().split('T')[0];
-  };
-
-  const isInRange = (dateStr, from, to) => {
-    const d = new Date(dateStr);
-    return (!from || d >= from) && (!to || d <= to);
-  };
-
-  // 메뉴별 판매량 및 매출 계산
-  const filteredData = stores[0].menus.map(menu => {
-    const filteredSales = menu.sales.filter(sale =>
-        isInRange(sale.date, seDay.from, seDay.to)
-    );
-
-    const totalSold = filteredSales.reduce((sum, sale) => sum + sale.count, 0);
-    const totalRevenue = totalSold * menu.price;
-
-    return {
-      menuName: menu.menuName,
-      price: menu.price,
-      count: totalSold,
-      totalRevenue,
+    const formatDate = (date) => {
+        if (!date) return '';
+        return date.toISOString().split('T')[0];
     };
-  });
+
+    // 날짜 범위
+    // const isInRange = (dateStr, from, to) => {
+    //   const d = new Date(dateStr);
+    //   return (!from || d >= from) && (!to || d <= to);
+    // };
+
+    // api 호출 (판매 메뉴 데이터)
+    const fetchData = async () => {
+        setLoading(true);
+        try {
+            //   서버에서 데이터 받아옴
+            const response = await axios.get('http://localhost:8080/api/history/sales', {
+                params: {
+                    startDate: formatDate(seDay.from),
+                    endDate: formatDate(seDay.to),
+                    resIdx: 1
+                }
+            });
+            //   응답받은 데이터 상태ㅐ에 저장
+            setStoreData(response.data);
+        }
+        catch (error) {
+            console.error("데이터 가져오기 실패", error);
+        }
+        setLoading(false);
+    };
+
+    // 컴포넌트 마운트 시 데이터 가져오기
+    useEffect(() => {
+        fetchData();  // 컴포넌트가 처음 렌더링 될 때 호출
+    }, [seDay]);  // 날짜 선택 될때마다 다시 렌더링
+
+    // 메뉴별 판매량 및 매출 계산
+    const filteredData = storeData.map(menu => ({
+        menuName: menu.menu_name,
+        price: menu.menu_price,
+        count: menu.soldCount,  // 백엔드에서 계산된 값 사용
+        totalPrice: menu.soldTotalPrice,  // 백엔드에서 계산된 값 사용
+    }));
 
   return (
       <>
@@ -134,7 +130,9 @@ function PreCh() {
             <h4 className={'mt-5 mb-3'}>메뉴별 판매량</h4>
             <div className={'d-flex gap-4 justify-content-center align-items-center mb-5 flex-wrap'}>
               <div style={{flex: 4, minWidth: '300px'}}>
-                <ResponsiveContainer width={'100%'} height={250}>
+                {loading ? (
+                            <p className={'text-center'}>로딩 중...<br/>잠시만 기다려 주세요</p>
+                        ) : (<ResponsiveContainer width={'100%'} height={250}>
                   <BarChart data={filteredData}>
                     <CartesianGrid strokeDasharray="3 3"/>
                     <XAxis dataKey="menuName"/>
@@ -142,15 +140,15 @@ function PreCh() {
                     <Tooltip/>
                     <Bar dataKey={"count"} fill={'#FFCD83'} barSize={25}/>
                   </BarChart>
-                </ResponsiveContainer>
+                </ResponsiveContainer>)}
               </div>
               <div style={{flex: 3, minWidth: '200px'}}>
                 <div className={'mb-3 p-3 bg-light rounded d-flex justify-content-between align-items-center'}>
                   <h5 className={'mb-0'}>총 매출 금액</h5>
                   <h3 className={'mb-0'} style={{color: '#FFCD83'}}>
-                    {filteredData.reduce((sum, item) => sum + item.totalRevenue, 0).toLocaleString()}원
+                    {filteredData.reduce((sum, item) => sum + item.totalPrice, 0).toLocaleString()}원
                   </h3>
-                </div>
+                </div>{!loading && (
                 <table
                     className={'table table-bordered table-sm text-center'}
                     style={{tableLayout: 'fixed', width: '100%', fontSize: '14px'}}
@@ -159,8 +157,8 @@ function PreCh() {
                   <tr>
                     <th>메뉴</th>
                     <th>가격</th>
-                    <th>팔린갯수</th>
-                    <th>총 매출</th>
+                    <th>판매량</th>
+                    <th>메뉴별 매출</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -169,11 +167,11 @@ function PreCh() {
                         <td>{item.menuName}</td>
                         <td>{item.price.toLocaleString()}원</td>
                         <td>{item.count}개</td>
-                        <td>{item.totalRevenue.toLocaleString()}원</td>
+                        <td>{item.totalPrice.toLocaleString()}원</td>
                       </tr>
                   ))}
                   </tbody>
-                </table>
+                </table>)}
               </div>
             </div>
           </div>

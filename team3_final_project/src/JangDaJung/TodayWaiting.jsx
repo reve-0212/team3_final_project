@@ -1,6 +1,6 @@
 import {useState} from "react";
 import WaBanner from "../KimSangMin/WaBanner.jsx";
-import './TodayWaiting.css'
+import './css/TodayWaiting.css'
 
 function TodayWaiting() {
     const [tab, setTab] = useState('current');

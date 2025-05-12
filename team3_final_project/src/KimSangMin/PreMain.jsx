@@ -1,5 +1,5 @@
 import {Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
-import '../JangDaJung/CeoMain.css';
+import '../JangDaJung/css/CeoMain.css';
 import ReBanner from "./ReBanner.jsx";
 import {Link} from "react-router-dom";
 

@@ -3,7 +3,7 @@ import {useState} from "react";
 
 import { format } from 'date-fns';
 import 'react-day-picker/dist/style.css';
-import './PastDateWating.css';
+import './css/PastDateWating.css';
 import {DayPicker} from "react-day-picker";
 
 function PastDateWaiting() {

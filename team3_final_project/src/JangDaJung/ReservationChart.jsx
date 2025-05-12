@@ -1,7 +1,7 @@
 import {useState} from "react";
 import WaBanner from "../KimSangMin/WaBanner.jsx";
 import {DayPicker} from "react-day-picker";
-import './ReservationChart.css';
+import './css/ReservationChart.css';
 import {
     Bar,
     BarChart,
@@ -38,7 +38,7 @@ function ReservationChart() {
     ];
 
     // 그래프 출력 시간대
-    const timeSlots = ['9시', '10시', '11시', '12시', '13시', '14시', '15시', '17시', '18시', '19시', '20시', '21시'];
+    const timeSlots = ['9시', '10시', '11시', '12시', '13시', '14시', '15시', '16시', '17시', '18시', '19시'];
 
     // 달력
     // 적용 날짜

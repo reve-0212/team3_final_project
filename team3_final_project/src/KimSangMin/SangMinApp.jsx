@@ -27,6 +27,7 @@ import PreRegPage from "../JeongSeongYun/layout/PreRegPage.jsx";
 import ReservationPage from "./Seat/ReservationPage.jsx";
 import SeatLayout from "./Seat/SeatLayout.jsx";
 import SeatManager from "./Seat/SeatManager.jsx";
+import PreGenderCh from "./PreGenderCh.jsx";
 
 function SangMinApp() {
     return (
@@ -51,6 +52,7 @@ function SangMinApp() {
                     <Route path="/pre/loadSeat/:resIdx" element={<SeatLayout />} />
                     <Route path="/pre/PreMain" element={<PreMain/>}/> {/* 예약가게 메인*/}
                     <Route path="/pre/PreCh" element={<PreCh/>}/> {/* 예약가게 매출 통계 */}
+                    <Route path="/pre/PreGenderCh" element={<PreGenderCh />} /> {/* 예약가게 성별 통계 */}
                     <Route path="/pre/PreRe" element={<PreRe/>}/> {/* 예약가게 리뷰 보기*/}
                     <Route path="/pre/PreDayCh" element={<PreDayCh/>}/> {/* 예약 날짜 차트 */}
                     <Route path="/pre/PreReSet" element={<PreReSet/>}/> {/* 예약가게 셋팅 */}
