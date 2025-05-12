@@ -26,8 +26,6 @@ public class UserDTO implements UserDetails {
   private String userCall;
   private String userEmail;
   private String role;
-  private String role;
-
 
 //  사장전용
   private String bsName;

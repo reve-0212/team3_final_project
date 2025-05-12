@@ -4,8 +4,11 @@ import com.example.team3_final_project_server.dto.UserDTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.support.BeanDefinitionDsl;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,6 +24,14 @@ import java.util.*;
 @Service
 public class JwtTokenProvider {
 
+  @Value("${jwt.secret_key}")
+  private String secretKey;
+
+  @PostConstruct
+  protected void init() {
+    secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
+  }
+
   private final JwtProperties jwtProperties;
 
   //  JWT 토큰 생성, 매개변수로 사용자 정보와 만료 시간을 받아서 사용
@@ -31,6 +42,22 @@ public class JwtTokenProvider {
     return makeToken(new Date(now.getTime() + expiredAt.toMillis()), userDTO);
   }
 
+  public String generateRefreshToken(UserDTO user, Duration expiresIn) {
+    Claims claims = Jwts.claims().setSubject(user.getUserId()).build();
+    claims.put("role", user.getRole());
+
+    Date now = new Date();
+    Date expiry = new Date(now.getTime() + expiresIn.toMillis());
+
+    return Jwts.builder()
+            .setClaims(claims)
+            .setIssuedAt(now)
+            .setExpiration(expiry)
+            .signWith(SignatureAlgorithm.HS256, secretKey) // secretKey는 @PostConstruct에서 인코딩된 값
+            .compact();
+  }
+
+
   //  실제 JWT 토큰을 생성
   private String makeToken(Date expiry, UserDTO userDTO) {
     Date now = new Date();
@@ -40,7 +67,7 @@ public class JwtTokenProvider {
     claims.put("userIdx", userDTO.getUserIdx());
     claims.put("userId", userDTO.getUserId());
     claims.put("userPass", userDTO.getUserPass());
-    claims.put("userName", userDTO.getUserName());
+    claims.put("userNick", userDTO.getUserNick());
     claims.put("userGender", userDTO.getUserGender());
     claims.put("userAge", userDTO.getUserAge());
     claims.put("userCall", userDTO.getUserCall());
@@ -122,7 +149,7 @@ public class JwtTokenProvider {
             .userIdx(Integer.parseInt(claims.get("userIdx").toString()))
             .userId(claims.get("userId").toString())
             .userPass(claims.get("userPass").toString())
-            .userName(claims.get("userName").toString())
+            .userNick(claims.get("userNick").toString())
             .userGender(claims.get("userGender").toString())
             .userAge(Integer.parseInt(claims.get("userAge").toString()))
             .userCall(claims.get("userCall").toString())

@@ -68,10 +68,10 @@
     order by rsv.rsv_date desc;
   </select>
 
-  <!-- 예약 정보 가져오기-->
-  <select id="userReservation" parameterType="int" resultType="com.example.team3_final_project_server.dto.ReservationDTO">
-    select * from reservation where user_idx = #{userIdx}
-  </select>
+<!--  &lt;!&ndash; 예약 정보 가져오기&ndash;&gt;-->
+<!--  <select id="userReservation" parameterType="int" resultType="com.example.team3_final_project_server.dto.ReservationDTO">-->
+<!--    select * from reservation where user_idx = #{userIdx}-->
+<!--  </select>-->
 
   <!--  조인용 map-->
   <resultMap id="ResvRestMenuJoinMap" type="com.example.team3_final_project_server.dto.join.ResvRestMenuJoinDTO">

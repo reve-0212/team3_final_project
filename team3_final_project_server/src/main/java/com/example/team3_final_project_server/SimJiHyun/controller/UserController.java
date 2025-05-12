@@ -35,6 +35,8 @@ public class UserController {
   //  로그인
   @GetMapping("/api/auth/login")
   public ResponseEntity<?> login(@RequestParam String userId, @RequestParam String userPass) {
+    System.out.println("로그인 처리 중");
+
 //    예외처리를 이용하여 사용자 인증을 안전하게 실행
     try {
 //      사용자 인정 정보 및 jwt 토큰 정보를 가져오기
@@ -93,13 +95,6 @@ public class UserController {
     userMapper.updateField(userId, field, value);
     return ResponseEntity.ok("회원 정보 수정 완료");
   }
-
-//  //  데이터 가져오기
-//  @PostMapping("/getUserData")
-//  public UserDTO getUserData(@RequestParam("userId") String userId, @RequestParam("userPass") String userPass) {
-//    System.out.println(sjhServiceImpl.getUserData(userId, userPass));
-//    return sjhServiceImpl.getUserData(userId, userPass);
-//  }
 
   //  예약 정보 리스트 가져오기
   @GetMapping("/userReservation")

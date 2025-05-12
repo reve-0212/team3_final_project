@@ -19,6 +19,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.PUT;
 
 @Configuration
 @RequiredArgsConstructor
@@ -82,26 +84,22 @@ public class SecurityConfig {
             .sessionManagement(sessionManagementConfigurer -> sessionManagementConfigurer
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                    // 관리자 전용 페이지
+                    .requestMatchers("/pre/admin").permitAll()
+
+                    //사장 전용
+                    .requestMatchers("/pre/**").hasRole("OWNER")
+
+                    //로그인한 사용자용
+                    .requestMatchers("/waiting/**", "/book/**", "/latestDetails", "/book/info").hasRole("USER")
+                    .requestMatchers(GET, "/userReservation", "/getBook").hasRole("USER")
+                    .requestMatchers(PUT, "/cancelBook").hasRole("USER")
+
 //                    모든 사용자용
-                    .requestMatchers("/user/**", "/latestDetails", "/bookmark", "/contentDetail", "/review", "/","/api/visitors").permitAll()
-                    .requestMatchers("/jsy/contents/**","/jsy/ownerLogin").permitAll()
-                    .requestMatchers("/api/**", "/auth/**", "/api/auth/signup").permitAll()
-                    .requestMatchers("/api/visitors","/api/visitors/**").permitAll()
-//                    로그인한 사용자용
-                    .requestMatchers("/waiting/**", "/book/**","/latestDetails","/book/info").hasRole("USER")
-                    .requestMatchers(GET,"/userReservation","/getBook").hasRole("USER")
-                    .requestMatchers(PUT,"/cancelBook").hasRole("USER")
-
-//                    사장 전용
-//                    .requestMatchers("/pre/getRest/**", "/jsy/owner/**").permitAll()
-                    .requestMatchers("/pre/**").permitAll()
-
-//                    관리자 전용 페이지
-                    .requestMatchers("/pre/admin/**").permitAll()
-//                    .requestMatchers("/auth/**", "/contentList/**", "/jsy/contents/**", "/pre/**", "/api/**", "/user/**").permitAll()
-//                    .requestMatchers("/admin/**").hasRole("ADMIN")
-//                    .requestMatchers("/member/**", "/board/**").hasAnyRole("ADMIN", "MEMBER")
-//                    .requestMatchers("/pre/**").hasRole("OWNER")
+                    .requestMatchers("/user/**", "/latestDetails", "/bookmark", "/contentDetail", "/review", "/", "/api/visitors").permitAll()
+                    .requestMatchers("/jsy/contents/**", "/jsy/ownerLogin").permitAll()
+                    .requestMatchers("/api/**", "/auth/**", "/api/auth/signup","/api/auth/login").permitAll()
+                    .requestMatchers("/api/visitors", "/api/visitors/**").permitAll()
 //            나머지 url은 모두 인증 받은 사용자만 사용 가능
                 .anyRequest().authenticated())
 //        JWT 기반 인증이기 때문에 사용자가 만든 JWT 인증 필터를 사용하도록 등록
