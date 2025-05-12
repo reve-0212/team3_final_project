@@ -70,73 +70,62 @@ function PreGenderCh() {
     const COLORS = ['#2a89dc', '#ff4b4b', '#09af5b'];
 
     return (
-        <div className={'ceo-main'}>
+        <>
             <ReBanner />
-            <div style={{ marginTop: '10vh', marginLeft: '200px', position: 'relative' }}>
-                <div style={{ display: "flex", position: 'relative' }}>
-                    <Link to="/pre/PreCh" style={{ textDecoration: 'none', color: 'black' }}>
-                        <h4 className="me-5">매출통계</h4></Link>
-                    <Link to="/pre/PreDayCh" style={{ textDecoration: 'none', color: 'black' }}>
-                        <h4 className="me-5">예약통계</h4></Link>
-                    <Link to="/pre/PreGenderCh" style={{ textDecoration: 'none', color: 'black' }}>
-                        <h4>방문자통계</h4>
-                    </Link>
-                </div>
-                <br />
-                <hr />
-                <div className={'d-flex align-items-center gap-3 flex-wrap mb-4'}>
-                    <h2 className={'waiting-chart-title'}>매출 통계</h2>
-                    <hr />
-                    <div
-                        className={'date-box d-flex align-items-center justify-content-center ms-3'}
-                        style={{ width: '300px', position: 'relative', cursor: 'pointer' }}
-                        onClick={() => {
-                            setCal(true);
-                            setYetDay(seDay);
-                        }}
-                    >
-                        <p style={{ margin: 0 }}>
-                            {seDay.from && seDay.to ? `${formatDate(seDay.from)} ~ ${formatDate(seDay.to)}` : '날짜 선택'}
-                        </p>
-                        {cal && (
-                            <div className={'calendar-popup'} onClick={(e) => e.stopPropagation()}>
-                                <DayPicker
-                                    mode="range"
-                                    selected={yetDay}
-                                    onSelect={setYetDay}
-                                    pagedNavigation
-                                />
-                                <div className="d-flex justify-content-end mt-3" style={{ gap: '10px' }}>
-                                    <button
-                                        className="btn btn-secondary"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            setCal(false);
-                                        }}
-                                    >
-                                        취소
-                                    </button>
-                                    <button
-                                        className="btn btn-primary"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            setSeDay(yetDay);
-                                            setCal(false);
-                                        }}
-                                    >
-                                        확인
-                                    </button>
+            <div>
+                <div>
+                    <div className={'d-flex align-items-center gap-3 flex-wrap mb-4'}>
+                        <h2 className={'waiting-chart-title ms-3'}>방문자 성별</h2>
+                        <hr/>
+                        <div
+                            className={'date-box d-flex align-items-center justify-content-center ms-3'}
+                            style={{width: '300px', position: 'relative', cursor: 'pointer'}}
+                            onClick={() => {
+                                setCal(true);
+                                setYetDay(seDay);
+                            }}
+                        >
+                            <p style={{margin: 0}}>
+                                {seDay.from && seDay.to ? `${formatDate(seDay.from)} ~ ${formatDate(seDay.to)}` : '날짜 선택'}
+                            </p>
+                            {cal && (
+                                <div className={'calendar-popup'} onClick={(e) => e.stopPropagation()}>
+                                    <DayPicker
+                                        mode="range"
+                                        selected={yetDay}
+                                        onSelect={setYetDay}
+                                        pagedNavigation
+                                    />
+                                    <div className="d-flex justify-content-end mt-3" style={{gap: '10px'}}>
+                                        <button
+                                            className="btn btn-secondary"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setCal(false);
+                                            }}
+                                        >
+                                            취소
+                                        </button>
+                                        <button
+                                            className="btn btn-primary"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setSeDay(yetDay);
+                                                setCal(false);
+                                            }}
+                                        >
+                                            확인
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        )}
+                            )}
+                        </div>
                     </div>
-                </div>
-                <hr />
+                    <hr/>
 
                 {/* 성별 원형 차트 */}
-                <h4 className={'mt-5 mb-3'}>방문자 성별</h4>
                 <div className={'d-flex gap-4 justify-content-center align-items-center mb-5 flex-wrap'}>
-                    <div style={{ flex: 4, minWidth: '300px' }}>
+                    <div style={{ flex: 4, minWidth: '250px' }}>
                         {loading ? (
                             <p className={'text-center'}>로딩 중...<br/>잠시만 기다려 주세요</p>
                         ) : (
@@ -159,7 +148,7 @@ function PreGenderCh() {
                             </ResponsiveContainer>
                         )}
                     </div>
-                    <div style={{ flex: 3, minWidth: '200px' }}>
+                    <div style={{ flex: 3, minWidth: '250px' }}>
                         <div className={'mb-3 p-3 bg-light rounded d-flex justify-content-between align-items-center'}>
                             <h5 className={'mb-0'}>총 방문자</h5>
                             <h3 className={'mb-0'} style={{ color: '#FFCD83' }}>
@@ -197,6 +186,7 @@ function PreGenderCh() {
                 </div>
             </div>
         </div>
+        </>
     );
 }
 export default PreGenderCh

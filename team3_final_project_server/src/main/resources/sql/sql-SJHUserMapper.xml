@@ -5,9 +5,9 @@
 <mapper namespace="com.example.team3_final_project_server.SimJiHyun.mapper.UserMapper">
 
 <!--아이디로 사용자 조회 (로그인용)-->
-  <select id="findByUserId" resultType="com.example.team3_final_project_server.dto.UserDTO" parameterType="String">
-    SELECT * FROM user WHERE user_id = #{userId}
-  </select>
+<!--  <select id="findByUserId" resultType="com.example.team3_final_project_server.dto.UserDTO" parameterType="String">-->
+<!--    SELECT * FROM user WHERE user_id = #{userId}-->
+<!--  </select>-->
 
 <!--이메일로 사용자 존재 여부 확인-->
   <select id="existsByUserEmail" resultType="boolean">
@@ -40,34 +40,34 @@
     update user set ${field} = #{value} where user_id = #{userId}
   </update>
 
-  <!--  조인용 map-->
-  <resultMap id="ResvJoinRestMapSJH" type="com.example.team3_final_project_server.dto.join.ResvJoinRestDTO">
-    <association property="reservation" javaType="com.example.team3_final_project_server.dto.ReservationDTO">
-      <result column="reservation_idx" property="reservationIdx"/>
-      <result column="user_idx" property="userIdx"/>
-      <result column="rsv_people" property="rsvPeople"/>
-      <result column="rsv_date" property="rsvDate"/>
-      <result column="rsv_time" property="rsvTime"/>
-      <result column="rsv_come_datetime" property="rsvComeDatetime"/>
-      <result column="rsv_cancel_datetime" property="rsvCancelDatetime"/>
-    </association>
+<!--  &lt;!&ndash;  조인용 map&ndash;&gt;-->
+<!--  <resultMap id="ResvJoinRestMapSJH" type="com.example.team3_final_project_server.dto.join.ResvJoinRestDTO">-->
+<!--    <association property="reservation" javaType="com.example.team3_final_project_server.dto.ReservationDTO">-->
+<!--      <result column="reservation_idx" property="reservationIdx"/>-->
+<!--      <result column="user_idx" property="userIdx"/>-->
+<!--      <result column="rsv_people" property="rsvPeople"/>-->
+<!--      <result column="rsv_date" property="rsvDate"/>-->
+<!--      <result column="rsv_time" property="rsvTime"/>-->
+<!--      <result column="rsv_come_datetime" property="rsvComeDatetime"/>-->
+<!--      <result column="rsv_cancel_datetime" property="rsvCancelDatetime"/>-->
+<!--    </association>-->
 
-    <association property="restaurant" javaType="com.example.team3_final_project_server.dto.RestaurantDTO">
-      <result column="res_idx" property="resIdx"/>
-      <result column="res_name" property="resName"/>
-    </association>
-  </resultMap>
+<!--    <association property="restaurant" javaType="com.example.team3_final_project_server.dto.RestaurantDTO">-->
+<!--      <result column="res_idx" property="resIdx"/>-->
+<!--      <result column="res_name" property="resName"/>-->
+<!--    </association>-->
+<!--  </resultMap>-->
 
-  <!--  예약 리스트 가져오기-->
-  <select id="userReservation" parameterType="int" resultMap="ResvJoinRestMapSJH">
-    select rsv.reservation_idx, rsv.user_idx, rsv.rsv_people, rsv.rsv_date, rsv.rsv_time,
-    rsv.rsv_come_datetime, rsv.rsv_cancel_datetime, res.res_idx, res.res_name
-    from reservation as rsv
-    join restaurant as res
-    on rsv.res_idx = res.res_idx
-    where rsv.user_idx=#{userIdx}
-    order by rsv.rsv_date desc;
-  </select>
+<!--  &lt;!&ndash;  예약 리스트 가져오기&ndash;&gt;-->
+<!--  <select id="userReservation" parameterType="int" resultMap="ResvJoinRestMapSJH">-->
+<!--    select rsv.reservation_idx, rsv.user_idx, rsv.rsv_people, rsv.rsv_date, rsv.rsv_time,-->
+<!--    rsv.rsv_come_datetime, rsv.rsv_cancel_datetime, res.res_idx, res.res_name-->
+<!--    from reservation as rsv-->
+<!--    join restaurant as res-->
+<!--    on rsv.res_idx = res.res_idx-->
+<!--    where rsv.user_idx=#{userIdx}-->
+<!--    order by rsv.rsv_date desc;-->
+<!--  </select>-->
 
   <!--  조인용 map-->
   <resultMap id="ResvRestMenuJoinMap" type="com.example.team3_final_project_server.dto.join.ResvRestMenuJoinDTO">
@@ -79,21 +79,21 @@
       <result column="rsv_time" property="rsvTime"/>
     </association>
 
-    <association property="restaurant" javaType="com.example.team3_final_project_server.dto.RestaurantDTO">
-      <result column="res_name" property="resName"/>
-      <result column="res_address1" property="resAddress1"/>
-      <result column="res_address2" property="resAddress2"/>
-      <result column="res_introduce" property="resIntroduce"/>
-      <result column="res_lat" property="resLat"/>
-      <result column="res_lng" property="resLng"/>
-    </association>
+<!--    <association property="restaurant" javaType="com.example.team3_final_project_server.dto.RestaurantDTO">-->
+<!--      <result column="res_name" property="resName"/>-->
+<!--      <result column="res_address1" property="resAddress1"/>-->
+<!--      <result column="res_address2" property="resAddress2"/>-->
+<!--      <result column="res_introduce" property="resIntroduce"/>-->
+<!--      <result column="res_lat" property="resLat"/>-->
+<!--      <result column="res_lng" property="resLng"/>-->
+<!--    </association>-->
 
-    <association property="menu" javaType="com.example.team3_final_project_server.dto.MenuDTO">
-      <result column="menu_name" property="menuName"/>
-      <result column="menu_price" property="menuPrice"/>
-      <result column="menu_explanation" property="menuExplanation"/>
-    </association>
-  </resultMap>
+<!--    <association property="menu" javaType="com.example.team3_final_project_server.dto.MenuDTO">-->
+<!--      <result column="menu_name" property="menuName"/>-->
+<!--      <result column="menu_price" property="menuPrice"/>-->
+<!--      <result column="menu_explanation" property="menuExplanation"/>-->
+<!--    </association>-->
+<!--  </resultMap>-->
 
   <!--  예약 상세 정보 가져오기-->
   <select id="getBook" parameterType="int" resultMap="ResvRestMenuJoinMap">
@@ -108,12 +108,12 @@
     and menu.menu_name = "name";
   </select>
 
-  <!--  예약 취소하기-->
-  <update id="cancelBook" parameterType="int">
-    update reservation
-    set rsv_cancel_datetime = now()
-    where reservation_idx = #{reservationIdx};
-  </update>
+<!--  &lt;!&ndash;  예약 취소하기&ndash;&gt;-->
+<!--  <update id="cancelBook" parameterType="int">-->
+<!--    update reservation-->
+<!--    set rsv_cancel_datetime = now()-->
+<!--    where reservation_idx = #{reservationIdx};-->
+<!--  </update>-->
 
 
 </mapper>

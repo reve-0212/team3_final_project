@@ -1,5 +1,5 @@
 import {useNavigate} from "react-router-dom";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import WaBanner from "../KimSangMin/WaBanner.jsx";
 import {
     DndContext,
@@ -17,28 +17,7 @@ import {
 import { GripVertical } from "lucide-react";
 import { CSS } from "@dnd-kit/utilities";
 import ReBanner from "../KimSangMin/ReBanner.jsx";
-
-// 더미
-const dumiList = [
-    {
-        id: 1,
-        name: '김치찌개',
-        price: 8000,
-        description: '진한 국물의 한국 전통 찌개입니다.',
-        imageUrl: 'https://i.namu.wiki/i/xL-2HW3J4OiXkmNKUw_W6cdP00Mn82IyUM0Vh7FQtTZLSo-dglgtvr2s0X4f2JyhB-lhI_2Szfe5Rv9KBC6sR3NaTQorLxN8C-tx_IZoufEqsS6AsL3KMwfIMQ_tFzT-P2FXIomZJRMUl7sKhRTN_Q.webp',
-        hidden: false,
-        soldOut: false
-    },
-    {
-        id: 2,
-        name: '불고기',
-        price: 12000,
-        description: '달콤한 간장 소스에 재운 소고기 요리입니다.',
-        imageUrl: 'https://i.namu.wiki/i/9J4ompBW5dVO8tWN6b_FiQom3Zp0MtjVAbXt3RRZkBw0k18x66Mp0kI9YufnaMiK67FMu00n1pkw60GRVQadHtJiS38NOw-ld71BO0MqmphfFoqEVQ0ESwgGgepXy9-7aov7aJS93WJq_MFA4YvpXA.webp',
-        hidden: false,
-        soldOut: false
-    },
-];
+import axios from "axios";
 
 function SortableItem({ item, onCheck, checked }) {
     const {
@@ -113,8 +92,20 @@ function SortableItem({ item, onCheck, checked }) {
 
 function CeoMenuListEdit() {
     const navigate = useNavigate();
+    const [menuList, setMenuList] = useState([]);
+    // 체크된 메뉴 ID들 (숨김/품절)
+    const [selectedIds, setSelectedIds] = useState([]);
 
-    const [menuList, setMenuList] = useState(dumiList);
+    // 데이터 받아오기
+    useEffect(() => {
+        axios.get('http://localhost:8080/menu/list')
+            .then((response) => {
+                setMenuList(response.data);
+            })
+            .catch((err) => {
+                console.log("메뉴 리스트 데이터 불러오기 실패", err);
+            });
+    }, []);
 
     // 메뉴 순서 수정(드래그)
     const sensors = useSensors(
@@ -147,9 +138,6 @@ function CeoMenuListEdit() {
         console.log("순서 저장할 데이터:", newOrder);
         // 나중에 이 부분만 axios.post로 바꾸면 됨
     }
-
-    // 체크된 메뉴 ID들 (숨김/품절)
-    const [selectedIds, setSelectedIds] = useState([]);
 
     // 체크박스 선택/해제 (숨김/품절)
     const handleCheck = (menuId) => {

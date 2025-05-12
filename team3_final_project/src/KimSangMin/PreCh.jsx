@@ -78,7 +78,7 @@ function PreCh() {
         <div>
           <div>
             <div className={'d-flex align-items-center gap-3 flex-wrap mb-4'}>
-              <h2 className={'waiting-chart-title'}>매출 통계</h2>
+              <h2 className={'waiting-chart-title ms-3'}>메뉴별 판매량</h2>
               <hr/>
               <div
                   className={'date-box d-flex align-items-center justify-content-center ms-3'}
@@ -127,7 +127,6 @@ function PreCh() {
             <hr/>
 
             {/* 메뉴별 판매량 바 차트 */}
-            <h4 className={'mt-5 mb-3'}>메뉴별 판매량</h4>
             <div className={'d-flex gap-4 justify-content-center align-items-center mb-5 flex-wrap'}>
               <div style={{flex: 4, minWidth: '300px'}}>
                 {loading ? (

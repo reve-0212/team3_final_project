@@ -89,9 +89,59 @@
 
 <!--    메뉴 페이지-->
 
-    <select id="selectMenuList" resultType="map">
-        SELECT *
+<!--    메뉴 리스트 -->
+    <select id="selectMenuList" resultType="com.example.team3_final_project_server.dto.MenuDTO">
+        SELECT
+            menu_idx AS menuIdx,
+            res_idx AS resIdx,
+            menu_name AS menuName,
+            menu_price AS menuPrice,
+            menu_explanation AS menuExplanation,
+            menu_image AS menuImage,
+            menu_hidden AS menuHidden,
+            menu_sold_out AS menuSoldOut,
+            menu_sort AS menuSort
+        FROM menu
+        WHERE res_idx = #{resIdx}
+        ORDER BY menu_sort ASC
+    </select>
+
+<!--    메뉴 리스트 페이지에서 숨기기 해제-->
+    <update id="updateUnhidden">
+        UPDATE menu
+        SET menu_hidden = #{menuHidden}
+        WHERE menu_idx = #{menuIdx}
+    </update>
+
+<!--    메뉴 리스트 페이지에서 품절 해제-->
+    <update id="updateUnSoldOut">
+        UPDATE menu
+        SET menu_sold_out = #{menuSoldOut}
+        WHERE menu_idx = #{menuIdx}
+    </update>
+
+<!--    새 메뉴 등록-->
+    <insert id="newMenu" parameterType="com.example.team3_final_project_server.dto.MenuDTO">
+        INSERT INTO menu
+            (res_idx, menu_name, menu_price, menu_explanation, menu_image, menu_hidden, menu_sold_out, menu_sort)
+        VALUES
+            (#{resIdx}, #{menuName}, #{menuPrice}, #{menuExplanation}, #{menuImage}, #{menuHidden}, #{menuSoldOut}, #{menuSort})
+    </insert>
+
+    <select id="selectMaxMenuSort" resultType="int">
+        SELECT
+            IFNULL(MAX(menu_sort), 0)
         FROM menu
         WHERE res_idx = #{resIdx}
     </select>
+
+<!--    메뉴 리스트 수정 -->
+    <update id="updateMenuList">
+        UPDATE menu
+        SET
+            menu_sort = #{menuSort}
+            menu_hidden = #{menuHidden}
+            menu_sold_out = #{menuSoldOut}
+        WHERE menu_idx = #{menuIdx}
+    </update>
 </mapper>

@@ -1,9 +1,10 @@
-package com.example.team3_final_project_server.JangDaJung;
+package com.example.team3_final_project_server.JangDaJung.controller;
 
+import com.example.team3_final_project_server.JangDaJung.JDJService;
+import com.example.team3_final_project_server.dto.MenuDTO;
 import com.example.team3_final_project_server.dto.ReservationHistoryDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,18 +15,18 @@ import java.util.Map;
 @RequestMapping("/api/history")
 @RequiredArgsConstructor
 @CrossOrigin(origins ="http://localhost:5173")
-public class JDJController {
+public class HistoryController {
 
     @Autowired
     private JDJService jdjService;
 
-//    통계 페이지
+//    ------ 통계 페이지
 
 //    예약하기 -> 히스토리 테이블에 저장
-    @PostMapping("/booking")
+    @PostMapping("/save")
     public ResponseEntity<String> bookReservation(@RequestBody List<ReservationHistoryDTO> historyList) {
-        jdjService.bookReservation(historyList);
-        return ResponseEntity.ok("예약이 완료되었습니다.");
+        jdjService.saveHistories(historyList);
+        return ResponseEntity.ok("히스토리 저장 완료");
     }
 
     // 기간별 조회 API
@@ -69,12 +70,6 @@ public class JDJController {
         System.out.println("resIdx = " + resIdx);
         return jdjService.getTeamCountByHour(startDate, endDate, resIdx);
     }
-
-////    메뉴 페이지
-//    @GetMapping("/menuList")
-//    public void selectMenuList(@RequestParam int resIdx) {
-//        jdjService.selectMenuList(resIdx);
-//    }
 
 //  @GetMapping("/api/dummy/insert")
 //  public String insertDummyData() {
