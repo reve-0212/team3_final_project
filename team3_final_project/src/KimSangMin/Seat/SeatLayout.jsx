@@ -10,17 +10,14 @@ const SeatLayout = () => {
 
     // 좌석선택기능
     const hSeat = (seatId) => {
-        setSeatSelect((prevSeatSelect) =>{
-            if (prevSeatSelect.includes(seatId)){
+        setSeatSelect((prevSeatSelect) => {
+            if (prevSeatSelect.includes(seatId)) {
                 return prevSeatSelect.filter((id) => id !== seatId);
+            } else {
+                return [...prevSeatSelect, seatId];
             }
-            else{
-                return [...prevSeatSelect,seatId]
-            }
-        })
-    }
-
-
+        });
+    };
 
     useEffect(() => {
         if (resIdx) {
@@ -58,16 +55,19 @@ const SeatLayout = () => {
                     className="seat-layout"
                     style={{
                         position: "relative",
-                        width: "71%",         // 전체 화면의 80% 너비로 설정
-                        maxWidth: "800px",    // 최대 너비 제한
+                        width: "71%",
+                        maxWidth: "800px",
                         height: "350px",
                         border: "1px solid #ddd",
                     }}
                 >
                     {seats.map((seat, index) => {
-                        const isUnavailable = seat.type === "창문" || seat.type === "카운터" || seat.type === "입구";
+                        const isUnavailable = seat.type === "창문" || seat.type === "입구";
                         const isSelected = seatSelect.includes(seat.seatId);
                         console.log(`좌석 ID: ${seat.seatId}, 선택 여부: ${isSelected}`);
+
+                        const seatWidth = seat.type === "4인석" ? "80px" : seat.type === "6인석" ? "100px" : "50px";
+                        const seatHeight = seat.type === "6인석" ? "100px" : seat.type === "4인석" ? "80px" : "50px";
 
                         return (
                             <div
@@ -77,25 +77,19 @@ const SeatLayout = () => {
                                     position: "absolute",
                                     left: `${seat.x}px`,
                                     top: `${seat.y}px`,
-                                    width:
-                                        seat.type === "단체석" || seat.type === "단체룸"
-                                            ? "100px"
-                                            : "60px",
-                                    height:
-                                        seat.type === "단체석" || seat.type === "단체룸"
-                                            ? "100px"
-                                            : "60px",
+                                    width: seatWidth,
+                                    height: seatHeight,
                                     borderRadius: seat.shape === "square" ? "50%" : "0%",
                                     backgroundColor: isSelected ? "#32d139" : "transparent",
                                     backgroundImage: `url(${seat.image})`,
-                                    backgroundSize: "cover",
+                                    backgroundSize: "contain",  // 이미지 크기를 부모 영역에 맞게 설정
+                                    backgroundPosition: "center",  
                                     backgroundBlendMode: "overlay",
                                     display: "flex",
                                     alignItems: "center",
                                     justifyContent: "center",
                                     textAlign: "center",
                                     fontSize: "12px",
-                                    border: "1px solid #999",
                                     color: "white",
                                     cursor: isUnavailable ? "not-allowed" : "pointer",  // 클릭 불가능한 좌석은 커서 변경
                                 }}
@@ -109,7 +103,6 @@ const SeatLayout = () => {
             ) : (
                 <p>좌석 정보가 없습니다.</p>
             )}
-
         </div>
     );
 };

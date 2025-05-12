@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+// import {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import ReBanner from "./ReBanner.jsx";
 import axios from "axios";
@@ -205,38 +205,38 @@ function PreReSet() {
     }
   }
   // 데이터 불러오기
-  useEffect(() => {
-    const resIdx = 1;
-    axios.get(`http://localhost:8080/pre/getRest/${resIdx}`,{
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`
-      }
-    })
-        .then( (response) => {
-          const responseData = response.data;
-          const data = responseData.data;
-
-          setRestData({
-            Name: data.resName,
-            Call: data.resCall,
-            Address1: data.resAddress1,
-            Address2: data.resAddress2,
-            Introduce: data.resIntroduce,
-            resTime: data.resReserveTime?.split(",") || [],
-          });
-          setImg([data.resImage1, data.resImage2, data.resImage3]);
-          setDongOption(data.resAddress2);
-
-
-          console.log(response.data);
-
-        })
-        .catch((error) => {
-          console.log("데이터 조회 실패",error)
-          alert("데이터를 불러오는데 실패했습니다.")
-        })
-  }, []);
+  // useEffect(() => {
+  //   const resIdx = 1;
+  //   axios.get(`http://localhost:8080/pre/getRest/${resIdx}`,{
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       'Authorization': `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`
+  //     }
+  //   })
+  //       .then( (response) => {
+  //         const responseData = response.data;
+  //         const data = responseData.data;
+  //
+  //         setRestData({
+  //           Name: data.resName,
+  //           Call: data.resCall,
+  //           Address1: data.resAddress1,
+  //           Address2: data.resAddress2,
+  //           Introduce: data.resIntroduce,
+  //           resTime: data.resReserveTime?.split(",") || [],
+  //         });
+  //         setImg([data.resImage1, data.resImage2, data.resImage3]);
+  //         setDongOption(data.resAddress2);
+  //
+  //
+  //         console.log(response.data);
+  //
+  //       })
+  //       .catch((error) => {
+  //         console.log("데이터 조회 실패",error)
+  //         alert("데이터를 불러오는데 실패했습니다.")
+  //       })
+  // }, []);
 
 
   return (

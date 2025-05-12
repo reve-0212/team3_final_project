@@ -20,7 +20,7 @@ public class PreController {
     private PreService preService;
 
 //    좌석저장
-    @PostMapping("/seats/save")
+    @PostMapping("/pre/seats/save")
     public ResponseEntity<PreResponse> saveSeats (@RequestBody List<SeatDTO> seats) {
         boolean success = preService.saveSeats(seats);
 
