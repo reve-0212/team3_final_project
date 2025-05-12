@@ -111,148 +111,161 @@ function PastDateReservation() {
   };
 
   return (
-      <div className={'ceo-main'}>
+      <>
         <ReBanner />
-        <div className={'date-range-container'}  style={{ marginTop: '10vh', marginLeft: '200px' }}>
-          <h2 className={'past-waiting-title mb-4'}>예약 내역</h2>
-          <hr />
-          <div className={'d-flex align-items-center justify-content-center gap-3 mt-4'}>
-            {/*    날짜 범위 표시 */}
-            <div
-                className={'date-box d-flex align-items-center justify-content-center'}
-                style={{ width: '300px', position: 'relative' }}
-                onClick={() => {
-                  setShowCalendar(true);
-                  setReservationTempRange(reservationConfirmedRange) // 열 때는 현재 적용된 값으로 세팅
-                }}
-            >
-              <p style={{ margin: 0 }}>
-                {reservationConfirmedRange.from && reservationConfirmedRange.to
-                    ? `${formatDate(reservationConfirmedRange.from)} ~ ${formatDate(reservationConfirmedRange.to)}`
-                    : '날짜 선택'}
-              </p>
-              {/* 달력 */}
-              {showCalendar && (
-                  <div className={'calendar-popup'}
-                       onClick={(e) => e.stopPropagation()}
-                  >
-                    <DayPicker
-                        mode="range"
-                        selected={reservationTempRange}
-                        onSelect={setReservationTempRange}
-                        pagedNavigation
-                    />
-                    <div className="d-flex justify-content-end mt-3" style={{ gap: '10px' }}>
-                      <button
-                          className="btn btn-secondary"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setShowCalendar(false)}}>취소</button>
-                      <button
-                          className="btn btn-primary"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setReservationConfirmedRange(reservationTempRange); // 최종 확정
-                            setShowCalendar(false);
-                          }}
-                      >
-                        확인
-                      </button>
-                    </div>
-                  </div>
-              )}
-            </div>
-
-            {/*    검색창 */}
-            <div className={'search-box d-flex align-items-center'} style={{ borderRadius: '10px', overflow: 'hidden', width: '500px', paddingRight: '5px' }}>
-              <select
-                  value={searchType}
-                  onChange={(e) => setSearchType(e.target.value)}
-                  className={'form-select text-center'}
-                  style={{ border: 'none', width: '30%', borderRadius: '0', margin: '0.3vw', height: '100%' }}
+        <div style={{
+          marginLeft: "250px",
+          paddingTop: "8rem",
+          paddingLeft: "1rem",
+          width: "calc(100% - 200px)",
+          minHeight: "100vh",
+        }} className={'container'}>
+          <div>
+            <h2 className={'past-waiting-title mb-4'}>예약 내역</h2>
+            <hr/>
+            <div className={'d-flex align-items-center justify-content-center gap-3 mt-4'}>
+              {/*    날짜 범위 표시 */}
+              <div
+                  className={'date-box d-flex align-items-center justify-content-center'}
+                  style={{width: '300px', position: 'relative'}}
+                  onClick={() => {
+                    setShowCalendar(true);
+                    setReservationTempRange(reservationConfirmedRange) // 열 때는 현재 적용된 값으로 세팅
+                  }}
               >
-                <option value="name">예약자명</option>
-                <option value="phone">예약자 전화번호</option>
-              </select>
-              <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder={'검색어를 입력하세요'}
-                  onKeyDown={handleKeyDown}
-                  className={'form-control'}
-                  style={{ border: 'none', width: '70%', height: '100%' }}
-              />
-              <button className="btn" style={{ height: '3.5vw', whiteSpace: 'nowrap' }} onClick={handleSearchButtonClick}>검색</button>
-            </div>
-          </div>
-
-          <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className={'form-select text-center status-select mt-4'}
-              style={{ border: 'none', borderRadius: '0', height: '100%' }}
-          >
-            <option value="예약상태">예약상태</option>
-            <option value="신청">신청</option>
-            <option value="완료">완료</option>
-            <option value="취소">취소</option>
-          </select>
-          {/*    리스트 출력부분 */}
-          <div className={'mt-2'}>
-            <div className={'table-responsive'} style={{ overflowX: 'auto' }}>
-              <table className={'table me-3'} style={{ tableLayout: 'fixed', width: '100%' }}>
-                <colgroup>
-                  <col style={{ width: '10%' }} />
-                  <col style={{ width: '15%' }} />
-                  <col style={{ width: '10%' }} />
-                  <col style={{ width: '5%' }} />
-                  <col style={{ width: '15%' }} />
-                  <col style={{ width: '15%' }} />
-                  <col style={{ width: '15%' }} />
-                  <col style={{ width: '15%' }} />
-                </colgroup>
-                <thead className={'thead-light'}>
-                <tr>
-                  <th>상태</th>
-                  <th>이용일</th>
-                  <th>예약자</th>
-                  <th>인원</th>
-                  <th>전화번호</th>
-                  <th>신청일시</th>
-                  <th>완료일시</th>
-                  <th>취소일시</th>
-                </tr>
-                </thead>
-                <tbody>
-                {filteredData.length > 0 ? (
-                    filteredData.map((item, idx) => (
-                        <tr key={idx}>
-                          <td>
-                            <div className={getStatusColor(item.status)}>{item.status}</div>
-                          </td>
-                          <td>{item.reservationDate}</td>
-                          <td>{item.name}</td>
-                          <td>{item.people}</td>
-                          <td>{item.phone}</td>
-                          <td>{item.applicationDate}</td>
-                          <td>{item.completedDate || ''}</td>
-                          <td>{item.cancelDate || ''}</td>
-                        </tr>
-                    ))
-                ) : (
-                    <tr>
-                      <td colSpan="8" className="text-center">
-                        검색 결과가 없습니다.
-                      </td>
-                    </tr>
+                <p style={{margin: 0}}>
+                  {reservationConfirmedRange.from && reservationConfirmedRange.to
+                      ? `${formatDate(reservationConfirmedRange.from)} ~ ${formatDate(reservationConfirmedRange.to)}`
+                      : '날짜 선택'}
+                </p>
+                {/* 달력 */}
+                {showCalendar && (
+                    <div className={'calendar-popup'}
+                         onClick={(e) => e.stopPropagation()}
+                    >
+                      <DayPicker
+                          mode="range"
+                          selected={reservationTempRange}
+                          onSelect={setReservationTempRange}
+                          pagedNavigation
+                      />
+                      <div className="d-flex justify-content-end mt-3" style={{gap: '10px'}}>
+                        <button
+                            className="btn btn-secondary"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setShowCalendar(false)
+                            }}>취소
+                        </button>
+                        <button
+                            className="btn btn-primary"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setReservationConfirmedRange(reservationTempRange); // 최종 확정
+                              setShowCalendar(false);
+                            }}
+                        >
+                          확인
+                        </button>
+                      </div>
+                    </div>
                 )}
-                </tbody>
-              </table>
+              </div>
+
+              {/*    검색창 */}
+              <div className={'search-box d-flex align-items-center'}
+                   style={{borderRadius: '10px', overflow: 'hidden', width: '500px', paddingRight: '5px'}}>
+                <select
+                    value={searchType}
+                    onChange={(e) => setSearchType(e.target.value)}
+                    className={'form-select text-center'}
+                    style={{border: 'none', width: '30%', borderRadius: '0', margin: '0.3vw', height: '100%'}}
+                >
+                  <option value="name">예약자명</option>
+                  <option value="phone">예약자 전화번호</option>
+                </select>
+                <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder={'검색어를 입력하세요'}
+                    onKeyDown={handleKeyDown}
+                    className={'form-control'}
+                    style={{border: 'none', width: '70%', height: '100%'}}
+                />
+                <button className="btn" style={{height: '3.5vw', whiteSpace: 'nowrap'}}
+                        onClick={handleSearchButtonClick}>검색
+                </button>
+              </div>
+            </div>
+
+            <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className={'form-select text-center status-select mt-4'}
+                style={{border: 'none', borderRadius: '0', height: '100%'}}
+            >
+              <option value="예약상태">예약상태</option>
+              <option value="신청">신청</option>
+              <option value="완료">완료</option>
+              <option value="취소">취소</option>
+            </select>
+            {/*    리스트 출력부분 */}
+            <div className={'mt-2'}>
+              <div>
+                <table className={'table me-3'} style={{tableLayout: 'fixed', width: '100%'}}>
+                  <colgroup>
+                    <col style={{width: '10%'}}/>
+                    <col style={{width: '15%'}}/>
+                    <col style={{width: '10%'}}/>
+                    <col style={{width: '5%'}}/>
+                    <col style={{width: '15%'}}/>
+                    <col style={{width: '15%'}}/>
+                    <col style={{width: '15%'}}/>
+                    <col style={{width: '15%'}}/>
+                  </colgroup>
+                  <thead className={'thead-light'}>
+                  <tr>
+                    <th>상태</th>
+                    <th>이용일</th>
+                    <th>예약자</th>
+                    <th>인원</th>
+                    <th>전화번호</th>
+                    <th>신청일시</th>
+                    <th>완료일시</th>
+                    <th>취소일시</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {filteredData.length > 0 ? (
+                      filteredData.map((item, idx) => (
+                          <tr key={idx}>
+                            <td>
+                              <div className={getStatusColor(item.status)}>{item.status}</div>
+                            </td>
+                            <td>{item.reservationDate}</td>
+                            <td>{item.name}</td>
+                            <td>{item.people}</td>
+                            <td>{item.phone}</td>
+                            <td>{item.applicationDate}</td>
+                            <td>{item.completedDate || ''}</td>
+                            <td>{item.cancelDate || ''}</td>
+                          </tr>
+                      ))
+                  ) : (
+                      <tr>
+                        <td colSpan="8" className="text-center">
+                          검색 결과가 없습니다.
+                        </td>
+                      </tr>
+                  )}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </>
   );
 }
 

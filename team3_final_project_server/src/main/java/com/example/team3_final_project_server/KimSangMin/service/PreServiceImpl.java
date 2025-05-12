@@ -75,8 +75,7 @@ public class PreServiceImpl implements PreService {
 
 //    가게 정보 조회
     @Override
-    public boolean getRest(int resIdx, RestaurantDTO rest) {
-       int result = preMapper.getRest(resIdx,rest);
-        return result > 0;
+    public RestaurantDTO getRest(int resIdx) {
+        return preMapper.getRest(resIdx);
     }
 }

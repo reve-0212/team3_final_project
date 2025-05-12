@@ -61,77 +61,85 @@ const reviewData = [
 
 function PreMain() {
     return (
-        <div className={'ceo-main'} style={{ marginTop: '10vh'}}>
-            < ReBanner />
-            <div className={'CeoMain-content'}>
-                <h2 className={'CeoMain-title mb-4'}>{store.storeName}</h2>
-                <div className={'row g-4'}>
-                    {/*  카드 1 - 예약 수 */}
-                    <div className={'col-12 col-md-6'}>
-                        <Link to="/pre/PreCh" className={'text-decoration-none'}>
-                        <div className={'custom-card'}>
-                            <div className={'card-header-text'}>오늘 예약 수</div>
-                            <div className={'chart-wrapper'}>
-                                <ResponsiveContainer width={'100%'} height={150}>
-                                    <BarChart data={waitingData} barCategoryGap={"5%"}>
-                                        <XAxis
-                                            dataKey="time"
-                                            interval={0}
-                                            tick={{ fontSize: 10 }}
-                                            height={40}
-                                        />
-                                        <YAxis />
-                                        <Tooltip />
-                                        <Bar dataKey={'count'} fill={'#5a3a2e'} barSize={12} />
-                                    </BarChart>
-                                </ResponsiveContainer>
-                                <p className={'chart-bottom-text'}>총 {totalWaitingCount}건</p>
-                            </div>
+        <div>
+            <ReBanner/>
+            <div className={'ceo-main'} style={{marginTop: '10vh'}}>
+                <div className={'CeoMain-content'}>
+                    <h2 className={'CeoMain-title mb-4'}>{store.storeName}</h2>
+                    <div className={'row g-4'}>
+                        {/*  카드 1 - 예약 수 */}
+                        <div className={'col-12 col-md-6'}>
+                            <Link to="/pre/PreCh" className={'text-decoration-none'}>
+                                <div className={'custom-card'}>
+                                    <div className={'card-header-text'}>오늘 예약 수</div>
+                                    <div className={'chart-wrapper'}>
+                                        <ResponsiveContainer width={'100%'} height={150}>
+                                            <BarChart data={waitingData} barCategoryGap={"5%"}>
+                                                <XAxis
+                                                    dataKey="time"
+                                                    interval={0}
+                                                    tick={{fontSize: 10}}
+                                                    height={40}
+                                                />
+                                                <YAxis/>
+                                                <Tooltip/>
+                                                <Bar dataKey={'count'} fill={'#5a3a2e'} barSize={12}/>
+                                            </BarChart>
+                                        </ResponsiveContainer>
+                                        <p className={'chart-bottom-text'}>총 {totalWaitingCount}건</p>
+                                    </div>
+                                </div>
+                            </Link>
                         </div>
-                        </Link>
-                    </div>
-                    {/* 카드 2-리뷰 */}
-                    {/* 카드 2 - 리뷰 */}
-                    <div className={'col-12 col-md-6'}>
-                        <Link to="/pre/PreRe" style={{textDecoration:'none',color:'black'}}>
-                            <div className={'custom-card'}>
-                                <div className={'card-header-text'}>리뷰</div>
-                                <div className={'d-flex align-items-center mb-4'}>
-                                    <div className={'text-center me-4'} style={{ minWidth: '80px'}}>
-                                        <p style={{ fontSize: '1.2rem', margin: 0 }}>⭐️</p>
-                                        <p className={'review-star-score'} style={{ fontSize: '2rem', margin: 0 }}>4.3</p>
-                                    </div>
-                                    <div className={'flex-grow-1'}>
-                                        <ul className={'review-score-list'}>
-                                            {reviewScoreData.map((item) => {
-                                                const percent = totalReviews > 0 ? (item.count / totalReviews) * 100 : 0;
-                                                return (
-                                                    <li key={item.score} className={'d-flex align-items-center justify-content-between mb-2'}>
-                                                        <span style={{ width: '30px' }}>{item.score}점</span>
-                                                        <div style={{ flexBasis: "60%", margin: "0 0.5rem" }}>
-                                                            <div className={'progress'} style={{ height: '8px' }}>
-                                                                <div className={'progress-bar bg-warning'} style={{ width: `${percent}%`}}></div>
+                        {/* 카드 2-리뷰 */}
+                        {/* 카드 2 - 리뷰 */}
+                        <div className={'col-12 col-md-6'}>
+                            <Link to="/pre/PreRe" style={{textDecoration: 'none', color: 'black'}}>
+                                <div className={'custom-card'}>
+                                    <div className={'card-header-text'}>리뷰</div>
+                                    <div className={'d-flex align-items-center mb-4'}>
+                                        <div className={'text-center me-4'} style={{minWidth: '80px'}}>
+                                            <p style={{fontSize: '1.2rem', margin: 0}}>⭐️</p>
+                                            <p className={'review-star-score'}
+                                               style={{fontSize: '2rem', margin: 0}}>4.3</p>
+                                        </div>
+                                        <div className={'flex-grow-1'}>
+                                            <ul className={'review-score-list'}>
+                                                {reviewScoreData.map((item) => {
+                                                    const percent = totalReviews > 0 ? (item.count / totalReviews) * 100 : 0;
+                                                    return (
+                                                        <li key={item.score}
+                                                            className={'d-flex align-items-center justify-content-between mb-2'}>
+                                                            <span style={{width: '30px'}}>{item.score}점</span>
+                                                            <div style={{flexBasis: "60%", margin: "0 0.5rem"}}>
+                                                                <div className={'progress'} style={{height: '8px'}}>
+                                                                    <div className={'progress-bar bg-warning'}
+                                                                         style={{width: `${percent}%`}}></div>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <span style={{ width: '50px', textAlign: 'right' }}>{item.count}개</span>
-                                                    </li>
-                                                );
-                                            })}
-                                        </ul>
+                                                            <span style={{
+                                                                width: '50px',
+                                                                textAlign: 'right'
+                                                            }}>{item.count}개</span>
+                                                        </li>
+                                                    );
+                                                })}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div className={'chart-wrapper mt-4'}>
+                                        <ResponsiveContainer width={'100%'} height={150}>
+                                            <BarChart data={reviewData} barCategoryGap={'20%'}>
+                                                <XAxis dataKey={'month'}/>
+                                                <YAxis/>
+                                                <Tooltip/>
+                                                <Bar dataKey={'reviews'} fill={'#5a3a2e'} barSize={12}/>
+                                            </BarChart>
+                                        </ResponsiveContainer>
                                     </div>
                                 </div>
-                                <div className={'chart-wrapper mt-4'}>
-                                    <ResponsiveContainer width={'100%'} height={150}>
-                                        <BarChart data={reviewData} barCategoryGap={'20%'}>
-                                            <XAxis dataKey={'month'} />
-                                            <YAxis />
-                                            <Tooltip />
-                                            <Bar dataKey={'reviews'} fill={'#5a3a2e'} barSize={12} />
-                                        </BarChart>
-                                    </ResponsiveContainer>
-                                </div>
-                            </div>
-                        </Link>
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -1,28 +1,39 @@
 import {Link, useNavigate} from "react-router-dom";
-import axios from "axios";
+import {logout} from "../simJiHyun/service/ApiService.js";
+import useUserStore from "../stores/useUserStore.jsx";
 
 function ReBanner() {
 
     const nv = useNavigate();
+    const {clearUser} = useUserStore();
+    // const hLogout = () => {
+    //     axios.post("http://localhost:8080/owner/logout", {}, { withCredentials: true })
+    //         .then((response) => {
+    //             const { success, message } = response.data;
+    //             alert("로그아웃 되었습니다.");
+    //
+    //             if(success) {
+    //                 alert(message)
+    //                 nv("/pre/login")
+    //             }
+    //             else {
+    //                 alert("로그아웃 실패")
+    //             }
+    //         })
+    //         .catch( (error) => {
+    //             alert("서버 오류가 발생했습니다" + error)
+    //         })
+    // }
 
-    const hLogout = () => {
-        axios.post("http://localhost:8080/owner/logout", {}, { withCredentials: true })
-            .then((response) => {
-                const { success, message } = response.data;
-                alert("로그아웃 되었습니다.");
+    const handleLogout = () => {
+        const confirmed = window.confirm("로그아웃 하시겠습니까?");
+        if (confirmed) {
+            logout()
+            clearUser();
+            nv("/pre");
+        }
+    };
 
-                if(success) {
-                    alert(message)
-                    nv("/pre/login")
-                }
-                else {
-                    alert("로그아웃 실패")
-                }
-            })
-            .catch( (error) => {
-                alert("서버 오류가 발생했습니다" + error)
-            })
-    }
 
     return (
         <div>
@@ -30,11 +41,10 @@ function ReBanner() {
                 <nav className="navbar navbar-expand-lg navbar-dark"
                      style={{height: '10vh', backgroundColor: '#FFD700'}}>
                     <div className="container-fluid d-flex justify-content-between align-items-center">
-                        <div style={{textAlign: 'center'}} className="text-white fs-1">Logo</div>
-                        <Link to="/pre/login">
-                            <button type={"button"} onClick={hLogout} className={"flex-end"}>로그아웃</button>
+                        <Link className="navbar-brand text-white fs-1 text-align-center" to="/pre/PreMain">
+                            Logo
                         </Link>
-
+                            <button type={"button"} onClick={handleLogout} className={"flex-end"}>로그아웃</button>
                     </div>
                 </nav>
             </div>

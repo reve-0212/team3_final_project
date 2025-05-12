@@ -1,119 +1,157 @@
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import {useNavigate} from 'react-router-dom';
+import {useState} from 'react';
 import axios from 'axios';
 import LoginSignText from "../simJiHyun/LoginSignText.jsx";
 
 function OwnerLogin() {
-    const nv = useNavigate();
+  const nv = useNavigate();
 
-    const [userId, setUserId] = useState("");
-    const [userPass, setUserPass] = useState("");
+  const [userId, setUserId] = useState("");
+  const [userPass, setUserPass] = useState("");
 
-    const hcUserId = (e) => setUserId(e.target.value);
-    const hcUserPass = (e) => setUserPass(e.target.value);
+  const hcUserId = (e) => setUserId(e.target.value);
+  const hcUserPass = (e) => setUserPass(e.target.value);
 
-    const hSubmit = (e) => {
-        e.preventDefault();
+  const hSubmit = (e) => {
+    e.preventDefault();
 
-        const userData = { userId, userPass };
-        console.log(userData);
+    const userData = {userId, userPass};
+    console.log(userData);
 
-        axios.post("http://localhost:8080/pre/login", userData,{
-            headers : {
-                'Content-Type': 'application/json'
-            }})
-            .then((response) => {
-                const { success, message, token } = response.data;  // 서버에서 토큰을 반환받음
 
-                if (success) {
-                    alert(message);
+    // axios.post("http://localhost:8080/owner/login", ownerData , { withCredentials: true })
+    //     .then((response) => {
+    //         const { success, message } = response.data;
+    //
+    //         if(success) {
+    //             alert(message)
+    //             nv("/pre/PreSelect")
+    //         }
+    //         else {
+    //             alert("로그인 실패")
+    //         }
+    //     })
+    //     .catch( (error) => {
+    //         alert("서버 오류가 발생했습니다" + error)
+    //     })
+    axios.post("http://localhost:8080/pre/login", userData, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then((response) => {
+        const {success, message, token} = response.data;  // 서버에서 토큰을 반환받음
 
-                    // JWT 토큰을 로컬 스토리지에 저장
-                    localStorage.setItem('jwtToken', token);
+        if (success) {
+          alert(message);
 
-                    nv("/pre/PreSelect");
-                } else {
-                    alert("로그인 실패");
-                }
-            })
-            .catch((error) => {
-                alert("서버 오류가 발생했습니다: " + error);
-            });
-    };
+          // JWT 토큰을 로컬 스토리지에 저장
+          localStorage.setItem('jwtToken', token);
 
-    return (
-        <div
-            style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                height: "100vh",
-            }}>
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: 'column',
-                    gap: "1rem",
-                    marginTop: "2rem",
-                }}>
-                <div className="fixed-top">
-                    <nav className="navbar navbar-expand-lg navbar-dark"
-                         style={{ height: '10vh', backgroundColor: '#FFD700' }}>
-                        <div className="container-fluid d-flex justify-content-between align-items-center">
-                            <div style={{ textAlign: 'center' }} className="text-white fs-1">Logo</div>
-                        </div>
-                    </nav>
-                </div>
+          nv("/pre/PreSelect");
+        } else {
+          alert("로그인 실패");
+        }
+        axios.get(`http://localhost:8080/jsy/owner/login`, {
+          params: {
+            ownerId: ownerId,
+            ownerPw: ownerPass,
+          },
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`
+          }
+        })
+          .then(res => {
+            console.log(res.data);
+            localStorage.setItem("ACCESS_TOKEN", res.data.accessToken);
+            sessionStorage.setItem("REFRESH_TOKEN", res.data.refreshToken);
+            nv("/pre/PreMain");
+          })
+          .catch((error) => {
+            alert("서버 오류가 발생했습니다: " + error);
+          });
+      };
 
-                <form className={"container"} onSubmit={hSubmit}>
-                    <div className={"row"} style={{ paddingRight: '1rem' }}>
-                        <LoginSignText text={"사장님 로그인"} />
-                    </div>
+  .
+    catch(err => {
+      alert(`로그인 중 오류가 발생했습니다.\n 오류 내용 : ${err}`);
+    })
 
-                    <div className="mt-4">
-                        <label htmlFor="preId" className="form-label">
-                            아이디
-                        </label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="preId"
-                            placeholder="아이디를 입력해주세요"
-                            value={userId}
-                            onChange={hcUserId}
-                            required
-                        />
-                    </div>
-                    <div className="mt-4">
-                        <label htmlFor="prePw" className="form-label">
-                            비밀번호
-                        </label>
-                        <input
-                            type="password"
-                            className="form-control"
-                            id="prePw"
-                            placeholder="비밀번호를 입력해주세요"
-                            value={userPass}
-                            onChange={hcUserPass}
-                            required
-                            style={{ width: '400px' }}
-                        />
-                    </div>
-
-                    <div className={"mt-4 d-flex ms-4 me-4 justify-content-center"}>
-                        <button
-                            type={"submit"}
-                            className={"btn py-3 fw-bold text-light fs-5 flex-fill"}
-                            style={{ backgroundColor: "#FFB74D", maxWidth: "400px" }}
-                        >
-                            로그인
-                        </button>
-                    </div>
-                </form>
+  }
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100vh",
+      }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: 'column',
+          gap: "1rem",
+          marginTop: "2rem",
+        }}>
+        <div className="fixed-top">
+          <nav className="navbar navbar-expand-lg navbar-dark"
+               style={{height: '10vh', backgroundColor: '#FFD700'}}>
+            <div className="container-fluid d-flex justify-content-between align-items-center">
+              <div style={{textAlign: 'center'}} className="text-white fs-1">Logo</div>
             </div>
+          </nav>
         </div>
-    );
+
+        <form className={"container"} onSubmit={hSubmit}>
+          <div className={"row"} style={{paddingRight: '1rem'}}>
+            <LoginSignText text={"사장님 로그인"}/>
+          </div>
+
+          <div className="mt-4">
+            <label htmlFor="preId" className="form-label">
+              아이디
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="preId"
+              placeholder="아이디를 입력해주세요"
+              value={userId}
+              onChange={hcUserId}
+              required
+            />
+          </div>
+          <div className="mt-4">
+            <label htmlFor="prePw" className="form-label">
+              비밀번호
+            </label>
+            <input
+              type="password"
+              className="form-control"
+              id="prePw"
+              placeholder="비밀번호를 입력해주세요"
+              value={userPass}
+              onChange={hcUserPass}
+              required
+              style={{width: '400px'}}
+            />
+          </div>
+
+          <div className={"mt-4 d-flex ms-4 me-4 justify-content-center"}>
+            <button
+              type={"submit"}
+              className={"btn py-3 fw-bold text-light fs-5 flex-fill"}
+              style={{backgroundColor: "#FFB74D", maxWidth: "400px"}}
+            >
+              로그인
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
 }
 
 export default OwnerLogin;

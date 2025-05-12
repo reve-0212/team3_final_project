@@ -6,7 +6,7 @@ import axios from "axios";
 // import PreTimeSet from "./PreTimeSet.jsx";
 // import {Link} from "react-router-dom";
 
-function PreTime() {
+function PreTime({onClose}) {
 
     const wDays = ["월","화","수","목","금","토","일"]
 
@@ -60,36 +60,34 @@ function PreTime() {
 
     return (
         <div
-            style={{
-                marginLeft: '200px',
-                marginTop: '10vh',
-                paddingTop: '2rem',
-                paddingLeft: '1rem',
-                width: 'calc(100% - 200px)',
-                maxWidth: '1000px'
-
-        }}>
+            // style={{
+            //     marginLeft: '200px',
+            //     marginTop: '10vh',
+            //     paddingTop: '2rem',
+            //     paddingLeft: '1rem',
+            //     width: 'calc(100% - 200px)',
+            //     maxWidth: '1000px'
+            // }}
+        >
             <ReBanner/>
-            <div className="d-flex">
-                <Link to="/pre/PreReSet" style={{ textDecoration: "none", color: "black" }}>
-                    <h4 className="text-start me-4">가게정보</h4>
-                </Link>
-                <Link to="/pre/PreTimeSet" style={{ textDecoration: "none", color: "black" }}>
-                    <h4 className="text-start me-4">운영정보</h4>
-                </Link>
-                <Link to="/pre/PreFucn" style={{ textDecoration: "none", color: "black" }}>
-                    <h4>부가기능</h4>
-                </Link>
+            <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                <h4 className="text-start"><strong>운영 시간 설정</strong></h4>
+                <button
+                    type="button"
+                    className="btn btn-outline-secondary btn-sm"
+                    onClick={onClose}
+                >
+                    ← 돌아가기
+                </button>
             </div>
-            <hr/><h4 className="text-start"><strong>운영 시간</strong>
-                <span style={{color:"#FFD727", fontSize: "14px"}}> *필수</span>
-            </h4>
+
+            <hr/>
 
             <form onSubmit={hSubmit}>
-            <div className="mb-4">
-                {input.map((val, index) => {
-                    const stTime = val.startHo && val.startMi ? `${String(val.startHo).padStart(2, '0')}:${String(val.startMi).padStart(2, '0')}` : "미정";
-                    const fiTime = val.endHo && val.endMi ? `${String(val.endHo).padStart(2, '0')}:${String(val.endMi).padStart(2, '0')}` : "미정";
+                <div className="mb-4">
+                    {input.map((val, index) => {
+                        const stTime = val.startHo && val.startMi ? `${String(val.startHo).padStart(2, '0')}:${String(val.startMi).padStart(2, '0')}` : "미정";
+                        const fiTime = val.endHo && val.endMi ? `${String(val.endHo).padStart(2, '0')}:${String(val.endMi).padStart(2, '0')}` : "미정";
                     return (
                         <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
 

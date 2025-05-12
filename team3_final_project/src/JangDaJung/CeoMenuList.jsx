@@ -83,95 +83,135 @@ function CeoMenuList() {
     };
 
     return (
-        <div className={'ceo-menu-main'}>
-          <ReBanner />
-          <div style={{ marginTop: '10vh', marginLeft: '200px', position: 'relative' }}>
-              <h2 className={'new-menu-title mb-4'}>가게 메뉴</h2>
+        <>
+        <ReBanner />
+            <div style={{
+                marginLeft: "250px",
+                paddingTop: "8rem",
+                paddingLeft: "1rem",
+                width: "calc(100% - 200px)",
+                // maxWidth: "1000px",
+                minHeight: "100vh",
+            }} className={'container'}>
+                <div>
 
-              {/*검색창*/}
-              <div className={'menu-search-box d-flex align-items-center'} style={{ borderRadius: '2rem', overflow: 'hidden', width: '500px', paddingRight: '5px', marginLeft: '3rem'}}>
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    onKeyDown={handleKeyDown} // 엔터키 검색 이벤트
-                    placeholder={'검색어를 입력하세요'}
-                    className={'menu-search-input'}
-                    style={{ border: 'none', width: '100%', height: '100%'}}
-                  />
-                  <button className="btn" style={{ height: '3.5vw', whiteSpace: 'nowrap', paddingRight: '2rem' }} onClick={handleSearchButtonClick}>검색</button>
-              </div>
+                    <div className={'d-flex gap-3 justify-content-start align-items-center me-5'}>
+                        <h2 className={'new-menu-title'}>가게 메뉴</h2>
 
-              <hr />
+                        {/*검색창*/}
+                        <div className={'menu-search-box d-flex align-items-center'} style={{
+                            borderRadius: '2rem',
+                            overflow: 'hidden',
+                            width: '500px',
+                            paddingRight: '5px',
+                            marginLeft: '3rem'
+                        }}>
+                            <input
+                                type="text"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                onKeyDown={handleKeyDown} // 엔터키 검색 이벤트
+                                placeholder={'검색어를 입력하세요'}
+                                className={'menu-search-input'}
+                                style={{border: 'none', width: '100%', height: '100%'}}
+                            />
+                            <button className="btn"
+                                    style={{height: '3.5vw', whiteSpace: 'nowrap', paddingRight: '2rem'}}
+                                    onClick={handleSearchButtonClick}>검색
+                            </button>
+                        </div>
+                    </div>
 
-              {/*버튼*/}
-              <div className={'d-flex gap-3 justify-content-end mt-4 me-5'}>
-                  <button className={'btn btn-menu-edit'} onClick={handleListEdit}>메뉴판 수정</button>
-                  <button className={'btn btn-menu-add'} onClick={handleAdd}>+ 메뉴 추가</button>
-              </div>
 
-              {/*리스트*/}
-              <div className={'menu-list-container mt-4'}>
-                  <ul className={'list-unstyled'}>
-                      {filteredMenu.map(menu => (
-                          <li key={menu.id} className={'border-bottom py-3 mx-3 d-flex align-items-start justify-content-between flex-wrap menu-item'} onClick={() => handleEdit(menu.id)}>
-                              {/*1 이름, 가격*/}
-                              <div style={{ flexBasis: '30%', flexShrink: 0 }}>
-                                  {/*메뉴 이름*/}
-                                  <h5 className={'mb-1'}>
-                                      {menu.name}{" "}
-                                      {menu.soldOut && (
-                                          <span style={{ color: "red", fontSize: "0.8rem" }}>(품절)</span>
-                                      )}
-                                      {menu.hidden && (
-                                          <span style={{ color: "red", fontSize: "0.8rem" }}>(숨김)</span>
-                                      )}
-                                  </h5>
-                                  {/*가격*/}
-                                  <small className={'text-muted d-block'}>{menu.price}원</small>
-                              </div>
+                    <hr/>
 
-                              {/*2 메뉴 설명*/}
-                              <div className={'text-start text-muted d-flex flex-column justify-content-between'} style={{ flexBasis: '50%', flexShrink: 0}}>
-                                  <div>{menu.description}</div>
-                                  <div className="mt-2 text-end">
-                                      {/*숨기기 해제 버튼*/}
-                                      {menu.hidden && (
-                                          <button
-                                              className={'btn btn-sm btn-outline-danger mt-2'}
-                                              onClick={() => handleUnhidden(menu.id)}
-                                          >
-                                              숨기기 해제
-                                          </button>
-                                      )}
-                                      {/* 품절 해제 버튼 */}
-                                      {menu.soldOut && (
-                                          <button
-                                              className={'btn btn-sm btn-outline-danger mt-2'}
-                                              onClick={() => handleUnsoldOut(menu.id)}
-                                          >
-                                              품절 해제
-                                          </button>
-                                      )}
-                                  </div>
-                              </div>
+                    <div className="d-flex justify-content-between align-items-start mt-4">
+                        {/* 왼쪽: 메뉴 리스트 */}
+                        <div className="flex-grow-1">
+                            <div className="menu-list-container">
+                                <ul className="list-unstyled">
+                                    {filteredMenu.map(menu => (
+                                        <li key={menu.id}
+                                            className="border-bottom py-3 d-flex align-items-start justify-content-between flex-wrap menu-item"
+                                            onClick={() => handleEdit(menu.id)}>
+                                            {/* 1. 이름, 가격 */}
+                                            <div style={{ flexBasis: '30%', flexShrink: 0 }}>
+                                                <h5 className="mb-1">
+                                                    {menu.name}{" "}
+                                                    {menu.soldOut && (
+                                                        <span style={{ color: "red", fontSize: "0.8rem" }}>(품절)</span>
+                                                    )}
+                                                    {menu.hidden && (
+                                                        <span style={{ color: "red", fontSize: "0.8rem" }}>(숨김)</span>
+                                                    )}
+                                                </h5>
+                                                <small className="text-muted d-block">{menu.price}원</small>
+                                            </div>
 
-                              {/*3 메뉴 이미지*/}
-                              <div className={'text-end'} style={{ flexBasis: '20%', flexShrink: 0 }}>
-                                  <img
-                                      src={menu.imageUrl}
-                                      alt={menu.name}
-                                      className={'img-fluid rounded'}
-                                      style={{ width: '80px', height: '80px', objectFit: 'cover', opacity: menu.soldOut || menu.hidden ? 0.5 : 1,  }}
-                                  />
-                              </div>
-                          </li>
-                      ))}
-                  </ul>
-              </div>
-          </div>
+                                            {/* 2. 설명 */}
+                                            <div className="text-start text-muted d-flex flex-column justify-content-between"
+                                                 style={{ flexBasis: '50%', flexShrink: 0 }}>
+                                                <div>{menu.description}</div>
+                                                <div className="mt-2 text-end">
+                                                    {menu.hidden && (
+                                                        <button
+                                                            className="btn btn-sm btn-outline-danger mt-2"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                handleUnhidden(menu.id);
+                                                            }}
+                                                        >
+                                                            숨기기 해제
+                                                        </button>
+                                                    )}
+                                                    {menu.soldOut && (
+                                                        <button
+                                                            className="btn btn-sm btn-outline-danger mt-2"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                handleUnsoldOut(menu.id);
+                                                            }}
+                                                        >
+                                                            품절 해제
+                                                        </button>
+                                                    )}
+                                                </div>
+                                            </div>
 
-        </div>
+                                            {/* 3. 이미지 */}
+                                            <div className="text-end" style={{ flexBasis: '20%', flexShrink: 0 }}>
+                                                <img
+                                                    src={menu.imageUrl}
+                                                    alt={menu.name}
+                                                    className="img-fluid rounded"
+                                                    style={{
+                                                        width: '80px',
+                                                        height: '80px',
+                                                        objectFit: 'cover',
+                                                        opacity: menu.soldOut || menu.hidden ? 0.5 : 1,
+                                                    }}
+                                                />
+                                            </div>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+
+                        {/* 오른쪽: 버튼 영역 */}
+                        <div className="d-flex flex-column align-items-start ms-3">
+                            <div className="d-flex gap-2">
+                                <button className="btn btn-menu-edit" onClick={handleListEdit}>메뉴판 수정</button>
+                                <button className="btn btn-menu-add" onClick={handleAdd}>+ 메뉴 추가</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </>
     );
 }
 

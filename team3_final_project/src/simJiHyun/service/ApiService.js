@@ -60,7 +60,7 @@ const logout = () => {
   sessionStorage.setItem("REFRESH_TOKEN", null);
   sessionStorage.removeItem("REFRESH_TOKEN");
 
-  window.location.href = '/';
+  // window.location.href = '/';
 }
 
 // 글 목록 페이지

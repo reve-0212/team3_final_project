@@ -195,41 +195,43 @@ function CeoMenuListEdit() {
     };
 
     return (
-        <div className={'ceo-menu-main'}>
+        <>
             <ReBanner />
-            <div style={{ marginTop: '10vh', marginLeft: '200px', position: 'relative' }}>
-                <h2 className={'new-menu-title mb-4'}>가게 메뉴</h2>
-                <hr />
-                <div className={'d-flex gap-3 justify-content-end mt-4 me-5'}>
-                    <button className={'btn'} onClick={handleCancel}>취소</button>
-                    <button className={'btn btn-menu-edit'} onClick={handleHideSelected}>숨기기</button>
-                    <button className={'btn btn-menu-add'} onClick={handleSoldOut}>품절하기</button>
-                    <button className={'btn btn-save'} onClick={handleSave}>확인</button>
-                </div>
+            <div className={'ceo-menu-main'}>
+                <div style={{marginTop: '10vh', marginLeft: '200px', position: 'relative'}}>
+                    <h2 className={'new-menu-title mb-4'}>가게 메뉴</h2>
+                    <hr/>
+                    <div className={'d-flex gap-3 justify-content-end mt-4 me-5'}>
+                        <button className={'btn'} onClick={handleCancel}>취소</button>
+                        <button className={'btn btn-menu-edit'} onClick={handleHideSelected}>숨기기</button>
+                        <button className={'btn btn-menu-add'} onClick={handleSoldOut}>품절하기</button>
+                        <button className={'btn btn-save'} onClick={handleSave}>확인</button>
+                    </div>
 
-            {/*    리스트*/}
-                <DndContext
-                    sensors={sensors}
-                    collisionDetection={closestCenter}
-                    onDragEnd={handleDragEnd}
-                >
-                    <SortableContext items={menuList} strategy={verticalListSortingStrategy}>
-                        <div className={"menu-list-container mt-4"}>
-                            <ul className={"list-unstyled"}>
-                                {menuList.map((menu) => (
-                                    <SortableItem
-                                        key={menu.id}
-                                        item={menu}
-                                        checked={selectedIds.includes(menu.id)}
-                                        onCheck={handleCheck}
-                                    />
-                                ))}
-                            </ul>
-                        </div>
-                    </SortableContext>
-                </DndContext>
+                    {/*    리스트*/}
+                    <DndContext
+                        sensors={sensors}
+                        collisionDetection={closestCenter}
+                        onDragEnd={handleDragEnd}
+                    >
+                        <SortableContext items={menuList} strategy={verticalListSortingStrategy}>
+                            <div className={"menu-list-container mt-4"}>
+                                <ul className={"list-unstyled"}>
+                                    {menuList.map((menu) => (
+                                        <SortableItem
+                                            key={menu.id}
+                                            item={menu}
+                                            checked={selectedIds.includes(menu.id)}
+                                            onCheck={handleCheck}
+                                        />
+                                    ))}
+                                </ul>
+                            </div>
+                        </SortableContext>
+                    </DndContext>
+                </div>
             </div>
-        </div>
+        </>
     );
 }
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import ReBanner from "./ReBanner.jsx";
 
 function PreInfoPage() {
     const nv = useNavigate();
@@ -109,18 +110,7 @@ function PreInfoPage() {
                     marginTop: "2rem",
                 }}
             >
-                <div className="fixed-top">
-                    <nav
-                        className="navbar navbar-expand-lg navbar-dark"
-                        style={{ height: "10vh", backgroundColor: "#FFD700" }}
-                    >
-                        <div className="container-fluid d-flex justify-content-between align-items-center">
-                            <div style={{ textAlign: "center" }} className="text-white fs-1">
-                                Logo
-                            </div>
-                        </div>
-                    </nav>
-                </div>
+                <ReBanner/>
 
                 <form className="info-form" onSubmit={handleSubmit}>
                     <h3 style={{ fontWeight: "bold" }} className="pt-5 text-center">

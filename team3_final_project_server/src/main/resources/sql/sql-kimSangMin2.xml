@@ -43,7 +43,7 @@
     </insert>
 
 <!--    가게 정보 조회 -->
-    <select id="getRest" parameterType="com.example.team3_final_project_server.dto.RestaurantDTO">
+    <select id="getRest" parameterType="int" resultType="com.example.team3_final_project_server.dto.RestaurantDTO">
         SELECT res_name, res_call, res_address1, res_address2, res_introduce, res_reserve_time, res_image1, res_image2, res_image3
         from restaurant
         WHERE res_idx = #{resIdx}

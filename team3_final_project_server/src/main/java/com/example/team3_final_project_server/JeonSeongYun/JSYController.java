@@ -43,4 +43,18 @@ public class JSYController {
     System.out.println(" /test");
   }
 
+
+
+
+  @GetMapping("/owner/login")
+  public ResponseEntity<?> getOwnerLoginCheck(@RequestParam String ownerId, @RequestParam String ownerPw){
+    try{
+      ResponseDTO jwtToken = jsyService.getJwtOwnerLoginCheck(ownerId, ownerPw);
+      System.out.println("OwnerLogin");
+      return ResponseEntity.ok().body(jwtToken);
+    }catch (AuthenticationException e) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패");
+    }
+  }
+
 }

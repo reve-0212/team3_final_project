@@ -18,7 +18,7 @@ public interface PreMapper {
 
     int updateRest(int resIdx, RestaurantDTO rest);
 
-    int getRest(int resIdx, RestaurantDTO rest);
+    RestaurantDTO getRest(int resIdx);
 
     List<SeatDTO> loadSeat(int resIdx);
 }
