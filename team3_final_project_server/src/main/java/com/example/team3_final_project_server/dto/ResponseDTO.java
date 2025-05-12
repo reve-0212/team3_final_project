@@ -10,6 +10,7 @@ import lombok.*;
 public class ResponseDTO<T> {
   private String accessToken;
   private String refreshToken;
+
   private int userIdx;
   private String userId;
   private String userNick;
