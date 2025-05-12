@@ -76,31 +76,31 @@ function PreReSet() {
 
 
   //-----------------------------  주소 검색 api로 요청받아오기------------------------
-  // const hSearch = (e) => {
-  //   e.preventDefault();
-  //
-  //   if (!address) {
-  //     alert("주소를 입력해주세요.");
-  //     return;
-  //   }
-  //
-  //   const apiKey = "36bd79108879c504308c80d28fe7829d";
-  //   const url = `https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURIComponent(address)}`;
-  //
-  //   axios
-  //       .get(url, {
-  //         headers: {
-  //           Authorization: `KakaoAK ${apiKey}`,
-  //         },
-  //       })
-  //       .then((response) => {
-  //         setSearchResults(response.data.documents);
-  //       })
-  //       .catch((error) => {
-  //         console.error("주소 검색 중 오류 발생:", error);
-  //         alert("주소 검색에 실패했습니다.");
-  //       });
-  // };
+  const hSearch = (e) => {
+    e.preventDefault();
+
+    if (!address) {
+      alert("주소를 입력해주세요.");
+      return;
+    }
+
+    const apiKey = "36bd79108879c504308c80d28fe7829d";
+    const url = `https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURIComponent(address)}`;
+
+    axios
+        .get(url, {
+          headers: {
+            Authorization: `KakaoAK ${apiKey}`,
+          },
+        })
+        .then((response) => {
+          setSearchResults(response.data.documents);
+        })
+        .catch((error) => {
+          console.error("주소 검색 중 오류 발생:", error);
+          alert("주소 검색에 실패했습니다.");
+        });
+  };
 
   const openDaumPostcode = () => {
     new window.daum.Postcode({
@@ -338,29 +338,29 @@ function PreReSet() {
                   className="form-control"
                   style={{width: "300px", height: "50px", display: "inline-block", marginRight: "10px"}}
               />
-              {/*<button type="button" onClick={hSearch} className="btn btn-outline-warning btn-sm">*/}
-              {/*  검색*/}
-              {/*</button>*/}
+              <button type="button" onClick={hSearch} className="btn btn-outline-warning btn-sm">
+                검색
+              </button>
               <button type="button" onClick={openDaumPostcode} className="btn btn-outline-warning btn-sm">
                 검색
               </button>
 
-              {/*/!* 검색 후 결과 선택 시 값 입력됨 *!/*/}
-              {/*<ul style={{marginTop: "10px"}}>*/}
-              {/*  {searchResults.map((result, index) => (*/}
-              {/*      <li*/}
-              {/*          key={index}*/}
-              {/*          style={{cursor: "pointer"}}*/}
-              {/*          onClick={() => {*/}
-              {/*            hfChange({target: {value: result.address_name}}, "Address1");*/}
-              {/*            setSearchResults([]);*/}
-              {/*            setAddress("");*/}
-              {/*          }}*/}
-              {/*      >*/}
-              {/*        📍 {result.address_name}*/}
-              {/*      </li>*/}
-              {/*  ))}*/}
-              {/*</ul>*/}
+              {/* 검색 후 결과 선택 시 값 입력됨 */}
+              <ul style={{marginTop: "10px"}}>
+                {searchResults.map((result, index) => (
+                    <li
+                        key={index}
+                        style={{cursor: "pointer"}}
+                        onClick={() => {
+                          hfChange({target: {value: result.address_name}}, "Address1");
+                          setSearchResults([]);
+                          setAddress("");
+                        }}
+                    >
+                      📍 {result.address_name}
+                    </li>
+                ))}
+              </ul>
             </div>
 
             <hr/>

@@ -4,11 +4,8 @@ import com.example.team3_final_project_server.dto.UserDTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.support.BeanDefinitionDsl;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,14 +21,6 @@ import java.util.*;
 @Service
 public class JwtTokenProvider {
 
-  @Value("${jwt.secret_key}")
-  private String secretKey;
-
-  @PostConstruct
-  protected void init() {
-    secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
-  }
-
   private final JwtProperties jwtProperties;
 
   //  JWT 토큰 생성, 매개변수로 사용자 정보와 만료 시간을 받아서 사용
@@ -42,21 +31,12 @@ public class JwtTokenProvider {
     return makeToken(new Date(now.getTime() + expiredAt.toMillis()), userDTO);
   }
 
-  public String generateRefreshToken(UserDTO user, Duration expiresIn) {
-    Claims claims = Jwts.claims().setSubject(user.getUserId()).build();
-    claims.put("role", user.getRole());
-
+  public String generateRefreshToken(UserDTO userDTO, Duration expiredAt) {
     Date now = new Date();
-    Date expiry = new Date(now.getTime() + expiresIn.toMillis());
 
-    return Jwts.builder()
-            .setClaims(claims)
-            .setIssuedAt(now)
-            .setExpiration(expiry)
-            .signWith(SignatureAlgorithm.HS256, secretKey) // secretKey는 @PostConstruct에서 인코딩된 값
-            .compact();
+    // 리프레시 토큰도 동일한 방식으로 생성
+    return makeToken(new Date(now.getTime() + expiredAt.toMillis()), userDTO);
   }
-
 
   //  실제 JWT 토큰을 생성
   private String makeToken(Date expiry, UserDTO userDTO) {
@@ -74,7 +54,7 @@ public class JwtTokenProvider {
     claims.put("userEmail", userDTO.getUserEmail());
     claims.put("bsName", userDTO.getBsName());
     claims.put("bsNumber", userDTO.getBsNumber());
-    claims.put("userRole", userDTO.getRole());
+    claims.put("role", userDTO.getRole());
 //    빌더 패턴을 사용하여 JWT 객체 생성
 
 //    setHeaderParam() : 토큰 타입을 설정
@@ -94,19 +74,11 @@ public class JwtTokenProvider {
 
     return Jwts.builder()
             .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
-            .setIssuer(jwtProperties.getIssuer())
-            .setIssuedAt(now)
-            .setExpiration(expiry)
-            .setSubject(userDTO.getUserEmail())
-            .addClaims(claims)
-//        .claim("id", userDTO.getId())
-//        .claim("userId", userDTO.getUserId())
-//        .claim("userNick", userDTO.getUserNick())
-//        .claim("userEmail", userDTO.getUserEmail())
-//        .claim("userRole", userDTO.getRole())
-//        0.9.x 버전 사용 시
-//        .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecretKey())
-//        0.12.x 버전 사용 시 위에서 Key 객체를 만들고 해당 Key 객체를 사용
+            .issuer(jwtProperties.getIssuer())
+            .issuedAt(now)
+            .expiration(expiry)
+            .subject(userDTO.getUserEmail())
+            .claims(claims)
             .signWith(secretKey)
             .compact();
   }
@@ -142,21 +114,22 @@ public class JwtTokenProvider {
     Claims claims = getClaims(token);
 
 //    JWT 토큰에 저장되어 있었던 사용자 권한 정보를 가져와서 스프링 시큐리티에서 사용하는 권한 타입으로 변환
-    Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(claims.get("userRole").toString()));
+    Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(claims.get("role").toString()));
+    System.out.println("authorities : " + authorities);
 
 //    jwt 토큰을 통해서 가져온 데이터로 UserDTO 객체 생성
     UserDTO member = UserDTO.builder()
-            .userIdx(Integer.parseInt(claims.get("userIdx").toString()))
+            .userIdx(((Number) claims.get("userIdx")).intValue())
             .userId(claims.get("userId").toString())
             .userPass(claims.get("userPass").toString())
             .userNick(claims.get("userNick").toString())
             .userGender(claims.get("userGender").toString())
-            .userAge(Integer.parseInt(claims.get("userAge").toString()))
+            .userAge(((Number) claims.get("userAge")).intValue())
             .userCall(claims.get("userCall").toString())
             .userEmail(claims.get("userEmail").toString())
             .bsName(claims.get("bsName").toString())
             .bsNumber(claims.get("bsNumber").toString())
-            .role(claims.get("userRole").toString())
+            .role(claims.get("role").toString())
             .build();
 
 //    사용자 인증 정보를 생성 후 반환
