@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
       cacheMode = WebSettings.LOAD_DEFAULT
       allowFileAccess = true
       allowContentAccess = true
+      setGeolocationEnabled(true)
 
       // CORS 문제 해결을 위한 추가 설정
       allowFileAccessFromFileURLs = true
@@ -44,5 +45,6 @@ class MainActivity : AppCompatActivity() {
 
     // React 앱 로드
     webView.loadUrl("file:///android_asset/index.html#/")
+//    webView.loadUrl("http://localhost:5173")
   }
 }

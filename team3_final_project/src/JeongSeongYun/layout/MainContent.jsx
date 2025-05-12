@@ -8,7 +8,7 @@ import useUserStore from "../../stores/useUserStore.jsx";
 
 const MainContent = () => {
   const user = useUserStore((state) => state.user)
-  console.log(user)
+  // console.log(user)
 
   return (
     <div>

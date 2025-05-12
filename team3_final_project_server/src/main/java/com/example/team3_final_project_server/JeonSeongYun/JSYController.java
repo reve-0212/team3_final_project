@@ -20,7 +20,6 @@ public class JSYController {
   @Autowired
   private JSYService jsyService;
 
-
   @GetMapping("/contents/{category}")
   public List<RestaurantListDTO> getRstListByCategory(@PathVariable("category") String category) throws Exception {
     System.out.println(" /contents/{category} 받아온 값 : " + category);
