@@ -50,6 +50,7 @@ function SangMinApp() {
 
                     <Route path="/" element={<ReservationPage/>}/>
                     <Route path="/pre/loadSeat/:resIdx" element={<SeatLayout />} />
+                    <Route path="/pre/reserveTable" element={<ReservationPage />} />
                     <Route path="/pre/seat" element={<SeatManager />} />
                     <Route path="/pre/func" element={<PreFunction />} />
                     <Route path="/pre/PreMain" element={<PreMain/>}/> {/* 예약가게 메인*/}

@@ -83,7 +83,7 @@ const SeatLayout = () => {
                                     backgroundColor: isSelected ? "#32d139" : "transparent",
                                     backgroundImage: `url(${seat.image})`,
                                     backgroundSize: "contain",  // 이미지 크기를 부모 영역에 맞게 설정
-                                    backgroundPosition: "center",  
+                                    backgroundPosition: "center",
                                     backgroundBlendMode: "overlay",
                                     display: "flex",
                                     alignItems: "center",
