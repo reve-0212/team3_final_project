@@ -8,6 +8,7 @@ import useReservationStore from "../../stores/useReservationStore.jsx";
 import axios from "axios";
 import useRestaurantStore from "../../stores/useRestaurantStore.jsx";
 import {useNavigate} from "react-router-dom";
+import useGeolocation from "../../stores/useGeolocation.jsx";
 
 function BookInfo() {
   // 모달을 열지 말지 결정한다
@@ -16,6 +17,7 @@ function BookInfo() {
   const restaurantIdx = useRestaurantStore(state => state.restaurantIdx)
   const [reservations, setReservations] = useState({})
   const Nv = useNavigate();
+  const location = useGeolocation()
 
   useEffect(() => {
     // 예약 번호

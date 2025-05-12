@@ -18,8 +18,8 @@ function SjhReservationCard(props) {
 
   const {setReservationIdx} = useReservationStore();
   const {setRestaurantIdx} = useRestaurantStore();
-  console.log("reservationIdx : " + props.reservationIdx)
-  console.log("restaurantIdx : " + props.restaurantIdx)
+  // console.log("reservationIdx : " + props.reservationIdx)
+  // console.log("restaurantIdx : " + props.restaurantIdx)
 
   return (
     <div className={"my-3"}>

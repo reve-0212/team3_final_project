@@ -19,26 +19,26 @@ public class JKSServiceImpl implements JKSService {
     return jksMapper.getAllRestaurants();
   }
 
-  @Override
-  public List<MenuDTO> getBestMenu(int resIdx) {
-    return jksMapper.getBestMenu(resIdx);
-  }
+//  @Override
+//  public List<MenuDTO> getBestMenu(int resIdx) {
+//    return jksMapper.getBestMenu(resIdx);
+//  }
 
   @Override
   public List<ReviewDTO> getReviewsByResIdx(int resIdx) {
     return jksMapper.getAllReviews(resIdx);
   }
 
-  @Override
-  public AnnounceDTO getLatestAnnounce() {
-    return jksMapper.getLatestAnnounce();
-  }
+//  @Override
+//  public AnnounceDTO getLatestAnnounce() {
+//    return jksMapper.getLatestAnnounce();
+//  }
 
   @Override
   public RestaurantDTO getRestaurantsByResIdx(int resIdx) { return jksMapper.getRestaurantsByResIdx(resIdx); }
 
-  @Override
-  public AmenitiesDTO  getAmenitiesByResIdx(int resIdx) { return jksMapper.getAmenitiesByResIdx(resIdx); }
+//  @Override
+//  public AmenitiesDTO  getAmenitiesByResIdx(int resIdx) { return jksMapper.getAmenitiesByResIdx(resIdx); }
 
   @Override
   public Double getAvgRatingByResIdx(int resIdx) { return jksMapper.getAvgRatingByResIdx(resIdx); }

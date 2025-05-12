@@ -2,9 +2,10 @@ package com.example.team3_final_project_server.JunKangSan;
 //JKSController.java
 
 import com.example.team3_final_project_server.dto.*;
+import com.example.team3_final_project_server.dto.RestaurantDTO;
+import com.example.team3_final_project_server.dto.ReviewDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,19 +33,19 @@ public class JKSController {
 
 
     //  편의시설
-    @GetMapping("/amenities/{resIdx}")
-    @ResponseBody
-    public AmenitiesDTO getAmenities(@PathVariable int resIdx) {
-        AmenitiesDTO dto = jksService.getAmenitiesByResIdx(resIdx);
-        System.out.println(dto);
-        return jksService.getAmenitiesByResIdx(resIdx);
-    }
+    //@GetMapping("/amenities/{resIdx}")
+    //@ResponseBody
+    //public AmenitiesDTO getAmenities(@PathVariable int resIdx) {
+    //    AmenitiesDTO dto = jksService.getAmenitiesByResIdx(resIdx);
+    //    System.out.println(dto);
+      //  return jksService.getAmenitiesByResIdx(resIdx);
+    //}
 
 
     //  대표메뉴 - 05-12
-    @GetMapping("/bestmenu/{resIdx}")
-    @ResponseBody
-    public List<MenuDTO> getBestMenu(@PathVariable int resIdx) { return jksService.getBestMenu(resIdx); }
+  //  @GetMapping("/bestmenu/{resIdx}")
+  //  @ResponseBody
+  //  public List<MenuDTO> getBestMenu(@PathVariable int resIdx) {//    return jksService.getBestMenu(resIdx);//  }
 
 
     //  리뷰
@@ -72,11 +73,11 @@ public class JKSController {
 
 
     // 알림(가게공지)
-    @GetMapping("/announce/{resIdx}")
-    @ResponseBody
-    public AnnounceDTO getAnnounce() {
-        return jksService.getLatestAnnounce(); // List가 아닌 단일 DTO 반환
-    }
+  //  @GetMapping("/announce/{resIdx}")
+  //  @ResponseBody
+  //  public AnnounceDTO getAnnounce() {
+    //    return jksService.getLatestAnnounce(); // List가 아닌 단일 DTO 반환
+  //  }
 
 //
     @GetMapping("/contents/{category}")

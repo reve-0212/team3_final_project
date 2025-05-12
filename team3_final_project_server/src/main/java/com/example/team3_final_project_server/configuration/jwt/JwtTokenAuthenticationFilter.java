@@ -41,6 +41,7 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
 //    'Bearer ' 를 제거한 JWT 토큰 문자열을 가져옴
     String token = getAccessToken(authorizationHeader);
 
+
 //    파싱된 JWT 토큰 정보를 검증
     if (jwtTokenProvider.validToken(token)) {
 //      JWT 토큰에 저장된 사용자 인증 정보를 출력
