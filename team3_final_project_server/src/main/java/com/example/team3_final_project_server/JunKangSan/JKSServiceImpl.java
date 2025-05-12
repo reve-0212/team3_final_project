@@ -20,10 +20,9 @@ public class JKSServiceImpl implements JKSService {
   }
 
   @Override
-  public List<BestMenuDTO> getBestMenusByResIdx(int resIdx) {
-    return jksMapper.getAllBestMenus(resIdx);
+  public List<MenuDTO> getBestMenu(int resIdx) {
+    return jksMapper.getBestMenu(resIdx);
   }
-
 
   @Override
   public List<ReviewDTO> getReviewsByResIdx(int resIdx) {
@@ -57,5 +56,16 @@ public class JKSServiceImpl implements JKSService {
 
     return result;
   }
+  @Override
+  public List<CategoryDTO> getCategoryByAddress(String categoryAddr) { return jksMapper.getCategoryByAddress(categoryAddr); }
 
+  @Override
+  public List<RestaurantListDTO> getRstListByCategory(String category) {
+    return jksMapper.getRstListByCategory(category);
+  }
+
+  @Override
+  public RestaurantDTO getRstListByPath(String pathIdx) {
+    return jksMapper.getRstListByPath(pathIdx);
+  }
 }

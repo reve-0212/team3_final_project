@@ -43,6 +43,46 @@
 <!--        a.res_image3,-->
 <!--        a.res_name-->
 <!--    </select>-->
+    <select id="getRstListByCategory" resultType="com.example.team3_final_project_server.dto.RestaurantListDTO">
+        SELECT
+            b.category_name,
+            ROUND(AVG(rv.review_rating), 1) AS avg_rating,
+            COUNT(rv.review_idx) AS rv_count,
+            a.res_option_1,
+            a.res_idx,
+            a.res_address2,
+            a.res_introduce,
+            a.res_price_range,
+            a.reserve_or_waiting,
+            a.res_image1,
+            a.res_image2,
+            a.res_image3,
+            a.res_name
+        FROM
+            category b
+        JOIN
+            restaurant a
+        ON
+            b.res_idx = a.res_idx
+        LEFT JOIN
+            review rv
+        ON
+            a.res_idx = rv.res_idx
+        WHERE
+            b.category_name = #{category}
+        GROUP BY
+        b.category_name,
+        a.res_option_1,
+        a.res_idx,
+        a.res_address2,
+        a.res_introduce,
+        a.res_price_range,
+        a.reserve_or_waiting,
+        a.res_image1,
+        a.res_image2,
+        a.res_image3,
+        a.res_name;
+    </select>
 
 <!--    <select id="findByOwnerId" resultType="com.example.team3_final_project_server.dto.UserDTO">-->
 <!--        SELECT * FROM user WHERE user_id = #{userId} AND role = 'ROLE_OWNER'-->

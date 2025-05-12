@@ -111,7 +111,7 @@ function main() {
             <Routes>
               {/*유저*/}
               <Route path={"/"} element={<MainContent/>}/>
-              <Route path="/resdetail/:resIdx" element={<ContentDetail/>}/>
+              <Route path={"/resdetail/:resIdx"} element={<ContentDetail/>}/>
 
               <Route path={"/user"} element={<MyPageContent/>}/>
               <Route path={"/user/login"} element={<Login/>}/>

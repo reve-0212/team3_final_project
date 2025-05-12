@@ -97,7 +97,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(authorizeRequests -> authorizeRequests
 //                    모든 사용자용
                     .requestMatchers("/user/**", "/latestDetails", "/bookmark", "/contentDetail", "/review", "/","/api/visitors").permitAll()
-                    .requestMatchers("/jsy/contents/**","/jsy/ownerLogin").permitAll()
+                    .requestMatchers("/jsy/contents/**","/jsy/ownerLogin","/contents/**","/detail/**","/bestmenu/**").permitAll()
                     .requestMatchers("/api/**", "/auth/**", "/api/auth/signup").permitAll()
                     .requestMatchers("/api/visitors","/api/visitors/**").permitAll()
 //                    로그인한 사용자용

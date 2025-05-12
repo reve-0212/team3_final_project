@@ -10,7 +10,7 @@ public interface JKSService {
 
     List<RestaurantDTO> getAllRestaurants();
 
-    List<BestMenuDTO> getBestMenusByResIdx(int resIdx);
+    List<MenuDTO> getBestMenu(int resIdx);
 
     List<ReviewDTO> getReviewsByResIdx(int resIdx);
 
@@ -24,4 +24,9 @@ public interface JKSService {
 
     Map<String, Double> getAvgRatingByType(int resIdx);
 
+    List<CategoryDTO> getCategoryByAddress(String categoryAddr);
+
+    List<RestaurantListDTO> getRstListByCategory(String category);
+
+    RestaurantDTO getRstListByPath(String pathIdx);
 }

@@ -11,12 +11,6 @@
         FROM restaurant
     </select>
 
-    <select id="getAllBestMenus" parameterType="int" resultType="com.example.team3_final_project_server.dto.BestMenuDTO">
-        SELECT *
-        FROM bestmenu
-        WHERE testres_idx = #{resIdx}
-        LIMIT 3
-    </select>
 
     <select id="getAllReviews" parameterType="int" resultType="com.example.team3_final_project_server.dto.ReviewDTO">
         SELECT *
@@ -90,5 +84,35 @@
         WHERE res_idx = #{resIdx}
         GROUP BY review_type
     </select>
+
+    <select id="getCategoryByAddress"
+            parameterType="string"
+            resultType="com.example.team3_final_project_server.dto.CategoryDTO">
+        SELECT
+        category_idx,
+        res_idx,
+        category_addr,
+        category_name,
+        category_tag
+        FROM category
+        WHERE category_addr LIKE CONCAT('%', #{categoryAddr}, '%')
+    </select>
+
+    <select id="getRstListByCategory" parameterType="int">
+        select * from restaurant where res_idx = 1;
+    </select>
+
+    <select id="getRstListByPath" parameterType="int">
+        select * from restaurant where res_idx = 1;
+    </select>
+
+    <select id="getBestMenu" resultType="com.example.team3_final_project_server.dto.MenuDTO">
+        select m.menu_name, m.menu_price, m.menu_explanation, m.menu_image
+        from menu as m
+        join restaurant as r
+        on m.res_idx = r.res_idx
+        where r.res_idx = #{resIdx};
+    </select>
+
 
 </mapper>

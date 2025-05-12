@@ -11,16 +11,21 @@ import noImage from '../JeongSeongYun/img/noimage.jpg';
 function ContentList() {
 
   // JSY 작업
-  const { category } = useParams();
+  const { category  } = useParams();
   const [restaurants, setRestaurants] = useState([]);
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/jsy/contents/${category}`)
+    axios.get(`http://localhost:8080/contents/${category}`)
       .then(res => {
+        console.log(setRestaurants);
         setRestaurants(res.data);
-        console.log(res.data);
       }).catch(err => console.log('데이터 가져오기 오류 :', err));
   }, [category]);
+
+  useEffect(() => {
+    console.log("restaurants")
+    console.log(restaurants);
+  },[restaurants])
 
 
   const Nv = useNavigate();
@@ -47,15 +52,22 @@ function ContentList() {
         {/* 지역 선택 콤보박스 */}
         <div className="position-relative">
           <select
-            className="btn-jks btn-sm button-seebox me-auto text-start"
-            style={{width: 'auto', appearance: 'none'}}
-            aria-label="지역 선택"
+              className="btn-jks btn-sm button-seebox me-auto text-start"
+              style={{ width: 'auto', appearance: 'none' }}
+              aria-label="지역 선택"
+              onChange={(e) => Nv(`/contents/${category}/${e.target.value}`)}
           >
-            <option>지역 선택</option>
-            <option>전포동</option>
-            <option>서면</option>
-            <option>해운대</option>
-            <option>남포동</option>
+            <option value="중구">중구</option>
+            <option value="서구">서구</option>
+            <option value="동구">동구</option>
+            <option value="영도구">영도구</option>
+            <option value="부산진구">부산진구</option>
+            <option value="동래구">동래구</option>
+            <option value="남구">남구</option>
+            <option value="수영구">수영구</option>
+            <option value="해운대구">해운대구</option>
+            <option value="금정구">금정구</option>
+
           </select>
           <i
             className="fa-solid fa-chevron-down position-absolute top-50 end-0 translate-middle-y me-3 text-white"
@@ -96,18 +108,21 @@ function ContentList() {
             <div className="card-body text-start">
               <div className="d-flex justify-content-between align-items-center">
                 <h5 className="card-title mb-0 fw-semibold flex-fill"
-                    onClick={() => Nv(`/contentDetail/${res.restaurantIdx}`)}>
-                  {res.restaurantIntroduce || "식당 이름"}
+                    onClick={() => Nv(`/resdetail/${res.resIdx}`)}>
+                  {res.resName || "식당 이름"}
                 </h5>
-                <button className="btn-jks btn-sm" onClick={() => toggleBookmark(res.restaurantIdx)}>
-                  <FontAwesomeIcon icon={bookmarks[res.restaurantIdx] ? faBookmark : faBookmarkRegular} />
+                <button className="btn-jks btn-sm" onClick={() => toggleBookmark(res.resIdx)}>
+                  <FontAwesomeIcon icon={bookmarks[res.resIdx] ? faBookmark : faBookmarkRegular} />
                 </button>
               </div>
-              <p className="card-text my-2" onClick={() => Nv(`/contentDetail/${res.restaurantIdx}`)}>
+
+              {/*1. resDetail 로 가고 싶으지 아니면 contentDetail 로 가고싶은지?*/}
+
+              <p className="card-text my-2" onClick={() => Nv(`/resdetail/${res.resIdx}`)}>
                 ⭐ {res.avgRating || "0.0"} {`(${res.rvCount ?? 0})`} {/* 별점은 임시 값이므로 필요하면 백엔드에 컬럼 추가 */}
               </p>
-              <small className="text-muted d-flex flex-fill" onClick={() => Nv(`/contentDetail/${res.restaurantIdx}`)}>
-                {res.categoryName || "카테고리"} · {res.restaurantAddr || "주소"}
+              <small className="text-muted d-flex flex-fill" onClick={() => Nv(`/resdetail/${res.resIdx}`)}>
+                {res.categoryName || "카테고리"} · {res.resAddress1 || "주소"}
               </small>
               <div className="d-flex gap-2 my-2">
                 {res.reserveOrWaiting === 'R' ? (
@@ -121,9 +136,9 @@ function ContentList() {
               </div>
             </div>
 
-            <div className="px-3 pb-3" onClick={() => Nv(`/contentDetail/${res.restaurantIdx}`)}>
+            <div className="px-3 pb-3" onClick={() => Nv(`/resdetail/${res.resIdx}`)}>
               <div className="d-flex justify-content-between gap-2 position-relative">
-                {[res.restaurantImage1, res.restaurantImage2, res.restaurantImage3].map((imgSrc, i) => (
+                {[res.resImage1, res.resImage2, res.resImage3].map((imgSrc, i) => (
                   <div className="rounded overflow-hidden" style={{ width: '33.3%', height: '150px' }} key={i}>
                     <img
                       src={imgSrc || noImage}
