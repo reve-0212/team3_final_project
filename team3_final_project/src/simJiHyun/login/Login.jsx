@@ -23,6 +23,7 @@ function Login() {
       Nv("/")
     } catch (err) {
       alert(`로그인 실패 : ${err}`)
+      alert("login.jsx")
     }
   }
 
