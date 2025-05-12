@@ -53,6 +53,7 @@ import PreInfoPage from "./layout/PreInfoPage.jsx";
 import ContentDetail from "../JeonKangSan/ContentDetail.jsx";
 import PreReSetTabs from "./Owner/PreChTabs.jsx";
 import PreChTabs from "./Owner/PreChTabs.jsx";
+import ReservationPage from "../KimSangMin/Seat/ReservationPage.jsx";
 
 function main() {
   // pre 가 있으면 사장님 웹으로
@@ -130,8 +131,7 @@ function main() {
               <Route path={"/waiting/info"} element={<WaitingInfoPage/>}/>
 
               <Route path={"/book/visit"} element={<VisitPage/>}/>
-              <Route path={"/book/seat"} element={<SeatPage/>}/>
-
+              <Route path={"/book/seat/:resIdx"} element={<SeatPage/>}/>
               <Route path={"/book/date"} element={<DateSelectorPage/>}/>
               <Route path={"/book/menu"} element={<MenuSelectorPage/>}/>
               <Route path={"/book/reg"} element={<BookRegPage/>}/>

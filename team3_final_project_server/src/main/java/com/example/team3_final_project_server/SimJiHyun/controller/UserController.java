@@ -106,13 +106,21 @@ public class UserController {
   public ResvRestMenuJoinDTO getBook(@RequestParam int reservationIdx, @RequestParam int restaurantIdx) {
     System.out.println("reservationIdx : " + reservationIdx);
     System.out.println("restaurantIdx : " + restaurantIdx);
-    return userService.getBook(reservationIdx,restaurantIdx);
+    return userService.getBook(reservationIdx, restaurantIdx);
   }
 
-//  예약 취소하기
+  //  예약 취소하기
   @PutMapping("/cancelBook")
-  public void cancelBook(@RequestParam int reservationIdx){
+  public void cancelBook(@RequestParam int reservationIdx) {
     System.out.println("reservationIdx : " + reservationIdx);
     userService.cancelBook(reservationIdx);
+  }
+
+  @PutMapping("/resSeat")
+  public void resSeat(@RequestBody ReservationDTO reservationDTO) {
+    System.out.println("userIdx : " + reservationDTO.getUserIdx());
+    System.out.println("resIdx : " + reservationDTO.getResIdx());
+    System.out.println("menuIdx : " + reservationDTO.getMenuIdx());
+    System.out.println("seatId : " + reservationDTO.getSeatId());
   }
 }

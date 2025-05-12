@@ -1,12 +1,16 @@
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";  // useParams를 사용하여 URL 파라미터를 받습니다.
 import axios from "axios";
+import useSeatIdStore from "../stores/useSeatIdStore.jsx";
+import useUserStore from "../stores/useUserStore.jsx";
 // import './SeatLayout.css'; // 좌석 스타일링
 
 const SeatLayout = () => {
   const {resIdx} = useParams();  // URL 파라미터에서 resIdx 값을 가져옵니다.
   const [seats, setSeats] = useState([]);
   const [seatSelect, setSeatSelect] = useState([]);
+  const setSeatId = useSeatIdStore((state) => state.setSeatId)
+  const seatId = useSeatIdStore((state) => state.seatId)
 
   // 좌석선택기능
   const hSeat = (seatId) => {
@@ -20,6 +24,7 @@ const SeatLayout = () => {
   };
 
 
+  // 좌석 정보 불러오기
   useEffect(() => {
     if (resIdx) {
       axios.get(`http://localhost:8080/pre/loadSeat/${resIdx}`)
@@ -28,7 +33,7 @@ const SeatLayout = () => {
           const {success, message, data} = response.data;
           if (success && Array.isArray(data)) {
             setSeats(data);
-            console.log("좌석 데이터 확인:", data); // 추가
+            // console.log("좌석 데이터 확인:", data); // 추가
           } else {
             console.error(message);
           }
@@ -41,31 +46,28 @@ const SeatLayout = () => {
     }
   }, [resIdx]);
 
+  useEffect(() => {
+    setSeatId(seatSelect)
+    console.log(seatId)
+  }, [seatSelect]);
+
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        paddingTop: "8rem",
-        paddingLeft: "2rem",
-        paddingRight: "2rem",
-      }}
-    >
+    <div style={{display: "flex", justifyContent: "center",}}>
       {Array.isArray(seats) && seats.length > 0 ? (
         <div
           className="seat-layout"
           style={{
             position: "relative",
-            width: "71%",
-            maxWidth: "800px",
+            width: "100%",
+            maxWidth: "100%",
             height: "350px",
-            border: "1px solid #ddd",
+            border: "1px solid #ddd"
           }}
         >
           {seats.map((seat, index) => {
             const isUnavailable = seat.type === "창문" || seat.type === "입구";
             const isSelected = seatSelect.includes(seat.seatId);
-            console.log(`좌석 ID: ${seat.seatId}, 선택 여부: ${isSelected}`);
+            // console.log(`좌석 ID: ${seat.seatId}, 선택 여부: ${isSelected}`);
 
             const seatWidth = seat.type === "4인석" ? "80px" : seat.type === "6인석" ? "100px" : "50px";
             const seatHeight = seat.type === "6인석" ? "100px" : seat.type === "4인석" ? "80px" : "50px";
