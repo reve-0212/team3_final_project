@@ -135,18 +135,21 @@ public class JwtTokenProvider {
 //    사용자 인증 정보를 생성 후 반환
     return new UsernamePasswordAuthenticationToken(member, token, authorities);
   }
-}
 
-//  매개변수로 받은 JWT 토큰을 파싱하여 데이터를 출력
-//  private Claims getClaims(String token) {
+  //  매개변수로 받은 JWT 토큰을 파싱하여 데이터를 출력
+  private Claims getClaims(String token) {
+    Key secretKey = Keys.hmacShaKeyFor(jwtProperties.getSecretKey().getBytes());
 //    JWT 토큰 파싱 시작
 //    jjwt 0.9.x 버전 사용 시
-//    return Jwts.parser()
-//            .setSigningKey(secretKey)
-//            .build()
-//            .parseClaimsJws(token)
-//            .getBody();
-//  }
+    return Jwts.parser()
+            .setSigningKey(secretKey)
+            .build()
+            .parseClaimsJws(token)
+            .getBody();
+  }
+}
+
+
 //
 /// /  public Long getUserId(String token) {
 /// /    Claims claims = getClaims(token);

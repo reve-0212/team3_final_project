@@ -5,9 +5,12 @@ import "../SjhCss.css"
 import useUserStore from "../../stores/useUserStore.jsx";
 import {Link, useNavigate} from "react-router-dom";
 import {apiLogin} from "../service/ApiService.js"
+import useRestaurantStore from "../../stores/useRestaurantStore.jsx";
 
 function Login() {
   const setUser = useUserStore((state) => state.setUser);
+  const setResIdx = useRestaurantStore((state) => state.setRestaurantIdx)
+
   const Nv = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -16,6 +19,7 @@ function Login() {
     const userId = formData.get('userId')
     const userPass = formData.get('userPass')
 
+    setResIdx("asdf")
     try {
       const userData = await apiLogin(userId, userPass);
       setUser(userData)
