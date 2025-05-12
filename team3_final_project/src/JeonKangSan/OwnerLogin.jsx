@@ -18,22 +18,6 @@ function OwnerLogin() {
     const userData = {userId, userPass};
     console.log(userData);
 
-
-    // axios.post("http://localhost:8080/owner/login", ownerData , { withCredentials: true })
-    //     .then((response) => {
-    //         const { success, message } = response.data;
-    //
-    //         if(success) {
-    //             alert(message)
-    //             nv("/pre/PreSelect")
-    //         }
-    //         else {
-    //             alert("로그인 실패")
-    //         }
-    //     })
-    //     .catch( (error) => {
-    //         alert("서버 오류가 발생했습니다" + error)
-    //     })
     axios.post("http://localhost:8080/pre/login", userData, {
       headers: {
         'Content-Type': 'application/json'
@@ -52,6 +36,8 @@ function OwnerLogin() {
         } else {
           alert("로그인 실패");
         }
+
+
         axios.get(`http://localhost:8080/jsy/owner/login`, {
           params: {
             ownerId: ownerId,
@@ -71,14 +57,12 @@ function OwnerLogin() {
           .catch((error) => {
             alert("서버 오류가 발생했습니다: " + error);
           });
-      };
-
-  .
-    catch(err => {
-      alert(`로그인 중 오류가 발생했습니다.\n 오류 내용 : ${err}`);
-    })
-
+      })
+      .catch((err) => {
+        console.log(err)
+      });
   }
+
   return (
     <div
       style={{

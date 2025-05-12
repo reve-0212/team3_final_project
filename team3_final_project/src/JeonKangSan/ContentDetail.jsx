@@ -22,9 +22,6 @@ function ContentDetail() {
     const [sortOption, setSortOption] = useState("latest"); // 정렬 옵션
     const [showOnlyWithImage, setShowOnlyWithImage] = useState(false); // 사진 리뷰 필터
 
-
-
-
     const ratingTypes = [
         { label: '음식', key: 'F' },
         { label: '가격', key: 'P' },
@@ -33,7 +30,7 @@ function ContentDetail() {
     ];
 
     const user = useUserStore((state) => state.user)
-    const userIdx = user.userIdx
+    // const userIdx = user.userIdx
     const filteredAndSortedReviews = reviews
         .filter(review => {
             if (!showOnlyWithImage) return true;
