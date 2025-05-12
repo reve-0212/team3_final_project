@@ -23,15 +23,6 @@ import java.util.*;
 @RequiredArgsConstructor
 @Service
 public class JwtTokenProvider {
-
-  @Value("${jwt.secret_key}")
-  private String secretKey;
-
-  @PostConstruct
-  protected void init() {
-    secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
-  }
-
   private final JwtProperties jwtProperties;
 
   //  JWT 토큰 생성, 매개변수로 사용자 정보와 만료 시간을 받아서 사용
@@ -48,23 +39,6 @@ public class JwtTokenProvider {
     // 리프레시 토큰도 동일한 방식으로 생성
     return makeToken(new Date(now.getTime() + expiredAt.toMillis()), userDTO);
   }
-
-
-//  public String generateRefreshToken(UserDTO user, Duration expiresIn) {
-//    Claims claims = Jwts.claims().setSubject(user.getUserId()).build();
-//    claims.put("role", user.getRole());
-//
-//    Date now = new Date();
-//    Date expiry = new Date(now.getTime() + expiresIn.toMillis());
-//
-//    return Jwts.builder()
-//            .setClaims(claims)
-//            .setIssuedAt(now)
-//            .setExpiration(expiry)
-//            .signWith(SignatureAlgorithm.HS256, secretKey) // secretKey는 @PostConstruct에서 인코딩된 값
-//            .compact();
-//  }
-
 
   //  실제 JWT 토큰을 생성
   private String makeToken(Date expiry, UserDTO userDTO) {
@@ -154,16 +128,16 @@ public class JwtTokenProvider {
 
 //    jwt 토큰을 통해서 가져온 데이터로 UserDTO 객체 생성
     UserDTO member = UserDTO.builder()
-            .userIdx(Integer.parseInt(claims.get("userIdx").toString()))
+            .userIdx(((Number) claims.get("userIdx")).intValue())
             .userId(claims.get("userId").toString())
             .userPass(claims.get("userPass").toString())
             .userNick(claims.get("userNick").toString())
             .userGender(claims.get("userGender").toString())
-            .userAge(Integer.parseInt(claims.get("userAge").toString()))
+            .userAge(((Number) claims.get("userAge")).intValue())
             .userCall(claims.get("userCall").toString())
             .userEmail(claims.get("userEmail").toString())
-            .bsName(claims.get("bsName").toString())
-            .bsNumber(claims.get("bsNumber").toString())
+            .bsName(claims.get("bsName") != null ? claims.get("bsName").toString() : "")
+            .bsNumber(claims.get("bsNumber") != null ? claims.get("bsNumber").toString() : "")
             .role(claims.get("userRole").toString())
             .build();
 
