@@ -41,12 +41,10 @@ public class JKSController {
     }
 
 
-    //  대표메뉴
+    //  대표메뉴 - 05-12
     @GetMapping("/bestmenu/{resIdx}")
     @ResponseBody
-    public List<BestMenuDTO> getBestMenus(@RequestParam int resIdx) {
-        return jksService.getBestMenusByResIdx(resIdx);
-    }
+    public List<MenuDTO> getBestMenu(@PathVariable int resIdx) { return jksService.getBestMenu(resIdx); }
 
 
     //  리뷰

@@ -14,7 +14,7 @@ public interface JKSMapper {
 
     List<RestaurantDTO> getAllRestaurants();
 
-    List<BestMenuDTO> getAllBestMenus(int resIdx);
+    List<MenuDTO> getBestMenu(int resIdx);
 
     List<ReviewDTO> getAllReviews(int resIdx);
 
