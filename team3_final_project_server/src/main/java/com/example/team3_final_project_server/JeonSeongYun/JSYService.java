@@ -8,7 +8,7 @@ import java.util.List;
 public interface JSYService {
     List<RestaurantListDTO> getRstListByCategory(String category) throws Exception;
 
-    ResponseDTO getJwtOwnerLoginCheck(String ownerId, String ownerPw);
+    ResponseDTO getJwtOwnerLoginCheck(String userId, String userPw);
 
 //    ResponseDTO getJwtOwnerLoginCheck(String ownerId, String ownerPw);
 }

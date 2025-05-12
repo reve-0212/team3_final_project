@@ -31,11 +31,11 @@ public class JSYServiceImpl implements JSYService {
   }
 
   @Override
-  public ResponseDTO getJwtOwnerLoginCheck(String ownerId, String ownerPw) {
-    UserDTO user = jsyMapper.findByOwnerId(ownerId)
+  public ResponseDTO getJwtOwnerLoginCheck(String userId, String userPw) {
+    UserDTO user = jsyMapper.findByOwnerId(userId)
             .orElseThrow(()->new IllegalArgumentException("사용자를 찾을 수 없습니다"));
 
-    if(!passwordEncoder.matches(ownerPw, user.getUserPass())){
+    if(!passwordEncoder.matches(userPw, user.getUserPass())){
       throw new BadCredentialsException("비밀번호가 일치하지 않습니다");
     }
 

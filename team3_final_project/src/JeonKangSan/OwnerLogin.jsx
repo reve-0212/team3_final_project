@@ -12,58 +12,63 @@ function OwnerLogin() {
   const hcUserId = (e) => setUserId(e.target.value);
   const hcUserPass = (e) => setUserPass(e.target.value);
 
-  const hSubmit = (e) => {
-    e.preventDefault();
+    const hSubmit = (e) => {
+        e.preventDefault();
 
-    const userData = {userId, userPass};
-    console.log(userData);
+        const userData = { userId, userPass };
+        console.log(userData);
 
-    axios.post("http://localhost:8080/pre/login", userData, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then((response) => {
-        const {success, message, token} = response.data;  // 서버에서 토큰을 반환받음
-
-        if (success) {
-          alert(message);
-
-          // JWT 토큰을 로컬 스토리지에 저장
-          localStorage.setItem('jwtToken', token);
-
-          nv("/pre/PreSelect");
-        } else {
-          alert("로그인 실패");
-        }
-
-
-        axios.get(`http://localhost:8080/jsy/owner/login`, {
-          params: {
-            ownerId: ownerId,
-            ownerPw: ownerPass,
-          },
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`
-          }
+        axios.post("http://localhost:8080/pre/login", userData, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
         })
-          .then(res => {
-            console.log(res.data);
-            localStorage.setItem("ACCESS_TOKEN", res.data.accessToken);
-            sessionStorage.setItem("REFRESH_TOKEN", res.data.refreshToken);
-            nv("/pre/PreMain");
-          })
-          .catch((error) => {
-            alert("서버 오류가 발생했습니다: " + error);
-          });
-      })
-      .catch((err) => {
-        console.log(err)
-      });
-  }
+            .then((response) => {
+                const { success, message, token } = response.data;
 
-  return (
+                if (success) {
+                    alert(message);
+                    localStorage.setItem('ACCESS_TOKEN', token);
+                    console.log('Stored token:', localStorage.getItem('ACCESS_TOKEN'));  // 디버깅
+
+                    nv("/pre/PreSelect");
+                } else {
+                    alert("로그인 실패");
+                }
+
+                // 로그인 후, 서버에 다시 요청할 때 ACCESS_TOKEN을 사용
+                const accessToken = localStorage.getItem('ACCESS_TOKEN');
+                console.log('Using token:', accessToken);  // 디버깅: 헤더에 전달되는 토큰 확인
+
+                axios.get(`http://localhost:8080/jsy/owner/login`, {
+                    params: {
+                        ownerId: userId,
+                        ownerPw: userPass,
+                    },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                })
+                    .then(res => {
+                        console.log(res.data);
+                        localStorage.setItem("ACCESS_TOKEN", res.data.accessToken);
+                        sessionStorage.setItem("REFRESH_TOKEN", res.data.refreshToken);
+                        nv("/pre/PreMain");
+                    })
+                    .catch((error) => {
+                        console.error("Request failed:", error.response || error.message);
+                        alert("서버 오류가 발생했습니다: " + (error.response?.data?.message || error.message));
+                    });
+            })
+            .catch((err) => {
+                console.error('Login error:', err);
+                alert("로그인 중 오류가 발생했습니다.");
+            });
+    }
+
+
+    return (
     <div
       style={{
         display: "flex",

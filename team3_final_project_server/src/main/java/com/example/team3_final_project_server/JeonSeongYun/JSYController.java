@@ -47,9 +47,9 @@ public class JSYController {
 
 
   @GetMapping("/owner/login")
-  public ResponseEntity<?> getOwnerLoginCheck(@RequestParam String ownerId, @RequestParam String ownerPw){
+  public ResponseEntity<?> getOwnerLoginCheck(@RequestParam String userId, @RequestParam String userPw){
     try{
-      ResponseDTO jwtToken = jsyService.getJwtOwnerLoginCheck(ownerId, ownerPw);
+      ResponseDTO jwtToken = jsyService.getJwtOwnerLoginCheck(userId, userPw);
       System.out.println("OwnerLogin");
       return ResponseEntity.ok().body(jwtToken);
     }catch (AuthenticationException e) {

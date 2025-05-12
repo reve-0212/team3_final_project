@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface JSYMapper {
     List<RestaurantListDTO> getRstListByCategory(String category) throws Exception;
 
-    Optional<UserDTO> findByOwnerId(String ownerId);
+    Optional<UserDTO> findByOwnerId(String usetId);
 }
