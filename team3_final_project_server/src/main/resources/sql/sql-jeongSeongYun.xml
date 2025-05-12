@@ -41,7 +41,7 @@
         a.res_image1,
         a.res_image2,
         a.res_image3,
-        a.res_name
+        a.res_name;
     </select>
 
     <select id="findByOwnerId" resultType="com.example.team3_final_project_server.dto.UserDTO">

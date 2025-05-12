@@ -91,4 +91,28 @@
         GROUP BY review_type
     </select>
 
+    <select id="getCategoryByAddress"
+            parameterType="string"
+            resultType="com.example.team3_final_project_server.dto.CategoryDTO">
+        SELECT
+        category_idx,
+        res_idx,
+        category_addr,
+        category_name,
+        category_tag
+        FROM category
+        WHERE category_addr LIKE CONCAT('%', #{categoryAddr}, '%')
+    </select>
+
+    <select id="getRstListByCategory" parameterType="int">
+        select * from restaurant where res_idx = 1;
+    </select>
+
+    <select id="getRstListByPath" parameterType="int">
+        select * from restaurant where res_idx = 1;
+    </select>
+
+
+
+
 </mapper>

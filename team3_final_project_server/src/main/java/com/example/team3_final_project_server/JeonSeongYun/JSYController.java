@@ -21,11 +21,11 @@ public class JSYController {
   private JSYService jsyService;
 
 
-  @GetMapping("/contents/{category}")
-  public List<RestaurantListDTO> getRstListByCategory(@PathVariable("category") String category) throws Exception {
-    System.out.println(" /contents/{category} 받아온 값 : " + category);
-    return jsyService.getRstListByCategory(category);
-  }
+//  @GetMapping("/contents/{category}")
+//  public List<RestaurantListDTO> getRstListByCategory(@PathVariable("category") String category) throws Exception {
+////    System.out.println(" /contents/{category} 받아온 값 : " + category);
+//    return jsyService.getRstListByCategory(category);
+//  }
 
 //  @GetMapping("/ownerLogin")
 //  public ResponseEntity<?> getOwnerLoginCheck(@RequestParam String ownerId, @RequestParam String ownerPw){

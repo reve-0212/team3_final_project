@@ -9,6 +9,9 @@ import java.util.Map;
 
 @Mapper
 public interface JKSMapper {
+
+    List<RestaurantListDTO> getRstListByCategory(String category);
+
     List<RestaurantDTO> getAllRestaurants();
 
     List<BestMenuDTO> getAllBestMenus(int resIdx);
@@ -24,5 +27,9 @@ public interface JKSMapper {
     Double getAvgRatingByResIdx(@Param("resIdx") int resIdx);
 
     List<Map<String, Object>> getAvgRatingByType(@Param("resIdx") int resIdx);
+
+    List<CategoryDTO> getCategoryByAddress(String categoryAddr);
+
+    RestaurantDTO getRstListByPath(String pathIdx);
 
 }

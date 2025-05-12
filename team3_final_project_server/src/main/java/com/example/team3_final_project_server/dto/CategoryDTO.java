@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class CategoryDTO {
     private int categoryIdx;
-    private int restaurantIdx;
+    private int resIdx;
     private String categoryAddr;
     private String categoryName;
     private String categoryTag;

@@ -15,18 +15,23 @@ function ContentDetail() {
     const [bestMenus, setBestMenus] = useState([]);
     const [reviews, setReviews] = useState([]);
     const [announce, setAnnounce] = useState(null);
-    const { resIdx } = useParams();
+    const {resIdx} = useParams();
     const [amenities, setAmenities] = useState(null);
     const [avgRating, setAvgRating] = useState(null); //전체 평균 평점
     const [avgRatings, setAvgRatings] = useState({}); //항목별 평균 평점
     const [sortOption, setSortOption] = useState("latest"); // 정렬 옵션
     const [showOnlyWithImage, setShowOnlyWithImage] = useState(false); // 사진 리뷰 필터
 
+    // 현재 주소 값의 맨 뒤에서 1번째 값 가져옴
+    const pathIdx = window.location.pathname;
+    console.log(pathIdx[pathIdx.length - 1])
+    const shortPathIdx = pathIdx[pathIdx.length - 1]
+
     const ratingTypes = [
-        { label: '음식', key: 'F' },
-        { label: '가격', key: 'P' },
-        { label: '서비스', key: 'S' },
-        { label: '청결', key: 'C' }
+        {label: '음식', key: 'F'},
+        {label: '가격', key: 'P'},
+        {label: '서비스', key: 'S'},
+        {label: '청결', key: 'C'}
     ];
 
     const user = useUserStore((state) => state.user)
@@ -55,68 +60,17 @@ function ContentDetail() {
     // const user = useUserStore((state) => state.user)
     // const userIdx = user.userIdx
 
-    const restIdx = 1
-
-    // useEffect(() => {
-    //     axios.get(`http://localhost:8080/resdetail/${resIdx}`) // 단일 조회 API 사용 권장
-    //         .then((res) => {
-    //             console.log("받은 데이터:", res.data);
-    //             setStoreInfo(res.data);
-    //         })
-    //         .catch((err) => {
-    //             console.error("요청 실패:", err);
-    //         });
-    // }, [resIdx]);
-
     useEffect(() => {
-        if (ActTab === "대표메뉴" && storeInfo?.resIdx) {
-            axios.get(`http://localhost:8080/bestmenu?resIdx=${resIdx}`)
-                .then((res) => setBestMenus(res.data))
-                .catch((err) => console.error("대표메뉴 오류:", err));
-        }
-    }, [ActTab, storeInfo]);
+        axios.get(`http://localhost:8080/detail/${shortPathIdx}`) // 단일 조회 API 사용 권장
+            .then((res) => {
+                console.log("받은 데이터:", res.data);
+                setStoreInfo(res.data);
+            })
+            .catch((err) => {
+                console.error("요청 실패:", err);
+            });
+    }, [shortPathIdx]);
 
-    useEffect(() => {
-        if (ActTab === "리뷰" && resIdx) {
-            axios.get(`http://localhost:8080/reviews?resIdx=${resIdx}`)
-                .then((res) => {
-                    console.log("리뷰 응답:", res.data); // 확인용
-                    setReviews(res.data);
-                })
-                // .then((res) => setReviews(res.data))
-                .catch((err) => console.error("리뷰 오류:", err));
-        }
-    }, [ActTab, resIdx]);
-
-    useEffect(() => {
-        axios.get(`http://localhost:8080/announce?resIdx=${resIdx}`)
-            .then((res) => setAnnounce(res.data))
-            .catch((err) => console.error("공지사항 불러오기 실패", err));
-    }, [resIdx]);
-
-    useEffect(() => {
-        if (storeInfo?.resIdx) {
-            axios.get(`http://localhost:8080/amenities/${resIdx}`)
-                .then((res) => setAmenities(res.data))
-                .catch((err) => console.error("편의시설 불러오기 실패", err));
-        }
-    }, [storeInfo]);
-
-
-    useEffect(() => {
-        if (storeInfo?.resIdx) {
-            axios.get(`http://localhost:8080/reviews/average/${resIdx}`)
-                .then((res) => setAvgRating(res.data))
-                .catch((err) => console.error("평균 평점 불러오기 실패", err));
-        }
-    }, [storeInfo]);
-
-
-    useEffect(() => {
-        axios.get(`http://localhost:8080/reviews/average/type/${storeInfo.resIdx}`)
-            .then((res) => setAvgRatings(res.data))
-            .catch((err) => console.error("항목별 평균 평점 불러오기 실패", err));
-    }, [storeInfo]);
 
 
     return (
@@ -127,7 +81,7 @@ function ContentDetail() {
                 {/* 가게 대표 이미지 */}
                 <div
                     className="d-flex justify-content-center align-items-center bg-light w-100 mb-3"
-                    style={{ height: '250px', maxHeight: '250px', overflow: 'hidden' }}
+                    style={{height: '250px', maxHeight: '250px', overflow: 'hidden'}}
                 >
                     {storeInfo.resImage1 ? (
                         <a href={storeInfo.resImage1} target="_blank" rel="noopener noreferrer">
@@ -209,11 +163,13 @@ function ContentDetail() {
                                         {amenities.hasParking === "Y" && <li>주차 가능 - {amenities.parkingInfo}</li>}
                                         {amenities.noDeposit === "Y" && <li>예약금 없음 - {amenities.depositInfo}</li>}
                                         {amenities.hasGroupSeat === "Y" && <li>단체석 있음 - {amenities.groupSeatInfo}</li>}
-                                        {amenities.hasCoronation === "Y" && <li>기념행사 제공 - {amenities.coronationInfo}</li>}
+                                        {amenities.hasCoronation === "Y" &&
+                                            <li>기념행사 제공 - {amenities.coronationInfo}</li>}
                                         {amenities.hasCorkage === "Y" && <li>코르키지 가능 - {amenities.corkageInfo}</li>}
                                         {amenities.hasKidsZone === "Y" && <li>키즈존 있음 - {amenities.kidsZoneInfo}</li>}
                                         {amenities.hasWifi === "Y" && <li>WiFi 제공 - {amenities.wifiInfo}</li>}
-                                        {amenities.hasWaitingArea === "Y" && <li>대기 공간 있음 - {amenities.waitingAreaInfo}</li>}
+                                        {amenities.hasWaitingArea === "Y" &&
+                                            <li>대기 공간 있음 - {amenities.waitingAreaInfo}</li>}
                                     </>
                                 ) : (
                                     <li>불러오는 중...</li>
@@ -262,7 +218,8 @@ function ContentDetail() {
                     <div className="mb-5">
                         <h5 className="mb-3 fw-bold text-start">대표메뉴</h5>
                         {bestMenus.map((menu, idx) => (
-                            <div key={idx} className="d-flex justify-content-between align-items-center border-bottom py-3">
+                            <div key={idx}
+                                 className="d-flex justify-content-between align-items-center border-bottom py-3">
                                 <div className="text-start">
                                     <div className="fw-bold">{menu.testmenuName}</div>
                                     <div className="text-muted small">{menu.testmenuDesc}</div>
@@ -306,9 +263,9 @@ function ContentDetail() {
                             <div className="d-flex align-items-start">
 
                                 {/* 전체평점 묶음 */}
-                                <div className="d-flex flex-column align-items-center me-3" style={{ minWidth: "70px" }}>
-                                    <span className="fw-bold text-warning" style={{ fontSize: "1.5rem" }}>★</span>
-                                    <span className="fw-bold" style={{ fontSize: "1.2rem" }}>
+                                <div className="d-flex flex-column align-items-center me-3" style={{minWidth: "70px"}}>
+                                    <span className="fw-bold text-warning" style={{fontSize: "1.5rem"}}>★</span>
+                                    <span className="fw-bold" style={{fontSize: "1.2rem"}}>
                                     {avgRating !== null ? avgRating.toFixed(1) : "-"}
                                     </span>
                                     <small className="text-muted">전체 평점</small>
@@ -323,17 +280,19 @@ function ContentDetail() {
                                         return (
                                             <div key={i} className="d-flex align-items-center mb-2">
                                                 {/* 항목명 */}
-                                                <div style={{ width: '60px', fontSize: '0.85rem' }}>{item.label}</div>
+                                                <div style={{width: '60px', fontSize: '0.85rem'}}>{item.label}</div>
 
                                                 {/* 진행바 */}
                                                 <div className="flex-grow-1 me-2">
-                                                    <div className="progress" style={{ height: '6px' }}>
-                                                        <div className="progress-bar bg-warning" style={{ width: `${percent}%` }}></div>
+                                                    <div className="progress" style={{height: '6px'}}>
+                                                        <div className="progress-bar bg-warning"
+                                                             style={{width: `${percent}%`}}></div>
                                                     </div>
                                                 </div>
 
                                                 {/* 수치 */}
-                                                <div style={{ width: '30px', fontSize: '0.8rem' }}>{score.toFixed(1)}</div>
+                                                <div
+                                                    style={{width: '30px', fontSize: '0.8rem'}}>{score.toFixed(1)}</div>
                                             </div>
                                         );
                                     })}
@@ -349,11 +308,12 @@ function ContentDetail() {
                                     [review.reviewImage1, review.reviewImage2, review.reviewImage3].filter(Boolean)
                                 )
                                 .map((imageUrl, idx) => (
-                                    <div key={idx} className="bg-light rounded" style={{ width: "100px", height: "100px", overflow: "hidden" }}>
+                                    <div key={idx} className="bg-light rounded"
+                                         style={{width: "100px", height: "100px", overflow: "hidden"}}>
                                         <img
                                             src={imageUrl}
                                             alt={`리뷰이미지${idx}`}
-                                            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                                            style={{width: "100%", height: "100%", objectFit: "cover"}}
                                         />
                                     </div>
                                 ))}
@@ -375,13 +335,12 @@ function ContentDetail() {
 
                             <span
                                 className="custom-span-text ms-2"
-                                style={{ cursor: 'pointer' }}
+                                style={{cursor: 'pointer'}}
                                 onClick={() => setShowOnlyWithImage(prev => !prev)}
                             >
                                 {showOnlyWithImage ? '전체리뷰' : '사진리뷰'}
                             </span>
                         </div>
-
 
 
                         {filteredAndSortedReviews
@@ -391,18 +350,25 @@ function ContentDetail() {
                                 return true;
                             })
                             .map((review, idx) => (
-                                <div key={idx} className="d-flex justify-content-between align-items-start border-bottom py-3">
+                                <div key={idx}
+                                     className="d-flex justify-content-between align-items-start border-bottom py-3">
                                     <div className="flex-grow-1 pe-2">
                                         <div className="fw-bold">
-                                            {review.userName || "사용자"} <span className="text-warning">★{review.reviewRating}</span>
+                                            {review.userName || "사용자"} <span
+                                            className="text-warning">★{review.reviewRating}</span>
                                         </div>
                                         <div className="small text-muted">{review.reviewWriteDate}</div>
                                         <div className="small">{review.reviewContent}</div>
                                     </div>
                                     <div className="bg-light d-flex justify-content-center align-items-center"
-                                         style={{ width: "60px", height: "60px", borderRadius: "6px" }}>
+                                         style={{width: "60px", height: "60px", borderRadius: "6px"}}>
                                         {review.reviewImage1 ? (
-                                            <img src={review.reviewImage1} alt="리뷰 이미지" style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "6px" }} />
+                                            <img src={review.reviewImage1} alt="리뷰 이미지" style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                objectFit: "cover",
+                                                borderRadius: "6px"
+                                            }}/>
                                         ) : (
                                             <span className="text-muted small">사진</span>
                                         )}

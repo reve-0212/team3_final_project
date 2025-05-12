@@ -24,4 +24,9 @@ public interface JKSService {
 
     Map<String, Double> getAvgRatingByType(int resIdx);
 
+    List<CategoryDTO> getCategoryByAddress(String categoryAddr);
+
+    List<RestaurantListDTO> getRstListByCategory(String category);
+
+    RestaurantDTO getRstListByPath(String pathIdx);
 }
