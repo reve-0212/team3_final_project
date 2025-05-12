@@ -5,28 +5,28 @@
 <mapper namespace="com.example.team3_final_project_server.SimJiHyun.mapper.UserMapper">
   <!-- 아이디로 사용자 조회 (로그인용) -->
   <select id="findByUserId" resultType="com.example.team3_final_project_server.dto.UserDTO">
-    SELECT * FROM user WHERE user_id = #{userId}
+    SELECT * FROM member WHERE user_id = #{userId}
   </select>
 
   <!-- 이메일로 사용자 존재 여부 확인 -->
   <select id="existsByUserEmail" resultType="boolean">
-    SELECT COUNT(*) > 0 FROM user WHERE user_email = #{userEmail}
+    SELECT COUNT(*) > 0 FROM member WHERE user_email = #{userEmail}
   </select>
 
   <!-- 아이디로 사용자 존재 여부 확인 -->
   <select id="existsByUserId" resultType="boolean">
-    SELECT COUNT(*) > 0 FROM user WHERE user_id = #{userId}
+    SELECT COUNT(*) > 0 FROM member WHERE user_id = #{userId}
   </select>
 
   <!-- 회원 정보 저장 -->
-  <insert id="saveUser" parameterType="com.example.team3_final_project_server.dto.UserDTO">
-    INSERT INTO user (user_id, user_pass, user_nick, user_gender, user_age, user_call, user_email, role)
-    VALUES (#{userId}, #{userPass}, #{userNick}, #{userGender}, #{userAge}, #{userCall}, #{userEmail}, #{role})
+  <insert id="save" parameterType="com.example.team3_final_project_server.dto.UserDTO">
+    INSERT INTO member (user_id, user_pass, user_name, user_email, role)
+    VALUES (#{userId}, #{userPass}, #{userName}, #{userEmail}, #{role})
   </insert>
 
   <!-- 사용자 삭제 -->
   <delete id="deleteByUserId">
-    DELETE FROM user WHERE user_id = #{userId}
+    DELETE FROM member WHERE user_id = #{userId}
   </delete>
 
   <!--  비밀번호 변경-->

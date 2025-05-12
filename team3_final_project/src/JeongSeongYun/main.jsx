@@ -10,7 +10,6 @@ import Login from "../simJiHyun/login/Login.jsx";
 import UserSetting from "./layout/UserSetting.jsx";
 import SignUp from "../simJiHyun/signUp/SignUp.jsx";
 import ContentList from "../JeonKangSan/ContentList.jsx";
-import ContentDetail from "../JeonKangSan/ContentDetail.jsx";
 import VisitPage from "../KimNaHyun/page/VisitPage.jsx";
 import SeatPage from "../KimNaHyun/page/SeatPage.jsx";
 import DateSelectorPage from "../KimNaHyun/page/DateSelectorPage.jsx";
@@ -104,7 +103,8 @@ function main() {
           <main className={'content'}>
             <Routes>
               {/*유저*/}
-              <Route path="/resdetail/:resIdx" element={<ContentDetail />}/>
+              <Route path={"/"} element={<MainContent/>}/>
+              <Route path="/resdetail/:resIdx" element={<ContentDetail/>}/>
 
               <Route path={"/user"} element={<MyPageContent/>}/>
               <Route path={"/user/login"} element={<Login/>}/>

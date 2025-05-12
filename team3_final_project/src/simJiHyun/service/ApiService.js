@@ -1,13 +1,12 @@
 import axios from "axios";
 
-
 // axios를 사용하는 부분을 모두 자바스크립트 모듈로 따로 만들어 놓고 사용
 
 // 회원 가입
 // 매개변수 memberDTO는 해당 함수를 호출 시 매개변수로 object 타입을 사용함
-const apiSignup = (userDTO) => {
+const apiSignup = (memberDTO) => {
   // axios로 가입할 회원 정보를 전달함
-  axios.post(`http://localhost:8080/api/auth/signup`, userDTO, {
+  axios.post(`/api/auth/signup`, memberDTO, {
     // headers 의 'Content-Type': 'application/json' 은 axios 가 자동으로 설정, 생략 가능
     headers: {
       'Content-Type': 'application/json'
@@ -16,7 +15,7 @@ const apiSignup = (userDTO) => {
     .then(res => {
       alert('회원 가입 완료');
       console.log(res);
-      window.location.href = '/user/login';
+      window.location.href = '/auth/login';
     })
     .catch(err => {
       alert(`회원 가입 중 오류가 발생했습니다.\n${err}`);
@@ -24,31 +23,34 @@ const apiSignup = (userDTO) => {
 }
 
 // 로그인
-const apiLogin = async (userId, userPass) => {
-  try {
-    const res = await
-      axios.get(`http://localhost:8080/api/auth/login`, {
-        params: {userId: userId, userPass: userPass},
-        headers: {'Content-Type': 'application/json'}
-      });
-
-    const user = res.data;
-
-    if (!user || !user.accessToken) {
-      throw new Error("서버 응답에 문제가 있습니다");
+const apiLogin = (userId, userPass) => {
+  // axios 로 사용자 id/pw를 전달
+  axios.get(`http://localhost:8080/api/auth/login`, {
+    params: {
+      userId: userId,
+      userPass: userPass
     }
-
-    localStorage.setItem("ACCESS_TOKEN", user.accessToken)
-    sessionStorage.setItem("REFRESH_TOKEN", user.refreshToken)
-    return user;
-  } catch (err) {
-    // 서버에서 4xx 응답 오면 여기로 들어옴
-    if (err.response && err.response.status === 401) {
-      throw new Error(`서버에 문제가 있습니다. ${err.message}`);
-    } else {
-      throw new Error(`아이디 혹은 비밀번호가 잘못되었습니다`);
+  }, {
+    headers: {
+      'Content-Type': 'application/json'
     }
-  }
+  })
+    .then(res => {
+      alert('로그인');
+      // 서버에서 받아온 데이터 중 엑세스 토큰은 로컬 스토리지에 저장
+      // 로컬 스토리지는 웹 브라우저를 종료해도 데이터가 계속 남아있음
+      localStorage.setItem("ACCESS_TOKEN", res.data.accessToken);
+      // 서버에서 받아온 데이터 중 리프레시 토큰은 세션 스토리지에 저장
+      // 세션 스토리지는 웹 브라우저를 완전히 종료하거나 세션이 만료되면 데이터가 삭제됨
+      // 리프레시 토큰은 엑세스 토큰을 발급받기 위한 중요한 정보이므로 세션 스토리지에 저장 후 자동 삭제될 수 있도록 함
+      sessionStorage.setItem("REFRESH_TOKEN", res.data.refreshToken);
+      // 현재 파일은 JSX 문법을 사용하지 않는 순수 자바스크립트이므로 UseNavigate 훅을 사용하지 않음
+      window.location.href = '/';
+    })
+    .catch(err => {
+      alert(`로그인 중 오류가 발생했습니다.\n${err}`);
+      alert("apiService.js")
+    });
 }
 
 // 로그아웃 시 웹 브라우저에 저장된 모든 토큰 정보를 삭제함

@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import lombok.*;
 
 @Data
 @Builder
@@ -26,6 +25,7 @@ public class UserDTO implements UserDetails {
   private int userAge;
   private String userCall;
   private String userEmail;
+  private String role;
   private String role;
 
 

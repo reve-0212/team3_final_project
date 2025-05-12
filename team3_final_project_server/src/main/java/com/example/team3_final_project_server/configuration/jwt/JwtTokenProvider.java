@@ -31,13 +31,6 @@ public class JwtTokenProvider {
     return makeToken(new Date(now.getTime() + expiredAt.toMillis()), userDTO);
   }
 
-  public String generateRefreshToken(UserDTO userDTO, Duration expiredAt) {
-    Date now = new Date();
-
-    // 리프레시 토큰도 동일한 방식으로 생성
-    return makeToken(new Date(now.getTime() + expiredAt.toMillis()), userDTO);
-  }
-
   //  실제 JWT 토큰을 생성
   private String makeToken(Date expiry, UserDTO userDTO) {
     Date now = new Date();
@@ -47,14 +40,14 @@ public class JwtTokenProvider {
     claims.put("userIdx", userDTO.getUserIdx());
     claims.put("userId", userDTO.getUserId());
     claims.put("userPass", userDTO.getUserPass());
-    claims.put("userNick", userDTO.getUserNick());
+    claims.put("userName", userDTO.getUserName());
     claims.put("userGender", userDTO.getUserGender());
     claims.put("userAge", userDTO.getUserAge());
     claims.put("userCall", userDTO.getUserCall());
     claims.put("userEmail", userDTO.getUserEmail());
     claims.put("bsName", userDTO.getBsName());
     claims.put("bsNumber", userDTO.getBsNumber());
-    claims.put("role", userDTO.getRole());
+    claims.put("userRole", userDTO.getRole());
 //    빌더 패턴을 사용하여 JWT 객체 생성
 
 //    setHeaderParam() : 토큰 타입을 설정
@@ -74,11 +67,19 @@ public class JwtTokenProvider {
 
     return Jwts.builder()
             .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
-            .issuer(jwtProperties.getIssuer())
-            .issuedAt(now)
-            .expiration(expiry)
-            .subject(userDTO.getUserEmail())
-            .claims(claims)
+            .setIssuer(jwtProperties.getIssuer())
+            .setIssuedAt(now)
+            .setExpiration(expiry)
+            .setSubject(userDTO.getUserEmail())
+            .addClaims(claims)
+//        .claim("id", userDTO.getId())
+//        .claim("userId", userDTO.getUserId())
+//        .claim("userNick", userDTO.getUserNick())
+//        .claim("userEmail", userDTO.getUserEmail())
+//        .claim("userRole", userDTO.getRole())
+//        0.9.x 버전 사용 시
+//        .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecretKey())
+//        0.12.x 버전 사용 시 위에서 Key 객체를 만들고 해당 Key 객체를 사용
             .signWith(secretKey)
             .compact();
   }
@@ -114,22 +115,21 @@ public class JwtTokenProvider {
     Claims claims = getClaims(token);
 
 //    JWT 토큰에 저장되어 있었던 사용자 권한 정보를 가져와서 스프링 시큐리티에서 사용하는 권한 타입으로 변환
-    Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(claims.get("role").toString()));
-    System.out.println("authorities : " + authorities);
+    Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(claims.get("userRole").toString()));
 
 //    jwt 토큰을 통해서 가져온 데이터로 UserDTO 객체 생성
     UserDTO member = UserDTO.builder()
-            .userIdx(((Number) claims.get("userIdx")).intValue())
+            .userIdx(Integer.parseInt(claims.get("userIdx").toString()))
             .userId(claims.get("userId").toString())
             .userPass(claims.get("userPass").toString())
-            .userNick(claims.get("userNick").toString())
+            .userName(claims.get("userName").toString())
             .userGender(claims.get("userGender").toString())
-            .userAge(((Number) claims.get("userAge")).intValue())
+            .userAge(Integer.parseInt(claims.get("userAge").toString()))
             .userCall(claims.get("userCall").toString())
             .userEmail(claims.get("userEmail").toString())
             .bsName(claims.get("bsName").toString())
             .bsNumber(claims.get("bsNumber").toString())
-            .role(claims.get("role").toString())
+            .role(claims.get("userRole").toString())
             .build();
 
 //    사용자 인증 정보를 생성 후 반환
@@ -163,3 +163,15 @@ public class JwtTokenProvider {
 //    return claims.get("id", Long.class);
 //  }
 }
+
+
+
+
+
+
+
+
+
+
+
+

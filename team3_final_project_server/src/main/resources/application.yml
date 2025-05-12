@@ -25,8 +25,3 @@ mybatis:
 jwt:
   issuer: jwttoken@bitc.ac.kr
   secret_key: bisper-jwt-test-token-secret-key
-
-
-logging:
-  level:
-    org.springframework.security: DEBUG
