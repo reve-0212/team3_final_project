@@ -3,10 +3,12 @@ package com.example.team3_final_project_server.KimSangMin.controller;
 import com.example.team3_final_project_server.KimSangMin.response.PreResponse;
 import com.example.team3_final_project_server.KimSangMin.response.TimeRequest;
 import com.example.team3_final_project_server.KimSangMin.service.PreService;
+import com.example.team3_final_project_server.configuration.JwtUtil.JwtUtil;
 import com.example.team3_final_project_server.dto.RestaurantDTO;
 import com.example.team3_final_project_server.dto.SeatDTO;
 import com.example.team3_final_project_server.dto.TimeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +20,9 @@ public class PreController {
 
     @Autowired
     private PreService preService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
 //    좌석저장
     @PostMapping("/pre/seats/save")
@@ -50,20 +55,34 @@ public class PreController {
     }
 
 // 가게 정보 저장하기
-    @PostMapping("/pre/resave")
-    public ResponseEntity<PreResponse> reSave (@RequestBody RestaurantDTO restaurant) {
+@PostMapping("/pre/resave")
+public ResponseEntity<PreResponse> reSave(@RequestBody RestaurantDTO restaurant, @RequestHeader("Authorization") String authorization) {
+    // Authorization 헤더에서 "Bearer "를 제거하여 JWT 토큰만 추출
+    String token = authorization.replace("Bearer ", "").trim();
+
+    try {
+        // jwtUtil을 사용하여 userIdx 추출
+        int userIdx = jwtUtil.getUserIdx(token);
+
+        // restaurant에 userIdx 설정
+        restaurant.setUserIdx(userIdx);
+
+        // 저장 처리
         boolean success = preService.reSave(restaurant);
 
         if (success) {
-            PreResponse response = new PreResponse(true,"정보 저장 성공",restaurant);
+            PreResponse response = new PreResponse(true, "정보 저장 성공", restaurant);
             return ResponseEntity.ok(response);
-        }
-        else{
-            PreResponse response = new PreResponse(false,"정보 저장 실패",null);
+        } else {
+            PreResponse response = new PreResponse(false, "정보 저장 실패", null);
             return ResponseEntity.badRequest().body(response);
         }
+    } catch (Exception e) {
+        // 예외 처리 (토큰이 없거나 잘못된 경우)
+        PreResponse response = new PreResponse(false, "토큰이 유효하지 않거나 인증 실패", null);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
-
+}
 
 //    가게 정보 수정하기
 @PutMapping("/pre/updateRest/{resIdx}")

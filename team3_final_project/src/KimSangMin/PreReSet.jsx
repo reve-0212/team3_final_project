@@ -1,5 +1,5 @@
-// import {useEffect, useState} from "react";
-import { Link } from "react-router-dom";
+import {useEffect, useState} from "react";
+// import { Link } from "react-router-dom";
 import ReBanner from "./ReBanner.jsx";
 import axios from "axios";
 
@@ -76,32 +76,6 @@ function PreReSet() {
 
 
   //-----------------------------  주소 검색 api로 요청받아오기------------------------
-  // const hSearch = (e) => {
-  //   e.preventDefault();
-  //
-  //   if (!address) {
-  //     alert("주소를 입력해주세요.");
-  //     return;
-  //   }
-  //
-  //   const apiKey = "36bd79108879c504308c80d28fe7829d";
-  //   const url = `https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURIComponent(address)}`;
-  //
-  //   axios
-  //       .get(url, {
-  //         headers: {
-  //           Authorization: `KakaoAK ${apiKey}`,
-  //         },
-  //       })
-  //       .then((response) => {
-  //         setSearchResults(response.data.documents);
-  //       })
-  //       .catch((error) => {
-  //         console.error("주소 검색 중 오류 발생:", error);
-  //         alert("주소 검색에 실패했습니다.");
-  //       });
-  // };
-
   const openDaumPostcode = () => {
     new window.daum.Postcode({
       oncomplete: function (data) {
@@ -176,11 +150,14 @@ function PreReSet() {
 
     console.log("저장할 데이터: ", storeData);
 
+    const token = localStorage.getItem('jwtToken');
 
     //  가게 저장 시 수정 기능으로 체인지
     if (isSave) {
       const resIdx = 1;
-      axios.put(`http://localhost:8080/pre/updateRest/${resIdx}`, storeData)
+      axios.put(`http://localhost:8080/pre/updateRest/${resIdx}`, storeData, { headers: {
+          Authorization: `Bearer ${token}`
+        }})
           .then( (response) => {
             console.log("수정 성공", response.data);
             alert("가게 정보가 수정되었습니다.")
@@ -191,16 +168,25 @@ function PreReSet() {
           })
     } else {
       // 저장이 안되있을 시에는 기본적으로 저장 버튼 활성화
-      axios.post("http://localhost:8080/pre/resave", storeData)
+      axios.post("http://localhost:8080/pre/resave", storeData, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
           .then((response) => {
-            console.log("저장성공", response.data)
-            console.log("restData.resTime: ", restData.resTime);
-            alert("가게 정보가 저장되었습니다.")
-            setIsSave(true)
+            console.log("저장 성공", response.data);
+            alert("가게 정보가 저장되었습니다.");
+            localStorage.setItem('jwtToken', token);
+            setIsSave(true);
           })
           .catch((error) => {
-            console.log("오류 발생 " + error)
-            alert("오류가 발생했습니다.")
+            console.log("오류 발생", error);
+            if (error.response && error.response.status === 401) {
+              alert("토큰이 만료되었습니다. 다시 로그인 해주세요.");
+              // 로그인 페이지로 리디렉션하거나 로그아웃 처리
+            } else {
+              alert("오류가 발생했습니다.");
+            }
           });
     }
   }
@@ -241,13 +227,13 @@ function PreReSet() {
 
   return (
       <div
-          // style={{
-          //   marginLeft: "300px",
-          //   paddingTop: "8rem",
-          //   paddingLeft: "1rem",
-          //   width: "calc(100% - 200px)",
-          //   maxWidth: "1000px",
-          // }}
+          style={{
+            marginLeft: "300px",
+            paddingTop: "8rem",
+            paddingLeft: "1rem",
+            width: "calc(100% - 200px)",
+            maxWidth: "1000px",
+          }}
       >
         <ReBanner/>
         <form onSubmit={hSubmit}>

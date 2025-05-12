@@ -17,8 +17,8 @@
 
 <!--    가게 정보 저장 -->
     <insert id="insertRes" parameterType="com.example.team3_final_project_server.dto.RestaurantDTO">
-    INSERT INTO restaurant (res_name, res_call, res_address1, res_address2, res_introduce, res_reserve_time, res_image1, res_image2, res_image3)
-    VALUES ( #{resName}, #{resCall}, #{resAddress1}, #{resAddress2}, #{resIntroduce}, #{resReserveTime}, #{resImage1}, #{resImage2}, #{resImage3} )
+    INSERT INTO restaurant ( user_idx ,res_name, res_call, res_address1, res_address2, res_introduce, res_reserve_time, res_image1, res_image2, res_image3)
+    VALUES (#{userIdx} ,#{resName}, #{resCall}, #{resAddress1}, #{resAddress2}, #{resIntroduce}, #{resReserveTime}, #{resImage1}, #{resImage2}, #{resImage3} )
     </insert>
 
 <!--    가게 정보 수정 -->
