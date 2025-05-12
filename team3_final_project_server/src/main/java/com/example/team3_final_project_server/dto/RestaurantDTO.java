@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class RestaurantDTO {
   private int resIdx;
+  private int userIdx;
   private String resImage1;
   private String resImage2;
   private String resImage3;

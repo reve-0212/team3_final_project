@@ -43,14 +43,10 @@ public class PreServiceImpl implements PreService {
     //    가게 정보 저장
     @Override
     public boolean reSave(RestaurantDTO restaurant) {
-        try {
-            preMapper.insertRes(restaurant);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+        int result = preMapper.reSave(restaurant);
+        return result > 0;
     }
+
 
 // 가게 정보 수정하기
     @Override

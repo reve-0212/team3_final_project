@@ -12,7 +12,6 @@ public interface PreMapper {
 
     void saveSeats(List<SeatDTO> seats);
 
-    void insertRes(RestaurantDTO restaurant);
 
     void insertTime(TimeDTO time);
 
@@ -21,4 +20,6 @@ public interface PreMapper {
     RestaurantDTO getRest(int resIdx);
 
     List<SeatDTO> loadSeat(int resIdx);
+
+    int reSave(RestaurantDTO restaurant);
 }
