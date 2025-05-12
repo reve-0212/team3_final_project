@@ -125,16 +125,18 @@ function main() {
               <Route path={"/contentList/:category"} element={<ContentList/>}/>
               <Route path={"/contentDetail"} element={<ContentDetail/>}/>
 
-              <Route path={"/waiting/visit"} element={<VisitPage/>}/>
-              <Route path={"/book/seat"} element={<SeatPage/>}/>
-              <Route path={"/waiting/reg"} element={<WaitingRegPage/>}/>
-              <Route path={"/waiting/info"} element={<WaitingInfoPage/>}/>
+              {/*<Route path={"/waiting/visit"} element={<VisitPage/>}/>*/}
+              {/*<Route path={"/book/seat"} element={<SeatPage/>}/>*/}
+              {/*<Route path={"/waiting/reg"} element={<WaitingRegPage/>}/>*/}
+              {/*<Route path={"/waiting/info"} element={<WaitingInfoPage/>}/>*/}
 
-              <Route path={"/book/visit"} element={<VisitPage/>}/>
-              <Route path={"/book/date"} element={<DateSelectorPage/>}/>
-              <Route path={"/book/menu"} element={<MenuSelectorPage/>}/>
+              <Route path={"/book/seat"} element={<SeatPage/>}/>
+              <Route path={"/book/visit/:userIdx/:resIdx"} element={<VisitPage/>}/>
+              <Route path={"/book/date/:userIdx/:resIdx"} element={<DateSelectorPage/>}/>
+              <Route path={"/book/menu/:userIdx/:resIdx"} element={<MenuSelectorPage/>}/>
               <Route path={"/book/reg"} element={<BookRegPage/>}/>
               <Route path={"/book/info/:resIdx"} element={<BookInfoPage/>}/>
+
 
               <Route path={"/review"} element={<SjhReview/>}/>
 

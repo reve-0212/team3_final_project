@@ -1,11 +1,9 @@
 // ContentDetail.jsx
 
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import "./JksSheet.css";
-import axios from "axios";
-import {useNavigate, useParams} from "react-router-dom";
-// import useUserStore from "../stores/useUserStore.jsx";
-import useUserStore from "../stores/useUserStore.jsx";
+
+
 
 function ContentDetail() {
     const [ActTab, setActTab] = useState("상세정보");
@@ -71,6 +69,10 @@ function ContentDetail() {
             });
     }, [shortPathIdx]);
 
+    const userIdx = 1; // 임의의 사용자 ID
+    const reservationIdx = 123; // 임의의 예약 ID
+
+
     useEffect(() => {
         axios.get(`http://localhost:8080/bestmenu/${shortPathIdx}`)
             .then((res) => {
@@ -90,29 +92,13 @@ function ContentDetail() {
                 {/* 가게 대표 이미지 */}
                 <div
                     className="d-flex justify-content-center align-items-center bg-light w-100 mb-3"
-                    style={{height: '250px', maxHeight: '250px', overflow: 'hidden'}}
-                >
-                    {storeInfo.resImage1 ? (
-                        <a href={storeInfo.resImage1} target="_blank" rel="noopener noreferrer">
-                            <img
-                                src={storeInfo.resImage1}
-                                alt="대표 이미지"
-                                style={{
-                                    height: '100%',
-                                    maxHeight: '250px',
-                                    width: 'auto',
-                                    objectFit: 'cover'
-                                }}
-                            />
-                        </a>
-                    ) : (
-                        <span className="text-muted">사진</span>
-                    )}
+                    style={{height: '250px'}}>
+                    <span className="text-muted">사진</span>
                 </div>
+
                 {/* 가게 이름 */}
                 <div className="d-flex justify-content-start text mb-2">
-                    <h5 className="fw-bold">
-                        {storeInfo ? storeInfo.resName : "로딩 중..."}</h5>
+                    <h5 className="fw-bold">가게이름</h5>
                 </div>
 
                 {/* 별점 및 영업정보 */}
@@ -121,6 +107,7 @@ function ContentDetail() {
                         평점 {reviews[0] ? reviews[0].reviewRating : ""}
                         {/*/ 리뷰갯수 {reviews.length}*/}
                     </small><br/>
+                    <small className="fw-bold">별점 0.0 / 리뷰 갯수</small><br/>
                     <hr/>
                     <small className="fw-bold">영업중 {storeInfo ? storeInfo.resReserveTime : ""}</small><br/>
                     <small className="fw-bold">전화번호 {storeInfo ? storeInfo.resCall : ""}</small>
@@ -156,16 +143,35 @@ function ContentDetail() {
                     <div className="mb-5 text-start">
                         <br/>
                         <h4 className="extra-bold">매장소개 {storeInfo ? storeInfo.resIntroduce : ""}</h4>
+                        <h4 className="extra-bold">매장소개</h4>
                         <div className="mb-3">
                             {/*<small className="notice-text">알림</small>*/}
                             {/*<p className="small mt-1">*/}
                             {/*    {announce ? announce.announceContent : "공지사항을 불러오는 중입니다..."}*/}
                             {/*</p>*/}
+                            <small className="notice-text">알림</small>
+                            <p className="small mt-1">
+                                월 ~ 목 브레이크 타임 15:00 ~ 17:00<br/>
+                                금토일 브레이크 타임 없이 운영됩니다.<br/>
+                                시즌 한정 메뉴를 제외한 전 메뉴 포장 가능합니다.<br/>
+                                해목은 나고야식 히츠마부시(장어덮밥) 전문점 입니다. <br/>
+                                그외 카이센동과 마구로동, 튀김 등<br/>
+                                다양한 메뉴도 함께 즐길 수 있습니다.<br/>
+                                항상 해목을 사랑해 주셔서 감사합니다.<br/>
+                            </p>
                         </div>
 
 
                         <br/>
                         <div className="mb-3">
+                            <h4 className="extra-bold">편의시설</h4>
+                            <ul>
+                                <li>단체석 구비</li>
+                                <li>콜키지 서비스 가능</li>
+                                <li>유아용 의자 구비</li>
+                                <li>테라스 시설 구비</li>
+                                <li>남녀 화장실 구분</li>
+                            </ul>
                             {/*<h4 className="extra-bold">편의시설</h4>*/}
                             {/*<ul className="list-unstyled">*/}
                             {/*    {amenities ? (*/}
@@ -187,6 +193,7 @@ function ContentDetail() {
                             {/*</ul>*/}
                         </div>
 
+
                         <br/>
                         <div className="mb-3">
                             <h4 className="extra-bold mb-2">위치</h4>
@@ -194,6 +201,9 @@ function ContentDetail() {
                                 {storeInfo ? storeInfo.resAddress1 : ""}
                             </div>
                             <div className="location-box">
+                            </div>
+                            <div className="mt-2">
+                                부산 해운대구 구남로 24번길 8 (우동) 1층
                             </div>
                         </div>
 
@@ -203,7 +213,7 @@ function ContentDetail() {
                             <h4 className="extra-bold">#해시태그</h4>
 
                             <div className="d-flex flex-wrap gap-2 ps-2 pt-2">
-                                <div><span className="badge">#혼술맛집</span></div>
+                                <div><span className="badge">#혼술 맛집</span></div>
                                 <div><span className="badge">#안주맛집</span></div>
                                 <div><span className="badge">#친절함</span></div>
                                 <div><span className="badge">#청결함</span></div>
@@ -226,16 +236,25 @@ function ContentDetail() {
                 {ActTab === "대표메뉴" && (
                     <div className="mb-5">
                         <h5 className="mb-3 fw-bold text-start">대표메뉴</h5>
-                        {bestMenus.map((menu, idx) => (
+
+                        {[1, 2, 3].map((idx) => (
                             <div key={idx}
                                  className="d-flex justify-content-between align-items-center border-bottom py-3">
+                                {/* 메뉴 설명 영역 */}
                                 <div className="text-start">
+                                    <div className="fw-bold">메뉴이름</div>
+                                    <div className="text-muted small">메뉴설명</div>
+                                    <div className="fw-bold mt-3">39,000 원</div>
                                     <div className="fw-bold">{menu.menuName}</div>
                                     <div className="text-muted small">{menu.menuExplanation}</div>
                                     <div className="fw-bold mt-3">{menu.menuPrice} 원</div>
                                 </div>
-                                <div className="bg-light d-flex justify-content-center align-items-center"
-                                     style={{width: "64px", height: "64px", borderRadius: "6px"}}>
+
+                                {/* 이미지 박스 */}
+                                <div
+                                    className="bg-light d-flex justify-content-center align-items-center"
+                                    style={{width: "64px", height: "64px", borderRadius: "6px"}}
+                                >
                                     <span className="text-muted small">사진</span>
                                 </div>
                             </div>
@@ -271,6 +290,12 @@ function ContentDetail() {
                 {/*            /!* 평점 전체영역: 별점과 세부항목을 한 줄로 *!/*/}
                 {/*            <div className="d-flex align-items-start">*/}
 
+                                {/* ★ 4.7 전체평점 묶음 */}
+                                <div className="d-flex flex-column align-items-center me-3" style={{minWidth: "70px"}}>
+                                    <span className="fw-bold text-warning" style={{fontSize: "1.5rem"}}>★</span>
+                                    <span className="fw-bold" style={{fontSize: "1.2rem"}}>4.7</span>
+                                    <small className="text-muted">전체 평점</small>
+                                </div>
                 {/*                /!* 전체평점 묶음 *!/*/}
                 {/*                <div className="d-flex flex-column align-items-center me-3" style={{minWidth: "70px"}}>*/}
                 {/*                    <span className="fw-bold text-warning" style={{fontSize: "1.5rem"}}>★</span>*/}
@@ -280,6 +305,12 @@ function ContentDetail() {
                 {/*                    <small className="text-muted">전체 평점</small>*/}
                 {/*                </div>*/}
 
+                                {/* 오른쪽 음식/가격/서비스/청결 점수줄 */}
+                                <div className="flex-grow-1">
+                                    {['음식', '가격', '서비스', '청결'].map((label, i) => (
+                                        <div key={i} className="d-flex align-items-center mb-2">
+                                            {/* 항목명 */}
+                                            <div style={{width: '60px', fontSize: '0.85rem'}}>{label}</div>
                 {/*                /!* 오른쪽 음식/가격/서비스/청결 점수줄 *!/*/}
                 {/*                <div className="flex-grow-1">*/}
                 {/*                    {ratingTypes.map((item, i) => {*/}
@@ -295,10 +326,15 @@ function ContentDetail() {
                 {/*                                <div className="flex-grow-1 me-2">*/}
                 {/*                                    <div className="progress" style={{height: '6px'}}>*/}
                 {/*                                        <div className="progress-bar bg-warning"*/}
-                {/*                                             style={{width: `${percent}%`}}></div>*/}
+                {/*                                             style={{width: '85%'}}></div>*/}
                 {/*                                    </div>*/}
                 {/*                                </div>*/}
 
+                                            {/* 수치 */}
+                                            <div style={{width: '30px', fontSize: '0.8rem'}}>4.8</div>
+                                        </div>
+                                    ))}
+                                </div>
                 {/*                                /!* 수치 *!/*/}
                 {/*                                <div*/}
                 {/*                                    style={{width: '30px', fontSize: '0.8rem'}}>{score.toFixed(1)}</div>*/}
@@ -310,6 +346,12 @@ function ContentDetail() {
                 {/*            </div>*/}
                 {/*        </div>*/}
 
+                        <h5 className="mt-5 text-start fw-bold">사진</h5>
+                        <div
+                            className="bg-light rounded text-center d-flex justify-content-center align-items-center mb-4"
+                            style={{height: '150px'}}>
+                            <span className="text-muted">슬라이드 방식으로 사진 리스트 출력</span>
+                        </div>
                 {/*        <h5 className="mt-5 text-start fw-bold">사진</h5>*/}
                 {/*        <div className="d-flex flex-wrap gap-2 mb-4">*/}
                 {/*            {reviews*/}
@@ -328,6 +370,17 @@ function ContentDetail() {
                 {/*                ))}*/}
                 {/*        </div>*/}
 
+                        {/* 리뷰 정렬 */}
+                        <div className="d-flex align-items-center mb-2">
+                            {/* 필터 select 박스 */}
+                            <select className="custom-select-text" aria-label="리뷰 정렬 기준" defaultValue="latest">
+                                <option value="latest">최신순</option>
+                                <option value="oldest">오래된순</option>
+                                <option value="high">평점높은순</option>
+                                <option value="low">평점낮은순</option>
+                            </select>
+                            <span className="custom-span-text ms-2">사진리뷰</span>
+                        </div>
                 {/*        /!* 리뷰 정렬 *!/*/}
                 {/*        <div className="d-flex align-items-center mb-2">*/}
                 {/*            <select*/}
@@ -351,6 +404,24 @@ function ContentDetail() {
                 {/*            </span>*/}
                 {/*        </div>*/}
 
+                        {/* 리뷰 리스트 (더미) */}
+                        {[1, 2, 3, 4].map((_, idx) => (
+                            <div key={idx}
+                                 className="d-flex justify-content-between align-items-start border-bottom py-3">
+                                <div className="flex-grow-1 pe-2">
+                                    <div className="fw-bold">김또깡 <span className="text-warning">★★★★★</span></div>
+                                    <div className="small text-muted">2025.04.23</div>
+                                    <div className="small">리뷰</div>
+                                </div>
+                                <div className="bg-light d-flex justify-content-center align-items-center"
+                                     style={{width: "60px", height: "60px", borderRadius: "6px"}}>
+                                    <span className="text-muted small">사진</span>
+                                </div>
+                            </div>
+                        ))}
+
+                    </div>
+                )}
 
                 {/*        {filteredAndSortedReviews*/}
                 {/*            .filter((review) => {*/}
@@ -393,7 +464,7 @@ function ContentDetail() {
                     <div className="text-start"><h4 className="extra-bold">예약 시간</h4></div>
                     <div className="location-box"></div>
                     <button className="common-btn w-100" onClick={() => {
-                        Nv(`/book/visit/${userIdx}/${resIdx}`)
+                        Nv(`/book/visit/${userIdx}/${reservationIdx}`)
                     }}>예약하기
                     </button>
                     {/*<button className="common-btn w-100" onClick={() => {*/}
@@ -403,6 +474,7 @@ function ContentDetail() {
                 </div>
 
             </div>
+
 
         </div>
     );

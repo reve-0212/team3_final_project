@@ -5,10 +5,14 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import Button from "../components/Button.jsx";
+import useRestaurantStore from "../../stores/useRestaurantStore.jsx";
 
 function DateTimeSelectorPage() {
     const [selectedDate, setSelectedDate] = useState(null);
     const [selectedTime, setSelectedTime] = useState(null);
+    const resIdx = useRestaurantStore((state) => state.restaurantIdx);
+    console.log(resIdx);
+
     const Nv = useNavigate();
 
     // 9시부터 19시까지 1시간 단위 시간 슬롯 생성
@@ -27,28 +31,38 @@ function DateTimeSelectorPage() {
             alert("날짜와 시간을 모두 선택해주세요.");
             return;
         }
+        const rsvDate = selectedDate
+        const rsvTime = selectedTime
+
+        console.log("rsvDate", rsvDate);
+        console.log("rsvTime", rsvTime);
+
 
         // 날짜 포맷 (KST 기준)
         const formattedDate = selectedDate.toLocaleDateString('sv-SE'); // yyyy-MM-dd
 
-        const payload = {
-            rsvDate: formattedDate,
-            rsvTime: `${formattedDate} ${selectedTime}:00`, // DATETIME용
-        };
 
-        axios
-            .post("http://localhost:8080/api/visitors/date/menus", payload)
-            .then(() => {
-                console.log(payload);
-                alert("예약 정보가 저장되었습니다.");
-                Nv("/book/menu");
+        const userIdx = 1; // 임의 사용자 ID
+        const resIdx = 22; // 임의 예약 ID
+
+        axios.post(`http://localhost:8080/api/date/${userIdx}/${resIdx}`, {
+            rsvDate: formattedDate,
+            rsvTime: `${formattedDate} ${selectedTime}:00`,
+        }, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`
+            }
+        })
+            .then((res) => {
+                const newReservationIdx = res.data.reservationIdx || resIdx;
+                Nv(`/book/menu/${userIdx}/${newReservationIdx}`);
             })
-            .catch(() => {
-                console.log(formattedDate,selectedTime);
-                console.log(payload);
-                alert("예약 저장에 실패했습니다.");
+            .catch((err) => {
+                alert('전송 실패');
+                console.error(err);
             });
     };
+
 
     return (
         <div className="app-container container py-4">
@@ -64,7 +78,7 @@ function DateTimeSelectorPage() {
                     inline
                 />
                 {selectedDate && (
-                    <p style={{ marginTop: "10px" }}>
+                    <p className={'basic-font fw-bold'} style={{ marginTop: "10px" }}>
                         선택한 날짜: {selectedDate.toLocaleDateString()}
                     </p>
                 )}
@@ -94,7 +108,7 @@ function DateTimeSelectorPage() {
                     ))}
                 </div>
                 {selectedTime && (
-                    <p style={{ marginTop: "10px" }}>선택한 시간: {selectedTime}</p>
+                    <p className={'basic-font fw-bold'} style={{ marginTop: "10px" }}>선택한 시간: {selectedTime}</p>
                 )}
             </section>
 

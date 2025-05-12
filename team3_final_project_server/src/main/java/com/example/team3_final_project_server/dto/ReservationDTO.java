@@ -21,4 +21,7 @@ public class ReservationDTO {
 //  온 여부와 취소 여부 확인을 위한 컬럼
   private String rsvComeDatetime;
   private String rsvCancelDatetime;
+
+  // 예약메뉴 수량 체크
+  private int rsvMenuCount;
 }

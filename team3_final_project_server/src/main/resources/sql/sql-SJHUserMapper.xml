@@ -93,7 +93,7 @@
 <!--      <result column="menu_price" property="menuPrice"/>-->
 <!--      <result column="menu_explanation" property="menuExplanation"/>-->
 <!--    </association>-->
-<!--  </resultMap>-->
+  </resultMap>
 
   <!--  예약 상세 정보 가져오기-->
   <select id="getBook" parameterType="int" resultMap="ResvRestMenuJoinMap">

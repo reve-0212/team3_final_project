@@ -2,9 +2,11 @@ import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import Button from "../components/Button.jsx";
+import useRestaurantStore from "../../stores/useRestaurantStore.jsx";
 
 // VisitorBtn 컴포넌트 (버튼 클릭 시 방문자 수 조절)
 function VisitorBtn({gender, count, onChange}) {
+
     const increase = () => {
         onChange(gender, count + 1); // 부모에게 count + 1 전달
     };
@@ -28,6 +30,8 @@ function VisitorBtn({gender, count, onChange}) {
 // VisitPage 컴포넌트 (방문 인원 선택 및 제출 처리)
 function VisitPage() {
     const Nv = useNavigate();
+    const setResIdx = useRestaurantStore((state) => state.setRestaurantIdx);
+
 
     // 방문 인원 state
     const [visitors, setVisitors] = useState({
@@ -46,30 +50,37 @@ function VisitPage() {
 
     // 제출 함수
     const handleSubmit = () => {
-        const total = visitors.man + visitors.woman + visitors.baby;
 
-        const payload = {
-            rsvPeople: total,
-            rsvMan: visitors.man,
-            rsvWoman: visitors.woman,
-            rsvBaby: visitors.baby
-        };
 
-        axios.post('http://localhost:8080/api/visitors', payload, {
+        const rsvMan = visitors.man
+        const rsvWoman = visitors.woman
+        const rsvBaby = visitors.baby
+        const rsvPeople = visitors.man + visitors.woman + visitors.baby
+
+        // console.log(payload);
+        const userIdx = 1; // 임의 사용자 ID
+        const resIdx = 22; // 임의 예약 ID
+
+        setResIdx(resIdx)
+
+        axios.post(`http://localhost:8080/api/visitors/${userIdx}/${resIdx}`, {
+            rsvMan: rsvMan,
+            rsvWoman: rsvWoman,
+            rsvBaby: rsvBaby,
+            rsvPeople: rsvPeople,
+        }, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`
             }
         })
-
-
-    .
-        then((res) => {
-            const reservationIdx = res.data.reservationIdx;
-            Nv(`/book/seat/${reservationIdx}`);// 예약 완료 후 좌석 예약 페이지로 이동
-        }).catch((err) => {
-            alert('전송 실패');
-            console.log(err);
-        });
+            .then((res) => {
+                const newReservationIdx = res.data.reservationIdx || resIdx;
+                Nv(`/book/seat/${newReservationIdx}`); // 좌석 예약 페이지로 이동
+            })
+            .catch((err) => {
+                alert('전송 실패');
+                console.error(err);
+            });
     };
 
     return (

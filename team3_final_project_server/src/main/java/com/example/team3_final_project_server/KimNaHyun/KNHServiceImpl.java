@@ -2,7 +2,6 @@ package com.example.team3_final_project_server.KimNaHyun;
 
 import com.example.team3_final_project_server.dto.MenuDTO;
 import com.example.team3_final_project_server.dto.ReservationDTO;
-import com.example.team3_final_project_server.dto.RestaurantListDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,24 +18,26 @@ public class KNHServiceImpl implements KNHService {
     this.knhMapper = knhMapper;
   }
 
+
   @Override
-  public void saveReservation(ReservationDTO dto) {
-    knhMapper.insertReservation(dto);
+  public List<MenuDTO> getAllMenus(int resIdx) {
+   return knhMapper.getAllMenus(resIdx);
+  }
+
+
+  @Override
+  public void getRsvIdx(int userIdx, int resIdx, int rsvMan, int rsvWoman, int rsvBaby, int rsvPeople) throws Exception {
+    knhMapper.getRsvIdx(userIdx, resIdx, rsvMan, rsvWoman, rsvBaby, rsvPeople);
   }
 
   @Override
-  public List<MenuDTO> getAllMenus() {
-    return knhMapper.getAllMenus();
+  public void updateRsvDate(int userIdx, int resIdx, String rsvDate, String rsvTime) throws Exception {
+    knhMapper.updateRsvDate(userIdx, resIdx, rsvDate, rsvTime);
   }
 
   @Override
-  public void saveDateTime(ReservationDTO dto) {
-    knhMapper.insertReservation(dto);
-  }
-
-  @Override
-  public List<ReservationDTO> getRsvIdx(String userIdx, String reservationIdx) throws Exception {
-    return knhMapper.getRsvIdx(userIdx, reservationIdx);
+  public void updateRsvMenu(int userIdx, int resIdx, int menuIdx, int rsvMenuCount) throws Exception {
+    knhMapper.updateRsvMenu(userIdx, resIdx, menuIdx, rsvMenuCount);
   }
 
 }
