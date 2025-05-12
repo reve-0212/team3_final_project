@@ -35,7 +35,6 @@ public class UserController {
   //  로그인
   @GetMapping("/api/auth/login")
   public ResponseEntity<?> login(@RequestParam String userId, @RequestParam String userPass) {
-    System.out.println("로그인 처리 중");
 
 //    예외처리를 이용하여 사용자 인증을 안전하게 실행
     try {

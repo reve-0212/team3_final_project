@@ -127,8 +127,8 @@ public class JwtTokenProvider {
             .userAge(((Number) claims.get("userAge")).intValue())
             .userCall(claims.get("userCall").toString())
             .userEmail(claims.get("userEmail").toString())
-            .bsName(claims.get("bsName").toString())
-            .bsNumber(claims.get("bsNumber").toString())
+            .bsName(claims.get("bsName") != null ? claims.get("bsName").toString() : "")
+            .bsNumber(claims.get("bsNumber") != null ? claims.get("bsNumber").toString() : "")
             .role(claims.get("role").toString())
             .build();
 

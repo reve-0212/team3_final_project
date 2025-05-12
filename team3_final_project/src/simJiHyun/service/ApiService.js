@@ -23,9 +23,9 @@ const apiSignup = (memberDTO) => {
 }
 
 // 로그인
-const apiLogin = (userId, userPass) => {
+const apiLogin = async (userId, userPass) => {
   // axios 로 사용자 id/pw를 전달
-  axios.get(`http://localhost:8080/api/auth/login`, {
+  return axios.get(`http://localhost:8080/api/auth/login`, {
     params: {
       userId: userId,
       userPass: userPass
@@ -36,7 +36,6 @@ const apiLogin = (userId, userPass) => {
     }
   })
     .then(res => {
-      alert('로그인');
       // 서버에서 받아온 데이터 중 엑세스 토큰은 로컬 스토리지에 저장
       // 로컬 스토리지는 웹 브라우저를 종료해도 데이터가 계속 남아있음
       localStorage.setItem("ACCESS_TOKEN", res.data.accessToken);
@@ -44,12 +43,13 @@ const apiLogin = (userId, userPass) => {
       // 세션 스토리지는 웹 브라우저를 완전히 종료하거나 세션이 만료되면 데이터가 삭제됨
       // 리프레시 토큰은 엑세스 토큰을 발급받기 위한 중요한 정보이므로 세션 스토리지에 저장 후 자동 삭제될 수 있도록 함
       sessionStorage.setItem("REFRESH_TOKEN", res.data.refreshToken);
+      console.log(res.data)
+      return res.data
       // 현재 파일은 JSX 문법을 사용하지 않는 순수 자바스크립트이므로 UseNavigate 훅을 사용하지 않음
-      window.location.href = '/';
+      // window.location.href = '/';
     })
     .catch(err => {
       alert(`로그인 중 오류가 발생했습니다.\n${err}`);
-      alert("apiService.js")
     });
 }
 

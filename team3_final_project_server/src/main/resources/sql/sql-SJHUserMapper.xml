@@ -3,6 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.team3_final_project_server.SimJiHyun.mapper.UserMapper">
+
 <!--아이디로 사용자 조회 (로그인용)-->
   <select id="findByUserId" resultType="com.example.team3_final_project_server.dto.UserDTO" parameterType="String">
     SELECT * FROM user WHERE user_id = #{userId}
@@ -103,7 +104,8 @@
     join restaurant as res
     join menu as menu
     where reservation_idx = #{reservationIdx}
-    and res.res_idx=#{restaurantIdx};
+    and res.res_idx=#{restaurantIdx}
+    and menu.menu_name = "name";
   </select>
 
   <!--  예약 취소하기-->

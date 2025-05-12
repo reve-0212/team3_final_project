@@ -12,6 +12,8 @@ function SjhReservation() {
   const [reservations, setReservations] = useState([])
   const user = useUserStore((state) => state.user)
 
+  // console.log("userIdx : " + user.userIdx)
+
   // 예약 여부 보기
   const userReservation = () => {
     axios.get(`http://localhost:8080/userReservation`, {
