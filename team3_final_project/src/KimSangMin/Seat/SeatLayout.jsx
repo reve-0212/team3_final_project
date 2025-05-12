@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";  // useParams를 사용하여 URL 파라미터를 받습니다.
+import {useLocation, useParams} from "react-router-dom";  // useParams를 사용하여 URL 파라미터를 받습니다.
 import axios from "axios";
 // import './SeatLayout.css'; // 좌석 스타일링
 
 const SeatLayout = () => {
     const { resIdx } = useParams();  // URL 파라미터에서 resIdx 값을 가져옵니다.
     const [seats, setSeats] = useState([]);
+    const location = useLocation();
+    const totalPeople = location.state?.totalPeople || 0;
     const [seatSelect, setSeatSelect] = useState([]);
 
     // 좌석선택기능
@@ -23,22 +25,27 @@ const SeatLayout = () => {
         if (resIdx) {
             axios.get(`http://localhost:8080/pre/loadSeat/${resIdx}`)
                 .then((response) => {
-                    console.log("API Response:", response.data);
-                    const { success, message, data } = response.data;
+                    const { success, data } = response.data;
                     if (success && Array.isArray(data)) {
-                        setSeats(data);
-                        console.log("좌석 데이터 확인:", data); // 추가
-                    } else {
-                        console.error(message);
+                        // 🎯 좌석 필터링 조건 적용
+                        let filteredSeats = data;
+
+                        if (totalPeople <= 2) {
+                            filteredSeats = data.filter(seat => seat.type === '2인석');
+                        } else if (totalPeople <= 4) {
+                            filteredSeats = data.filter(seat => seat.type === '4인석');
+                        } else if (totalPeople <= 6) {
+                            filteredSeats = data.filter(seat => seat.type === '6인석');
+                        } // 7명 이상은 전체 표시
+
+                        setSeats(filteredSeats);
                     }
                 })
                 .catch((error) => {
-                    console.error("좌석 정보를 불러오는 중 오류 발생:", error);
+                    console.error("좌석 정보 불러오기 실패:", error);
                 });
-        } else {
-            console.error("resIdx 값이 없습니다.");
         }
-    }, [resIdx]);
+    }, [resIdx, totalPeople]);
 
     return (
         <div
