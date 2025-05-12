@@ -11,6 +11,7 @@ import java.util.Optional;
 @Mapper
 public interface UserMapper {
   Optional<UserDTO> findByUserId(String userId);
+
   boolean existsByUserId(String userId);
   boolean existsByUserEmail(String userEmail);
   void saveUser(UserDTO user);

@@ -42,20 +42,28 @@ public class JwtTokenProvider {
     return makeToken(new Date(now.getTime() + expiredAt.toMillis()), userDTO);
   }
 
-  public String generateRefreshToken(UserDTO user, Duration expiresIn) {
-    Claims claims = Jwts.claims().setSubject(user.getUserId()).build();
-    claims.put("role", user.getRole());
-
+  public String generateRefreshToken(UserDTO userDTO, Duration expiredAt) {
     Date now = new Date();
-    Date expiry = new Date(now.getTime() + expiresIn.toMillis());
 
-    return Jwts.builder()
-            .setClaims(claims)
-            .setIssuedAt(now)
-            .setExpiration(expiry)
-            .signWith(SignatureAlgorithm.HS256, secretKey) // secretKey는 @PostConstruct에서 인코딩된 값
-            .compact();
+    // 리프레시 토큰도 동일한 방식으로 생성
+    return makeToken(new Date(now.getTime() + expiredAt.toMillis()), userDTO);
   }
+
+
+//  public String generateRefreshToken(UserDTO user, Duration expiresIn) {
+//    Claims claims = Jwts.claims().setSubject(user.getUserId()).build();
+//    claims.put("role", user.getRole());
+//
+//    Date now = new Date();
+//    Date expiry = new Date(now.getTime() + expiresIn.toMillis());
+//
+//    return Jwts.builder()
+//            .setClaims(claims)
+//            .setIssuedAt(now)
+//            .setExpiration(expiry)
+//            .signWith(SignatureAlgorithm.HS256, secretKey) // secretKey는 @PostConstruct에서 인코딩된 값
+//            .compact();
+//  }
 
 
   //  실제 JWT 토큰을 생성
