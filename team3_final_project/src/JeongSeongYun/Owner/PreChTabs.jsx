@@ -1,6 +1,7 @@
 import {useState} from "react";
 import PreCh from "../../KimSangMin/PreCh.jsx";
 import PreDayCh from "../../KimSangMin/PreDayCh.jsx";
+import PreGenderCh from "../../KimSangMin/PreGenderCh.jsx";
 
 const PreReSetTabs = () => {
     const [activeTab, setActiveTab] = useState("Ch");
@@ -11,6 +12,8 @@ const PreReSetTabs = () => {
                 return <PreCh/>
             case "dayCh":
                 return <PreDayCh/>
+            case "genderCh":
+                return <PreGenderCh/>
             default:
                 return null;
         }
@@ -23,7 +26,7 @@ const PreReSetTabs = () => {
                 paddingTop: "8rem",
                 paddingLeft: "1rem",
                 width: "calc(100% - 200px)",
-                // maxWidth: "1000px",
+                maxWidth: "165vh",
                 minHeight: "100vh",
             }} className={'container'}
         >
@@ -32,6 +35,7 @@ const PreReSetTabs = () => {
                 {[
                     {key: "Ch", label: "매출통계"},
                     {key: "dayCh", label: "예약통계"},
+                    {key: "genderCh", label: "방문자통계"},
                 ].map((tab) => (
                     <div
                         key={tab.key}

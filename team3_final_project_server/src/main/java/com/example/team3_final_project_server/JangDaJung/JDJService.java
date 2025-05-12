@@ -1,5 +1,6 @@
 package com.example.team3_final_project_server.JangDaJung;
 
+import com.example.team3_final_project_server.dto.MenuDTO;
 import com.example.team3_final_project_server.dto.ReservationHistoryDTO;
 
 import java.util.List;
@@ -9,7 +10,7 @@ public interface JDJService {
 
 //    ---- 통계 페이지
 
-    void bookReservation(List<ReservationHistoryDTO> historyList);
+    void saveHistories(List<ReservationHistoryDTO> historyList);
 //    기간별 기록 조회
     List<ReservationHistoryDTO> getHistoryByDate(String startDate, String endDate);
 
@@ -25,5 +26,20 @@ public interface JDJService {
 
 //    ---- 메뉴 페이지
 
-//    void selectMenuList(int resIdx);
+//    리스트 불러오기
+    List<MenuDTO> getMenuList(int resIdx);
+
+//    리스트에서 숨기기 해체
+    void updateUnhidden(int menuIdx, boolean hidden);
+
+//    리스트에서 품절 해제
+    void updateUnSoldOut(int menuIdx, boolean soldOut);
+
+//    새 메뉴 등록
+    void newMenu(MenuDTO menuDTO);
+
+    int selectMaxMenuSort(int resIdx);
+
+//    메뉴 리스트 수정
+    void updateMenuList(List<MenuDTO> menus);
 }

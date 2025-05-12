@@ -1,8 +1,10 @@
 import WaBanner from "../KimSangMin/WaBanner.jsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import "./css/CeoMenuList.css"
 import {useNavigate} from "react-router-dom";
 import ReBanner from "../KimSangMin/ReBanner.jsx";
+import axios from "axios";
+// import useUserStore from "../store/user"; ← 로그인 구현 시 사용할 zustand 등
 
 function CeoMenuList() {
 
@@ -11,31 +13,29 @@ function CeoMenuList() {
     const [searchQuery, setSearchQuery] = useState(''); // 사용자가 입력한 검색어
     const [searchKeyword, setSearchKeyword] = useState(''); // 검색 버튼 누른 뒤 확정된 값
 
-    // 더미
-    const [menuList, setMenuList] = useState([
-        {
-            id: 1,
-            name: '김치찌개',
-            price: 8000,
-            description: '진한 국물의 한국 전통 찌개입니다.',
-            imageUrl: 'https://i.namu.wiki/i/xL-2HW3J4OiXkmNKUw_W6cdP00Mn82IyUM0Vh7FQtTZLSo-dglgtvr2s0X4f2JyhB-lhI_2Szfe5Rv9KBC6sR3NaTQorLxN8C-tx_IZoufEqsS6AsL3KMwfIMQ_tFzT-P2FXIomZJRMUl7sKhRTN_Q.webp',
-            hidden: true,
-            soldOut: false,
-        },
-        {
-            id: 2,
-            name: '불고기',
-            price: 12000,
-            description: '달콤한 간장 소스에 재운 소고기 요리입니다.',
-            imageUrl: 'https://i.namu.wiki/i/9J4ompBW5dVO8tWN6b_FiQom3Zp0MtjVAbXt3RRZkBw0k18x66Mp0kI9YufnaMiK67FMu00n1pkw60GRVQadHtJiS38NOw-ld71BO0MqmphfFoqEVQ0ESwgGgepXy9-7aov7aJS93WJq_MFA4YvpXA.webp',
-            hidden: false,
-            soldOut: true,
-        },
-    ]);
+    const [menuList, setMenuList] = useState([]);
+
+    // const resIdx = useUserStore(state => state.user.resIdx); // 예시
+    const resIdx = 1; // 현재는 하드코딩된 테스트용 값
+
+    // 메뉴 불러오기
+    useEffect(() => {
+        if (!resIdx) return;
+
+        axios.get('http://localhost:8080/menu/list', {
+            params: {resIdx: resIdx}
+        })
+            .then(response => {
+                setMenuList(response.data);
+            })
+            .catch(err => {
+                console.error("메뉴 불러오기 실패", err);
+            });
+    }, [resIdx]);
 
     // 검색어에 따라 필터링된 리스트
     const filteredMenu = menuList.filter(menu =>
-        menu.name.includes(searchKeyword) // 포함된 메뉴만 보여줌
+        menu.menuName.includes(searchKeyword) // 포함된 메뉴만 보여줌
     );
 
     const handleSearchButtonClick = () => {
@@ -60,26 +60,38 @@ function CeoMenuList() {
     }
 
     // 리스트 클릭시 해당 메뉴 수정 페이지로 이동
-    const handleEdit = (menuId) => {
-        navigate(`/pre/MenuEdit/${menuId}`);
+    const handleEdit = (menuIdx) => {
+        navigate(`/pre/MenuEdit/${menuIdx}`);
     };
 
     // 숨기기 취소
-    const handleUnhidden = (id) => {
-        setMenuList((prev) =>
-            prev.map((menu) =>
-                menu.id === id ? { ...menu, hidden: false } : menu
-            )
-        );
+    const handleUnhidden = (menuIdx) => {
+        axios.put(`http://localhost:8080/menu/unHidden/${menuIdx}`)
+            .then(() => {
+                setMenuList((prev) =>
+                    prev.map((menu) =>
+                        menu.menuIdx === menuIdx ? { ...menu, menuHidden: false } : menu
+                    )
+                );
+            })
+            .catch(err => {
+                console.error("숨기기 취소 실패", err);
+            });
     };
 
     // 품절 취소
-    const handleUnsoldOut = (id) => {
-        setMenuList((prev) =>
-            prev.map((menu) =>
-                menu.id === id ? { ...menu, soldOut: false } : menu
-            )
-        );
+    const handleUnsoldOut = (menuIdx) => {
+        axios.put(`http://localhost:8080/menu/unSoldOut/${menuIdx}`)
+            .then(() => {
+                setMenuList((prev) =>
+                    prev.map((menu) =>
+                        menu.menuIdx === menuIdx ? { ...menu, menuSoldOut: false } : menu
+                    )
+                );
+            })
+            .catch(err => {
+                console.log("품절 취소 실패", err);
+            });
     };
 
     return (
@@ -90,14 +102,13 @@ function CeoMenuList() {
                 paddingTop: "8rem",
                 paddingLeft: "1rem",
                 width: "calc(100% - 200px)",
-                // maxWidth: "1000px",
+                maxWidth: "165vh",
                 minHeight: "100vh",
             }} className={'container'}>
                 <div>
 
-                    <div className={'d-flex gap-3 justify-content-start align-items-center me-5'}>
+                    <div className={'d-flex gap-3 justify-content-start align-items-center me-5 ms-3'}>
                         <h2 className={'new-menu-title'}>가게 메뉴</h2>
-
                         {/*검색창*/}
                         <div className={'menu-search-box d-flex align-items-center'} style={{
                             borderRadius: '2rem',
@@ -122,95 +133,90 @@ function CeoMenuList() {
                         </div>
                     </div>
 
-
                     <hr/>
-
-                    <div className="d-flex justify-content-between align-items-start mt-4">
-                        {/* 왼쪽: 메뉴 리스트 */}
-                        <div className="flex-grow-1">
-                            <div className="menu-list-container">
-                                <ul className="list-unstyled">
-                                    {filteredMenu.map(menu => (
-                                        <li key={menu.id}
-                                            className="border-bottom py-3 d-flex align-items-start justify-content-between flex-wrap menu-item"
-                                            onClick={() => handleEdit(menu.id)}>
-                                            {/* 1. 이름, 가격 */}
-                                            <div style={{ flexBasis: '30%', flexShrink: 0 }}>
-                                                <h5 className="mb-1">
-                                                    {menu.name}{" "}
-                                                    {menu.soldOut && (
-                                                        <span style={{ color: "red", fontSize: "0.8rem" }}>(품절)</span>
-                                                    )}
-                                                    {menu.hidden && (
-                                                        <span style={{ color: "red", fontSize: "0.8rem" }}>(숨김)</span>
-                                                    )}
-                                                </h5>
-                                                <small className="text-muted d-block">{menu.price}원</small>
-                                            </div>
-
-                                            {/* 2. 설명 */}
-                                            <div className="text-start text-muted d-flex flex-column justify-content-between"
-                                                 style={{ flexBasis: '50%', flexShrink: 0 }}>
-                                                <div>{menu.description}</div>
-                                                <div className="mt-2 text-end">
-                                                    {menu.hidden && (
-                                                        <button
-                                                            className="btn btn-sm btn-outline-danger mt-2"
-                                                            onClick={(e) => {
-                                                                e.stopPropagation();
-                                                                handleUnhidden(menu.id);
-                                                            }}
-                                                        >
-                                                            숨기기 해제
-                                                        </button>
-                                                    )}
-                                                    {menu.soldOut && (
-                                                        <button
-                                                            className="btn btn-sm btn-outline-danger mt-2"
-                                                            onClick={(e) => {
-                                                                e.stopPropagation();
-                                                                handleUnsoldOut(menu.id);
-                                                            }}
-                                                        >
-                                                            품절 해제
-                                                        </button>
-                                                    )}
-                                                </div>
-                                            </div>
-
-                                            {/* 3. 이미지 */}
-                                            <div className="text-end" style={{ flexBasis: '20%', flexShrink: 0 }}>
-                                                <img
-                                                    src={menu.imageUrl}
-                                                    alt={menu.name}
-                                                    className="img-fluid rounded"
-                                                    style={{
-                                                        width: '80px',
-                                                        height: '80px',
-                                                        objectFit: 'cover',
-                                                        opacity: menu.soldOut || menu.hidden ? 0.5 : 1,
-                                                    }}
-                                                />
-                                            </div>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </div>
-
-                        {/* 오른쪽: 버튼 영역 */}
-                        <div className="d-flex flex-column align-items-start ms-3">
+                    <div style={{ marginLeft: '5rem', marginRight: '5rem'}}>
+                        <div className="d-flex flex-column align-items-end ms-3 mt-2">
                             <div className="d-flex gap-2">
                                 <button className="btn btn-menu-edit" onClick={handleListEdit}>메뉴판 수정</button>
                                 <button className="btn btn-menu-add" onClick={handleAdd}>+ 메뉴 추가</button>
                             </div>
                         </div>
-                    </div>
 
+                        <div className="d-flex justify-content-between align-items-start mt-4 mb-4">
+                            <div className="flex-grow-1">
+                                <div className="menu-list-container">
+                                    <ul className="list-unstyled">
+                                        {filteredMenu.map(menu => (
+                                            <li key={menu.menuIdx}
+                                                className="border-bottom py-3 d-flex align-items-start justify-content-between flex-wrap menu-item"
+                                                onClick={() => handleEdit(menu.id)}>
+                                                {/* 1. 이름, 가격 */}
+                                                <div style={{ flexBasis: '30%', flexShrink: 0 }}>
+                                                    <h5 className="mb-1">
+                                                        {menu.menuName}{" "}
+                                                        {menu.menuSoldOut && (
+                                                            <span style={{ color: "red", fontSize: "0.8rem" }}>(품절)</span>
+                                                        )}
+                                                        {menu.menuHidden && (
+                                                            <span style={{ color: "red", fontSize: "0.8rem" }}>(숨김)</span>
+                                                        )}
+                                                    </h5>
+                                                    <small className="text-muted d-block">{menu.menuPrice}원</small>
+                                                </div>
+
+                                                {/* 2. 설명 */}
+                                                <div className="text-start text-muted d-flex flex-column justify-content-between"
+                                                     style={{ flexBasis: '50%', flexShrink: 0 }}>
+                                                    <div>{menu.menuExplanation}</div>
+                                                    <div className="mt-2 text-end">
+                                                        {menu.menuHidden && (
+                                                            <button
+                                                                className="btn btn-sm btn-outline-danger mt-2"
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    handleUnhidden(menu.menuIdx);
+                                                                }}
+                                                            >
+                                                                숨기기 해제
+                                                            </button>
+                                                        )}
+                                                        {menu.menuSoldOut && (
+                                                            <button
+                                                                className="btn btn-sm btn-outline-danger mt-2"
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    handleUnsoldOut(menu.menuIdx);
+                                                                }}
+                                                            >
+                                                                품절 해제
+                                                            </button>
+                                                        )}
+                                                    </div>
+                                                </div>
+
+                                                {/* 3. 이미지 */}
+                                                <div className="text-end" style={{ flexBasis: '20%', flexShrink: 0 }}>
+                                                    <img
+                                                        src={menu.menuImage}
+                                                        alt={menu.menuName}
+                                                        className="img-fluid rounded"
+                                                        style={{
+                                                            width: '80px',
+                                                            height: '80px',
+                                                            objectFit: 'cover',
+                                                            opacity: menu.menuSoldOut || menu.menuHidden ? 0.5 : 1,
+                                                        }}
+                                                    />
+                                                </div>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-
         </>
     );
 }

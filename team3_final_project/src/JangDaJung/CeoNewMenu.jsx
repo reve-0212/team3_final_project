@@ -3,20 +3,31 @@ import "./css/CeoNewMenu.css";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import ReBanner from "../KimSangMin/ReBanner.jsx";
+import axios from "axios";
 
 function CeoNewMenu() {
 
     const navigate = useNavigate()
 
     const [previewImg, setPreviewImg] = useState(null);
+    const [menuImageFile, setMenuImageFile] = useState(null);
+    const maxFileSize = 5 * 1024 * 1024; // 파일 업로드 용량 제한 5MB
 
     // 파일 선택 시 실행
     const handleImgChange = (e) => {
         const file = e.target.files[0];
 
         if (file) {
+            if (file.size > maxFileSize) {
+                alert("파일 용량은 5MB를 넘을 수 없습니다.");
+                setPreviewImg(null);  // 미리보기 초기화
+                setMenuImageFile(null); // 파일 초기화
+                return;
+            }
+
             const imgUrl = URL.createObjectURL(file);
             setPreviewImg(imgUrl);
+            setMenuImageFile(file); // ✅ 파일 저장
         }
     };
 
@@ -31,9 +42,31 @@ function CeoNewMenu() {
     // 취소 버튼 클릭 시 모달
     const [showCancelModal, setShowCancelModal] = useState(false);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setShowSuccessModal(true);
+
+        const formData = new FormData();
+        formData.append('resIdx', 1); // 예시: 가게 ID (실제 값으로 변경)
+        formData.append('menuName', e.target.menuName.value);
+        formData.append('menuPrice', parseInt(e.target.menuPrice.value));
+        formData.append('menuExplanation', e.target.menuExplanation.value);
+        formData.append('menuHidden', 'false');
+        formData.append('menuSoldOut', 'false');
+
+        if (e.target.menuImage.files.length > 0) {
+            formData.append('menuImage', e.target.menuImage.files[0]); // 파일
+        }
+
+        console.log(formData);
+        try {
+            const response = await axios.post('http://localhost:8080/menu/newMenu', formData);
+            if (response.status === 200) {
+                setShowSuccessModal(true);
+            }
+        } catch (error) {
+            console.error("메뉴 추가 실패:", error);
+            alert("메뉴 추가에 실패했습니다.");
+        }
     };
 
     const handleCancel = () => {
@@ -56,11 +89,17 @@ function CeoNewMenu() {
                 <div style={{marginTop: '10vh', marginLeft: '200px', position: 'relative'}}>
                     <h2 className={'new-menu-title mb-4'}>메뉴 추가</h2>
                     <hr/>
-                    <form className={'new-menu-container mt-5'}>
+                    <form className={'new-menu-container mt-5'} onSubmit={handleSubmit}>
                         <div className={'mb-5 menu-item-text'}>
                             <label className={'form-label fw-bold'}>메뉴명을 입력해주세요. <span
                                 className={'menu-item-essential'}>* 필수</span></label>
-                            <input type={'text'} className={'new-menu-input mt-2'} placeholder={'예) 하와이안 피자'}/>
+                            <input name="menuName" type={'text'} className={'new-menu-input mt-2'} placeholder={'예) 하와이안 피자'}/>
+                        </div>
+
+                        <div className={'mb-5 menu-item-text'}>
+                            <label className={'form-label fw-bold'}>메뉴 금액을 입력해주세요 <span
+                                className={'menu-item-essential'}>* 필수</span></label>
+                            <input name="menuPrice" type={'text'} className={'new-menu-input mt-2'} placeholder={'예) 12000'}/>
                         </div>
 
                         <div className={'mb-5 menu-item-text'}>
@@ -99,6 +138,7 @@ function CeoNewMenu() {
                             <small className="menu-item-essential">* 한 장 선택 가능</small>
                             {/* 숨긴 파일 선택 input */}
                             <input
+                                name="menuImage"
                                 type="file"
                                 id="menu-image-upload"
                                 className="d-none"
@@ -109,13 +149,13 @@ function CeoNewMenu() {
 
                         <div className="mb-5 menu-item-text">
                             <label className="form-label fw-bold">메뉴를 소개해주세요. <span className="menu-item-essential">* (최대 100자)</span></label>
-                            <textarea className="new-menu-input mt-2" rows="3"
+                            <textarea  name="menuExplanation" className="new-menu-input mt-2" rows="3"
                                       placeholder="메뉴의 구성이나 재료 등 구체적인 설명을 제공해주세요."></textarea>
                         </div>
 
                         <div className="d-flex justify-content-end">
                             <button type="button" className="btn btn-cancel me-2" onClick={handleCancel}>취소</button>
-                            <button type="submit" className="btn btn-warning text-white" onClick={handleSubmit}>등록
+                            <button type="submit" className="btn btn-warning text-white">등록
                             </button>
                         </div>
                     </form>

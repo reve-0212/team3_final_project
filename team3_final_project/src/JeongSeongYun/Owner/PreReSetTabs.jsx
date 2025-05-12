@@ -32,7 +32,7 @@ const PreReSetTabs = () => {
             paddingTop: "8rem",
             paddingLeft: "1rem",
             width: "calc(100% - 200px)",
-            // maxWidth: "1000px",
+                maxWidth: "165vh",
                 minHeight: "100vh",
             }} className={'container'}
         >
