@@ -30,6 +30,7 @@ public interface JKSMapper {
 
     List<CategoryDTO> getCategoryByAddress(String categoryAddr);
 
-    RestaurantDTO getRstListByPath(String pathIdx);
+    RestaurantDTO getRstListByPath(int pathIdx);
 
+    List<MenuDTO> getBestMenu(int resIdx);
 }

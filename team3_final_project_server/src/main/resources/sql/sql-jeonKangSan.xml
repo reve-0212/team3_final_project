@@ -56,22 +56,7 @@
 <!--    </select>-->
 
     <select id="getRestaurantsByResIdx" resultType="com.example.team3_final_project_server.dto.RestaurantDTO">
-        SELECT
-        res_idx,
-        res_image1,
-        res_image2,
-        res_image3,
-        res_name,
-        res_call,
-        res_address1,
-        res_address2,
-        res_introduce,
-        res_reserve_time,
-        res_lat,
-        res_lng,
-        res_price_range,
-        reserve_or_waiting,
-        res_option_1
+        SELECT *
         FROM restaurant
         WHERE res_idx = #{resIdx}
     </select>
@@ -105,11 +90,11 @@
     </select>
 
     <select id="getRstListByCategory" parameterType="int">
-        select * from restaurant where res_idx = 1;
+        select * from restaurant where res_idx = #{pathIdx};
     </select>
 
     <select id="getRstListByPath" parameterType="int">
-        select * from restaurant where res_idx = 1;
+        select * from restaurant where res_idx = #{pathIdx};
     </select>
 
     <select id="getBestMenu" resultType="com.example.team3_final_project_server.dto.MenuDTO">
@@ -119,6 +104,4 @@
         on m.res_idx = r.res_idx
         where r.res_idx = #{resIdx};
     </select>
-
-
 </mapper>

@@ -28,5 +28,7 @@ public interface JKSService {
 
     List<RestaurantListDTO> getRstListByCategory(String category);
 
-    RestaurantDTO getRstListByPath(String pathIdx);
+    RestaurantDTO getRstListByPath(int pathIdx);
+
+    List<MenuDTO> getBestMenu(int resIdx);
 }

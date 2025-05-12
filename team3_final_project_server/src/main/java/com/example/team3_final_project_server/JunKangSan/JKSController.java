@@ -43,10 +43,11 @@ public class JKSController {
 
 
     //  대표메뉴 - 05-12
-  //  @GetMapping("/bestmenu/{resIdx}")
-  //  @ResponseBody
-  //  public List<MenuDTO> getBestMenu(@PathVariable int resIdx) {//    return jksService.getBestMenu(resIdx);//  }
-
+    @GetMapping("/bestmenu/{resIdx}")
+    @ResponseBody
+    public List<MenuDTO> getBestMenu(@PathVariable int resIdx) {
+        return jksService.getBestMenu(resIdx);
+    }
 
     //  리뷰
     @GetMapping("/reviews/{resIdx}")
@@ -89,7 +90,7 @@ public class JKSController {
 
     @GetMapping("/detail/{pathIdx}")
     @ResponseBody
-    public RestaurantDTO getRstListByPath(@PathVariable("pathIdx") String pathIdx) throws Exception {
+    public RestaurantDTO getRstListByPath(@PathVariable("pathIdx") int pathIdx) throws Exception {
         return jksService.getRstListByPath(pathIdx);
     }
 }
