@@ -3,9 +3,7 @@ package com.example.team3_final_project_server.KimNaHyun;
 
 import com.example.team3_final_project_server.dto.MenuDTO;
 import com.example.team3_final_project_server.dto.ReservationDTO;
-import com.example.team3_final_project_server.dto.RestaurantListDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,43 +15,76 @@ import java.util.List;
 @RequestMapping("/api")
 
 public class KNHController {
- @Autowired
- private KNHService knhService;
+    @Autowired
+    private KNHService knhService;
 
 
- @GetMapping("/visitors/{userIdx}/{reservationIdx}")
- public List<ReservationDTO> getRsvIdx(
-         @PathVariable("userIdx") String userIdx,
-         @PathVariable("reservationIdx") String reservationIdx)
-         throws Exception {
-  System.out.println("/visitors/{userIdx}/{reservationIdx} 받아온 값 : " + reservationIdx);
-  return knhService.getRsvIdx(userIdx, reservationIdx);
- }
+    // 방문자 페이지
+    @PostMapping("/visitors/{userIdx}/{resIdx}")
+    public void getRsvIdx(
+            @PathVariable("userIdx") int userIdx,
+            @PathVariable("resIdx") int resIdx,
+            @RequestBody ReservationDTO reservationDTO)
+            throws Exception {
+//  System.out.println("/visitors/{userIdx}/{resIdx} 받아온 값 : " + resIdx);
+        System.out.println("userIdx : " + userIdx);
+        System.out.println("resIdx : " + resIdx);
+        System.out.println("rsvMan : " + reservationDTO.getRsvMan());
+        System.out.println("rsvWoman : " + reservationDTO.getRsvWoman());
+        System.out.println("rsvBaby : " + reservationDTO.getRsvBaby());
+        System.out.println("rsvPeople : " + reservationDTO.getRsvPeople());
+        knhService.getRsvIdx(userIdx, resIdx, reservationDTO.getRsvMan(), reservationDTO.getRsvWoman(), reservationDTO.getRsvBaby(), reservationDTO.getRsvPeople());
+    }
 
-// 1. userIdx, reservationIdx 순서 거꾸로
 
+    // 예약 페이지
+    @PostMapping("/date/{userIdx}/{resIdx}")
+    public void updateRsvDate(
+            @PathVariable("userIdx") int userIdx,
+            @PathVariable("resIdx") int resIdx,
+            @RequestBody ReservationDTO reservationDTO)
+            throws Exception {
+        System.out.println("userIdx : " + userIdx);
+        System.out.println("resIdx : " + resIdx);
+        System.out.println("rsvDate : " + reservationDTO.getRsvDate());
+        System.out.println("rsvTime : " + reservationDTO.getRsvTime());
+        knhService.updateRsvDate(userIdx, resIdx, reservationDTO.getRsvDate(), reservationDTO.getRsvTime());
+    }
 
+//    @PostMapping("/visitors/date")
+//    public void saveDateTime(@RequestBody ReservationDTO dto) {
+//        System.out.println(dto);
+//        knhService.saveDateTime(dto);
+//    }
 
+    // 메뉴
+    @GetMapping("/menu/{resIdx}")
+    public List<MenuDTO> getAllMenus(@PathVariable("resIdx") int resIdx) {
+        List<MenuDTO> menus = knhService.getAllMenus(resIdx);
+        return menus;
+    }
 
- @PostMapping("/visitors/date")
- public void saveDateTime(@RequestBody ReservationDTO dto) {
-  System.out.println(dto);
-  knhService.saveDateTime(dto);
- }
-
- @GetMapping("/visitors/date/menus")
- public List<MenuDTO> getAllMenus() {
-  System.out.println("메서드 호출됨: getAllMenus");  // 메서드 호출 여부 확인용
-  List<MenuDTO> menus = knhService.getAllMenus();
-
-  if (menus == null || menus.isEmpty()) {
-   System.out.println("메뉴 데이터가 비어 있거나 null입니다.");
-  } else {
-   System.out.println("불러온 메뉴 리스트: " + menus);
-  }
-
-  return menus;
- }
+    // 메뉴 업데이트
+    @PostMapping("/menu/{userIdx}/{resIdx}")
+    public void updateRsvMenu(
+            @PathVariable("userIdx") int userIdx,
+            @PathVariable("resIdx") int resIdx,
+            @RequestBody ReservationDTO reservationDTO)
+            throws Exception {
+        System.out.println("userIdx : " + userIdx);
+        System.out.println("resIdx : " + resIdx);
+        System.out.println("getMenuId : " + reservationDTO.getMenuIdx());
+        System.out.println("getRevMenuCount : " + reservationDTO.getRsvMenuCount());
+        knhService.updateRsvMenu(userIdx, resIdx, reservationDTO.getMenuIdx(), reservationDTO.getRsvMenuCount());
+    }
 }
+
+
+
+
+
+
+
+
 
 
