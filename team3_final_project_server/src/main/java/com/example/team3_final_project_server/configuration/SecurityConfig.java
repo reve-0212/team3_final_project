@@ -110,7 +110,12 @@ public class SecurityConfig {
 //                    사장 전용
 //                    .requestMatchers("/pre/**").hasRole("OWNER")
                     .requestMatchers("/pre/login").permitAll()  // 로그인은 모두 허용
-                    .requestMatchers("/pre/resave").hasRole("OWNER") // 이건 인증된 사장만 가능
+                    .requestMatchers("/pre/resave").permitAll()
+                    .requestMatchers("/pre/seats/save").permitAll()// 이건 인증된 사장만 가능
+                    .requestMatchers("/pre/func").permitAll()
+                    .requestMatchers("/pre/seats/update").permitAll()
+                    .requestMatchers("/pre/seats/delete").permitAll()
+
 
 
 //                    관리자 전용 페이지

@@ -48,11 +48,10 @@ import PastDateWaiting from "../JangDaJung/PastDateWaiting.jsx";
 import ReservationChart from "../JangDaJung/ReservationChart.jsx";
 import AdminLogin from "./layout/AdminLogin.jsx";
 import PreInfoPage from "./layout/PreInfoPage.jsx";
-// import PreReSetTabs from "./Owner/PreReSetTabs.jsx";
-// import PreChTabs from "./Owner/PreChTabs.jsx";
-import ContentDetail from "../JeonKangSan/ContentDetail.jsx";
-import PreReSetTabs from "./Owner/PreChTabs.jsx";
+import PreReSetTabs from "./Owner/PreReSetTabs.jsx";
 import PreChTabs from "./Owner/PreChTabs.jsx";
+import ContentDetail from "../JeonKangSan/ContentDetail.jsx";
+
 import ReservationPage from "../KimSangMin/Seat/ReservationPage.jsx";
 
 function main() {
@@ -83,7 +82,7 @@ function main() {
           {/*<Route path="/pre/PreCh" element={<PreCh/>}/> /!* 예약가게 매출 통계 *!/*/}
           <Route path="/pre/PreRe" element={<PreRe/>}/> {/* 예약가게 리뷰 보기*/}
           {/*<Route path="/pre/PreDayCh" element={<PreDayCh/>}/> /!* 예약 날짜 차트 *!/*/}
-          <Route path="/pre/PreReSet1" element={<PreReSet/>}/> {/* 예약가게 셋팅 */}
+          {/*<Route path="/pre/PreReSet1" element={<PreReSet/>}/> /!* 예약가게 셋팅 *!/*/}
           <Route path="/pre/PreReSet" element={<PreReSetTabs/>}/> {/* 예약가게 셋팅 Tabs */}
           <Route path="/pre/PreCh" element={<PreChTabs/>}/> {/* 예약가게 매출 통계 Tabs */} <Route path="/pre/PreFucn" element={
           <PreFunction/>}/> {/* 예약가게 메인*/}

@@ -13,10 +13,16 @@
         </foreach>
     </insert>
 
+    <select id="findResIdx" resultType="int" parameterType="int">
+        SELECT res_idx
+        FROM restaurant
+        WHERE user_idx = #{userIdx}
+    </select>
+
 
 
 <!--    가게 정보 저장 -->
-    <insert id="insertRes" parameterType="com.example.team3_final_project_server.dto.RestaurantDTO">
+    <insert id="reSave" parameterType="com.example.team3_final_project_server.dto.RestaurantDTO">
     INSERT INTO restaurant ( user_idx ,res_name, res_call, res_address1, res_address2, res_introduce, res_reserve_time, res_image1, res_image2, res_image3)
     VALUES (#{userIdx} ,#{resName}, #{resCall}, #{resAddress1}, #{resAddress2}, #{resIntroduce}, #{resReserveTime}, #{resImage1}, #{resImage2}, #{resImage3} )
     </insert>
@@ -43,10 +49,10 @@
     </insert>
 
 <!--    가게 정보 조회 -->
-    <select id="getRest" parameterType="int" resultType="com.example.team3_final_project_server.dto.RestaurantDTO">
-        SELECT res_name, res_call, res_address1, res_address2, res_introduce, res_reserve_time, res_image1, res_image2, res_image3
+    <select id="getRestByUserIdx" parameterType="int" resultType="com.example.team3_final_project_server.dto.RestaurantDTO">
+        SELECT user_idx, res_idx,  res_name, res_call, res_address1, res_address2, res_introduce, res_reserve_time, res_image1, res_image2, res_image3
         from restaurant
-        WHERE res_idx = #{resIdx}
+        WHERE user_idx = #{userIdx}
     </select>
 
 
@@ -64,5 +70,22 @@
         FROM seat_table
         WHERE res_idx = #{resIdx}
     </select>
+
+<!--    좌석 수정하기 -->
+    <update id="updateSeats">
+        <foreach collection="seats" item="seat" index="index" open="" separator=";" close="">
+            UPDATE seats
+            SET x = #{seat.x},
+            y = #{seat.y},
+            res_idx = #{seat.resIdx}
+            WHERE seat_id = #{seat.seatId}
+        </foreach>
+    </update>
+
+<!--    좌석 삭제하기 -->
+    <delete id="deleteSeat" parameterType="map">
+        DELETE FROM seat_table
+        WHERE seat_id = #{seatId} AND res_idx = #{resIdx}
+    </delete>
 
 </mapper>

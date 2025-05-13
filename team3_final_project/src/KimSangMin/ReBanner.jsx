@@ -44,7 +44,7 @@ function ReBanner() {
                         <Link className="navbar-brand text-white fs-1 text-align-center" to="/pre/PreMain">
                             Logo
                         </Link>
-                            <button type={"button"} onClick={handleLogout} className={"flex-end"}>로그아웃</button>
+                        <button type={"button"} onClick={handleLogout} className={"flex-end"}>로그아웃</button>
                     </div>
                 </nav>
             </div>
@@ -74,6 +74,9 @@ function ReBanner() {
                         <a className="nav-link text-black" href="/pre/PreReSet">가게정보</a>
                     </li>
                     <li className="nav-item">
+                        <a className="nav-link text-black" href="/pre/func">가게기능</a>
+                    </li>
+                    <li className="nav-item">
                         <a className="nav-link text-black" href="/pre/PreCh">가게통계</a>
                     </li>
                     <br/>
@@ -98,4 +101,3 @@ function ReBanner() {
 }
 
 export default ReBanner
-

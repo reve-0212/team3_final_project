@@ -1,11 +1,19 @@
 import ReBanner from "./ReBanner.jsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
 import SeatManager from "./Seat/SeatManager.jsx";
 
 function PreFunction() {
 
     const [input, setInput] = useState([""]);
+
+
+    localStorage.getItem('jwtToken')
+    useEffect(() => {
+        const storedToken = localStorage.getItem('jwtToken');
+        console.log("📦 페이지 로드시 token:", storedToken);
+    }, []);
+
 
 
     const chInput = (e, index) => {
@@ -26,7 +34,7 @@ function PreFunction() {
 
         axios.post("http://localhost:8080/", {functoin: Func,})
             .then((response) => {
-                if (response == status === 200) {
+                if (response.status === 200) {
                     alert("편의시설이 저장되었습니다.")
                 } else {
                     alert("편의시설 저장에 실패하였습니다.")
@@ -51,7 +59,9 @@ function PreFunction() {
             // }}
         >
             <ReBanner/>
-
+            <div>
+                {/* 나머지 코드 */}
+            </div>
             <h4 className="text-start">
                 <strong>편의시설</strong>
                 <span style={{ color: "#FFD727", fontSize: "14px" }}> *필수</span>
@@ -92,9 +102,6 @@ function PreFunction() {
                 <span style={{ color: "#FFD727", fontSize: "14px" }}> *필수</span>
             </h4>
             <SeatManager/>
-
-
-
         </div>
     );
 }
