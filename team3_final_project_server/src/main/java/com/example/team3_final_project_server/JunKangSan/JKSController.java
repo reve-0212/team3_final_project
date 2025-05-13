@@ -80,11 +80,11 @@ public class JKSController {
     //    return jksService.getLatestAnnounce(); // List가 아닌 단일 DTO 반환
   //  }
 
-//
+
+    // 가게 리스트
     @GetMapping("/contents/{category}")
     @ResponseBody
     public List<RestaurantListDTO> getRstListByCategory(@PathVariable("category") String category) throws Exception {
-//    System.out.println(" /contents/{category} 받아온 값 : " + category);
         return jksService.getRstListByCategory(category);
     }
 
