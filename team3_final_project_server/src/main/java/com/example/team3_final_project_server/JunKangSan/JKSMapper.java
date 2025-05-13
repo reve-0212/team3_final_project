@@ -14,15 +14,9 @@ public interface JKSMapper {
 
     List<RestaurantDTO> getAllRestaurants();
 
-//    List<MenuDTO> getBestMenu(int resIdx);
-
     List<ReviewDTO> getAllReviews(int resIdx);
 
-//    AnnounceDTO getLatestAnnounce();
-
     RestaurantDTO getRestaurantsByResIdx(int resIdx);
-
-//    AmenitiesDTO getAmenitiesByResIdx(int resIdx);
 
     Double getAvgRatingByResIdx(@Param("resIdx") int resIdx);
 

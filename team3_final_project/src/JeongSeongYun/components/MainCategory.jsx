@@ -5,13 +5,13 @@ function MainCategory() {
 
     const categoryList = [
         {name: '한식', eng: "한식", img: 'https://www.tabling.co.kr/images/home/normal/korean.svg'},
-        {name: '중식', eng: "chinese", img: 'https://www.tabling.co.kr/images/home/normal/chinese.svg'},
-        {name: '양식', eng: "western", img: 'https://www.tabling.co.kr/images/home/normal/western.svg'},
-        {name: '일식', eng: "japanese", img: 'https://www.tabling.co.kr/images/home/normal/japanese.svg'},
-        {name: '분식', eng: "snack", img: 'https://d2ba33ltwyhxsm.cloudfront.net/common_img/comm_2531714140375417.webp'},
-        {name: '카페/디저트', eng: "cafe", img: 'https://www.tabling.co.kr/images/home/normal/cafe.svg'},
-        {name: '퓨전', eng: "fusion", img: 'https://d3kzx7mqemhf0.cloudfront.net/common_img/comm_24102311105777428.webp'},
-        {name: '기타', eng: "ect", img: 'https://www.tabling.co.kr/images/home/normal/etc.svg'},
+        {name: '중식', eng: "중식", img: 'https://www.tabling.co.kr/images/home/normal/chinese.svg'},
+        {name: '양식', eng: "양식", img: 'https://www.tabling.co.kr/images/home/normal/western.svg'},
+        {name: '일식', eng: "일식", img: 'https://www.tabling.co.kr/images/home/normal/japanese.svg'},
+        {name: '분식', eng: "분식", img: 'https://d2ba33ltwyhxsm.cloudfront.net/common_img/comm_2531714140375417.webp'},
+        {name: '카페/디저트', eng: "카페", img: 'https://www.tabling.co.kr/images/home/normal/cafe.svg'},
+        {name: '퓨전', eng: "퓨전", img: 'https://d3kzx7mqemhf0.cloudfront.net/common_img/comm_24102311105777428.webp'},
+        {name: '기타', eng: "기타", img: 'https://www.tabling.co.kr/images/home/normal/etc.svg'},
     ];
 
     return (

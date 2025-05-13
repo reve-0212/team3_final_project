@@ -22,4 +22,9 @@ public class RestaurantDTO {
   private String resPriceRange;
   private String reserveOrWaiting;
   private String resOption;
+
+
+  // category 테이블
+  private String categoryTag;
+  private String categoryName;
 }
