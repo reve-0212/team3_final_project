@@ -27,7 +27,7 @@ const SeatLayout = () => {
   // 좌석 정보 불러오기
   useEffect(() => {
     if (resIdx) {
-      axios.get(`http://localhost:8080/pre/loadSeat/${resIdx}`, {
+      axios.get(`http://localhost:8080/loadSeat/${resIdx}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`
         }

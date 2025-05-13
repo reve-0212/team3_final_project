@@ -5,32 +5,32 @@
 <mapper namespace="com.example.team3_final_project_server.KimSangMin.mapper.OwnerMapper">
 
 
-<!--    &lt;!&ndash; 아이디로 사용자 조회 (로그인용) &ndash;&gt;-->
-<!--    <select id="findByUserId" resultType="com.example.team3_final_project_server.dto.UserDTO">-->
-<!--        SELECT * FROM user WHERE user_id = #{userId}-->
-<!--    </select>-->
+    <!-- 아이디로 사용자 조회 (로그인용) -->
+    <select id="findByUserId" resultType="com.example.team3_final_project_server.dto.UserDTO">
+        SELECT * FROM user WHERE user_id = #{userId}
+    </select>
 
-<!--    &lt;!&ndash; 아이디로 사용자 존재 여부 확인 &ndash;&gt;-->
-<!--    <select id="existsByUserId" resultType="boolean">-->
-<!--        SELECT COUNT(*) > 0 FROM user WHERE user_id = #{userId}-->
-<!--    </select>-->
+    <!-- 아이디로 사용자 존재 여부 확인 -->
+    <select id="existsByUserId" resultType="boolean">
+        SELECT COUNT(*) > 0 FROM user WHERE user_id = #{userId}
+    </select>
 
-<!--    &lt;!&ndash; 회원 정보 저장 &ndash;&gt;-->
-<!--    <insert id="saveUser" parameterType="com.example.team3_final_project_server.dto.UserDTO">-->
-<!--        INSERT INTO user (user_id, user_pass, user_nick, user_gender, user_age, user_call, bs_name, bs_number, role)-->
-<!--        VALUES (#{userId}, #{userPass}, #{userNick}, #{userGender}, #{userAge}, #{userCall}, #{bsName}, #{bsNumber}, #{role})-->
-<!--    </insert>-->
+    <!-- 회원 정보 저장 -->
+    <insert id="saveUser" parameterType="com.example.team3_final_project_server.dto.UserDTO">
+        INSERT INTO user (user_id, user_pass, user_nick, user_gender, user_age, user_call, bs_name, bs_number, role)
+        VALUES (#{userId}, #{userPass}, #{userNick}, #{userGender}, #{userAge}, #{userCall}, #{bsName}, #{bsNumber}, #{role})
+    </insert>
 
 
-<!--    &lt;!&ndash;  비밀번호 변경&ndash;&gt;-->
-<!--    <update id="updatePassword">-->
-<!--        update user set user_pass = #{hashed} where user_id = #{userId}-->
-<!--    </update>-->
+    <!--  비밀번호 변경-->
+    <update id="updatePassword">
+        update user set user_pass = #{hashed} where user_id = #{userId}
+    </update>
 
-<!--    &lt;!&ndash;  회원 정보 수정&ndash;&gt;-->
-<!--    <update id="updateField">-->
-<!--        update user set ${field} = #{value} where user_id = #{userId}-->
-<!--    </update>-->
+    <!--  회원 정보 수정-->
+    <update id="updateField">
+        update user set ${field} = #{value} where user_id = #{userId}
+    </update>
 
 
 

@@ -2,10 +2,7 @@ package com.example.team3_final_project_server.SimJiHyun.service;
 
 import com.example.team3_final_project_server.SimJiHyun.mapper.UserMapper;
 import com.example.team3_final_project_server.configuration.jwt.JwtTokenProvider;
-import com.example.team3_final_project_server.dto.ReservationDTO;
-import com.example.team3_final_project_server.dto.ResponseDTO;
-import com.example.team3_final_project_server.dto.RestaurantDTO;
-import com.example.team3_final_project_server.dto.UserDTO;
+import com.example.team3_final_project_server.dto.*;
 import com.example.team3_final_project_server.dto.join.ResvJoinRestDTO;
 import com.example.team3_final_project_server.dto.join.ResvRestMenuJoinDTO;
 import lombok.RequiredArgsConstructor;
@@ -27,12 +24,12 @@ public class UserService {
   private final PasswordEncoder passwordEncoder;
   private final AuthenticationManager authenticationManager;
 
-//  로그인용 토큰 주기
+  //  로그인용 토큰 주기
   public ResponseDTO getJwtAuthentication(String userId, String userPass) {
     UserDTO user = userMapper.findByUserId(userId)
-            .orElseThrow(()->new IllegalArgumentException("사용자를 찾을 수 없습니다"));
+            .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다"));
 
-    if(!passwordEncoder.matches(userPass, user.getUserPass())){
+    if (!passwordEncoder.matches(userPass, user.getUserPass())) {
       throw new BadCredentialsException("비밀번호가 일치하지 않습니다");
     }
 
@@ -56,9 +53,9 @@ public class UserService {
   }
 
   public UserDTO validateUser(String userId, String userPass) {
-    UserDTO user = userMapper.findByUserId(userId).orElseThrow(()->new IllegalArgumentException("사용자를 찾을 수 없습니다"));
+    UserDTO user = userMapper.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다"));
 
-    if(!passwordEncoder.matches(userPass, user.getUserPass())){
+    if (!passwordEncoder.matches(userPass, user.getUserPass())) {
       throw new BadCredentialsException("비밀번호가 일치하지 않습니다");
     }
 
@@ -99,27 +96,27 @@ public class UserService {
     return "회원 가입 성공";
   }
 
-//  예약 리스트 가져오기
+  //  예약 리스트 가져오기
   public List<ResvJoinRestDTO> userReservation(int userIdx) {
     return userMapper.userReservation(userIdx);
   }
 
-//  예약 상세 정보 가져오기
+  //  예약 상세 정보 가져오기
   public ResvRestMenuJoinDTO getBook(int reservationIdx, int restaurantIdx) {
-    return userMapper.getBook(reservationIdx,restaurantIdx);
+    return userMapper.getBook(reservationIdx, restaurantIdx);
   }
 
-//  예약 취소하기
+  //  예약 취소하기
   public void cancelBook(int reservationIdx) {
     userMapper.cancelBook(reservationIdx);
   }
 
-//  예약 번호 찾기
+  //  예약 번호 찾기
   public int searchResIdx(int userIdx, int resIdx, String rsvDate, String rsvTime) {
     return userMapper.searchResIdx(userIdx, resIdx, rsvDate, rsvTime);
   }
 
-//  좌석 예약하기
+  //  좌석 예약하기
   public void reserveSeat(int reservationIdx, int seatId) {
     userMapper.reserveSeat(reservationIdx, seatId);
   }
@@ -135,4 +132,9 @@ public class UserService {
   public List<RestaurantDTO> getStoreLocation() {
     return userMapper.getStoreLocation();
   }
+
+  public List<SeatDTO> loadSeat(int resIdx) {
+    return userMapper.loadSeat(resIdx);
+  }
+
 }

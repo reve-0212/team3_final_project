@@ -102,11 +102,11 @@ public class SecurityConfig {
                     // 사장 전용
 //                    .requestMatchers("/pre/**").hasRole("OWNER")
                     .requestMatchers("/pre/login").permitAll()  // 로그인은 모두 허용
-                    .requestMatchers("/pre/resave").hasRole("OWNER") // 이건 인증된 사장만 가능
+                    .requestMatchers("/pre/resave","/pre/pastDateRes").hasRole("OWNER") // 이건 인증된 사장만 가능
 
                     //로그인한 사용자용
                     .requestMatchers("/waiting/**", "/book/**", "/latestDetails", "/book/info").hasRole("USER")
-                    .requestMatchers(GET, "/userReservation", "/getBook", "/pre/loadSeat/**").hasRole("USER")
+                    .requestMatchers(GET, "/userReservation", "/getBook", "/loadSeat/**").hasRole("USER")
                     .requestMatchers(PUT, "/cancelBook", "/reserveSeat").hasRole("USER")
 
 //                    모든 사용자용

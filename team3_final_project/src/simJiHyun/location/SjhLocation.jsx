@@ -1,11 +1,11 @@
 import {Map, MapMarker, useKakaoLoader, useMap} from "react-kakao-maps-sdk";
 import {useEffect, useMemo, useState} from "react";
 import axios from "axios";
-import storeMarker from '/public/images/storeMarker.png'
-import {faLocationDot} from "@fortawesome/free-solid-svg-icons";
+import {useNavigate} from "react-router-dom";
 
 function SjhLocation() {
   useKakaoLoader({appkey: import.meta.env.VITE_REACT_APP_KAKAO_MAP_API_KEY})
+  const Nv = useNavigate()
 
   // 지도 중심좌표
   const [myLocation, setCenter] = useState({
@@ -45,10 +45,9 @@ function SjhLocation() {
     })
   }, []);
 
-  const EventMarkerContainer = ({markerId, position, content, selectedMarkerId}) => {
+  const EventMarkerContainer = ({markerId, position, content, address, selectedMarkerId}) => {
     const map = useMap()
     const isOpen = selectedMarkerId === markerId
-    // const [isOpen, setIsOpen] = useState(false)
 
     return (
       <MapMarker
@@ -62,12 +61,23 @@ function SjhLocation() {
           }, 0)
         }}
         image={{
-          src: "public/images/markerWithShadow.png",
+          src: "/images/markerWithShadow.png",
           size: {
             width: 30, height: 35
           }
         }}
-      >{isOpen && content}</MapMarker>
+      >{isOpen &&
+        <div
+          style={{
+            whiteSpace: "nowrap",
+            margin: "10px",
+          }} onClick={() => {
+          Nv(`/resdetail/${markerId}`)
+        }}>
+          <p className={"mb-0 fw-bold"}>{content}</p>
+          <p className={"mb-0"}>{address}</p>
+        </div>
+      }</MapMarker>
     )
   }
 
@@ -75,6 +85,9 @@ function SjhLocation() {
     <Map id="map"
          center={myLocation}
          style={{width: "100%", height: "50rem"}}
+         onClick={() => {
+           setSelectedMarkerId(null)
+         }}
          level={3}
     >
       {/* 내 위치 마커 */}
@@ -87,6 +100,7 @@ function SjhLocation() {
           markerId={value.resIdx}
           position={{lat: value.resLat, lng: value.resLng}}
           content={value.resName}
+          address={value.resAddress1}
           selectedMarkerId={selectedMarkerId}
           setSelectedMarkerId={setSelectedMarkerId}/>
       ))}

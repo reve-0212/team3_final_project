@@ -55,6 +55,8 @@ import PreReSetTabs from "./Owner/PreChTabs.jsx";
 import PreChTabs from "./Owner/PreChTabs.jsx";
 import ReservationPage from "../KimSangMin/Seat/ReservationPage.jsx";
 import SjhLocation from "../simJiHyun/location/SjhLocation.jsx";
+import ErrorPage from "../simJiHyun/error/ErrorPage.jsx";
+import PreErrorPage from "../simJiHyun/error/PreErrorPage.jsx";
 
 function main() {
   // pre 가 있으면 사장님 웹으로
@@ -102,6 +104,9 @@ function main() {
           <Route path="/pre/WaToday" element={<TodayWaiting/>}/> {/* 현재 웨이팅 */}
           <Route path="/pre/WaPast" element={<PastDateWaiting/>}/> {/* 과거 웨이팅 */}
           <Route path="/pre/WaChart" element={<ReservationChart/>}/> {/* 웨이팅 차트 */}
+
+          <Route path={"/pre/*"} element={<PreErrorPage/>}/>
+
         </Routes>
       ) : (
         <div className={'mobile-wrapper'}>
@@ -158,8 +163,11 @@ function main() {
               <Route path="/pre/PreWait" element={<PreWait/>}/>
               {/*예약 웹앱*/}
               <Route path="/pre/PreReserve" element={<PreReserve/>}/>
+
+              <Route path={"/*"} element={<ErrorPage/>}/>
             </Routes>
           </main>
+
           <BottomNav/>
 
           {/*</HashRouter>*/}

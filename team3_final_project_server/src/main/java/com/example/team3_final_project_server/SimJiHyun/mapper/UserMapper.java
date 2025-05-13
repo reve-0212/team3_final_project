@@ -1,6 +1,7 @@
 package com.example.team3_final_project_server.SimJiHyun.mapper;
 
 import com.example.team3_final_project_server.dto.RestaurantDTO;
+import com.example.team3_final_project_server.dto.SeatDTO;
 import com.example.team3_final_project_server.dto.UserDTO;
 import com.example.team3_final_project_server.dto.join.ResvJoinRestDTO;
 import com.example.team3_final_project_server.dto.join.ResvRestMenuJoinDTO;
@@ -42,8 +43,10 @@ public interface UserMapper {
   //  해당 가게에 시간에 좌석 예약되었는지 확인하기
   int isSeatAvailable(int shortPathIdx);
 
-//  그 가게 총 좌석 갯수 확인하기
+  //  그 가게 총 좌석 갯수 확인하기
   int reservedSeat(int shortPathIdx);
 
   List<RestaurantDTO> getStoreLocation();
+
+  List<SeatDTO> loadSeat(int resIdx);
 }
