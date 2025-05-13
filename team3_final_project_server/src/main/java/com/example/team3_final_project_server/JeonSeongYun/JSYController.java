@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/jsy")
+@RequestMapping("/pre")
 @CrossOrigin(origins = "http://localhost:5173")
 @RequiredArgsConstructor
 public class JSYController {
@@ -28,29 +28,18 @@ public class JSYController {
   @Autowired
   private JwtTokenProvider jwtTokenProvider;
 
-@GetMapping("/admin/login")
-public ResponseEntity<?> getAdminLoginCheck(@RequestParam String adminId, @RequestParam String adminPw){
-  try{
-    ResponseDTO jwtToken = jsyService.getJwtAdminLoginCheck(adminId, adminPw);
-    System.out.println("어드민 로그인");
-    return ResponseEntity.ok().body(jwtToken);
-  }catch (AuthenticationException e) {
-    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패");
-  }
-}
-  @GetMapping("/contents/{category}")
-  public List<RestaurantListDTO> getRstListByCategory(@PathVariable("category") String category) throws Exception {
-//    System.out.println(" /contents/{category} 받아온 값 : " + category);
-    return jsyService.getRstListByCategory(category);
-  }
-
-  @GetMapping("/owner/login")
-  public ResponseEntity<?> getOwnerLoginCheck(@RequestParam String ownerId, @RequestParam String ownerPw) {
-    try {
-      ResponseDTO jwtToken = jsyService.getJwtOwnerLoginCheck(ownerId, ownerPw);
-      System.out.println("OwnerLogin");
+//  @GetMapping("/contents/{category}")
+//  public List<RestaurantListDTO> getRstListByCategory(@PathVariable("category") String category) throws Exception {
+  ////    System.out.println(" /contents/{category} 받아온 값 : " + category);
+//    return jsyService.getRstListByCategory(category);
+//  }
+  @GetMapping("/admin/login")
+  public ResponseEntity<?> getAdminLoginCheck(@RequestParam String adminId, @RequestParam String adminPw){
+    try{
+      ResponseDTO jwtToken = jsyService.getJwtAdminLoginCheck(adminId, adminPw);
+      System.out.println("어드민 로그인");
       return ResponseEntity.ok().body(jwtToken);
-    } catch (AuthenticationException e) {
+    }catch (AuthenticationException e) {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패");
     }
   }

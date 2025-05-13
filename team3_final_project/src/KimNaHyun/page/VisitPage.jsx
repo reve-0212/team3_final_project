@@ -1,20 +1,18 @@
-import React, {useState} from 'react';
-import {useNavigate} from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from "../components/Button.jsx";
 import useRestaurantStore from "../../stores/useRestaurantStore.jsx";
-import useUserStore from "../../stores/useUserStore.jsx";
-import useResStoreSjh from "../../stores/useResStoreSjh.jsx";
 
-function VisitorBtn({gender, count, onChange}) {
+function VisitorBtn({ gender, count, onChange }) {
   const increase = () => onChange(gender, count + 1);
   const decrease = () => onChange(gender, Math.max(0, count - 1));
 
   return (
     <div className="d-flex justify-content-between mb-2">
       {gender === 'man' ? '남성' : gender === 'woman' ? '여성' : '유아'}
-      <div style={{border: '1px solid #dddddd', padding: '0 10px', borderRadius: '10px'}}>
+      <div style={{ border: '1px solid #dddddd', padding: '0 10px', borderRadius: '10px' }}>
         <button className="prev-btn" onClick={decrease}>-</button>
-        <span style={{margin: '0 10px'}}>{count}</span>
+        <span style={{ margin: '0 10px' }}>{count}</span>
         <button className="next-btn" onClick={increase}>+</button>
       </div>
     </div>
@@ -23,16 +21,9 @@ function VisitorBtn({gender, count, onChange}) {
 
 function VisitPage() {
   const Nv = useNavigate();
-  // const setResIdx = useRestaurantStore((state) => state.setRestaurantIdx);
-  const userStore = useUserStore((state) => state.user)
-  const resStore = useResStoreSjh((state) => state.res)
-  // console.log("---------userStore-----------")
-  // console.log(userStore)
-  // console.log("-----------resStore-----------")
-  // console.log(resStore)
   const setResIdx = useRestaurantStore((state) => state.setRestaurantIdx);
 
-  const [visitors, setVisitors] = useState({man: 0, woman: 0, baby: 0});
+  const [visitors, setVisitors] = useState({ man: 0, woman: 0, baby: 0 });
 
   const handleCountChange = (gender, quantity) => {
     setVisitors((prev) => ({
@@ -46,66 +37,46 @@ function VisitPage() {
     const rsvWoman = visitors.woman;
     const rsvBaby = visitors.baby;
     const rsvPeople = rsvMan + rsvWoman + rsvBaby;
+
+    const userIdx = 1; // 예시 사용자 ID
+    const resIdx = 1; // 예시 가게 ID
     setResIdx(resIdx);
 
-    // userStore 와 resStore 의 idx 를 가져온다
-    const userIdx = userStore.userIdx;
-    const resIdx = resStore.resIdx;
-
-    axios.post(`http://localhost:8080/api/visitors/${userIdx}/${resIdx}`, {
-      rsvMan: rsvMan,
-      rsvWoman: rsvWoman,
-      rsvBaby: rsvBaby,
-      rsvPeople: rsvPeople,
-    }, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`
+    // 다음 페이지로 데이터 전달 (state로)
+    Nv(`/book/date/${userIdx}/${resIdx}`, {
+      state: {
+        userIdx,
+        resIdx,
+        rsvMan,
+        rsvWoman,
+        rsvBaby,
+        rsvPeople,
       }
-    })
-      .then((res) => {
-        const newReservationIdx = res.data.reservationIdx || resIdx;
-        Nv(`/book/seat/${newReservationIdx}`); // 좌석 예약 페이지로 이동
-      })
-      .catch((err) => {
-        alert('전송 실패');
-        console.error(err);
-      });
+    });
   };
-  // 다음 페이지로 데이터 전달 (state로)
-  Nv(`/book/date/${userIdx}/${resIdx}`, {
-    state: {
-      userIdx,
-      resIdx,
-      rsvMan,
-      rsvWoman,
-      rsvBaby,
-      rsvPeople,
-    }
-  });
-};
 
-return (
-  <div className="app-container container py-4" style={{textAlign: 'left'}}>
-    <h3 className="waiting-title">방문인원을 선택하세요.</h3>
+  return (
+    <div className="app-container container py-4" style={{ textAlign: 'left' }}>
+      <h3 className="waiting-title">방문인원을 선택하세요.</h3>
 
-    <ul>
-      <li>
-        <h3 style={{fontWeight: 'bold', fontSize: '20px'}}>성인</h3>
-        <VisitorBtn gender="man" count={visitors.man} onChange={handleCountChange}/>
-        <VisitorBtn gender="woman" count={visitors.woman} onChange={handleCountChange}/>
-      </li>
-    </ul>
+      <ul>
+        <li>
+          <h3 style={{ fontWeight: 'bold', fontSize: '20px' }}>성인</h3>
+          <VisitorBtn gender="man" count={visitors.man} onChange={handleCountChange} />
+          <VisitorBtn gender="woman" count={visitors.woman} onChange={handleCountChange} />
+        </li>
+      </ul>
 
-    <ul className="pt-5 border-top">
-      <li>
-        <h3 style={{fontWeight: 'bold', fontSize: '20px'}}>유아</h3>
-        <VisitorBtn gender="baby" count={visitors.baby} onChange={handleCountChange}/>
-      </li>
-    </ul>
+      <ul className="pt-5 border-top">
+        <li>
+          <h3 style={{ fontWeight: 'bold', fontSize: '20px' }}>유아</h3>
+          <VisitorBtn gender="baby" count={visitors.baby} onChange={handleCountChange} />
+        </li>
+      </ul>
 
-    <Button btnName="다음" onClick={handleSubmit}/>
-  </div>
-);
+      <Button btnName="다음" onClick={handleSubmit} />
+    </div>
+  );
 }
 
 export default VisitPage;

@@ -132,13 +132,14 @@ public class UserController {
 //        System.out.println("API 요청: " + resIdx);
 
     if (seats != null && !seats.isEmpty()) {
-      PreResponse response = new PreResponse(true,"좌석 불러오기 성공",seats);
+      PreResponse response = new PreResponse(true, "좌석 불러오기 성공", seats);
       return ResponseEntity.ok(response);
-    }
-    else{
-      PreResponse response = new PreResponse(false,"좌석 불러오기 실패",null);
+    } else {
+      PreResponse response = new PreResponse(false, "좌석 불러오기 실패", null);
       return ResponseEntity.badRequest().body(response);
     }
+  }
+
   @PutMapping("/resSeat")
   public void resSeat(@RequestBody ReservationDTO reservationDTO) {
     System.out.println("userIdx : " + reservationDTO.getUserIdx());
