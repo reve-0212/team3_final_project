@@ -43,7 +43,7 @@ function DateTimeSelectorPage() {
 
 
         const userIdx = 1; // 임의 사용자 ID
-        const resIdx = 22; // 임의 예약 ID
+        const resIdx = 1; // 임의 예약 ID
 
         axios.post(`http://localhost:8080/api/date/${userIdx}/${resIdx}`, {
             rsvDate: formattedDate,
@@ -55,7 +55,7 @@ function DateTimeSelectorPage() {
         })
             .then((res) => {
                 const newReservationIdx = res.data.reservationIdx || resIdx;
-                Nv(`/book/menu/${userIdx}/${newReservationIdx}`);
+                Nv(`/book/seat/${userIdx}/${newReservationIdx}`);
             })
             .catch((err) => {
                 alert('전송 실패');

@@ -24,6 +24,6 @@ public interface KNHMapper {
 
     void updateRsvDate(int userIdx, int resIdx, String rsvDate, String rsvTime) throws Exception;
 
-    void updateRsvMenu(int userIdx, int resIdx, int menuIdx, int rsvMenuCount) throws Exception;
+    void updateRsvMenu(int userIdx, int resIdx) throws Exception;
 
 }

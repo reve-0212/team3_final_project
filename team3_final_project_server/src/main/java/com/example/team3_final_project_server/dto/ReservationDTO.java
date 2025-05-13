@@ -6,7 +6,6 @@ public class ReservationDTO {
   private int reservationIdx;
   private int userIdx;
   private int resIdx;
-  private int menuIdx;
   private int seatId;
 
   // 남성, 여성, 유아, 총합

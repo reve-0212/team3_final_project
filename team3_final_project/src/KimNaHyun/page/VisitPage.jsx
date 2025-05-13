@@ -59,7 +59,7 @@ function VisitPage() {
 
         // console.log(payload);
         const userIdx = 1; // 임의 사용자 ID
-        const resIdx = 22; // 임의 예약 ID
+        const resIdx = 1; // 임의 예약 ID
 
         setResIdx(resIdx)
 
@@ -74,8 +74,7 @@ function VisitPage() {
             }
         })
             .then((res) => {
-                const newReservationIdx = res.data.reservationIdx || resIdx;
-                Nv(`/book/seat/${newReservationIdx}`); // 좌석 예약 페이지로 이동
+                Nv(`/book/date/${userIdx}/${resIdx}`); // 예약페이지로 이동
             })
             .catch((err) => {
                 alert('전송 실패');

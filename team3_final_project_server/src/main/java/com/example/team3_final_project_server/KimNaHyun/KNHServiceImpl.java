@@ -36,8 +36,8 @@ public class KNHServiceImpl implements KNHService {
   }
 
   @Override
-  public void updateRsvMenu(int userIdx, int resIdx, int menuIdx, int rsvMenuCount) throws Exception {
-    knhMapper.updateRsvMenu(userIdx, resIdx, menuIdx, rsvMenuCount);
+  public void updateRsvMenu(int userIdx, int resIdx) throws Exception {
+    knhMapper.updateRsvMenu(userIdx, resIdx);
   }
 
 }

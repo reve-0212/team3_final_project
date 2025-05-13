@@ -11,8 +11,10 @@ import {Map, MapMarker, useKakaoLoader} from "react-kakao-maps-sdk";
 
 function ContentDetail() {
   const userStore = useUserStore((state) => state.user)
+  // const user = useUserStore((state) => state.user)
   useKakaoLoader({appkey: import.meta.env.VITE_REACT_APP_KAKAO_MAP_API_KEY})
   console.log(userStore.userIdx)
+  const userIdx = userStore.userIdx
 
   const [ActTab, setActTab] = useState("상세정보");
   const [RevTab, setRevTab] = useState("rev"); // 기본값: 리뷰(rev)
@@ -28,9 +30,6 @@ function ContentDetail() {
   const pathIdx = window.location.pathname;
   console.log(pathIdx[pathIdx.length - 1])
   const shortPathIdx = pathIdx[pathIdx.length - 1]
-
-  const user = useUserStore((state) => state.user)
-  const userIdx = user.userIdx
 
   // const filteredAndSortedReviews = reviews
   //     .filter(review => {

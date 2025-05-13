@@ -20,21 +20,21 @@ public class KNHController {
 
 
     // 방문자 페이지
-    @PostMapping("/visitors/{userIdx}/{resIdx}")
-    public void getRsvIdx(
-            @PathVariable("userIdx") int userIdx,
-            @PathVariable("resIdx") int resIdx,
-            @RequestBody ReservationDTO reservationDTO)
-            throws Exception {
+//    @PostMapping("/visitors/{userIdx}/{resIdx}")
+//    public void getRsvIdx(
+//            @PathVariable("userIdx") int userIdx,
+//            @PathVariable("resIdx") int resIdx,
+//            @RequestBody ReservationDTO reservationDTO)
+//            throws Exception {
 //  System.out.println("/visitors/{userIdx}/{resIdx} 받아온 값 : " + resIdx);
-        System.out.println("userIdx : " + userIdx);
-        System.out.println("resIdx : " + resIdx);
-        System.out.println("rsvMan : " + reservationDTO.getRsvMan());
-        System.out.println("rsvWoman : " + reservationDTO.getRsvWoman());
-        System.out.println("rsvBaby : " + reservationDTO.getRsvBaby());
-        System.out.println("rsvPeople : " + reservationDTO.getRsvPeople());
-        knhService.getRsvIdx(userIdx, resIdx, reservationDTO.getRsvMan(), reservationDTO.getRsvWoman(), reservationDTO.getRsvBaby(), reservationDTO.getRsvPeople());
-    }
+//        System.out.println("userIdx : " + userIdx);
+//        System.out.println("resIdx : " + resIdx);
+//        System.out.println("rsvMan : " + reservationDTO.getRsvMan());
+//        System.out.println("rsvWoman : " + reservationDTO.getRsvWoman());
+//        System.out.println("rsvBaby : " + reservationDTO.getRsvBaby());
+//        System.out.println("rsvPeople : " + reservationDTO.getRsvPeople());
+//        knhService.getRsvIdx(userIdx, resIdx, reservationDTO.getRsvMan(), reservationDTO.getRsvWoman(), reservationDTO.getRsvBaby(), reservationDTO.getRsvPeople());
+//    }
 
 
     // 예약 페이지
@@ -73,9 +73,7 @@ public class KNHController {
             throws Exception {
         System.out.println("userIdx : " + userIdx);
         System.out.println("resIdx : " + resIdx);
-        System.out.println("getMenuId : " + reservationDTO.getMenuIdx());
-        System.out.println("getRevMenuCount : " + reservationDTO.getRsvMenuCount());
-        knhService.updateRsvMenu(userIdx, resIdx, reservationDTO.getMenuIdx(), reservationDTO.getRsvMenuCount());
+        knhService.updateRsvMenu(userIdx, resIdx);
     }
 }
 

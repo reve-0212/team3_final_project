@@ -120,7 +120,6 @@ public class UserController {
   public void resSeat(@RequestBody ReservationDTO reservationDTO) {
     System.out.println("userIdx : " + reservationDTO.getUserIdx());
     System.out.println("resIdx : " + reservationDTO.getResIdx());
-    System.out.println("menuIdx : " + reservationDTO.getMenuIdx());
     System.out.println("seatId : " + reservationDTO.getSeatId());
   }
 }
