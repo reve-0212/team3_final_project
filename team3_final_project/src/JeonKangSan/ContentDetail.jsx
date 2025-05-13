@@ -15,7 +15,7 @@ function ContentDetail() {
   const setRes = useResStoreSjh((state) => state.setRes)
 
   useKakaoLoader({appkey: import.meta.env.VITE_REACT_APP_KAKAO_MAP_API_KEY})
-  console.log(userStore.userIdx)
+  // console.log(userStore.userIdx)
   const userIdx = userStore.userIdx
 
   const [ActTab, setActTab] = useState("상세정보");
@@ -41,7 +41,7 @@ function ContentDetail() {
     lng: 126.570667
   })
 
-  console.log(timeSlots)
+  // console.log(timeSlots)
 
   // 현재 주소 값의 맨 뒤에서 1번째 값 가져옴
   const pathIdx = window.location.pathname;

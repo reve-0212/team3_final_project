@@ -9,6 +9,9 @@ import axios from "axios";
 import useSeatIdStore from "../../stores/useSeatIdStore.jsx";
 import useResStoreSjh from "../../stores/useResStoreSjh.jsx";
 import useReservationIdxStore from "../../stores/useReservationIdxStore.jsx";
+import useRsvDateStore from "../../stores/useRsvDateStore.jsx";
+import useRsvTimeStore from "../../stores/useRsvTimeStore.jsx";
+import {useEffect} from "react";
 
 function SeatPage() {
   const userStore = useUserStore((state) => state.user)
@@ -16,19 +19,22 @@ function SeatPage() {
   const seatId = useSeatIdStore((state) => state.seatId)
   const setReservationIdxStore = useReservationIdxStore((state) => state.setReservationIdx)
   const reservationIdx = useReservationIdxStore((state) => state.reservationIdx)
+  const rsvDateStore = useRsvDateStore((state) => state.rsvDate)
+  const rsvTimeStore = useRsvTimeStore((state) => state.rsvTime)
 
   const userIdx = userStore.userIdx
   const resIdx = resStore.resIdx
-  const rsvDate = "2025-05-13"
-  const rsvTime = "10:00:00"
+  const rsvDate = rsvDateStore
+  const rsvTime = rsvTimeStore
 
   console.log("userIdx : " + userIdx)
   console.log("seatId : " + seatId)
   console.log("resIdx : " + resIdx)
   console.log("reservationIdx : " + reservationIdx)
+  console.log("rsvDate : " + rsvDate)
+  console.log("rsvTime : " + rsvTime)
 
-
-  const searchResIdx = () => {
+  useEffect(() => {
     axios.get("http://localhost:8080/searchResIdx", {
       params: {
         userIdx: userIdx,
@@ -39,14 +45,17 @@ function SeatPage() {
         Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`
       }
     }).then((res) => {
-      Nv(`/book/menu/${userIdx}/${resIdx}`);
-        console.log(res.data)
+      // Nv(`/book/menu/${userIdx}/${resIdx}`);
+      console.log(res.data)
       setReservationIdxStore(res.data)
     }).catch((err) => {
-        console.log(err)
-        Nv(`/book/menu/${userIdx}/${resIdx}`);
-      })
-  }
+      console.log(err)
+      // Nv(`/book/menu/${userIdx}/${resIdx}`);
+    })
+  }, []);
+
+  console.log("searchReservationIdx")
+  console.log(reservationIdx)
 
   const reserveSeat = () => {
     for (let i = 0; i < seatId.length; i++) {
@@ -66,9 +75,7 @@ function SeatPage() {
 
   }
 
-  // const {reservationId} = useParams();
   const Nv = useNavigate()
-
 
 
   return (
@@ -80,10 +87,8 @@ function SeatPage() {
       </div>
 
       <Button btnName={'다음'} onClick={() => {
-        searchResIdx()
         reserveSeat()
-        // resSeat()
-        // Nv(`/book/date/${reservationId}}`)
+        Nv(`/book/menu/${userIdx}/${resIdx}`)
       }}/>
     </div>
   );
