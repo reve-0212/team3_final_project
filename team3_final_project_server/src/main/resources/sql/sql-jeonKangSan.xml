@@ -10,49 +10,11 @@
         SELECT * FROM restaurant
     </select>
 
-<!--    <select id="getAllBestMenus" parameterType="int" resultType="com.example.team3_final_project_server.dto.BestMenuDTO">-->
-<!--        SELECT *-->
-<!--        FROM bestmenu-->
-<!--        WHERE testres_idx = #{resIdx}-->
-<!--        LIMIT 3-->
-<!--    </select>-->
-
     <select id="getAllReviews" parameterType="int" resultType="com.example.team3_final_project_server.dto.ReviewDTO">
         SELECT *
         FROM review
         WHERE res_idx = #{resIdx}
     </select>
-
-<!--    <select id="getLatestAnnounce" resultType="com.example.team3_final_project_server.dto.AnnounceDTO">-->
-<!--        SELECT *-->
-<!--        FROM announce-->
-<!--        ORDER BY announce_idx DESC-->
-<!--        LIMIT 1-->
-<!--    </select>-->
-
-<!--    <select id="getAmenitiesByResIdx" resultType="com.example.team3_final_project_server.dto.AmenitiesDTO">-->
-<!--        SELECT-->
-<!--        amenities_idx,-->
-<!--        res_idx,-->
-<!--        has_parking,-->
-<!--        parking_info,-->
-<!--        no_deposit,-->
-<!--        deposit_info,-->
-<!--        has_group_seat,-->
-<!--        group_seat_info,-->
-<!--        has_coronation,-->
-<!--        coronation_info,-->
-<!--        has_corkage,-->
-<!--        corkage_info,-->
-<!--        has_kids_zone,-->
-<!--        kids_zone_info,-->
-<!--        has_wifi,-->
-<!--        wifi_info,-->
-<!--        has_waiting_area,-->
-<!--        waiting_area_info-->
-<!--        FROM amenities-->
-<!--        WHERE res_idx = #{resIdx}-->
-<!--    </select>-->
 
     <select id="getRestaurantsByResIdx" resultType="com.example.team3_final_project_server.dto.RestaurantDTO">
         SELECT *
@@ -89,7 +51,24 @@
     </select>
 
     <select id="getRstListByPath" parameterType="int">
-        select * from restaurant where res_idx = #{pathIdx};
+        SELECT
+        r.res_idx,
+        r.res_name,
+        r.res_call,
+        r.res_address1,
+        r.res_address2,
+        r.res_introduce,
+        r.res_reserve_time,
+        r.res_lat,
+        r.res_lng,
+        r.res_price_range,
+        r.reserve_or_waiting,
+        r.res_option_1,
+        c.category_tag,
+        c.category_name
+        FROM restaurant r
+        LEFT JOIN category c ON r.res_idx = c.res_idx
+        WHERE r.res_idx = #{resIdx}
     </select>
 
     <select id="getBestMenu" resultType="com.example.team3_final_project_server.dto.MenuDTO">

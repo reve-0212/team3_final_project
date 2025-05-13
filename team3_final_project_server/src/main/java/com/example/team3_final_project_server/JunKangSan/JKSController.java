@@ -26,21 +26,8 @@ public class JKSController {
     @GetMapping("/resdetail/{resIdx}")
     @ResponseBody
     public RestaurantDTO getRestaurantByResIdx(@PathVariable int resIdx) {
-        RestaurantDTO dto = jksService.getRestaurantsByResIdx(resIdx);
-        System.out.println(dto); // 콘솔 확인용 출력
         return jksService.getRestaurantsByResIdx(resIdx); // 단일 DTO 응답
     }
-
-
-    //  편의시설
-    //@GetMapping("/amenities/{resIdx}")
-    //@ResponseBody
-    //public AmenitiesDTO getAmenities(@PathVariable int resIdx) {
-    //    AmenitiesDTO dto = jksService.getAmenitiesByResIdx(resIdx);
-    //    System.out.println(dto);
-      //  return jksService.getAmenitiesByResIdx(resIdx);
-    //}
-
 
     //  대표메뉴 - 05-12
     @GetMapping("/bestmenu/{resIdx}")
@@ -64,21 +51,12 @@ public class JKSController {
         return jksService.getAvgRatingByResIdx(resIdx);
     }
 
-
     //  종류별 리뷰 평균(음식, 가격, 서비스, 청결)
     @GetMapping("/reviews/average/type/{resIdx}")
     @ResponseBody
     public Map<String, Double> getAvgByType(@PathVariable int resIdx) {
         return jksService.getAvgRatingByType(resIdx);
     }
-
-
-    // 알림(가게공지)
-  //  @GetMapping("/announce/{resIdx}")
-  //  @ResponseBody
-  //  public AnnounceDTO getAnnounce() {
-    //    return jksService.getLatestAnnounce(); // List가 아닌 단일 DTO 반환
-  //  }
 
 
     // 가게 리스트
@@ -88,9 +66,11 @@ public class JKSController {
         return jksService.getRstListByCategory(category);
     }
 
+    // 가게 상세정보 + 해시태그
     @GetMapping("/detail/{pathIdx}")
     @ResponseBody
     public RestaurantDTO getRstListByPath(@PathVariable("pathIdx") int pathIdx) throws Exception {
         return jksService.getRstListByPath(pathIdx);
     }
+
 }

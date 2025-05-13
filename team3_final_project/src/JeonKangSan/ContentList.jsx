@@ -55,7 +55,7 @@ function ContentList() {
               className="btn-jks btn-sm button-seebox me-auto text-start"
               style={{ width: 'auto', appearance: 'none' }}
               aria-label="지역 선택"
-              onChange={(e) => Nv(`/contents/${category}/${e.target.value}`)}
+              onChange={(e) => Nv(`/contentList/${category}/${e.target.value}`)}
           >
             <option value="중구">중구</option>
             <option value="서구">서구</option>
@@ -119,7 +119,7 @@ function ContentList() {
               {/*1. resDetail 로 가고 싶으지 아니면 contentDetail 로 가고싶은지?*/}
 
               <p className="card-text my-2" onClick={() => Nv(`/resdetail/${res.resIdx}`)}>
-                ⭐ {res.avgRating || "0.0"} {`(${res.rvCount ?? 0})`} {/* 별점은 임시 값이므로 필요하면 백엔드에 컬럼 추가 */}
+                ⭐ {res.avgRating || "0.0"}
               </p>
               <small className="text-muted d-flex flex-fill" onClick={() => Nv(`/resdetail/${res.resIdx}`)}>
                 {res.categoryName || "카테고리"} · {res.resAddress1 || "주소"}

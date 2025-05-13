@@ -21,46 +21,30 @@ function ContentDetail() {
   const [bestMenus, setBestMenus] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [timeSlots, setTimeSlots] = useState([]);
+  const [selectedTime, setSelectedTime] = useState(null);
   const {resIdx} = useParams();
+
+  const [parsedTags, setParsedTags] = useState([]);
+
 
 
   // 현재 주소 값의 맨 뒤에서 1번째 값 가져옴
   const pathIdx = window.location.pathname;
   console.log(pathIdx[pathIdx.length - 1])
-  const shortPathIdx = pathIdx[pathIdx.length - 1]
+  const shortPathIdx = pathIdx[pathIdx.length]
 
   const user = useUserStore((state) => state.user)
   const userIdx = user.userIdx
 
-  // const filteredAndSortedReviews = reviews
-  //     .filter(review => {
-  //         if (!showOnlyWithImage) return true;
-  //         return review.reviewImage1 || review.reviewImage2 || review.reviewImage3;
-  //     })
-  //     .sort((a, b) => {
-  //         switch (sortOption) {
-  //             case "latest":
-  //                 return new Date(b.reviewWriteDate) - new Date(a.reviewWriteDate);
-  //             case "oldest":
-  //                 return new Date(a.reviewWriteDate) - new Date(b.reviewWriteDate);
-  //             case "high":
-  //                 return b.reviewRating - a.reviewRating;
-  //             case "low":
-  //                 return a.reviewRating - b.reviewRating;
-  //             default:
-  //                 return 0;
-  //         }
-  //     });
-
-  // 작업 전에는 활성화되어 있었음.
-  // const user = useUserStore((state) => state.user)
-  // const userIdx = user.userIdx
-
   useEffect(() => {
-    axios.get(`http://localhost:8080/detail/${shortPathIdx}`) // 단일 조회 API 사용 권장
+    axios.get(`http://localhost:8080/detail/${resIdx}`) // 단일 조회 API 사용 권장
       .then((res) => {
-        console.log(res.data)
+        console.log("응답 데이터:", res.data);
         setStoreInfo(res.data);
+
+        const rawTag = res.data.categoryTag || "";
+        const tags = rawTag.trim().split(/\s+/).map(tag => tag.replace(/^#/, ""));
+        setParsedTags(tags);
       })
       .catch((err) => {
         console.error("요청 실패:", err);
@@ -68,7 +52,7 @@ function ContentDetail() {
   }, [shortPathIdx]);
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/bestmenu/${shortPathIdx}`)
+    axios.get(`http://localhost:8080/bestmenu/${resIdx}`)
       .then((res) => {
         console.log(res.data)
         setBestMenus(res.data);
@@ -76,6 +60,7 @@ function ContentDetail() {
       console.log(err)
     })
   }, [])
+
 
   useEffect(() => {
     if (!storeInfo.resReserveTime) return;
@@ -95,6 +80,8 @@ function ContentDetail() {
     }
     setTimeSlots(slots)
   }, [storeInfo.resReserveTime]);
+
+
 
   // 지도 중심좌표
   const [center, setCenter] = useState({
@@ -155,12 +142,12 @@ function ContentDetail() {
 
         {/* 별점 및 영업정보 */}
         <div className="text-start mb-4">
-          {/*<small className="fw-bold">*/}
-            {/*평점 {reviews[0] ? reviews[0].reviewRating : ""}*/}
-            {/*/ 리뷰갯수 {reviews.length}*/}
-          {/*</small><br/>*/}
+          <small className="fw-bold">
+            ⭐평점 {reviews[0] ? reviews[0].reviewRating : "0.0 "}
+            {/*/ 리뷰개수 {reviews.length}*/}
+          </small><br/>
           <hr/>
-          <small className="fw-bold">영업중 {storeInfo ? storeInfo.resReserveTime : ""}</small><br/>
+          <small className="fw-bold">영업시간 {storeInfo ? storeInfo.resReserveTime : ""}</small><br/>
           <small className="fw-bold">전화번호 {storeInfo ? storeInfo.resCall : ""}</small>
           <hr/>
         </div>
@@ -180,12 +167,6 @@ function ContentDetail() {
             >
               메뉴
             </button>
-            {/*<button*/}
-            {/*    className={`tab-btn ${ActTab === "리뷰" ? "active" : ""}`}*/}
-            {/*    onClick={() => setActTab("리뷰")}*/}
-            {/*>*/}
-            {/*    리뷰*/}
-            {/*</button>*/}
           </div>
         </div>
 
@@ -195,34 +176,11 @@ function ContentDetail() {
             <br/>
             <h4 className="extra-bold">"{storeInfo ? storeInfo.resIntroduce : ""}"</h4>
             <div className="mb-3">
-              {/*<small className="notice-text">알림</small>*/}
-              {/*<p className="small mt-1">*/}
-              {/*    {announce ? announce.announceContent : "공지사항을 불러오는 중입니다..."}*/}
-              {/*</p>*/}
             </div>
 
 
             <br/>
             <div className="mb-3">
-              {/*<h4 className="extra-bold">편의시설</h4>*/}
-              {/*<ul className="list-unstyled">*/}
-              {/*    {amenities ? (*/}
-              {/*        <>*/}
-              {/*            {amenities.hasParking === "Y" && <li>주차 가능 - {amenities.parkingInfo}</li>}*/}
-              {/*            {amenities.noDeposit === "Y" && <li>예약금 없음 - {amenities.depositInfo}</li>}*/}
-              {/*            {amenities.hasGroupSeat === "Y" && <li>단체석 있음 - {amenities.groupSeatInfo}</li>}*/}
-              {/*            {amenities.hasCoronation === "Y" &&*/}
-              {/*                <li>기념행사 제공 - {amenities.coronationInfo}</li>}*/}
-              {/*            {amenities.hasCorkage === "Y" && <li>코르키지 가능 - {amenities.corkageInfo}</li>}*/}
-              {/*            {amenities.hasKidsZone === "Y" && <li>키즈존 있음 - {amenities.kidsZoneInfo}</li>}*/}
-              {/*            {amenities.hasWifi === "Y" && <li>WiFi 제공 - {amenities.wifiInfo}</li>}*/}
-              {/*            {amenities.hasWaitingArea === "Y" &&*/}
-              {/*                <li>대기 공간 있음 - {amenities.waitingAreaInfo}</li>}*/}
-              {/*        </>*/}
-              {/*    ) : (*/}
-              {/*        <li>불러오는 중...</li>*/}
-              {/*    )}*/}
-              {/*</ul>*/}
             </div>
 
             <br/>
@@ -245,23 +203,20 @@ function ContentDetail() {
 
             <br/>
             <div className="mb-3 text-start">
-              <h4 className="extra-bold">#해시태그</h4>
+              <h4 className="extra-bold">해시 태그</h4>
 
-              <div className="d-flex flex-wrap gap-2 ps-2 pt-2">
-                <div><span className="badge">#혼술맛집</span></div>
-                <div><span className="badge">#안주맛집</span></div>
-                <div><span className="badge">#친절함</span></div>
-                <div><span className="badge">#청결함</span></div>
-              </div>
-
-              <div className="d-flex flex-wrap gap-2 ps-2 pt-2">
-                <div><span className="badge">#분위기 맛집</span></div>
-                <div><span className="badge">#로맨틱한</span></div>
-                <div><span className="badge">#데이트장소</span></div>
-                <div><span className="badge">#빈티지한</span></div>
-              </div>
+              {parsedTags.length > 0 ? (
+                  <div className="d-flex flex-wrap gap-2 ps-2 pt-2">
+                    {parsedTags.map((tag, idx) => (
+                        <div key={idx}>
+                          <span className="badge">#{tag}</span>
+                        </div>
+                    ))}
+                  </div>
+              ) : (
+                  <div className="ps-2 pt-2 text-muted small">등록된 해시태그가 없습니다</div>
+              )}
             </div>
-
 
           </div>
         )}
@@ -288,157 +243,16 @@ function ContentDetail() {
           </div>
         )}
 
-
-        {/*/!* 리뷰 *!/*/}
-        {/*{ActTab === "리뷰" && (*/}
-        {/*    <div className="mb-5 text-start">*/}
-        {/*        /!* 텍스트 탭 메뉴 *!/*/}
-        {/*        <div className="tab-menu-wrapper d-flex mb-4">*/}
-        {/*            <div*/}
-        {/*                className={`tab-menu-text ${RevTab === "rev" ? "active" : ""}`}*/}
-        {/*                onClick={() => setRevTab("rev")}*/}
-        {/*            >*/}
-        {/*                일반리뷰*/}
-        {/*            </div>*/}
-        {/*            <div*/}
-        {/*                className={`tab-menu-text ${RevTab === "onepick" ? "active" : ""}`}*/}
-        {/*                onClick={() => setRevTab("onepick")}*/}
-        {/*            >*/}
-        {/*                원픽리뷰*/}
-        {/*            </div>*/}
-        {/*        </div>*/}
-
-        {/*        /!* 평점 통계 영역 시작 *!/*/}
-        {/*        <div className="mb-3 text-start">*/}
-        {/*            /!* 별점통계 제목 *!/*/}
-        {/*            <h6 className="fw-semibold small mb-3">별점통계</h6>*/}
-
-        {/*            /!* 평점 전체영역: 별점과 세부항목을 한 줄로 *!/*/}
-        {/*            <div className="d-flex align-items-start">*/}
-
-        {/*                /!* 전체평점 묶음 *!/*/}
-        {/*                <div className="d-flex flex-column align-items-center me-3" style={{minWidth: "70px"}}>*/}
-        {/*                    <span className="fw-bold text-warning" style={{fontSize: "1.5rem"}}>★</span>*/}
-        {/*                    <span className="fw-bold" style={{fontSize: "1.2rem"}}>*/}
-        {/*                    {avgRating !== null ? avgRating.toFixed(1) : ""}*/}
-        {/*                    </span>*/}
-        {/*                    <small className="text-muted">전체 평점</small>*/}
-        {/*                </div>*/}
-
-        {/*                /!* 오른쪽 음식/가격/서비스/청결 점수줄 *!/*/}
-        {/*                <div className="flex-grow-1">*/}
-        {/*                    {ratingTypes.map((item, i) => {*/}
-        {/*                        const score = avgRatings?.[item.key] ?? 0;*/}
-        {/*                        const percent = (score / 5) * 100;*/}
-
-        {/*                        return (*/}
-        {/*                            <div key={i} className="d-flex align-items-center mb-2">*/}
-        {/*                                /!* 항목명 *!/*/}
-        {/*                                <div style={{width: '60px', fontSize: '0.85rem'}}>{item.label}</div>*/}
-
-        {/*                                /!* 진행바 *!/*/}
-        {/*                                <div className="flex-grow-1 me-2">*/}
-        {/*                                    <div className="progress" style={{height: '6px'}}>*/}
-        {/*                                        <div className="progress-bar bg-warning"*/}
-        {/*                                             style={{width: `${percent}%`}}></div>*/}
-        {/*                                    </div>*/}
-        {/*                                </div>*/}
-
-        {/*                                /!* 수치 *!/*/}
-        {/*                                <div*/}
-        {/*                                    style={{width: '30px', fontSize: '0.8rem'}}>{score.toFixed(1)}</div>*/}
-        {/*                            </div>*/}
-        {/*                        );*/}
-        {/*                    })}*/}
-        {/*                </div>*/}
-
-        {/*            </div>*/}
-        {/*        </div>*/}
-
-        {/*        <h5 className="mt-5 text-start fw-bold">사진</h5>*/}
-        {/*        <div className="d-flex flex-wrap gap-2 mb-4">*/}
-        {/*            {reviews*/}
-        {/*                .flatMap(review =>*/}
-        {/*                    [review.reviewImage1, review.reviewImage2, review.reviewImage3].filter(Boolean)*/}
-        {/*                )*/}
-        {/*                .map((imageUrl, idx) => (*/}
-        {/*                    <div key={idx} className="bg-light rounded"*/}
-        {/*                         style={{width: "100px", height: "100px", overflow: "hidden"}}>*/}
-        {/*                        <img*/}
-        {/*                            src={imageUrl}*/}
-        {/*                            alt={`리뷰이미지${idx}`}*/}
-        {/*                            style={{width: "100%", height: "100%", objectFit: "cover"}}*/}
-        {/*                        />*/}
-        {/*                    </div>*/}
-        {/*                ))}*/}
-        {/*        </div>*/}
-
-        {/*        /!* 리뷰 정렬 *!/*/}
-        {/*        <div className="d-flex align-items-center mb-2">*/}
-        {/*            <select*/}
-        {/*                className="custom-select-text"*/}
-        {/*                aria-label="리뷰 정렬 기준"*/}
-        {/*                value={sortOption}*/}
-        {/*                onChange={(e) => setSortOption(e.target.value)}*/}
-        {/*            >*/}
-        {/*                <option value="latest">최신순</option>*/}
-        {/*                <option value="oldest">오래된순</option>*/}
-        {/*                <option value="high">평점높은순</option>*/}
-        {/*                <option value="low">평점낮은순</option>*/}
-        {/*            </select>*/}
-
-        {/*            <span*/}
-        {/*                className="custom-span-text ms-2"*/}
-        {/*                style={{cursor: 'pointer'}}*/}
-        {/*                onClick={() => setShowOnlyWithImage(prev => !prev)}*/}
-        {/*            >*/}
-        {/*                {showOnlyWithImage ? '전체리뷰' : '사진리뷰'}*/}
-        {/*            </span>*/}
-        {/*        </div>*/}
-
-
-        {/*        {filteredAndSortedReviews*/}
-        {/*            .filter((review) => {*/}
-        {/*                if (RevTab === "rev") return review.isOnePick === 'N';*/}
-        {/*                if (RevTab === "onepick") return review.isOnePick === 'Y';*/}
-        {/*                return true;*/}
-        {/*            })*/}
-        {/*            .map((review, idx) => (*/}
-        {/*                <div key={idx}*/}
-        {/*                     className="d-flex justify-content-between align-items-start border-bottom py-3">*/}
-        {/*                    <div className="flex-grow-1 pe-2">*/}
-        {/*                        <div className="fw-bold">*/}
-        {/*                            {review.userName || "사용자"} <span*/}
-        {/*                            className="text-warning">★{review.reviewRating}</span>*/}
-        {/*                        </div>*/}
-        {/*                        <div className="small text-muted">{review.reviewWriteDate}</div>*/}
-        {/*                        <div className="small">{review.reviewContent}</div>*/}
-        {/*                    </div>*/}
-        {/*                    <div className="bg-light d-flex justify-content-center align-items-center"*/}
-        {/*                         style={{width: "60px", height: "60px", borderRadius: "6px"}}>*/}
-        {/*                        {review.reviewImage1 ? (*/}
-        {/*                            <img src={review.reviewImage1} alt="리뷰 이미지" style={{*/}
-        {/*                                width: "100%",*/}
-        {/*                                height: "100%",*/}
-        {/*                                objectFit: "cover",*/}
-        {/*                                borderRadius: "6px"*/}
-        {/*                            }}/>*/}
-        {/*                        ) : (*/}
-        {/*                            <span className="text-muted small">사진</span>*/}
-        {/*                        )}*/}
-        {/*                    </div>*/}
-        {/*                </div>*/}
-        {/*            ))}*/}
-
-        {/*    </div>*/}
-        {/*)}*/}
-
         {/* 예약 등록, 웨이팅 등록*/}
         <div className="d-flex flex-column gap-2 mb-4">
           <div className="text-start"><h4 className="extra-bold">예약 시간</h4></div>
           <div className="location-box">
             {timeSlots.map((time, idx) => (
-              <button key={idx} className={"btn btn-outline-primary"}>
+            <button
+                key={idx}
+                className={`btn ${selectedTime === time ? "btn-primary" : "btn-outline-primary"}`}
+                onClick={() => setSelectedTime(time)}
+            >
                 {time}
               </button>
             ))}
