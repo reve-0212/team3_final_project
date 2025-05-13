@@ -142,4 +142,8 @@
   <select id="reservedSeat" resultType="int">
     select count(*) from seat_table where res_idx=#{shortPathIdx};
   </select>
+
+  <select id="getStoreLocation" resultType="com.example.team3_final_project_server.dto.RestaurantDTO">
+    select res_idx, res_name, res_lat, res_lng from restaurant;
+  </select>
 </mapper>

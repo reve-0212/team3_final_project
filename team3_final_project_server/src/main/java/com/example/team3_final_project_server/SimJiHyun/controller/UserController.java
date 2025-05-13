@@ -4,6 +4,7 @@ import com.example.team3_final_project_server.SimJiHyun.mapper.UserMapper;
 import com.example.team3_final_project_server.SimJiHyun.service.UserService;
 import com.example.team3_final_project_server.dto.ReservationDTO;
 import com.example.team3_final_project_server.dto.ResponseDTO;
+import com.example.team3_final_project_server.dto.RestaurantDTO;
 import com.example.team3_final_project_server.dto.UserDTO;
 import com.example.team3_final_project_server.dto.join.ResvJoinRestDTO;
 import com.example.team3_final_project_server.dto.join.ResvRestMenuJoinDTO;
@@ -144,6 +145,11 @@ public class UserController {
   public int reservedSeat(@PathVariable int shortPathIdx) {
     System.out.println("shortPathIdx : " + shortPathIdx);
     return userService.reservedSeat(shortPathIdx);
+  }
+
+  @GetMapping("/getStoreLocation")
+  public List<RestaurantDTO> getStoreLocation() {
+    return userService.getStoreLocation();
   }
 
 }

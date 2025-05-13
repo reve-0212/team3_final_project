@@ -111,7 +111,7 @@ public class SecurityConfig {
 
 //                    모든 사용자용
                     .requestMatchers("/user/**", "/latestDetails", "/bookmark", "/contentDetail", "/review", "/", "/api/visitors").permitAll()
-                    .requestMatchers("/jsy/contents/**", "/jsy/ownerLogin", "/contents/**", "/detail/**", "/bestmenu/**", "/reservedSeat/**", "/isSeatAvailable/**").permitAll()
+                    .requestMatchers("/jsy/contents/**", "/jsy/ownerLogin", "/contents/**", "/detail/**", "/bestmenu/**", "/reservedSeat/**", "/isSeatAvailable/**","/getStoreLocation").permitAll()
                     .requestMatchers("/api/**", "/auth/**", "/api/auth/signup").permitAll()
                     .requestMatchers("/api/visitors", "/api/visitors/**").permitAll()
 //            나머지 url은 모두 인증 받은 사용자만 사용 가능

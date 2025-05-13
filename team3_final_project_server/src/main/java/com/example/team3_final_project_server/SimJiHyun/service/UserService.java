@@ -4,6 +4,7 @@ import com.example.team3_final_project_server.SimJiHyun.mapper.UserMapper;
 import com.example.team3_final_project_server.configuration.jwt.JwtTokenProvider;
 import com.example.team3_final_project_server.dto.ReservationDTO;
 import com.example.team3_final_project_server.dto.ResponseDTO;
+import com.example.team3_final_project_server.dto.RestaurantDTO;
 import com.example.team3_final_project_server.dto.UserDTO;
 import com.example.team3_final_project_server.dto.join.ResvJoinRestDTO;
 import com.example.team3_final_project_server.dto.join.ResvRestMenuJoinDTO;
@@ -129,5 +130,9 @@ public class UserService {
 
   public int reservedSeat(int shortPathIdx) {
     return userMapper.reservedSeat(shortPathIdx);
+  }
+
+  public List<RestaurantDTO> getStoreLocation() {
+    return userMapper.getStoreLocation();
   }
 }
