@@ -11,8 +11,10 @@ import {Map, MapMarker, useKakaoLoader} from "react-kakao-maps-sdk";
 
 function ContentDetail() {
   const userStore = useUserStore((state) => state.user)
+  // const user = useUserStore((state) => state.user)
   useKakaoLoader({appkey: import.meta.env.VITE_REACT_APP_KAKAO_MAP_API_KEY})
   console.log(userStore.userIdx)
+  const userIdx = userStore.userIdx
 
   const [ActTab, setActTab] = useState("상세정보");
   const [RevTab, setRevTab] = useState("rev"); // 기본값: 리뷰(rev)
@@ -33,8 +35,29 @@ function ContentDetail() {
   console.log(pathIdx[pathIdx.length - 1])
   const shortPathIdx = pathIdx[pathIdx.length]
 
-  const user = useUserStore((state) => state.user)
-  const userIdx = user.userIdx
+  // const filteredAndSortedReviews = reviews
+  //     .filter(review => {
+  //         if (!showOnlyWithImage) return true;
+  //         return review.reviewImage1 || review.reviewImage2 || review.reviewImage3;
+  //     })
+  //     .sort((a, b) => {
+  //         switch (sortOption) {
+  //             case "latest":
+  //                 return new Date(b.reviewWriteDate) - new Date(a.reviewWriteDate);
+  //             case "oldest":
+  //                 return new Date(a.reviewWriteDate) - new Date(b.reviewWriteDate);
+  //             case "high":
+  //                 return b.reviewRating - a.reviewRating;
+  //             case "low":
+  //                 return a.reviewRating - b.reviewRating;
+  //             default:
+  //                 return 0;
+  //         }
+  //     });
+
+  // 작업 전에는 활성화되어 있었음.
+  // const user = useUserStore((state) => state.user)
+  // const userIdx = user.userIdx
 
   useEffect(() => {
     axios.get(`http://localhost:8080/detail/${resIdx}`) // 단일 조회 API 사용 권장

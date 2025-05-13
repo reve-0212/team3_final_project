@@ -1,38 +1,83 @@
 import React, { useEffect, useState } from 'react';
 import Button from "./Button.jsx";
-import { useNavigate } from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import axios from "axios";
 import useRestaurantStore from "../../stores/useRestaurantStore.jsx";
+import useUserStore from "../../stores/useUserStore.jsx";
 
 const MenuSelector = () => {
+    const location = useLocation();
+
+    // 이전 페이지에서 전달받은 예약 정보
+    const {
+        // userIdx,
+        // resIdx,
+        rsvDate,
+        rsvTime,
+    } = location.state || {};
+    console.log(rsvDate)
+    console.log(rsvTime)
+
     const Nv = useNavigate();
     const [menuItems, setMenuItems] = useState([]);
     const [quantities, setQuantities] = useState({});
-    const resIdx = useRestaurantStore((state) => state.restaurantIdx);
+    const [reservationIdx, setReservationIdx] = useState(null);
 
+    const userStore = useUserStore((state) => state.user)
+    const resIdx = useRestaurantStore((state) => state.restaurantIdx);
+    const userIdx = userStore.userIdx
+
+
+    // 메뉴 데이터 로드
     useEffect(() => {
-        if (!resIdx) return;
+        if (!resIdx) return; // resIdx가 없는 경우 API 호출을 하지 않도록 처리
 
         axios
             .get(`http://localhost:8080/api/menu/${resIdx}`)
             .then(res => {
+                console.log(res.data);
                 setMenuItems(res.data);
             })
             .catch(err => {
-                console.error(err);
+                console.log(err);
                 alert("메뉴 데이터를 불러오는 데 실패했습니다.");
             });
-    }, [resIdx]);
+    }, [resIdx]);  // resIdx가 변경될 때마다 다시 데이터 로딩
+
+    // useEffect(() => {
+    //     axios.get(`http://localhost:8080/api/menu/${resIdx}`)
+    //         .then(res => {
+    //             console.log(res.data);
+    //             setReservationItem(res.data);
+    //         })
+    //         .catch(err => {
+    //             console.log(err);
+    //         });
+    // }, [resIdx]);
+
+
+    // 예약번호 조회
+    useEffect(() => {
+        if (!userIdx || !resIdx || !rsvDate || !rsvTime) return;
+        axios.get(`http://localhost:8080/api/menu/find`, {
+            params: {
+                userIdx,
+                resIdx,
+                rsvDate,
+                rsvTime
+            }
+        })
+            .then(res => {
+                setReservationIdx(res.data.reservationIdx); // 예약번호 저장
+                console.log("예약번호:", res.data.reservationIdx);
+            })
+            .catch(err => {
+                console.error("예약 정보 조회 실패", err);
+            });
+    }, [userIdx, resIdx, rsvDate, rsvTime]);
+
 
     const handleIncrease = (menuIdx) => {
-        const selectedMenuIdxs = Object.keys(quantities);
-        const alreadySelected = selectedMenuIdxs.includes(menuIdx.toString());
-
-        if (!alreadySelected && selectedMenuIdxs.length >= 1) {
-            alert("하나의 메뉴만 선택할 수 있습니다.");
-            return;
-        }
-
         setQuantities((prev) => ({
             ...prev,
             [menuIdx]: (prev[menuIdx] || 0) + 1,
@@ -65,17 +110,11 @@ const MenuSelector = () => {
             quantity,
         }));
 
-        const [menu, setMenu] = useState({
-            menuIdx: 0,
-            rsvMenuCount: 0,
-        });
+        const userIdx = 1; // 임의 사용자 ID
+        const resIdx = 1; // 임의 예약 ID
 
-        const userIdx = 1;
-        const resIdx = 22;
-
-        axios.post(`http://localhost:8080/api/menu/select/${userIdx}/${resIdx}`, {
-            menuIdx: menu.menuIdx,
-            resMenuCount: menu.rsvMenuCount
+        axios.post(`http://localhost:8080/api/menu/${userIdx}/${resIdx}`, {
+            menuIdx: menuList
         }, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`
@@ -102,7 +141,7 @@ const MenuSelector = () => {
                 ) : (
                     menuItems.map((item) => (
                         <div
-                            key={item.menuIdx}
+                            key={item.menuIdx}  // 수정된 부분
                             style={{
                                 display: 'flex',
                                 alignItems: 'flex-start',
@@ -111,6 +150,7 @@ const MenuSelector = () => {
                                 marginBottom: '20px',
                             }}
                         >
+                            {/* 이미지 + 수량 버튼 (세로) */}
                             <div
                                 style={{
                                     marginRight: '15px',
@@ -137,18 +177,19 @@ const MenuSelector = () => {
                                 >
                                     <button className="prev-btn" onClick={() => handleDecrease(item.menuIdx)}>-</button>
                                     <span style={{ margin: '0 10px' }}>
-                                        {quantities[item.menuIdx] || 0}
+                                        {quantities[item.menuIdx] || 0}  {/* 수정된 부분 */}
                                     </span>
                                     <button className="next-btn" onClick={() => handleIncrease(item.menuIdx)}>+</button>
                                 </div>
                             </div>
 
+                            {/* 이름 + 설명 */}
                             <div style={{ flex: 1 }}>
                                 <div style={{ fontWeight: 'bold', fontSize: '16px' }}>
-                                    {item.menuName}
+                                    {item.menuName} {/* 수정된 부분 */}
                                 </div>
                                 <div style={{ fontSize: '14px', color: '#555', marginTop: '4px' }}>
-                                    {item.menuExplanation}
+                                    {item.menuExplanation} {/* 수정된 부분 */}
                                 </div>
                             </div>
                         </div>
@@ -160,7 +201,7 @@ const MenuSelector = () => {
                 ) : (
                     <ul>
                         {Object.entries(quantities).map(([menuIdx, quantity]) => {
-                            const menu = menuItems.find((item) => item.menuIdx.toString() === menuIdx);
+                            const menu = menuItems.find((item) => item.menuIdx.toString() === menuIdx); // 수정된 부분
                             return (
                                 <li
                                     key={menuIdx}

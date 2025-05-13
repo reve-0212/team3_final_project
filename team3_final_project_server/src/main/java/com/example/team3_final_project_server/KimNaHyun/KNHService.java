@@ -9,9 +9,9 @@ public interface KNHService {
 
     List<MenuDTO> getAllMenus(int resIdx);
 
-    void getRsvIdx(int userIdx, int resIdx, int rsvMan, int rsvWoman, int rsvBaby, int rsvPeople) throws Exception;
+    void updateRsvDate(int userIdx, int resIdx,int rsvPeople, int rsvMan, int rsvWoman, int rsvBaby, String rsvDate, String rsvTime) throws Exception;
 
-    void updateRsvDate(int userIdx, int resIdx, String rsvDate, String rsvTime) throws Exception;
+    void updateRsvMenu(int userIdx, int resIdx) throws Exception;
 
-    void updateRsvMenu(int userIdx, int resIdx, int menuIdx, int rsvMenuCount) throws Exception;
+    List<ReservationDTO> getResIdx(int userIdx, int resIdx, String rsvDate, String rsvTime);
 }

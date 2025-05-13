@@ -26,18 +26,19 @@ public class KNHServiceImpl implements KNHService {
 
 
   @Override
-  public void getRsvIdx(int userIdx, int resIdx, int rsvMan, int rsvWoman, int rsvBaby, int rsvPeople) throws Exception {
-    knhMapper.getRsvIdx(userIdx, resIdx, rsvMan, rsvWoman, rsvBaby, rsvPeople);
+  public void updateRsvDate(int userIdx, int resIdx, int rsvPeople, int rsvMan, int rsvWoman, int rsvBaby,  String rsvDate, String rsvTime) throws Exception {
+    knhMapper.updateRsvDate(userIdx, resIdx, rsvPeople, rsvMan, rsvWoman, rsvBaby, rsvDate, rsvTime);
   }
 
   @Override
-  public void updateRsvDate(int userIdx, int resIdx, String rsvDate, String rsvTime) throws Exception {
-    knhMapper.updateRsvDate(userIdx, resIdx, rsvDate, rsvTime);
+  public void updateRsvMenu(int userIdx, int resIdx) throws Exception {
+    knhMapper.updateRsvMenu(userIdx, resIdx);
   }
 
   @Override
-  public void updateRsvMenu(int userIdx, int resIdx, int menuIdx, int rsvMenuCount) throws Exception {
-    knhMapper.updateRsvMenu(userIdx, resIdx, menuIdx, rsvMenuCount);
+  public List<ReservationDTO> getResIdx(int userIdx, int resIdx, String rsvDate, String rsvTime) {
+    return knhMapper.getResIdx(userIdx, resIdx, rsvDate, rsvTime);
   }
+
 
 }

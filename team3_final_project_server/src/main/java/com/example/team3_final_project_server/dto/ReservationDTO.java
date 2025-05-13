@@ -6,8 +6,6 @@ public class ReservationDTO {
   private int reservationIdx;
   private int userIdx;
   private int resIdx;
-  private int menuIdx;
-  private int seatId;
 
   // 남성, 여성, 유아, 총합
   private int rsvPeople;
@@ -25,7 +23,6 @@ public class ReservationDTO {
 
   // 예약메뉴 수량 체크
   private int rsvMenuCount;
-
 
   // 사장 페이지 메뉴 확인해서 들고올 List user Join
   private String userNick;

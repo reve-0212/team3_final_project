@@ -30,15 +30,19 @@ function SeatPage() {
       }
     })
       .then((res) => {
+        Nv(`/book/menu/${userIdx}/${resIdx}`);
         console.log(res.data)
       })
       .catch((err) => {
         console.log(err)
+        Nv(`/book/menu/${userIdx}/${resIdx}`);
       })
   }
 
   const {reservationId} = useParams();
   const Nv = useNavigate()
+
+
 
   return (
     <div className={'app-container  container py-4'}>

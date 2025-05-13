@@ -4,23 +4,23 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.team3_final_project_server.KimNaHyun.KNHMapper">
 
-    <insert id="getRsvIdx"
+    <insert id="updateRsvDate"
             parameterType="com.example.team3_final_project_server.dto.ReservationDTO">
-        INSERT INTO reservation (user_idx, res_idx, menu_idx, rsv_people, rsv_man, rsv_woman, rsv_baby, rsv_date, rsv_time )
-        VALUES ( #{userIdx}, #{resIdx}, 1, #{rsvPeople}, #{rsvMan}, #{rsvWoman}, #{rsvBaby}, "2025-05-05", "11:00");
+        INSERT INTO reservation (user_idx, res_idx, rsv_people, rsv_man, rsv_woman, rsv_baby, rsv_date, rsv_time )
+        VALUES ( #{userIdx}, #{resIdx}, #{rsvPeople}, #{rsvMan}, #{rsvWoman}, #{rsvBaby}, #{rsvDate}, #{rsvTime});
     </insert>
-
-    <update id="updateRsvDate" parameterType="com.example.team3_final_project_server.dto.ReservationDTO">
-        UPDATE reservation
-        SET rsv_date = #{rsvDate},
-        rsv_time = #{rsvTime}
-        WHERE user_idx = #{userIdx} AND reservation_idx = #{resIdx}
-    </update>
 
     <select id="getAllMenus" resultType="com.example.team3_final_project_server.dto.MenuDTO" parameterType="int">
         SELECT menu_idx, res_idx, menu_name, menu_price, menu_explanation, menu_image
         FROM menu
         WHERE res_idx = #{resIdx}
+    </select>
+
+    <select id="getResIdx" resultType="com.example.team3_final_project_server.dto.ReservationDTO" parameterType="int">
+        SELECT reservation_idx
+        FROM reservation
+        WHERE user_idx = #{userIdx} AND  res_idx = #{resIdx} AND rsv_date = #{rsvDate} AND rsv_time = #{rsvTime}
+        LIMIT 1
     </select>
 
     <select id="updateRsvMenu" resultType="com.example.team3_final_project_server.dto.MenuDTO" parameterType="int">
