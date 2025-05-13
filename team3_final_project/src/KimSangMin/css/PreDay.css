@@ -23,3 +23,10 @@
     text-align: left;
     /*padding-left: 20px;*/
 }
+
+.PreChTable thead th {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 2;
+}

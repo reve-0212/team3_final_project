@@ -28,7 +28,7 @@ function TabContentUi({title, engTitle, description, storeName}) {
                         <div key={i} className="bg-light rounded"
                              style={{width: '128px', height: '128px', flex: '0 0 auto'}}
                              onClick={() => {
-                                 nv("/contentDetail")
+                                 nv("/resdetail/1")
                              }}></div>
                     ))}
                 </div>
@@ -37,7 +37,7 @@ function TabContentUi({title, engTitle, description, storeName}) {
             <div>
                 <strong className="mb-2 d-block fs-6">{storeName}</strong>
                 <div className="bg-light rounded" style={{width: '100%', height: '160px'}}
-                onClick={()=>{nv("/contentDetail")}}></div>
+                     onClick={()=>{nv("/resdetail/1")}}></div>
             </div>
         </div>
     );

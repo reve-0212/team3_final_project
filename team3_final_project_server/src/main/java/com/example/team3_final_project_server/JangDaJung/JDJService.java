@@ -41,5 +41,14 @@ public interface JDJService {
     int selectMaxMenuSort(int resIdx);
 
 //    메뉴 리스트 수정
-    void updateMenuList(List<MenuDTO> menus);
+    void updateMenuList(MenuDTO menuDTO);
+
+    //    menuEdit 페이지에서 기본 정보 불러오기
+    MenuDTO getMenuById(int menuIdx);
+
+//    메뉴 정보 수정
+    void editMenu(int menuIdx, String menuName, int menuPrice, String menuExplanation, String menuImage) throws Exception;
+
+//    메뉴 삭제
+    void deleteMenu(int menuIdx);
 }
