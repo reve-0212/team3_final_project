@@ -1,7 +1,7 @@
 import {create} from 'zustand';
 import {persist} from "zustand/middleware";
 
-const useReservationStore = create(persist((set) => ({
+const useReservationIdxStore = create(persist((set) => ({
     reservationIdx: null,
     setReservationIdx: (reservationIdx) => set({reservationIdx}),
     clearReservationIdx: () => set({reservationIdx: null})
@@ -11,4 +11,4 @@ const useReservationStore = create(persist((set) => ({
     getStorage: () => localStorage, //사용할 스토리지
   }))
 
-export default useReservationStore;
+export default useReservationIdxStore;

@@ -4,44 +4,44 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.team3_final_project_server.SimJiHyun.mapper.UserMapper">
 
-<!--아이디로 사용자 조회 (로그인용)-->
+  <!--아이디로 사용자 조회 (로그인용)-->
   <select id="findByUserId" resultType="com.example.team3_final_project_server.dto.UserDTO" parameterType="String">
     SELECT * FROM user WHERE user_id = #{userId}
   </select>
 
-<!--이메일로 사용자 존재 여부 확인-->
+  <!--이메일로 사용자 존재 여부 확인-->
   <select id="existsByUserEmail" resultType="boolean">
     SELECT COUNT(*) > 0 FROM user WHERE user_email = #{userEmail}
   </select>
 
-<!--아이디로 사용자 존재 여부 확인-->
+  <!--아이디로 사용자 존재 여부 확인-->
   <select id="existsByUserId" resultType="boolean">
     SELECT COUNT(*) > 0 FROM user WHERE user_id = #{userId}
   </select>
 
-<!--회원 정보 저장-->
+  <!--회원 정보 저장-->
   <insert id="save" parameterType="com.example.team3_final_project_server.dto.UserDTO">
     INSERT INTO user (user_id, user_pass, user_name, user_email, role)
     VALUES (#{userId}, #{userPass}, #{userName}, #{userEmail}, #{role})
   </insert>
 
-<!--사용자 삭제-->
+  <!--사용자 삭제-->
   <delete id="deleteByUserId">
     DELETE FROM user WHERE user_id = #{userId}
   </delete>
 
-<!--비밀번호 변경-->
+  <!--비밀번호 변경-->
   <update id="updatePassword">
     update user set user_pass = #{hashed} where user_id = #{userId}
   </update>
 
-<!--회원 정보 수정-->
+  <!--회원 정보 수정-->
   <update id="updateField">
     update user set ${field} = #{value} where user_id = #{userId}
   </update>
 
-<!--조인용 -->
-  <resultMap id="ResvJoinRestMapSJH" type="com.example.team3_final_project_server.dto.join.ResvJoinRestDTO">
+  <!--조인용 -->
+  <resultMap id="ResvJoinRestMapSJH" type="com.example.team3_final_project_server.dto.join.ResvJoinRestSMenuDTO">
     <association property="reservation" javaType="com.example.team3_final_project_server.dto.ReservationDTO">
       <result column="reservation_idx" property="reservationIdx"/>
       <result column="user_idx" property="userIdx"/>
@@ -56,14 +56,21 @@
       <result column="res_idx" property="resIdx"/>
       <result column="res_name" property="resName"/>
     </association>
+
+    <association property="sMenu" javaType="com.example.team3_final_project_server.dto.SelectedMenuDTO">
+      <result column="menu_idx" property="menuIdx"/>
+      <result column="menu_quantity" property="menuQuantity"/>
+    </association>
   </resultMap>
 
-<!--예약 리스트 가져오기-->
+  <!--예약 리스트 가져오기-->
   <select id="userReservation" parameterType="int" resultMap="ResvJoinRestMapSJH">
     select rsv.reservation_idx, rsv.user_idx, rsv.rsv_people, rsv.rsv_date, rsv.rsv_time,
-    rsv.rsv_come_datetime, rsv.rsv_cancel_datetime, res.res_idx, res.res_name
+    rsv.rsv_come_datetime, rsv.rsv_cancel_datetime, res.res_idx, res.res_name,
+    sm.menu_idx, sm.menu_quantity
     from reservation as rsv
     join restaurant as res
+    join selected_menu as sm
     on rsv.res_idx = res.res_idx
     where rsv.user_idx=#{userIdx}
     order by rsv.rsv_date desc;
@@ -108,12 +115,48 @@
     and menu.menu_name = "name";
   </select>
 
-<!--예약 취소하기-->
+  <!--예약 취소하기-->
   <update id="cancelBook" parameterType="int">
     update reservation
     set rsv_cancel_datetime = now()
     where reservation_idx = #{reservationIdx};
   </update>
 
+  <!--  예약 번호 찾기-->
+  <select id="searchResIdx" resultType="int">
+    select reservation_idx
+    from reservation
+    where user_idx=#{userIdx}
+    and res_idx=#{resIdx}
+    and rsv_date=#{rsvDate}
+    and rsv_time=#{rsvTime};
+  </select>
 
+  <insert id="reserveSeat">
+    insert into selected_seat(reservation_idx, seat_id)
+    values (#{reservationIdx}, #{seatId});
+  </insert>
+
+  <select id="isSeatAvailable" resultType="int">
+    select count(*)
+    from reservation as r
+    join selected_seat as s
+    on r.reservation_idx = s.reservation_idx
+    where r.res_idx = #{shortPathIdx}
+    and r.rsv_time = "10:00";
+  </select>
+
+  <select id="reservedSeat" resultType="int">
+    select count(*) from seat_table where res_idx=#{shortPathIdx};
+  </select>
+
+  <select id="getStoreLocation" resultType="com.example.team3_final_project_server.dto.RestaurantDTO">
+    select * from restaurant;
+  </select>
+
+  <select id="loadSeat" parameterType="int" resultType="com.example.team3_final_project_server.dto.SeatDTO">
+    SELECT seat_id As seatId, res_idx AS resIdx, type, name, x, y, image, is_selected As isSelected
+    FROM seat_table
+    WHERE res_idx = #{resIdx}
+  </select>
 </mapper>

@@ -1,7 +1,7 @@
 import { Link, useMatch } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../css/nav.css";
-import { faHome, faUser, faClipboard, faStar } from "@fortawesome/free-solid-svg-icons";
+import {faHome, faUser, faClipboard, faStar, faMapLocationDot} from "@fortawesome/free-solid-svg-icons";
 
 function BottomNav() {
 
@@ -34,10 +34,10 @@ function BottomNav() {
                 </div>
             </Link>
 
-            <Link to={"/bookmark"} className={"bottom-nav-link"}>
+            <Link to={"/location"} className={"bottom-nav-link"}>
                 <div>
                     <FontAwesomeIcon
-                        icon={faStar}
+                        icon={faMapLocationDot}
                         className={
                             matchBookmark ? "bottom-nav-item active-bottom-nav-item" : "bottom-nav-item"
                         }

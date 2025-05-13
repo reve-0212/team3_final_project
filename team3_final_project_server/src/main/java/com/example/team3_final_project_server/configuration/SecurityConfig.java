@@ -96,9 +96,22 @@ public class SecurityConfig {
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorizeRequests -> authorizeRequests
 
+                    //관리자 전용 페이지
+                    .requestMatchers("/pre/admin/**").permitAll()
+
+                    // 사장 전용
+//                    .requestMatchers("/pre/**").hasRole("OWNER")
+                    .requestMatchers("/pre/login").permitAll()  // 로그인은 모두 허용
+                    .requestMatchers("/pre/resave","/pre/pastDateRes").hasRole("OWNER") // 이건 인증된 사장만 가능
+
+                    //로그인한 사용자용
+                    .requestMatchers("/waiting/**", "/book/**", "/latestDetails", "/book/info").hasRole("USER")
+                    .requestMatchers(GET, "/userReservation", "/getBook", "/loadSeat/**").hasRole("USER")
+                    .requestMatchers(PUT, "/cancelBook", "/reserveSeat").hasRole("USER")
+
 //                    모든 사용자용
                     .requestMatchers("/user/**", "/latestDetails", "/bookmark", "/contentDetail", "/review", "/", "/api/visitors").permitAll()
-                    .requestMatchers("/jsy/contents/**", "/jsy/ownerLogin","/contents/**","/detail/**","/bestmenu/**").permitAll()
+                    .requestMatchers("/jsy/contents/**", "/jsy/ownerLogin", "/contents/**", "/detail/**", "/bestmenu/**", "/reservedSeat/**", "/isSeatAvailable/**","/getStoreLocation").permitAll()
                     .requestMatchers("/api/**", "/auth/**", "/api/auth/signup").permitAll()
                     .requestMatchers("/api/visitors", "/api/visitors/**").permitAll()
 
@@ -115,8 +128,6 @@ public class SecurityConfig {
                     .requestMatchers("/pre/func").permitAll()
                     .requestMatchers("/pre/seats/update").permitAll()
                     .requestMatchers("/pre/seats/delete").permitAll()
-
-
 
 //                    관리자 전용 페이지
                     .requestMatchers("/pre/admin/**").permitAll()

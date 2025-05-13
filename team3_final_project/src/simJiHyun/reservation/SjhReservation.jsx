@@ -32,7 +32,9 @@ function SjhReservation() {
   }
 
   useEffect(() => {
-    userReservation()
+    if (user !== null) {
+      userReservation()
+    }
   }, [])
 
   const filteredReservations = reservations.filter(r => {
@@ -62,27 +64,40 @@ function SjhReservation() {
         filterType={filterType}/>
 
       <div>
-        {filteredReservations.length > 0 ? (
-          filteredReservations.map(r => (
-              <SjhReservationCard
-                key={r.index}
-                filterType={r.filterType}
-                reservationIdx={r.reservation.reservationIdx}
-                restaurantIdx={r.restaurant.resIdx}
-                isUse={r.reservation.rsvComeDatetime}
-                isCancel={r.reservation.rsvCancelDatetime}
-                restName={r.restaurant.resName}
-                date={r.reservation.rsvDate}
-                time={r.reservation.rsvTime}
-                people={r.reservation.rsvPeople}/>
+        {/*로그인 했을 경우에만 리스트 출력. 로그인 안 했으면 로그인후 사용해주세요 출력*/}
+        {user !== null ? (
+          // 이용 예정, 완료, 취소 리스트가 있는지 확인. 그 후 값이 있으면 화면에 출력
+          <div>
+            {filteredReservations.length > 0 ? (
+              filteredReservations.map(r => (
+                  <SjhReservationCard
+                    key={r.index}
+                    filterType={r.filterType}
+                    reservationIdx={r.reservation.reservationIdx}
+                    restaurantIdx={r.restaurant.resIdx}
+                    isUse={r.reservation.rsvComeDatetime}
+                    isCancel={r.reservation.rsvCancelDatetime}
+                    restName={r.restaurant.resName}
+                    menuIdx={r.smenu.menuIdx}
+                    date={r.reservation.rsvDate}
+                    time={r.reservation.rsvTime}
+                    people={r.reservation.rsvPeople}/>
+                )
+              )
+            ) : (
+              <div className={"d-flex justify-content-center align-items-center"}>
+                <p>내역이 없습니다</p>
+              </div>
             )
-          )
-        ) : (
-          <div className={"d-flex justify-content-center align-items-center"}>
-            <p>내역이 없습니다</p>
+            }
           </div>
-        )
-        }
+        ) : (
+          <div>
+            <p>로그인 후 사용해주세요</p>
+          </div>
+
+        )}
+
       </div>
     </div>
   );

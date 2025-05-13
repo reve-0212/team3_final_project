@@ -143,8 +143,6 @@ public ResponseEntity<PreResponse> deleteSeat(@PathVariable Integer  seatId, @Re
         } catch (Exception e){
             PreResponse response = new PreResponse(false, "유효하지 않은 토큰입니다.", null);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-        }
-}
 
 // 가게 정보 저장하기
 @PostMapping("/pre/resave")

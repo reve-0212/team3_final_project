@@ -4,7 +4,7 @@ import StoreMap from "./StoreMap.jsx";
 import Button from "./Button.jsx";
 import CancelPopup from "../../simJiHyun/popUP/cancelPopup.jsx";
 import {useEffect, useState} from "react";
-import useReservationStore from "../../stores/useReservationStore.jsx";
+import useReservationIdxStore from "../../stores/useReservationIdxStore.jsx";
 import axios from "axios";
 import useRestaurantStore from "../../stores/useRestaurantStore.jsx";
 import {useNavigate} from "react-router-dom";
@@ -13,7 +13,7 @@ import useGeolocation from "../../stores/useGeolocation.jsx";
 function BookInfo() {
   // 모달을 열지 말지 결정한다
   const [openModal, setOpenModal] = useState(false);
-  const reservationIdx = useReservationStore(state => state.reservationIdx)
+  const reservationIdx = useReservationIdxStore(state => state.reservationIdx)
   const restaurantIdx = useRestaurantStore(state => state.restaurantIdx)
   const [reservations, setReservations] = useState({})
   const Nv = useNavigate();

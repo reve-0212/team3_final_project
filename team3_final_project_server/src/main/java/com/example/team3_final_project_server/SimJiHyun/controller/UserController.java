@@ -1,11 +1,10 @@
 package com.example.team3_final_project_server.SimJiHyun.controller;
 
+import com.example.team3_final_project_server.KimSangMin.response.PreResponse;
 import com.example.team3_final_project_server.SimJiHyun.mapper.UserMapper;
 import com.example.team3_final_project_server.SimJiHyun.service.UserService;
-import com.example.team3_final_project_server.dto.ReservationDTO;
-import com.example.team3_final_project_server.dto.ResponseDTO;
-import com.example.team3_final_project_server.dto.UserDTO;
-import com.example.team3_final_project_server.dto.join.ResvJoinRestDTO;
+import com.example.team3_final_project_server.dto.*;
+import com.example.team3_final_project_server.dto.join.ResvJoinRestSMenuDTO;
 import com.example.team3_final_project_server.dto.join.ResvRestMenuJoinDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:5174"})
 @RestController
 @RequiredArgsConstructor
 public class UserController {
@@ -97,7 +96,7 @@ public class UserController {
 
   //  예약 정보 리스트 가져오기
   @GetMapping("/userReservation")
-  public List<ResvJoinRestDTO> userReservation(@RequestParam int userIdx) {
+  public List<ResvJoinRestSMenuDTO> userReservation(@RequestParam int userIdx) {
     return userService.userReservation(userIdx);
   }
 
@@ -116,9 +115,59 @@ public class UserController {
     userService.cancelBook(reservationIdx);
   }
 
+  //  예약 번호 찾기
+  @GetMapping("/searchResIdx")
+  public int searchResIdx(@RequestParam int userIdx, @RequestParam int resIdx, @RequestParam String rsvDate, @RequestParam String rsvTime) {
+    System.out.println("userIdx : " + userIdx);
+    System.out.println("resIdx : " + resIdx);
+    System.out.println("rsvDate : " + rsvDate);
+    System.out.println("rsvTime : " + rsvTime);
+    return userService.searchResIdx(userIdx, resIdx, rsvDate, rsvTime);
+  }
+
+  //  좌석 조회하기
+  @GetMapping("/loadSeat/{resIdx}")
+  public ResponseEntity<PreResponse> loadSeat(@PathVariable int resIdx) {
+    List<SeatDTO> seats = userService.loadSeat(resIdx);
+//        System.out.println("API 요청: " + resIdx);
+
+    if (seats != null && !seats.isEmpty()) {
+      PreResponse response = new PreResponse(true,"좌석 불러오기 성공",seats);
+      return ResponseEntity.ok(response);
+    }
+    else{
+      PreResponse response = new PreResponse(false,"좌석 불러오기 실패",null);
+      return ResponseEntity.badRequest().body(response);
+    }
   @PutMapping("/resSeat")
   public void resSeat(@RequestBody ReservationDTO reservationDTO) {
     System.out.println("userIdx : " + reservationDTO.getUserIdx());
     System.out.println("resIdx : " + reservationDTO.getResIdx());
   }
+
+  //  좌석 예약하기
+  @PutMapping("/reserveSeat")
+  public void reserveSeat(@RequestParam int reservationIdx, @RequestParam int seatId) {
+    System.out.println("reservationIdx : " + reservationIdx);
+    System.out.println("seatId : " + seatId);
+    userService.reserveSeat(reservationIdx, seatId);
+  }
+
+  @GetMapping("/isSeatAvailable/{shortPathIdx}")
+  public int isSeatAvailable(@PathVariable int shortPathIdx) {
+    System.out.println("shortPathIdx : " + shortPathIdx);
+    return userService.isSeatAvailable(shortPathIdx);
+  }
+
+  @GetMapping("/reservedSeat/{shortPathIdx}")
+  public int reservedSeat(@PathVariable int shortPathIdx) {
+    System.out.println("shortPathIdx : " + shortPathIdx);
+    return userService.reservedSeat(shortPathIdx);
+  }
+
+  @GetMapping("/getStoreLocation")
+  public List<RestaurantDTO> getStoreLocation() {
+    return userService.getStoreLocation();
+  }
+
 }

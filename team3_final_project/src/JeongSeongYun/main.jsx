@@ -52,8 +52,10 @@ import PreReSetTabs from "./Owner/PreReSetTabs.jsx";
 import PreChTabs from "./Owner/PreChTabs.jsx";
 import ContentDetail from "../JeonKangSan/ContentDetail.jsx";
 
-import ContentDetail from "../JeonKangSan/ContentDetail.jsx";
 import SeatLayout from "../KimSangMin/Seat/SeatLayout.jsx";
+import SjhLocation from "../simJiHyun/location/SjhLocation.jsx";
+import ErrorPage from "../simJiHyun/error/ErrorPage.jsx";
+import PreErrorPage from "../simJiHyun/error/PreErrorPage.jsx";
 
 function main() {
   // pre 가 있으면 사장님 웹으로
@@ -103,6 +105,9 @@ function main() {
           <Route path="/pre/WaToday" element={<TodayWaiting/>}/> {/* 현재 웨이팅 */}
           <Route path="/pre/WaPast" element={<PastDateWaiting/>}/> {/* 과거 웨이팅 */}
           <Route path="/pre/WaChart" element={<ReservationChart/>}/> {/* 웨이팅 차트 */}
+
+          <Route path={"/pre/*"} element={<PreErrorPage/>}/>
+
         </Routes>
       ) : (
         <div className={'mobile-wrapper'}>
@@ -137,11 +142,13 @@ function main() {
               <Route path={"/book/visit/:userIdx/:resIdx"} element={<VisitPage/>}/>
               <Route path={"/book/date/:userIdx/:resIdx"} element={<DateSelectorPage/>}/>
               <Route path={"/book/menu/:userIdx/:resIdx"} element={<MenuSelectorPage/>}/>
+
               <Route path={"/book/seat/:userIdx/:resIdx"} element={<SeatPage/>}/>
               <Route path={"/book/menu"} element={<MenuSelectorPage/>}/>
               <Route path={"/book/reg"} element={<BookRegPage/>}/>
               <Route path={"/book/info/:resIdx"} element={<BookInfoPage/>}/>
 
+              <Route path={"/location"} element={<SjhLocation/>}/>
 
               <Route path={"/review"} element={<SjhReview/>}/>
 
@@ -151,8 +158,11 @@ function main() {
               <Route path="/pre/PreWait" element={<PreWait/>}/>
               {/*예약 웹앱*/}
               <Route path="/pre/PreReserve" element={<PreReserve/>}/>
+
+              <Route path={"/*"} element={<ErrorPage/>}/>
             </Routes>
           </main>
+
           <BottomNav/>
 
           {/*</HashRouter>*/}

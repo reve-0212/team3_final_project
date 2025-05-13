@@ -8,32 +8,45 @@ import {useNavigate, useParams} from "react-router-dom";
 // import useUserStore from "../stores/useUserStore.jsx";
 import useUserStore from "../stores/useUserStore.jsx";
 import {Map, MapMarker, useKakaoLoader} from "react-kakao-maps-sdk";
+import useResStoreSjh from "../stores/useResStoreSjh.jsx";
 
 function ContentDetail() {
   const userStore = useUserStore((state) => state.user)
-  // const user = useUserStore((state) => state.user)
+  const setRes = useResStoreSjh((state) => state.setRes)
+
   useKakaoLoader({appkey: import.meta.env.VITE_REACT_APP_KAKAO_MAP_API_KEY})
   console.log(userStore.userIdx)
   const userIdx = userStore.userIdx
 
   const [ActTab, setActTab] = useState("상세정보");
-  const [RevTab, setRevTab] = useState("rev"); // 기본값: 리뷰(rev)
   const Nv = useNavigate();
+
   const [storeInfo, setStoreInfo] = useState({});
   const [bestMenus, setBestMenus] = useState([]);
-  const [reviews, setReviews] = useState([]);
   const [timeSlots, setTimeSlots] = useState([]);
   const [selectedTime, setSelectedTime] = useState(null);
   const {resIdx} = useParams();
 
   const [parsedTags, setParsedTags] = useState([]);
 
+  // 지도 초기 중심좌표
+  const [center, setCenter] = useState({
+    lat: 33.450701,
+    lng: 126.570667
+  })
 
+  // 지도 초기 확대
+  const [position, setPosition] = useState({
+    lat: 33.450701,
+    lng: 126.570667
+  })
+
+  console.log(timeSlots)
 
   // 현재 주소 값의 맨 뒤에서 1번째 값 가져옴
   const pathIdx = window.location.pathname;
   console.log(pathIdx[pathIdx.length - 1])
-  const shortPathIdx = pathIdx[pathIdx.length]
+  const shortPathIdx = pathIdx[pathIdx.length - 1]
 
   // const filteredAndSortedReviews = reviews
   //     .filter(review => {
@@ -55,36 +68,31 @@ function ContentDetail() {
   //         }
   //     });
 
-  // 작업 전에는 활성화되어 있었음.
-  // const user = useUserStore((state) => state.user)
-  // const userIdx = user.userIdx
-
+  // 여러가지 불러오기
   useEffect(() => {
-    axios.get(`http://localhost:8080/detail/${resIdx}`) // 단일 조회 API 사용 권장
-      .then((res) => {
-        console.log("응답 데이터:", res.data);
-        setStoreInfo(res.data);
+    axios.all([
+        // res1 : 가게 상세 정보 가져오기
+        axios.get(`http://localhost:8080/detail/${shortPathIdx}`),
+        // res2 : 가게 메뉴 가져오기
+        axios.get(`http://localhost:8080/bestmenu/${resIdx}`),
+      ]
+    ).then(
+      axios.spread((res1, res2) => {
+        const data1 = res1.data
+        const data2 = res2.data
 
-        const rawTag = res.data.categoryTag || "";
-        const tags = rawTag.trim().split(/\s+/).map(tag => tag.replace(/^#/, ""));
-        setParsedTags(tags);
+        setStoreInfo(data1);
+        setRes(data1)
+        setCenter({lat: data1.resLat, lng: data1.resLng})
+        setPosition({lat: data1.resLat, lng: data1.resLng})
+        setBestMenus(data2);
       })
-      .catch((err) => {
-        console.error("요청 실패:", err);
-      });
-  }, [shortPathIdx]);
-
-  useEffect(() => {
-    axios.get(`http://localhost:8080/bestmenu/${resIdx}`)
-      .then((res) => {
-        console.log(res.data)
-        setBestMenus(res.data);
-      }).catch((err) => {
+    ).catch((err) => {
       console.log(err)
     })
   }, [])
 
-
+  // 시간 데이터 집어넣기
   useEffect(() => {
     if (!storeInfo.resReserveTime) return;
 
@@ -103,32 +111,6 @@ function ContentDetail() {
     }
     setTimeSlots(slots)
   }, [storeInfo.resReserveTime]);
-
-
-
-  // 지도 중심좌표
-  const [center, setCenter] = useState({
-    lat: 33.450701,
-    lng: 126.570667
-  })
-
-  // 현재 위치
-  const [position, setPosition] = useState({
-    lat: 33.450701,
-    lng: 126.570667
-  })
-
-  // 지도가 처음 렌더링 되면 중심좌표를 현재위치로 설정하고 위치 변화 감지
-  // useEffect(() => {
-  //   navigator.geolocation.getCurrentPosition((pos) => {
-  //     setCenter({lat: pos.coords.latitude, lng: pos.coords.longitude})
-  //   })
-  //
-  //   navigator.geolocation.watchPosition((pos) => {
-  //     setPosition({lat: pos.coords.latitude, lng: pos.coords.longitude})
-  //   })
-  // }, []);
-
 
   return (
     <div className="app-container">
@@ -166,8 +148,8 @@ function ContentDetail() {
         {/* 별점 및 영업정보 */}
         <div className="text-start mb-4">
           <small className="fw-bold">
-            ⭐평점 {reviews[0] ? reviews[0].reviewRating : "0.0 "}
-            {/*/ 리뷰개수 {reviews.length}*/}
+            {/*평점 {reviews[0] ? reviews[0].reviewRating : ""}*/}
+            {/*/ 리뷰갯수 {reviews.length}*/}
           </small><br/>
           <hr/>
           <small className="fw-bold">영업시간 {storeInfo ? storeInfo.resReserveTime : ""}</small><br/>
@@ -201,7 +183,6 @@ function ContentDetail() {
             <div className="mb-3">
             </div>
 
-
             <br/>
             <div className="mb-3">
             </div>
@@ -215,14 +196,13 @@ function ContentDetail() {
               <div className="location-box p-0">
                 <Map id="map"
                      center={center}
-                     // className={"d-flex justify-content-center w-100 h-100"}
-                  style={{width: "100%", height: "100%",}}
+                  // className={"d-flex justify-content-center w-100 h-100"}
+                     style={{width: "100%", height: "100%",}}
                      level={3}>
                   <MapMarker position={position}/>
                 </Map>
               </div>
             </div>
-
 
             <br/>
             <div className="mb-3 text-start">
@@ -240,12 +220,10 @@ function ContentDetail() {
                   <div className="ps-2 pt-2 text-muted small">등록된 해시태그가 없습니다</div>
               )}
             </div>
-
           </div>
         )}
 
         {/* 대표메뉴 */}
-
         {ActTab === "대표메뉴" && (
           <div className="mb-5">
             <h5 className="mb-3 fw-bold text-start">대표메뉴</h5>
@@ -268,14 +246,17 @@ function ContentDetail() {
 
         {/* 예약 등록, 웨이팅 등록*/}
         <div className="d-flex flex-column gap-2 mb-4">
-          <div className="text-start"><h4 className="extra-bold">예약 시간</h4></div>
-          <div className="location-box">
+          <div className="text-start"><h4 className="extra-bold">예약 가능 시간</h4></div>
+          <div className={"d-flex align-items-center flex-wrap"}>
             {timeSlots.map((time, idx) => (
-            <button
-                key={idx}
-                className={`btn ${selectedTime === time ? "btn-primary" : "btn-outline-primary"}`}
-                onClick={() => setSelectedTime(time)}
-            >
+              <button key={idx}
+                      className={"btn m-1"}
+                      style={{backgroundColor: "#FFD700"}}>
+            {/*<button*/}
+            {/*    key={idx}*/}
+            {/*    className={`btn ${selectedTime === time ? "btn-primary" : "btn-outline-primary"}`}*/}
+            {/*    onClick={() => setSelectedTime(time)}*/}
+            {/*>*/}
                 {time}
               </button>
             ))}
@@ -284,12 +265,6 @@ function ContentDetail() {
           <button className="common-btn w-100" onClick={() => {
             Nv(`/book/visit/${userIdx}/${resIdx}`)
           }}>예약하기
-          </button>
-
-          <button className="visitBtnActive btn w-100 p-3 fw-bold fs-6"
-                  onClick={() => {
-                    Nv("/waiting/visit")
-                  }}>웨이팅하기
           </button>
         </div>
       </div>

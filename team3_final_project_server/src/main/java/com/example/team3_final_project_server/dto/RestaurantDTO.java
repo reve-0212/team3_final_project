@@ -21,8 +21,7 @@ public class RestaurantDTO {
   private double resLng;
   private String resPriceRange;
   private String reserveOrWaiting;
-  private String resOption;
-
+  private String resOption1;
 
   // category 테이블
   private String categoryTag;

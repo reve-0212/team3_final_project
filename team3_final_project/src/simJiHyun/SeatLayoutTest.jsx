@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";  // useParams를 사용하여 URL 파라미터를 받습니다.
 import axios from "axios";
 import useSeatIdStore from "../stores/useSeatIdStore.jsx";
-import useUserStore from "../stores/useUserStore.jsx";
 // import './SeatLayout.css'; // 좌석 스타일링
 
 const SeatLayout = () => {
@@ -11,6 +10,8 @@ const SeatLayout = () => {
   const [seatSelect, setSeatSelect] = useState([]);
   const setSeatId = useSeatIdStore((state) => state.setSeatId)
   const seatId = useSeatIdStore((state) => state.seatId)
+  console.log("resIdx")
+  console.log(resIdx)
 
   // 좌석선택기능
   const hSeat = (seatId) => {
@@ -23,20 +24,25 @@ const SeatLayout = () => {
     });
   };
 
-
   // 좌석 정보 불러오기
   useEffect(() => {
     if (resIdx) {
-      axios.get(`http://localhost:8080/pre/loadSeat/${resIdx}`)
+      axios.get(`http://localhost:8080/loadSeat/${resIdx}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`
+        }
+      })
         .then((response) => {
           console.log("API Response:", response.data);
           const {success, message, data} = response.data;
+
           if (success && Array.isArray(data)) {
             setSeats(data);
             // console.log("좌석 데이터 확인:", data); // 추가
           } else {
             console.error(message);
           }
+
         })
         .catch((error) => {
           console.error("좌석 정보를 불러오는 중 오류 발생:", error);
