@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class SeatDTO {
     private int seatId;
+    private int userIdx;
     private int resIdx;
     private String type;
     private String name;

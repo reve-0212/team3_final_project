@@ -51,6 +51,8 @@ import PreInfoPage from "./layout/PreInfoPage.jsx";
 import PreReSetTabs from "./Owner/PreReSetTabs.jsx";
 import PreChTabs from "./Owner/PreChTabs.jsx";
 import ContentDetail from "../JeonKangSan/ContentDetail.jsx";
+
+import ContentDetail from "../JeonKangSan/ContentDetail.jsx";
 import SeatLayout from "../KimSangMin/Seat/SeatLayout.jsx";
 
 function main() {
@@ -75,6 +77,10 @@ function main() {
           <Route path="/pre" element={<OwnerLogin/>}/>
           <Route path="/pre/PreSelect" element={<PreSelect/>}/> {/* 오늘 or 웨이팅 선택 페이지  */}
           <Route path="/pre/PreMain" element={<PreMain/>}/> {/* 예약가게 메인*/}
+          {/*<Route path="/pre/PreCh" element={<PreCh/>}/> /!* 예약가게 매출 통계 *!/*/}
+          <Route path="/pre/PreRe" element={<PreRe/>}/> {/* 예약가게 리뷰 보기*/}
+          {/*<Route path="/pre/PreDayCh" element={<PreDayCh/>}/> /!* 예약 날짜 차트 *!/*/}
+          {/*<Route path="/pre/PreReSet1" element={<PreReSet/>}/> /!* 예약가게 셋팅 *!/*/}
           <Route path="/pre/update" element={<PreUpdatePage/>}/> {/*  사장 정보 수정 */}
           <Route path="/pre/PreReSet" element={<PreReSetTabs/>}/> {/* 예약가게 셋팅 Tabs */}
           <Route path="/pre/PreCh" element={<PreChTabs/>}/> {/* 예약가게 매출 통계 Tabs */}

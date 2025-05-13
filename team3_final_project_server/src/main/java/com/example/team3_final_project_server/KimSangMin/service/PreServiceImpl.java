@@ -1,20 +1,24 @@
 package com.example.team3_final_project_server.KimSangMin.service;
 
 import com.example.team3_final_project_server.KimSangMin.mapper.PreMapper;
-import com.example.team3_final_project_server.dto.RestaurantDTO;
-import com.example.team3_final_project_server.dto.SeatDTO;
-import com.example.team3_final_project_server.dto.TimeDTO;
+import com.example.team3_final_project_server.configuration.jwt.JwtTokenProvider;
+import com.example.team3_final_project_server.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.sql.Time;
 import java.util.List;
+
+import static java.util.stream.DoubleStream.builder;
 
 @Service
 public class PreServiceImpl implements PreService {
 
     @Autowired
     private PreMapper preMapper;
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     //    좌석 정보 저장
     @Override
@@ -27,18 +31,37 @@ public class PreServiceImpl implements PreService {
             return false;
         }
     }
+// userIdx로 resIdx 찾기
+    @Override
+    public Integer findResIdx(int userIdx) {
+        return preMapper.findResIdx(userIdx);
+    }
 
 //    좌석 불러오기
     @Override
-    public List<SeatDTO> loadSeat(String resIdx) {
-        try {
-            List<SeatDTO> seats = preMapper.loadSeat(resIdx);
-            System.out.println("Loaded seats: " + seats);  // 로그 출력
-            return seats;
-        } catch (Exception e) {
-            return null;
-        }
+    public List<SeatDTO> loadSeat(int resIdx) {
+    return preMapper.loadSeat(resIdx);
     }
+
+//    사장 정보확인
+@Override
+public ResponseDTO tokenCheck(String token) {
+    // "Bearer " 제거
+    String pureToken = token.replace("Bearer ", "").trim();
+
+    Authentication authentication = jwtTokenProvider.getAuthentication(pureToken);
+    UserDTO user = (UserDTO) authentication.getPrincipal();
+
+    return ResponseDTO.builder()
+            .userIdx(user.getUserIdx())
+            .userId(user.getUserId())
+            .userNick(user.getUserNick())
+            .userCall(user.getUserCall())
+            .userEmail(user.getUserEmail())
+            .role(user.getRole())
+            .build();
+}
+
 
     //    가게 정보 저장
     @Override
@@ -47,8 +70,28 @@ public class PreServiceImpl implements PreService {
         return result > 0;
     }
 
+//    가게 정보 불러오기
+    @Override
+    public RestaurantDTO getRestByUserIdx(int userIdx) {
+        return preMapper.getRestByUserIdx(userIdx);
+    }
 
-// 가게 정보 수정하기
+//    좌석 수정
+    @Override
+    public boolean updateSeats(List<SeatDTO> seats) {
+        int result = preMapper.updateSeats(seats);
+        return result > 0;
+    }
+
+//    좌석 삭제
+    @Override
+    public boolean deleteSeate(Integer seatId, Integer resIdx) {
+        int result = preMapper.deleteSeat(seatId,resIdx);
+        return result > 0;
+    }
+
+
+    // 가게 정보 수정하기
     @Override
     public boolean updateRest(int resIdx, RestaurantDTO rest) {
         int result = preMapper.updateRest(resIdx,rest);
@@ -71,7 +114,7 @@ public class PreServiceImpl implements PreService {
 
 //    가게 정보 조회
     @Override
-    public RestaurantDTO getRest(int resIdx) {
-        return preMapper.getRest(resIdx);
+    public RestaurantDTO getRest(int userIdx) {
+        return preMapper.getRest(userIdx);
     }
 }

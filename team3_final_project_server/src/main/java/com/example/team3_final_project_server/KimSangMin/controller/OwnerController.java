@@ -59,7 +59,7 @@ public class OwnerController {
             ResponseDTO jwtToken = ownerService.getJwtAuthentication(userId, userPass);
 
             // 로그인 성공 시 성공 메시지 및 JWT 토큰 반환
-            PreResponse response = new PreResponse(true, "로그인 성공", jwtToken);
+            PreResponse response = new PreResponse(true, "로그인 성공", jwtToken.getAccessToken());
             return ResponseEntity.ok().body(response);
         } catch (AuthenticationException e) {
             // 로그인 실패 시 오류 메시지 반환

@@ -1,5 +1,6 @@
 package com.example.team3_final_project_server.KimSangMin.service;
 
+import com.example.team3_final_project_server.dto.ResponseDTO;
 import com.example.team3_final_project_server.dto.RestaurantDTO;
 import com.example.team3_final_project_server.dto.SeatDTO;
 import com.example.team3_final_project_server.dto.TimeDTO;
@@ -15,7 +16,7 @@ public interface PreService {
      boolean updateRest(int resIdx, RestaurantDTO rest);
 
     //    가게 정보 불러오기
-    RestaurantDTO getRest(int resIdx);
+    RestaurantDTO getRest(int userIdx);
 
     //    가게 운영시간 기입하기
     boolean insertTime(List<TimeDTO> timeList);
@@ -23,9 +24,20 @@ public interface PreService {
     //    좌석 저장
     boolean saveSeats(List<SeatDTO> seats);
 
+// userIdx로 resIdx 찾기
+    Integer findResIdx(int userIdx);
+
 // 좌석 불러오기
-    List<SeatDTO> loadSeat(String resIdx);
+    List<SeatDTO> loadSeat(int userIdx);
 
 
+    ResponseDTO tokenCheck(String token);
 
+//    userId로 가게찾기
+    RestaurantDTO getRestByUserIdx(int userIdx);
+
+
+    boolean updateSeats(List<SeatDTO> seats);
+
+    boolean deleteSeate(Integer seatId, Integer resIdx);
 }

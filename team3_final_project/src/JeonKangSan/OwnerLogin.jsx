@@ -18,21 +18,28 @@ function OwnerLogin() {
         const userData = { userId, userPass };
         console.log(userData);
 
-        axios.post("http://localhost:8080/pre/login", userData,{
-            headers : {
+        axios.post("http://localhost:8080/pre/login", userData, {
+            headers: {
                 'Content-Type': 'application/json'
-            }})
-            .then((res) => {
-                const { success, message } = res.data;  // 서버에서 토큰을 반환받음
+            }
+        })
+            .then((response) => {
+                console.log("응답 데이터:", response.data);  // 응답 데이터 확인
+
+                const { success, message, data } = response.data;  // 서버에서 반환된 데이터 확인
+                const token = data;  // 응답 데이터에서 토큰을 추출
+
                 if (success) {
                     alert(message);
 
-                    console.log(res.data);
-                    // JWT 토큰을 로컬 스토리지에 저장
-                    localStorage.setItem('ACCESS_TOKEN', res.data.data.accessToken);
-                    sessionStorage.setItem('REFRESH_TOKEN', res.data.data.refreshToken);
-
-                    nv("/pre/PreSelect");
+                    // 토큰이 제대로 있는지 확인하고 로컬 스토리지에 저장
+                    if (token) {
+                        localStorage.setItem('jwtToken', token);  // 로컬 스토리지에 토큰 저장
+                        console.log("저장된 토큰:", localStorage.getItem('jwtToken')); // 저장된 토큰 확인
+                        nv("/pre/func");
+                    } else {
+                        alert("토큰이 없습니다.");
+                    }
                 } else {
                     alert("로그인 실패");
                 }
@@ -41,6 +48,9 @@ function OwnerLogin() {
                 alert("서버 오류가 발생했습니다: " + error);
             });
     };
+
+
+
 
     return (
         <div

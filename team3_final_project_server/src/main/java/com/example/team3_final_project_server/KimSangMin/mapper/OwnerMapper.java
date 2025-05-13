@@ -18,7 +18,7 @@ public interface OwnerMapper {
     void updatePassword(String userId, String hashed);
     void updateField(String userId, String field, String value);
 
-//
+
 ////    사장님 정보 저장(관리자)
 //    void saveOwner(OwnerDTO owner);
 //

@@ -22,4 +22,12 @@ public interface PreMapper {
     List<SeatDTO> loadSeat(String resIdx);
 
     int reSave(RestaurantDTO restaurant);
+
+    RestaurantDTO getRestByUserIdx(int userIdx);
+
+    Integer findResIdx(int userIdx);
+
+    int updateSeats(List<SeatDTO> seats);
+
+    int deleteSeat(Integer seatId, Integer resIdx);
 }

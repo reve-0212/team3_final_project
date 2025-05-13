@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ReBanner from "./ReBanner.jsx";
 import axios from "axios";
 
@@ -70,9 +70,10 @@ function PreReSet() {
 
   const [address, setAddress] = useState("");
   // const [searchResults, setSearchResults] = useState([]);
-  const [resTime, setReTime] = useState([""]);
+  const [resTime, setResTime] = useState([""]);
   const [dongOption, setDongOption] = useState(""); // 기본 옵션 설정
   const [isSave,setIsSave] = useState(false);
+  const [resIdx, setResIdx] = useState("");
 
 
   //-----------------------------  주소 검색 api로 요청받아오기------------------------
@@ -117,24 +118,70 @@ function PreReSet() {
 
 
   // 예약시간 input 추가 / 삭제 기능
-  const addTime = () => setReTime([...resTime, ""]);
-  const removeTime = () => setReTime(resTime.slice(0, -1));
+  const addTime = () => setResTime([...resTime, ""]);
+  const removeTime = () => setResTime(resTime.slice(0, -1));
 
   // input에 설정한 예약시간 상태 변경
   const chTime = (index, value) => {
     const updatedTime = [...resTime];
     updatedTime[index] = value;
-    setReTime(updatedTime);
+    setResTime(updatedTime);
   };
 
   const hfChange = (e, field) => {
     setRestData({...restData, [field]: e.target.value});
   };
 
-  // 데이터 저장 폼
+
+
+
+  // 데이터 불러오기
+  const token = localStorage.getItem('jwtToken');
+
+  useEffect(() => {
+    if (token) {
+      axios.get("http://localhost:8080/pre/getRestaurant", {  // 사용자 정보 API 호출
+        headers: { Authorization: `Bearer ${token}` }
+      })
+          .then(response => {
+            const storeData = response.data;  // 예시로 사용자 가게 정보 받기
+            console.log(response.data)
+            if (storeData && storeData.Name) {
+              setIsSave(false);
+              setResIdx(storeData.resIdx);
+              setRestData({
+                Name : storeData.Name,
+                Call : storeData.Call,
+                Address1: storeData.Address1,
+                Introduce: storeData.Introduce,
+              });
+              setDongOption(storeData.Address2); // 주소 2부분을 처리
+              setResTime(storeData.ReserveTime.split(","));
+              setImg([storeData.Image1, storeData.Image2, storeData.Image3]);
+            } else {
+              setIsSave(true);
+            }
+          })
+          .catch(error => {
+            console.log("사용자 정보 가져오기 실패", error);
+            if (error.response && error.response.status === 401) {
+              alert("토큰이 만료되었습니다. 다시 로그인 해주세요.");
+            }
+          });
+    }
+  }, [token]);
+
+
+// 데이터 저장 폼
   const hSubmit = (e) => {
     e.preventDefault();
 
+    const token = localStorage.getItem('jwtToken');
+    console.log("로컬 스토리지에서 가져온 토큰: ", token);
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
 
     const storeData = {
       resName: restData.Name,
@@ -150,79 +197,45 @@ function PreReSet() {
 
     console.log("저장할 데이터: ", storeData);
 
-    const token = localStorage.getItem('jwtToken');
-
-    //  가게 저장 시 수정 기능으로 체인지
-    if (isSave) {
-      const resIdx = 1;
-      axios.put(`http://localhost:8080/pre/updateRest/${resIdx}`, storeData, { headers: {
+    // 가게 저장 시 수정 기능으로 체인지
+    if (!isSave && resIdx) {
+      axios.put(`http://localhost:8080/pre/updateRest/${resIdx}`, storeData, {
+        headers: {
           Authorization: `Bearer ${token}`
-        }})
-          .then( (response) => {
+        }
+      })
+          .then(response => {
             console.log("수정 성공", response.data);
-            alert("가게 정보가 수정되었습니다.")
+            alert("가게 정보가 수정되었습니다.");
           })
-          .catch( (error) => {
-            console.log("오류 발생", error)
-            alert("수정 중 오류가 발생했습니다.")
-          })
+          .catch(error => {
+            console.log("오류 발생", error);
+            alert("수정 중 오류가 발생했습니다.");
+          });
     } else {
       // 저장이 안되있을 시에는 기본적으로 저장 버튼 활성화
       axios.post("http://localhost:8080/pre/resave", storeData, {
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`
         }
       })
           .then((response) => {
             console.log("저장 성공", response.data);
             alert("가게 정보가 저장되었습니다.");
-            localStorage.setItem('jwtToken', token);
             setIsSave(true);
           })
           .catch((error) => {
             console.log("오류 발생", error);
             if (error.response && error.response.status === 401) {
               alert("토큰이 만료되었습니다. 다시 로그인 해주세요.");
-              // 로그인 페이지로 리디렉션하거나 로그아웃 처리
             } else {
               alert("오류가 발생했습니다.");
             }
           });
     }
-  }
-  // 데이터 불러오기
-  // useEffect(() => {
-  //   const resIdx = 1;
-  //   axios.get(`http://localhost:8080/pre/getRest/${resIdx}`,{
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       'Authorization': `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`
-  //     }
-  //   })
-  //       .then( (response) => {
-  //         const responseData = response.data;
-  //         const data = responseData.data;
-  //
-  //         setRestData({
-  //           Name: data.resName,
-  //           Call: data.resCall,
-  //           Address1: data.resAddress1,
-  //           Address2: data.resAddress2,
-  //           Introduce: data.resIntroduce,
-  //           resTime: data.resReserveTime?.split(",") || [],
-  //         });
-  //         setImg([data.resImage1, data.resImage2, data.resImage3]);
-  //         setDongOption(data.resAddress2);
-  //
-  //
-  //         console.log(response.data);
-  //
-  //       })
-  //       .catch((error) => {
-  //         console.log("데이터 조회 실패",error)
-  //         alert("데이터를 불러오는데 실패했습니다.")
-  //       })
-  // }, []);
+  };
+
 
 
   return (
