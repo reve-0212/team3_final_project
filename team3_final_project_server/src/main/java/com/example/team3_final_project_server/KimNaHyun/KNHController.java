@@ -38,17 +38,19 @@ public class KNHController {
 
 
     // 예약 페이지
-    @PostMapping("/date/{userIdx}/{resIdx}")
-    public void updateRsvDate(
-            @PathVariable("userIdx") int userIdx,
-            @PathVariable("resIdx") int resIdx,
-            @RequestBody ReservationDTO reservationDTO)
-            throws Exception {
-        System.out.println("userIdx : " + userIdx);
-        System.out.println("resIdx : " + resIdx);
-        System.out.println("rsvDate : " + reservationDTO.getRsvDate());
-        System.out.println("rsvTime : " + reservationDTO.getRsvTime());
-        knhService.updateRsvDate(userIdx, resIdx, reservationDTO.getRsvDate(), reservationDTO.getRsvTime());
+    @PutMapping("/date")
+    public void updateRsvDate(@RequestBody ReservationDTO reservationDTO) throws Exception {
+        System.out.println("/visitors/{userIdx}/{resIdx} 받아온 값 : " + reservationDTO.getRsvPeople());
+        knhService.updateRsvDate(
+                reservationDTO.getUserIdx(),
+                reservationDTO.getResIdx(),
+                reservationDTO.getRsvPeople(),
+                reservationDTO.getRsvMan(),
+                reservationDTO.getRsvWoman(),
+                reservationDTO.getRsvBaby(),
+                reservationDTO.getRsvDate(),
+                reservationDTO.getRsvTime()
+        );
     }
 
 //    @PostMapping("/visitors/date")
@@ -75,6 +77,32 @@ public class KNHController {
         System.out.println("resIdx : " + resIdx);
         knhService.updateRsvMenu(userIdx, resIdx);
     }
+
+
+    //    @GetMapping("/menu")
+//    public List<MenuDTO> getAllMenus(@RequestParam("resIdx") int resIdx) {
+//        return knhService.getAllMenus(resIdx);
+//    }
+// 아이디,날짜 데이터로 예약번호 조회
+    @GetMapping("/menu/find")
+    public Integer getResIdx(
+            @RequestParam("userIdx") int userIdx,
+            @RequestParam("resIdx") int resIdx,
+            @RequestParam("rsvDate") String rsvDate,
+            @RequestParam("rsvTime") String rsvTime
+    ) {
+        List<ReservationDTO> reservations = knhService.getResIdx(userIdx, resIdx, rsvDate, rsvTime);
+
+        if (reservations != null && !reservations.isEmpty()) {
+            Integer reservationIdx = reservations.get(0).getReservationIdx();
+            System.out.println("✅ 반환된 reservationIdx = " + reservationIdx); // 콘솔 확인용
+            return reservationIdx;
+        } else {
+            System.out.println("⚠️ 예약 정보가 없습니다.");
+            return null;
+        }
+    }
+
 }
 
 

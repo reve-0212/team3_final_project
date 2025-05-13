@@ -1,6 +1,5 @@
-
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {useState} from "react";
+import {useLocation, useNavigate} from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
@@ -10,12 +9,23 @@ import useRestaurantStore from "../../stores/useRestaurantStore.jsx";
 function DateTimeSelectorPage() {
     const [selectedDate, setSelectedDate] = useState(null);
     const [selectedTime, setSelectedTime] = useState(null);
-    const resIdx = useRestaurantStore((state) => state.restaurantIdx);
-    console.log(resIdx);
+    const navigate = useNavigate();
+    const location = useLocation();
 
-    const Nv = useNavigate();
+    const storeResIdx = useRestaurantStore((state) => state.restaurantIdx);
 
-    // 9시부터 19시까지 1시간 단위 시간 슬롯 생성
+    // 이전 페이지에서 전달된 데이터
+    const {
+        userIdx,
+        resIdx,
+        rsvMan,
+        rsvWoman,
+        rsvBaby,
+        rsvPeople,
+    } = location.state || {};
+    console.log(userIdx, resIdx, rsvMan, rsvWoman, rsvBaby, rsvPeople);
+
+    // 9시부터 19시까지 1시간 간격의 시간 슬롯
     const timeSlots = [];
     for (let hour = 9; hour <= 19; hour++) {
         let hourStr = hour < 10 ? `0${hour}:00` : `${hour}:00`;
@@ -31,38 +41,38 @@ function DateTimeSelectorPage() {
             alert("날짜와 시간을 모두 선택해주세요.");
             return;
         }
-        const rsvDate = selectedDate
-        const rsvTime = selectedTime
 
-        console.log("rsvDate", rsvDate);
-        console.log("rsvTime", rsvTime);
+        const formattedDate = selectedDate.toLocaleDateString('sv-SE');
+        const formattedDateTime = `${formattedDate} ${selectedTime}:00`;
 
+        const userIdx = 1; // 예시 사용자 ID
+        const resIdx = 1; // 예시 가게 ID
 
-        // 날짜 포맷 (KST 기준)
-        const formattedDate = selectedDate.toLocaleDateString('sv-SE'); // yyyy-MM-dd
-
-
-        const userIdx = 1; // 임의 사용자 ID
-        const resIdx = 1; // 임의 예약 ID
-
-        axios.post(`http://localhost:8080/api/date/${userIdx}/${resIdx}`, {
+        const postData = {
+            userIdx,
+            resIdx,
+            rsvPeople,
+            rsvMan,
+            rsvWoman,
+            rsvBaby,
             rsvDate: formattedDate,
-            rsvTime: `${formattedDate} ${selectedTime}:00`,
-        }, {
+            rsvTime: formattedDateTime,
+        };
+
+        axios.put(`http://localhost:8080/api/date`, postData, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`
             }
         })
             .then((res) => {
-                const newReservationIdx = res.data.reservationIdx || resIdx;
-                Nv(`/book/seat/${userIdx}/${newReservationIdx}`);
+                const newReservationIdx = res.data?.reservationIdx || resIdx;
+                navigate(`/book/seat/${userIdx}/${newReservationIdx}`);
             })
             .catch((err) => {
-                alert('전송 실패');
+                alert("예약 정보 전송에 실패했습니다.");
                 console.error(err);
             });
     };
-
 
     return (
         <div className="app-container container py-4">
@@ -78,7 +88,7 @@ function DateTimeSelectorPage() {
                     inline
                 />
                 {selectedDate && (
-                    <p className={'basic-font fw-bold'} style={{ marginTop: "10px" }}>
+                    <p className="basic-font fw-bold" style={{marginTop: "10px"}}>
                         선택한 날짜: {selectedDate.toLocaleDateString()}
                     </p>
                 )}
@@ -108,20 +118,16 @@ function DateTimeSelectorPage() {
                     ))}
                 </div>
                 {selectedTime && (
-                    <p className={'basic-font fw-bold'} style={{ marginTop: "10px" }}>선택한 시간: {selectedTime}</p>
+                    <p className="basic-font fw-bold" style={{marginTop: "10px"}}>
+                        선택한 시간: {selectedTime}
+                    </p>
                 )}
             </section>
 
             {/* 다음 버튼 */}
-            <Button btnName="다음" onClick={handleSubmit} />
+            <Button btnName="다음" onClick={handleSubmit}/>
         </div>
     );
 }
 
 export default DateTimeSelectorPage;
-
-
-
-
-
-
