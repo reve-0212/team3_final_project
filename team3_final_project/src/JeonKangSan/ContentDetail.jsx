@@ -155,10 +155,10 @@ function ContentDetail() {
 
         {/* 별점 및 영업정보 */}
         <div className="text-start mb-4">
-          <small className="fw-bold">
-            평점 {reviews[0] ? reviews[0].reviewRating : ""}
+          {/*<small className="fw-bold">*/}
+            {/*평점 {reviews[0] ? reviews[0].reviewRating : ""}*/}
             {/*/ 리뷰갯수 {reviews.length}*/}
-          </small><br/>
+          {/*</small><br/>*/}
           <hr/>
           <small className="fw-bold">영업중 {storeInfo ? storeInfo.resReserveTime : ""}</small><br/>
           <small className="fw-bold">전화번호 {storeInfo ? storeInfo.resCall : ""}</small>
@@ -178,7 +178,7 @@ function ContentDetail() {
               className={`tab-btn ${ActTab === "대표메뉴" ? "active" : ""}`}
               onClick={() => setActTab("대표메뉴")}
             >
-              대표메뉴
+              메뉴
             </button>
             {/*<button*/}
             {/*    className={`tab-btn ${ActTab === "리뷰" ? "active" : ""}`}*/}
@@ -193,7 +193,7 @@ function ContentDetail() {
         {ActTab === "상세정보" && (
           <div className="mb-5 text-start">
             <br/>
-            <h4 className="extra-bold">매장소개 {storeInfo ? storeInfo.resIntroduce : ""}</h4>
+            <h4 className="extra-bold">"{storeInfo ? storeInfo.resIntroduce : ""}"</h4>
             <div className="mb-3">
               {/*<small className="notice-text">알림</small>*/}
               {/*<p className="small mt-1">*/}

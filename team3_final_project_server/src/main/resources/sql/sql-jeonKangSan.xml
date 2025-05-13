@@ -7,8 +7,7 @@
 <mapper namespace="com.example.team3_final_project_server.JunKangSan.JKSMapper">
 
     <select id="getAllRestaurants" resultType="com.example.team3_final_project_server.dto.RestaurantDTO">
-        SELECT *
-        FROM restaurant
+        SELECT * FROM restaurant
     </select>
 
 <!--    <select id="getAllBestMenus" parameterType="int" resultType="com.example.team3_final_project_server.dto.BestMenuDTO">-->
@@ -89,8 +88,6 @@
         WHERE category_addr LIKE CONCAT('%', #{categoryAddr}, '%')
     </select>
 
-
-
     <select id="getRstListByPath" parameterType="int">
         select * from restaurant where res_idx = #{pathIdx};
     </select>
@@ -107,7 +104,8 @@
             resultType="com.example.team3_final_project_server.dto.RestaurantDTO">
         SELECT *
         FROM restaurant r
-        JOIN menu m ON r.res_idx = m.res_idx
-        WHERE m.menu_explanation LIKE CONCAT('%', #{category}, '%');
+        JOIN category c ON r.res_idx = c.res_idx
+        WHERE c.category_name LIKE CONCAT('%', #{category}, '%');
     </select>
+
 </mapper>
