@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import CancelPopup from "../popUP/cancelPopup.jsx";
 import {useNavigate} from "react-router-dom";
 import "../SjhCss.css"
-import useReservationStore from "../../stores/useReservationStore.jsx";
+import useReservationIdxStore from "../../stores/useReservationIdxStore.jsx";
 import useRestaurantStore from "../../stores/useRestaurantStore.jsx";
 import axios from "axios";
 import {Accordion} from "react-bootstrap";
@@ -16,7 +16,7 @@ function SjhReservationCard(props) {
   const isCompleted = props.isUse !== null && props.isCancel === null
   const isCancelled = props.isCancel !== null
 
-  const {setReservationIdx} = useReservationStore();
+  const {setReservationIdx} = useReservationIdxStore();
   const {setRestaurantIdx} = useRestaurantStore();
   // console.log("reservationIdx : " + props.reservationIdx)
   // console.log("restaurantIdx : " + props.restaurantIdx)

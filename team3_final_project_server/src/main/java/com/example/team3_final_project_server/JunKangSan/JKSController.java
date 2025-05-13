@@ -81,12 +81,12 @@ public class JKSController {
   //  }
 
 //
-    @GetMapping("/contents/{category}")
-    @ResponseBody
-    public List<RestaurantListDTO> getRstListByCategory(@PathVariable("category") String category) throws Exception {
-//    System.out.println(" /contents/{category} 받아온 값 : " + category);
-        return jksService.getRstListByCategory(category);
-    }
+//    @GetMapping("/contents/{category}")
+//    @ResponseBody
+//    public List<RestaurantListDTO> getRstListByCategory(@PathVariable("category") String category) throws Exception {
+////    System.out.println(" /contents/{category} 받아온 값 : " + category);
+//        return jksService.getRstListByCategory(category);
+//    }
 
     @GetMapping("/detail/{pathIdx}")
     @ResponseBody

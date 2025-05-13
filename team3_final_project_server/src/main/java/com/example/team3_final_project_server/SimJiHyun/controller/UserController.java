@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {"http://localhost:5173","http://localhost:5174"})
 @RestController
 @RequiredArgsConstructor
 public class UserController {
@@ -116,11 +116,34 @@ public class UserController {
     userService.cancelBook(reservationIdx);
   }
 
-  @PutMapping("/resSeat")
-  public void resSeat(@RequestBody ReservationDTO reservationDTO) {
-    System.out.println("userIdx : " + reservationDTO.getUserIdx());
-    System.out.println("resIdx : " + reservationDTO.getResIdx());
-    System.out.println("menuIdx : " + reservationDTO.getMenuIdx());
-    System.out.println("seatId : " + reservationDTO.getSeatId());
+  //  예약 번호 찾기
+  @GetMapping("/searchResIdx")
+  public int searchResIdx(@RequestParam int userIdx, @RequestParam int resIdx, @RequestParam String rsvDate, @RequestParam String rsvTime) {
+    System.out.println("userIdx : " + userIdx);
+    System.out.println("resIdx : " + resIdx);
+    System.out.println("rsvDate : " + rsvDate);
+    System.out.println("rsvTime : " + rsvTime);
+    return userService.searchResIdx(userIdx, resIdx, rsvDate, rsvTime);
   }
+
+//  좌석 예약하기
+  @PutMapping("/reserveSeat")
+  public void reserveSeat(@RequestParam int reservationIdx, @RequestParam int seatId) {
+    System.out.println("reservationIdx : " + reservationIdx);
+    System.out.println("seatId : " + seatId);
+    userService.reserveSeat(reservationIdx, seatId);
+  }
+
+  @GetMapping("/isSeatAvailable/{shortPathIdx}")
+  public int isSeatAvailable(@PathVariable int shortPathIdx) {
+    System.out.println("shortPathIdx : " + shortPathIdx);
+    return userService.isSeatAvailable(shortPathIdx);
+  }
+
+  @GetMapping("/reservedSeat/{shortPathIdx}")
+  public int reservedSeat(@PathVariable int shortPathIdx) {
+    System.out.println("shortPathIdx : " + shortPathIdx);
+    return userService.reservedSeat(shortPathIdx);
+  }
+
 }

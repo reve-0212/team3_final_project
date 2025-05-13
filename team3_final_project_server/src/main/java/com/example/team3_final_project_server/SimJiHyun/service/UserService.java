@@ -112,4 +112,22 @@ public class UserService {
   public void cancelBook(int reservationIdx) {
     userMapper.cancelBook(reservationIdx);
   }
+
+//  예약 번호 찾기
+  public int searchResIdx(int userIdx, int resIdx, String rsvDate, String rsvTime) {
+    return userMapper.searchResIdx(userIdx, resIdx, rsvDate, rsvTime);
+  }
+
+//  좌석 예약하기
+  public void reserveSeat(int reservationIdx, int seatId) {
+    userMapper.reserveSeat(reservationIdx, seatId);
+  }
+
+  public int isSeatAvailable(int shortPathIdx) {
+    return userMapper.isSeatAvailable(shortPathIdx);
+  }
+
+  public int reservedSeat(int shortPathIdx) {
+    return userMapper.reservedSeat(shortPathIdx);
+  }
 }

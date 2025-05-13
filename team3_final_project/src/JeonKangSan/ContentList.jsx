@@ -13,6 +13,7 @@ function ContentList() {
   // JSY 작업
   const { category  } = useParams();
   const [restaurants, setRestaurants] = useState([]);
+  console.log("category : " + category)
 
   useEffect(() => {
     axios.get(`http://localhost:8080/contents/${category}`)

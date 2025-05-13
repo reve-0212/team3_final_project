@@ -33,7 +33,7 @@ public class PreServiceImpl implements PreService {
     public List<SeatDTO> loadSeat(int resIdx) {
         try {
             List<SeatDTO> seats = preMapper.loadSeat(resIdx);
-            System.out.println("Loaded seats: " + seats);  // 로그 출력
+//            System.out.println("Loaded seats: " + seats);  // 로그 출력
             return seats;
         } catch (Exception e) {
             return null;

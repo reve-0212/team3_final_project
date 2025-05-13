@@ -43,7 +43,8 @@ public class PreController {
     @GetMapping("/pre/loadSeat/{resIdx}")
     public ResponseEntity<PreResponse> loadSeat (@PathVariable int resIdx) {
         List<SeatDTO> seats = preService.loadSeat(resIdx);
-        System.out.println("API 요청: " + resIdx);
+//        System.out.println("API 요청: " + resIdx);
+
         if (seats != null && !seats.isEmpty()) {
             PreResponse response = new PreResponse(true,"좌석 불러오기 성공",seats);
             return ResponseEntity.ok(response);
