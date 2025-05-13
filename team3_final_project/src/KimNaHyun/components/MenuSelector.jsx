@@ -1,22 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import Button from "./Button.jsx";
-import { useNavigate } from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import axios from "axios";
 import useRestaurantStore from "../../stores/useRestaurantStore.jsx";
 import useUserStore from "../../stores/useUserStore.jsx";
 
 const MenuSelector = () => {
+    const location = useLocation();
+
+    // 이전 페이지에서 전달받은 예약 정보
+    const {
+        // userIdx,
+        // resIdx,
+        rsvDate,
+        rsvTime,
+    } = location.state || {};
+    console.log(rsvDate)
+    console.log(rsvTime)
+
     const Nv = useNavigate();
     const [menuItems, setMenuItems] = useState([]);
-    const [reservationItem, setReservationItem] = useState([]);
     const [quantities, setQuantities] = useState({});
+    const [reservationIdx, setReservationIdx] = useState(null);
 
     const userStore = useUserStore((state) => state.user)
     const resIdx = useRestaurantStore((state) => state.restaurantIdx);
     const userIdx = userStore.userIdx
 
-    console.log("userIdx : " + userIdx);
-    console.log("resIdx : " + resIdx);
 
     // 메뉴 데이터 로드
     useEffect(() => {
@@ -34,16 +44,38 @@ const MenuSelector = () => {
             });
     }, [resIdx]);  // resIdx가 변경될 때마다 다시 데이터 로딩
 
+    // useEffect(() => {
+    //     axios.get(`http://localhost:8080/api/menu/${resIdx}`)
+    //         .then(res => {
+    //             console.log(res.data);
+    //             setReservationItem(res.data);
+    //         })
+    //         .catch(err => {
+    //             console.log(err);
+    //         });
+    // }, [resIdx]);
+
+
+    // 예약번호 조회
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/reservation/${userIdx}/${resIdx}/${encodedDate}/${encodedTime}`)
+        if (!userIdx || !resIdx || !rsvDate || !rsvTime) return;
+        axios.get(`http://localhost:8080/api/menu/find`, {
+            params: {
+                userIdx,
+                resIdx,
+                rsvDate,
+                rsvTime
+            }
+        })
             .then(res => {
-                console.log(res.data);
-                setReservationItem(res.data);
+                setReservationIdx(res.data.reservationIdx); // 예약번호 저장
+                console.log("예약번호:", res.data.reservationIdx);
             })
             .catch(err => {
-                console.log(err);
+                console.error("예약 정보 조회 실패", err);
             });
-    }, [userIdx, resIdx, rsvPeople, rsvDate, rsvTime]);
+    }, [userIdx, resIdx, rsvDate, rsvTime]);
+
 
     const handleIncrease = (menuIdx) => {
         setQuantities((prev) => ({

@@ -6,7 +6,6 @@ public class ReservationDTO {
   private int reservationIdx;
   private int userIdx;
   private int resIdx;
-  private int seatId;
 
   // 남성, 여성, 유아, 총합
   private int rsvPeople;
@@ -22,6 +21,4 @@ public class ReservationDTO {
   private String rsvComeDatetime;
   private String rsvCancelDatetime;
 
-  // 예약메뉴 수량 체크
-  private int rsvMenuCount;
 }

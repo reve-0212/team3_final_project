@@ -42,6 +42,8 @@ function SeatPage() {
   const {reservationId} = useParams();
   const Nv = useNavigate()
 
+
+
   return (
     <div className={'app-container  container py-4'}>
       <h3 className={'waiting-title'}>좌석을 선택하세요.</h3>
