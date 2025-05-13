@@ -24,7 +24,7 @@ public interface PreService {
     boolean saveSeats(List<SeatDTO> seats);
 
 // 좌석 불러오기
-    List<SeatDTO> loadSeat(int resIdx);
+    List<SeatDTO> loadSeat(String resIdx);
 
 
 

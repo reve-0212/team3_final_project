@@ -1,10 +1,13 @@
 import ReBanner from "../../KimSangMin/ReBanner.jsx";
 import {Link} from "react-router-dom";
 import {useNavigate} from "react-router-dom";
-import axios from "axios";
 
 function PreRegPage() {
     const nv = useNavigate();
+
+    const handleOnClick = () => {
+        nv("/pre/info")
+    }
 
     return (
         <div
@@ -43,15 +46,7 @@ function PreRegPage() {
                     borderRadius: '20px',
                     backgroundColor: '#FFD727'
                 }}
-                    onClick={() => {
-                        // nv("/pre/info")
-                        axios.get(`http://localhost:8080/jsy/test`)
-                            .then(res => {
-                                console.log(res.data)
-                            }).catch(err => {
-                                console.log(err)
-                        })
-                    }}>사장님 등록
+                        onClick={handleOnClick}>사장님 등록
                 </button>
             </div>
             <h4 style={{marginTop: '30px', color: '#5D4037', textAlign: 'center'}}> 사장님 등록 버튼을 눌러 정보를 기입해주세요 :)</h4>

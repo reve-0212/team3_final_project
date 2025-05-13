@@ -25,4 +25,10 @@ public class ReservationDTO {
 
   // 예약메뉴 수량 체크
   private int rsvMenuCount;
+
+
+  // 사장 페이지 메뉴 확인해서 들고올 List user Join
+  private String userNick;
+  private String userCall;
+  private int visitCount;
 }

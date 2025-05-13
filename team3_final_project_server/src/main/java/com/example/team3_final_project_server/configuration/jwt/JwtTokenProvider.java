@@ -86,15 +86,6 @@ public class JwtTokenProvider {
   //  JWT 토큰 검증
   public boolean validToken(String token) {
     try {
-//      JWT 토큰 파싱 시작
-//      jjwt 0.9.x 버전 사용 시
-//      Jwts.parser()
-////          JWT 토큰 생성 시 암호화할 때 사용할 비밀키 설정
-//          .setSigningKey(jwtProperties.getSecretKey())
-////          JWT 토큰 데이터 파싱
-//          .parseClaimsJws(token);
-
-//      jjwt 0.12.x 버전 사용 시
       Key secretKey = Keys.hmacShaKeyFor(jwtProperties.getSecretKey().getBytes());
 
       Jwts.parser()
@@ -104,6 +95,7 @@ public class JwtTokenProvider {
 
       return true;
     } catch (Exception e) {
+      System.out.println("JWT 토큰 검증 실패: " + e.getMessage());
       return false;
     }
   }
@@ -147,6 +139,28 @@ public class JwtTokenProvider {
             .parseClaimsJws(token)
             .getBody();
   }
+
+  // 리프레시 토큰으로 액세스 토큰을 재발급하는 메서드 추가
+  public String refreshAccessToken(String refreshToken) {
+    // 1. 리프레시 토큰 검증
+    if (!validToken(refreshToken)) {
+      throw new RuntimeException("Invalid or expired refresh token");
+    }
+
+    // 2. 리프레시 토큰에서 사용자 정보 추출
+    Claims claims = getClaims(refreshToken);
+    String userEmail = claims.getSubject(); // 이메일을 subject로 사용했으므로 이를 이용해 사용자 정보 추출
+
+    // 3. 사용자 정보로 새로운 액세스 토큰 생성
+    UserDTO userDTO = UserDTO.builder()
+            .userEmail(userEmail)
+            .build(); // 이메일만으로 UserDTO를 만들고 필요한 정보는 DB에서 다시 가져와도 됩니다.
+
+    // 새로운 액세스 토큰을 생성 (만료 시간은 30분으로 설정)
+    Duration accessTokenExpiry = Duration.ofMinutes(30);
+    return generateToken(userDTO, accessTokenExpiry);
+  }
+
 }
 
 

@@ -5,17 +5,19 @@ import axios from "axios";
 function PreInfoPage() {
     const nv = useNavigate();
 
-    const [ownerId, setOwnerId] = useState("");
-    const [ownerPass, setOwnerPass] = useState("");
-    const [ownerName, setOwnerName] = useState("");
-    const [ownerNumber, setOwnerNumber] = useState("");
+    const [userId, setUserId] = useState("");
+    const [userPass, setUserPass] = useState("");
+    const [userNick, setUserNick] = useState("");
+    const [userCall, setUserCall] = useState("");
+    const [userEmail, setUserEmail] = useState("");
     const [bsName, setBsName] = useState("");
     const [bsNumber, setBsNumber] = useState("");
 
-    const handleChangeOwnerId = (e) => setOwnerId(e.target.value);
-    const handleChangeOwnerPass = (e) => setOwnerPass(e.target.value);
-    const handleChangeOwnerName = (e) => setOwnerName(e.target.value);
-    const handleChangeOwnerNumber = (e) => setOwnerNumber(e.target.value);
+    const handleChangeOwnerId = (e) => setUserId(e.target.value);
+    const handleChangeOwnerPass = (e) => setUserPass(e.target.value);
+    const handleChangeOwnerName = (e) => setUserNick(e.target.value);
+    const handleChangeOwnerNumber = (e) => setUserCall(e.target.value);
+    const handleChangeEmail = (e) => setUserEmail(e.target.value);
     const handleChangeBsName = (e) => setBsName(e.target.value);
     const handleChangeBsNumber = (e) => setBsNumber(e.target.value);
 
@@ -24,23 +26,29 @@ function PreInfoPage() {
         e.preventDefault();
 
         const ownerData = {
-            ownerId,ownerPass,ownerName,ownerNumber,bsName,bsNumber
+            userId,userPass,userNick,userCall, userEmail,bsName,bsNumber
         }
 
-        axios.post('http://localhost:8080/admin/owner',ownerData)
-            .then( (response) => {
-                const { success, message } = response.data
+        axios.post('http://localhost:8080/pre/admin/SaveOwnerInfo',ownerData,{
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`
+            }
+        })
+            .then( (res) => {
+                const message = res.data;  // 서버에서 보내준 메시지
+                alert(`서버 응답: ${message}`);
 
-                if (success){
-                    alert("가입 성공" + message)
+                // 예시로 성공 여부 분기 처리
+                if (message.includes("기입 실패")) {
+                    alert("실패: " + message);
+                } else {
+                    alert("성공: " + message);
                     nv("/pre/reg");
                 }
-                else{
-                    alert("가입 실패" + message)
-                }
             })
-            .catch( (error) => {
-                alert("서버 오류가 발생했습니다." + error)
+            .catch( (err) => {
+                alert(err);
             });
         // 서버 전송 또는 유효성 검사
         console.log(ownerData);
@@ -91,7 +99,7 @@ function PreInfoPage() {
                                 className="form-control"
                                 id="preId"
                                 placeholder="아이디를 입력해주세요"
-                                value={ownerId}
+                                value={userId}
                                 onChange={handleChangeOwnerId}
                                 required
                             />
@@ -105,7 +113,7 @@ function PreInfoPage() {
                                 className="form-control"
                                 id="prePw"
                                 placeholder="비밀번호를 입력해주세요"
-                                value={ownerPass}
+                                value={userPass}
                                 onChange={handleChangeOwnerPass}
                                 required
                                 style={{ width: '400px' }}
@@ -120,22 +128,36 @@ function PreInfoPage() {
                                 className="form-control"
                                 id="preName"
                                 placeholder="대표자명을 입력해주세요"
-                                value={ownerName}
+                                value={userNick}
                                 onChange={handleChangeOwnerName}
                                 required
                             />
                         </div>
                         <div className="mt-4">
                             <label htmlFor="preCall" className="form-label">
-                                대표자 번호
+                                대표자 전화번호
                             </label>
                             <input
                                 type="text"
                                 className="form-control"
                                 id="preCall"
                                 placeholder="대표자 번호를 입력해주세요"
-                                value={ownerNumber}
+                                value={userCall}
                                 onChange={handleChangeOwnerNumber}
+                                required
+                            />
+                        </div>
+                        <div className="mt-4">
+                            <label htmlFor="preEmail" className="form-label">
+                                대표자 이메일
+                            </label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="preEmail"
+                                placeholder="이메일을 입력해주세요"
+                                value={userEmail}
+                                onChange={handleChangeEmail}
                                 required
                             />
                         </div>
@@ -173,7 +195,6 @@ function PreInfoPage() {
                             type="submit"
                             className="btn"
                             style={{backgroundColor: "#FFD727", padding: "10px 20px"}}
-
                         >
                             등록 하기
                         </button>

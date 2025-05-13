@@ -48,12 +48,10 @@ import PastDateWaiting from "../JangDaJung/PastDateWaiting.jsx";
 import ReservationChart from "../JangDaJung/ReservationChart.jsx";
 import AdminLogin from "./layout/AdminLogin.jsx";
 import PreInfoPage from "./layout/PreInfoPage.jsx";
-// import PreReSetTabs from "./Owner/PreReSetTabs.jsx";
-// import PreChTabs from "./Owner/PreChTabs.jsx";
-import ContentDetail from "../JeonKangSan/ContentDetail.jsx";
-import PreReSetTabs from "./Owner/PreChTabs.jsx";
+import PreReSetTabs from "./Owner/PreReSetTabs.jsx";
 import PreChTabs from "./Owner/PreChTabs.jsx";
-import ReservationPage from "../KimSangMin/Seat/ReservationPage.jsx";
+import ContentDetail from "../JeonKangSan/ContentDetail.jsx";
+import SeatLayout from "../KimSangMin/Seat/SeatLayout.jsx";
 
 function main() {
   // pre 가 있으면 사장님 웹으로
@@ -68,33 +66,31 @@ function main() {
           {/*<Route path="/pre/PreWait" element={<PreWait />} />  /!* 웨이팅 웹앱  *!/*/}
           {/*<Route path="/pre/PreReserve" element={<PreReserve />} />   예약 웹앱*/}
 
-          {/* 시간 지정하기*/}
-          <Route path="/pre/PreTime" element={<PreTime/>}/>
-          <Route path="/pre/PreTimeSet" element={<PreTimeSet/>}/>
-
-          {/* 관리자 -> 사장님 */}<Route path="/pre/admin" element={<AdminLogin/>}/> {/*  관리자 로그인 */}
+          {/* 관리자 페이지 */}
+          <Route path="/pre/admin" element={<AdminLogin/>}/> {/*  관리자 로그인 */}
           <Route path="/pre/reg" element={<PreRegPage/>}/> {/* 사장님 정보 입력 버튼 */}
           <Route path="/pre/info" element={<PreInfoPage/>}/> {/*  사장님 정보 입력 페이지 */}
-          <Route path="/pre/login" element={<OwnerLogin/>}/> {/*  사장 로그인 */}
-          <Route path="/pre/update" element={<PreUpdatePage/>}/> {/*  사장 정보 수정 */}
 
+          {/* 사장 페이지  */}
           <Route path="/pre" element={<OwnerLogin/>}/>
+          <Route path="/pre/PreSelect" element={<PreSelect/>}/> {/* 오늘 or 웨이팅 선택 페이지  */}
           <Route path="/pre/PreMain" element={<PreMain/>}/> {/* 예약가게 메인*/}
-          {/*<Route path="/pre/PreCh" element={<PreCh/>}/> /!* 예약가게 매출 통계 *!/*/}
-          <Route path="/pre/PreRe" element={<PreRe/>}/> {/* 예약가게 리뷰 보기*/}
-          {/*<Route path="/pre/PreDayCh" element={<PreDayCh/>}/> /!* 예약 날짜 차트 *!/*/}
-          <Route path="/pre/PreReSet1" element={<PreReSet/>}/> {/* 예약가게 셋팅 */}
+          <Route path="/pre/update" element={<PreUpdatePage/>}/> {/*  사장 정보 수정 */}
           <Route path="/pre/PreReSet" element={<PreReSetTabs/>}/> {/* 예약가게 셋팅 Tabs */}
-          <Route path="/pre/PreCh" element={<PreChTabs/>}/> {/* 예약가게 매출 통계 Tabs */} <Route path="/pre/PreFucn" element={
-          <PreFunction/>}/> {/* 예약가게 메인*/}
-          <Route path="/pre/PrePast" element={<PastDateReservation/>}/> {/* 과거 예약 */}
-          <Route path="/pre/PreToday" element={<TodayReservation/>}/> {/* 오늘 예약  */}
-          <Route path="/pre/PreSelect" element={<PreSelect/>}/> {/* 오늘 예약  */}
+          <Route path="/pre/PreCh" element={<PreChTabs/>}/> {/* 예약가게 매출 통계 Tabs */}
 
-          <Route path="/pre/NewMenu" element={<CeoNewMenu/>}/> {/* 메뉴 등록 */}
+          <Route path={"/pre/layout/:resIdx"} element={<SeatLayout/>} />
+
+          <Route path="/pre/PreToday/:resIdx" element={<TodayReservation/>}/> {/* 오늘 예약  */}
+          <Route path="/pre/PrePast" element={<PastDateReservation/>}/> {/* 지난날짜 예약 */}
+
           <Route path="/pre/MenuList" element={<CeoMenuList/>}/> {/* 메뉴 리스트 */}
           <Route path="/pre/MenuListEdit" element={<CeoMenuListEdit/>}/> {/* 메뉴판 수정 */}
-          <Route path="/pre/MenuEdit/:menuId" element={<CeoMenuEdit/>}/> {/* 메뉴 슈정 */}
+            <Route path="/pre/MenuEdit/:menuId" element={<CeoMenuEdit/>}/> {/* 메뉴 슈정 */}
+            <Route path="/pre/NewMenu" element={<CeoNewMenu/>}/> {/* 메뉴 등록 */}
+          <Route path="/pre/PreRe" element={<PreRe/>}/> {/* 예약가게 리뷰 보기*/}
+
+
 
           <Route path="/pre/PreWaSet" element={<PreWaSet/>}/> {/* 웨이팅 가게 셋팅 */}
           <Route path="/pre/WaMain" element={<CeoMain/>}/> {/*웨이팅 메인 */}

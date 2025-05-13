@@ -41,7 +41,7 @@ public class PreController {
 
 //    좌석 정보 불러오기
     @GetMapping("/pre/loadSeat/{resIdx}")
-    public ResponseEntity<PreResponse> loadSeat (@PathVariable int resIdx) {
+    public ResponseEntity<PreResponse> loadSeat (@PathVariable String resIdx) {
         List<SeatDTO> seats = preService.loadSeat(resIdx);
         System.out.println("API 요청: " + resIdx);
         if (seats != null && !seats.isEmpty()) {

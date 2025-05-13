@@ -30,7 +30,7 @@ public class PreServiceImpl implements PreService {
 
 //    좌석 불러오기
     @Override
-    public List<SeatDTO> loadSeat(int resIdx) {
+    public List<SeatDTO> loadSeat(String resIdx) {
         try {
             List<SeatDTO> seats = preMapper.loadSeat(resIdx);
             System.out.println("Loaded seats: " + seats);  // 로그 출력

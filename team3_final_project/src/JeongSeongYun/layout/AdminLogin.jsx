@@ -2,21 +2,36 @@
 import LoginSignText from "../../simJiHyun/LoginSignText.jsx";
 import LoginText from "../../simJiHyun/login/LoginText.jsx";
 import {useNavigate} from "react-router-dom";
-import {OwnerLoginCheck} from "../Login/LgCheckService.jsx";
+import axios from "axios";
 
 
 function AdminLogin() {
     const nv = useNavigate();
-
     const handleSubmit = (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
-        const OwnerId = formData.get('OwnerId')
-        const OwnerPw = formData.get('OwnerPw')
-        console.log(OwnerId)
-        console.log(OwnerPw)
+        const adminId = formData.get('adminId')
+        const adminPw = formData.get('adminPw')
 
-        OwnerLoginCheck(OwnerId, OwnerPw);
+        axios.get(`http://localhost:8080/pre/admin/login`, {
+            params: {
+                adminId: adminId,
+                adminPw: adminPw
+            },
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(res => {;
+                alert(` ${res.data.userNick} 님 환영합니다.`);
+                localStorage.setItem("ACCESS_TOKEN", res.data.accessToken);
+                sessionStorage.setItem("REFRESH_TOKEN", res.data.refreshToken);
+                console.log(res.data);
+                nv("/pre/reg");
+            })
+            .catch(err => {
+                alert(`로그인 중 오류가 발생했습니다.\n 오류 내용 : ${err}`);
+            })
     }
 
     return (
@@ -52,8 +67,8 @@ function AdminLogin() {
                         <LoginSignText text={"관리자 로그인"}/>
                     </div>
 
-                    <LoginText holder={"관리자 아이디 입력"} name={'OwnerId'}/>
-                    <LoginText holder={"관리자 비밀번호 입력"} name={'OwnerPw'} type={'password'}/>
+                    <LoginText holder={"관리자 아이디 입력"} name={'adminId'}/>
+                    <LoginText holder={"관리자 비밀번호 입력"} name={'adminPw'} type={'password'}/>
 
 
                     <div className={"mt-4 d-flex justify-content-center"}>

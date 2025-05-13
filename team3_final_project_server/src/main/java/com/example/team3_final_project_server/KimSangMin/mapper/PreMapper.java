@@ -19,7 +19,7 @@ public interface PreMapper {
 
     RestaurantDTO getRest(int resIdx);
 
-    List<SeatDTO> loadSeat(int resIdx);
+    List<SeatDTO> loadSeat(String resIdx);
 
     int reSave(RestaurantDTO restaurant);
 }

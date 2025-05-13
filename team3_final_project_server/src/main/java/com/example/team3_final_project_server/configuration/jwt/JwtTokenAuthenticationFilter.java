@@ -42,6 +42,8 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
     String token = getAccessToken(authorizationHeader);
 
 
+    System.out.println("Token : " + token);
+
 //    파싱된 JWT 토큰 정보를 검증
     if (jwtTokenProvider.validToken(token)) {
 //      JWT 토큰에 저장된 사용자 인증 정보를 출력

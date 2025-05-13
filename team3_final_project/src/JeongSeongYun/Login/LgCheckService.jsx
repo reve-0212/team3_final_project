@@ -21,4 +21,23 @@ const OwnerLoginCheck = (OwnerId, OwnerPw) => {
         })
 }
 
-export {OwnerLoginCheck}
+
+const apiRefreshToken = async () => {
+    try {
+        const res = await axios.post(`http://localhost:8080/pre/refresh`, {
+            refreshToken: sessionStorage.getItem('REFRESH_TOKEN')
+        }, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        console.log("리프레시 토큰 리턴값 :: " + res.data);
+
+        return res;
+    } catch (err) {
+        return err;
+    }
+}
+
+export {OwnerLoginCheck, apiRefreshToken}

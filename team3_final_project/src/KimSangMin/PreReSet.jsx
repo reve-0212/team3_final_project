@@ -227,13 +227,13 @@ function PreReSet() {
 
   return (
       <div
-          style={{
-            marginLeft: "300px",
-            paddingTop: "8rem",
-            paddingLeft: "1rem",
-            width: "calc(100% - 200px)",
-            maxWidth: "1000px",
-          }}
+          // style={{
+          //   marginLeft: "300px",
+          //   paddingTop: "8rem",
+          //   paddingLeft: "1rem",
+          //   width: "calc(100% - 200px)",
+          //   maxWidth: "1000px",
+          // }}
       >
         <ReBanner/>
         <form onSubmit={hSubmit}>

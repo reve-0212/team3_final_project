@@ -23,8 +23,9 @@ const SeatLayout = () => {
 
     useEffect(() => {
         if (resIdx) {
-            axios.get(`http://localhost:8080/pre/loadSeat/${resIdx}`)
+            axios.get(`http://localhost:8080/pre/loadSeat/1}`)
                 .then((response) => {
+                    console.log(response.data);
                     const { success, data } = response.data;
                     if (success && Array.isArray(data)) {
                         // 🎯 좌석 필터링 조건 적용
@@ -66,6 +67,7 @@ const SeatLayout = () => {
             maxWidth: "800px",
             height: "350px",
             border: "1px solid #ddd",
+              backgroundColor: "lightgray",
           }}
         >
           {seats.map((seat, index) => {
@@ -108,7 +110,18 @@ const SeatLayout = () => {
           })}
         </div>
       ) : (
-        <p>좌석 정보가 없습니다.</p>
+          <div
+              className="seat-layout"
+              style={{
+                  position: "relative",
+                  width: "71%",
+                  maxWidth: "800px",
+                  height: "350px",
+                  border: "1px solid #ddd",
+              }}
+          >
+              <p>좌석 정보가 없습니다.</p>
+          </div>
       )}
     </div>
   );

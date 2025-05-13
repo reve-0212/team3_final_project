@@ -22,14 +22,15 @@ function OwnerLogin() {
             headers : {
                 'Content-Type': 'application/json'
             }})
-            .then((response) => {
-                const { success, message, token } = response.data;  // 서버에서 토큰을 반환받음
-
+            .then((res) => {
+                const { success, message } = res.data;  // 서버에서 토큰을 반환받음
                 if (success) {
                     alert(message);
 
+                    console.log(res.data);
                     // JWT 토큰을 로컬 스토리지에 저장
-                    localStorage.setItem('jwtToken', token);
+                    localStorage.setItem('ACCESS_TOKEN', res.data.data.accessToken);
+                    sessionStorage.setItem('REFRESH_TOKEN', res.data.data.refreshToken);
 
                     nv("/pre/PreSelect");
                 } else {
