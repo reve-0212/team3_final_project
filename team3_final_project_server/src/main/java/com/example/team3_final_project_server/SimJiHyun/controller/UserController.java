@@ -4,7 +4,7 @@ import com.example.team3_final_project_server.KimSangMin.response.PreResponse;
 import com.example.team3_final_project_server.SimJiHyun.mapper.UserMapper;
 import com.example.team3_final_project_server.SimJiHyun.service.UserService;
 import com.example.team3_final_project_server.dto.*;
-import com.example.team3_final_project_server.dto.join.ResvJoinRestDTO;
+import com.example.team3_final_project_server.dto.join.ResvJoinRestSMenuDTO;
 import com.example.team3_final_project_server.dto.join.ResvRestMenuJoinDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,7 +96,7 @@ public class UserController {
 
   //  예약 정보 리스트 가져오기
   @GetMapping("/userReservation")
-  public List<ResvJoinRestDTO> userReservation(@RequestParam int userIdx) {
+  public List<ResvJoinRestSMenuDTO> userReservation(@RequestParam int userIdx) {
     return userService.userReservation(userIdx);
   }
 

@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import CancelPopup from "../popUP/cancelPopup.jsx";
 import {useNavigate} from "react-router-dom";
 import "../SjhCss.css"
@@ -6,6 +6,7 @@ import useReservationIdxStore from "../../stores/useReservationIdxStore.jsx";
 import useRestaurantStore from "../../stores/useRestaurantStore.jsx";
 import axios from "axios";
 import {Accordion} from "react-bootstrap";
+import useMenuIdxStore from "../../stores/useMenuIdxStore.jsx";
 
 function SjhReservationCard(props) {
   // 모달을 열지 말지 결정한다
@@ -18,8 +19,9 @@ function SjhReservationCard(props) {
 
   const {setReservationIdx} = useReservationIdxStore();
   const {setRestaurantIdx} = useRestaurantStore();
-  // console.log("reservationIdx : " + props.reservationIdx)
-  // console.log("restaurantIdx : " + props.restaurantIdx)
+  const {setMenuIdx} = useMenuIdxStore();
+
+  console.log(props.menuIdx)
 
   return (
     <div className={"my-3"}>
@@ -84,7 +86,13 @@ function SjhReservationCard(props) {
                 {isCompleted && (
                   <button type="button" className="btn rounded-3"
                           style={{border: "1px solid #C0C0C0", color: "#C0C0C0"}}
-                          onClick={() => Nv("/review")}>
+                          onClick={() => {
+                            setReservationIdx(props.reservationIdx)
+                            setRestaurantIdx(props.restaurantIdx)
+                            setMenuIdx(props.menuIdx)
+                            Nv("/review")
+                          }
+                          }>
                     리뷰 등록하기
                   </button>
                 )}

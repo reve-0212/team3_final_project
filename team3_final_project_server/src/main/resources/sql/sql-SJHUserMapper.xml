@@ -41,7 +41,7 @@
   </update>
 
   <!--조인용 -->
-  <resultMap id="ResvJoinRestMapSJH" type="com.example.team3_final_project_server.dto.join.ResvJoinRestDTO">
+  <resultMap id="ResvJoinRestMapSJH" type="com.example.team3_final_project_server.dto.join.ResvJoinRestSMenuDTO">
     <association property="reservation" javaType="com.example.team3_final_project_server.dto.ReservationDTO">
       <result column="reservation_idx" property="reservationIdx"/>
       <result column="user_idx" property="userIdx"/>
@@ -56,14 +56,21 @@
       <result column="res_idx" property="resIdx"/>
       <result column="res_name" property="resName"/>
     </association>
+
+    <association property="sMenu" javaType="com.example.team3_final_project_server.dto.SelectedMenuDTO">
+      <result column="menu_idx" property="menuIdx"/>
+      <result column="menu_quantity" property="menuQuantity"/>
+    </association>
   </resultMap>
 
   <!--예약 리스트 가져오기-->
   <select id="userReservation" parameterType="int" resultMap="ResvJoinRestMapSJH">
     select rsv.reservation_idx, rsv.user_idx, rsv.rsv_people, rsv.rsv_date, rsv.rsv_time,
-    rsv.rsv_come_datetime, rsv.rsv_cancel_datetime, res.res_idx, res.res_name
+    rsv.rsv_come_datetime, rsv.rsv_cancel_datetime, res.res_idx, res.res_name,
+    sm.menu_idx, sm.menu_quantity
     from reservation as rsv
     join restaurant as res
+    join selected_menu as sm
     on rsv.res_idx = res.res_idx
     where rsv.user_idx=#{userIdx}
     order by rsv.rsv_date desc;

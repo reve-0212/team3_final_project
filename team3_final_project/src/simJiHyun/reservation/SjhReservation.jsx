@@ -78,6 +78,7 @@ function SjhReservation() {
                     isUse={r.reservation.rsvComeDatetime}
                     isCancel={r.reservation.rsvCancelDatetime}
                     restName={r.restaurant.resName}
+                    menuIdx={r.smenu.menuIdx}
                     date={r.reservation.rsvDate}
                     time={r.reservation.rsvTime}
                     people={r.reservation.rsvPeople}/>

@@ -3,7 +3,7 @@ package com.example.team3_final_project_server.SimJiHyun.service;
 import com.example.team3_final_project_server.SimJiHyun.mapper.UserMapper;
 import com.example.team3_final_project_server.configuration.jwt.JwtTokenProvider;
 import com.example.team3_final_project_server.dto.*;
-import com.example.team3_final_project_server.dto.join.ResvJoinRestDTO;
+import com.example.team3_final_project_server.dto.join.ResvJoinRestSMenuDTO;
 import com.example.team3_final_project_server.dto.join.ResvRestMenuJoinDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -97,7 +97,7 @@ public class UserService {
   }
 
   //  예약 리스트 가져오기
-  public List<ResvJoinRestDTO> userReservation(int userIdx) {
+  public List<ResvJoinRestSMenuDTO> userReservation(int userIdx) {
     return userMapper.userReservation(userIdx);
   }
 

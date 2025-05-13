@@ -3,7 +3,7 @@ package com.example.team3_final_project_server.SimJiHyun.mapper;
 import com.example.team3_final_project_server.dto.RestaurantDTO;
 import com.example.team3_final_project_server.dto.SeatDTO;
 import com.example.team3_final_project_server.dto.UserDTO;
-import com.example.team3_final_project_server.dto.join.ResvJoinRestDTO;
+import com.example.team3_final_project_server.dto.join.ResvJoinRestSMenuDTO;
 import com.example.team3_final_project_server.dto.join.ResvRestMenuJoinDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -27,7 +27,7 @@ public interface UserMapper {
 
   void updateField(String userId, String field, String value);
 
-  List<ResvJoinRestDTO> userReservation(int userIdx);
+  List<ResvJoinRestSMenuDTO> userReservation(int userIdx);
 
   ResvRestMenuJoinDTO getBook(int reservationIdx, int restaurantIdx);
 
