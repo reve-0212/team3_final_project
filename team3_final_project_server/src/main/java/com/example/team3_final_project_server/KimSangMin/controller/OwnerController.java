@@ -50,7 +50,7 @@ public class OwnerController {
 
 
     //  사장님 로그인
-    @PostMapping("/pre/login")
+    @PostMapping("/pre/owner/login")
     public ResponseEntity<PreResponse> login(@RequestBody Map<String, String> userData) {
         String userId = userData.get("userId");
         String userPass = userData.get("userPass");
@@ -73,7 +73,7 @@ public class OwnerController {
 
 
 // 비밀번호 바꾸기
-@PutMapping("/pre/updatePassword")
+@PutMapping("/pre/owner/updatePassword")
 public ResponseEntity<?> updatePassword(@RequestBody Map<String, String> body, Authentication auth) {
     String userId = auth.getName();
     String newPass = body.get("newPass");
@@ -86,7 +86,7 @@ public ResponseEntity<?> updatePassword(@RequestBody Map<String, String> body, A
 }
 
 // 정보 수정하기
-@PutMapping("/pre/updateInfo")
+@PutMapping("/pre/owner/updateInfo")
 public ResponseEntity<?> updateInfo(@RequestBody Map<String, String> body, Authentication auth) {
     String userId = auth.getName();
     String field = body.get("field");

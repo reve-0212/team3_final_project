@@ -19,8 +19,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.PUT;
+import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 @RequiredArgsConstructor
@@ -122,12 +121,13 @@ public class SecurityConfig {
 
 //                    사장 전용
 //                    .requestMatchers("/pre/**").hasRole("OWNER")
-                    .requestMatchers("/pre/login").permitAll()  // 로그인은 모두 허용
-                    .requestMatchers("/pre/resave").permitAll()
-                    .requestMatchers("/pre/seats/save").permitAll()// 이건 인증된 사장만 가능
-                    .requestMatchers("/pre/func").permitAll()
-                    .requestMatchers("/pre/seats/update").permitAll()
-                    .requestMatchers("/pre/seats/delete").permitAll()
+                    .requestMatchers("/pre/owner/login").permitAll()  // 로그인은 모두 허용
+//                    .requestMatchers("/pre/owner/login").hasRole("OWNER")  // 로그인은 모두 허용
+                    .requestMatchers("/pre/owner/resave").hasRole("OWNER")
+                    .requestMatchers("/pre/owner/seats/save").hasRole("OWNER")// 이건 인증된 사장만 가능
+                    .requestMatchers("/pre/owner/func").hasRole("OWNER")
+                    .requestMatchers(PUT,"/pre/owner/seats/update").hasRole("OWNER")
+                    .requestMatchers(DELETE,"/pre/owner/seats/delete").hasRole("OWNER")
 
 //                    관리자 전용 페이지
                     .requestMatchers("/pre/admin/**").permitAll()

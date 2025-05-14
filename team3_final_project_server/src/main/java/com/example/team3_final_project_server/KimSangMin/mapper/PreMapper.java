@@ -10,7 +10,7 @@ import java.util.List;
 @Mapper
 public interface PreMapper {
 
-    void saveSeats(List<SeatDTO> seats);
+//    void saveSeats(List<SeatDTO> seats);
 
 
     void insertTime(TimeDTO time);
@@ -27,7 +27,11 @@ public interface PreMapper {
 
     Integer findResIdx(int userIdx);
 
-    int updateSeats(List<SeatDTO> seats);
+    int updateSeats(SeatDTO seat);
 
     int deleteSeat(Integer seatId, Integer resIdx);
+
+    void saveSeat(SeatDTO seat);
+
+    boolean checkSeatExists(SeatDTO seat);
 }

@@ -37,7 +37,7 @@ public interface PreService {
   RestaurantDTO getRestByUserIdx(int userIdx);
 
 
-  boolean updateSeats(List<SeatDTO> seats);
+  boolean updateSeats(SeatDTO seat);
 
   boolean deleteSeate(Integer seatId, Integer resIdx);
 }

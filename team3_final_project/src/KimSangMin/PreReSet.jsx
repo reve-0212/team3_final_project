@@ -140,7 +140,7 @@ function PreReSet() {
 
   useEffect(() => {
     if (token) {
-      axios.get("http://localhost:8080/pre/getRestaurant", {  // 사용자 정보 API 호출
+      axios.get("http://localhost:8080/pre/owner/getRestaurant", {  // 사용자 정보 API 호출
         headers: { Authorization: `Bearer ${token}` }
       })
           .then(response => {
@@ -199,7 +199,7 @@ function PreReSet() {
 
     // 가게 저장 시 수정 기능으로 체인지
     if (!isSave && resIdx) {
-      axios.put(`http://localhost:8080/pre/updateRest/${resIdx}`, storeData, {
+      axios.put(`http://localhost:8080/pre/owner/updateRest/${resIdx}`, storeData, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -214,7 +214,7 @@ function PreReSet() {
           });
     } else {
       // 저장이 안되있을 시에는 기본적으로 저장 버튼 활성화
-      axios.post("http://localhost:8080/pre/resave", storeData, {
+      axios.post("http://localhost:8080/pre/owner/resave", storeData, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`

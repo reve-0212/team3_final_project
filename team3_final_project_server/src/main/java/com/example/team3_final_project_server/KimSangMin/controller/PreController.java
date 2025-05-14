@@ -3,7 +3,6 @@ package com.example.team3_final_project_server.KimSangMin.controller;
 import com.example.team3_final_project_server.KimSangMin.response.PreResponse;
 import com.example.team3_final_project_server.KimSangMin.response.TimeRequest;
 import com.example.team3_final_project_server.KimSangMin.service.PreService;
-import com.example.team3_final_project_server.configuration.jwt.JwtTokenProvider;
 import com.example.team3_final_project_server.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,11 +18,10 @@ public class PreController {
   @Autowired
   private PreService preService;
 
-  @Autowired
-  private JwtTokenProvider jwtTokenProvider;
+
 
   //    좌석저장
-  @PostMapping("/pre/seats/save")
+  @PostMapping("/pre/owner/seats/save")
   public ResponseEntity<PreResponse> saveSeats (@RequestBody List<SeatDTO> seats, @RequestHeader("Authorization") String authorization) {
     try {
       ResponseDTO jwtInfo = preService.tokenCheck(authorization);
@@ -56,7 +54,7 @@ public class PreController {
   }
 
   //    좌석 정보 불러오기
-  @GetMapping("/pre/seats/load")
+  @GetMapping("/pre/owner/seats/load")
   public ResponseEntity<PreResponse> loadSeat (@RequestHeader("Authorization") String authorization) {
     try {
       ResponseDTO jwtInfo = preService.tokenCheck(authorization);
@@ -84,33 +82,40 @@ public class PreController {
   }
 
   //    좌석 정보 수정하기
-  @PutMapping("/pre/seats/update")
-  public ResponseEntity<PreResponse> updateSeat (@RequestBody List<SeatDTO> seats, @RequestHeader("Authorization") String authorization) {
+  @PutMapping("/pre/owner/seats/update")
+  public ResponseEntity<PreResponse> updateSeat(@RequestBody(required = false) SeatDTO seat, @RequestHeader("Authorization") String authorization) {
     try {
-      ResponseDTO jwtInfo = preService.tokenCheck(authorization);
-      int userIdx = jwtInfo.getUserIdx();
+      // Authorization 헤더에서 Bearer를 제거하고 JWT 토큰만 추출
+      if (authorization != null && authorization.startsWith("Bearer ")) {
+        String token = authorization.substring(7); // "Bearer "를 제외한 토큰 부분만 추출
+        ResponseDTO jwtInfo = preService.tokenCheck(token);  // 추출된 토큰을 검증
+        int userIdx = jwtInfo.getUserIdx();  // 사용자 ID 추출
 
-      Integer resIdx = preService.findResIdx(userIdx);
-      if (resIdx == null) {
-        return ResponseEntity.badRequest()
-                .body(new PreResponse(false, "가게 정보가 없습니다.", null));
-      }
+        // 가게 정보 확인
+        Integer resIdx = preService.findResIdx(userIdx);
+        if (resIdx == null) {
+          return ResponseEntity.badRequest()
+                  .body(new PreResponse(false, "가게 정보가 없습니다.", null));
+        }
 
-      // 좌석 업데이트를 위한 가게 정보 설정
-      for (SeatDTO seat : seats) {
-        seat.setResIdx(resIdx);
-      }
+        // 좌석 업데이트를 위한 가게 정보 설정
+        if (seat.getResIdx() == null) {
+          seat.setResIdx(resIdx);  // resIdx가 없으면 자동으로 세팅
+        }
 
-      // 좌석 업데이트 수행
-      boolean success = preService.updateSeats(seats);
+        // 좌석 업데이트 수행
+        boolean success = preService.updateSeats(seat);
 
-      // 성공 여부에 따라 응답 반환
-      if (success) {
-        PreResponse response = new PreResponse(true, "좌석 업데이트 성공", seats);
-        return ResponseEntity.ok(response);
+        // 성공 여부에 따라 응답 반환
+        if (success) {
+          PreResponse response = new PreResponse(true, "좌석 업데이트 성공", seat);
+          return ResponseEntity.ok(response);
+        } else {
+          PreResponse response = new PreResponse(false, "좌석 업데이트 실패", null);
+          return ResponseEntity.badRequest().body(response);
+        }
       } else {
-        PreResponse response = new PreResponse(false, "좌석 업데이트 실패", null);
-        return ResponseEntity.badRequest().body(response);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new PreResponse(false, "토큰 형식이 잘못되었습니다.", null));
       }
     } catch (Exception e) {
       // 예외 발생 시 응답
@@ -118,8 +123,10 @@ public class PreController {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
   }
+
+
   //    좌석 삭제하기
-  @DeleteMapping("/pre/seats/delete/{seatId}")
+  @DeleteMapping("/pre/owner/seats/delete/{seatId}")
   public ResponseEntity<PreResponse> deleteSeat(@PathVariable Integer  seatId, @RequestHeader("Authorization") String authorization) {
     try {
       ResponseDTO jwtInfo = preService.tokenCheck(authorization);
@@ -147,7 +154,7 @@ public class PreController {
   }
 
   // 가게 정보 저장하기
-  @PostMapping("/pre/resave")
+  @PostMapping("/pre/owner/resave")
   public ResponseEntity<PreResponse> reSave(@RequestBody RestaurantDTO restaurant, @RequestHeader("Authorization") String authorization) {
     try {
       ResponseDTO jwtInfo = preService.tokenCheck(authorization);
@@ -171,7 +178,7 @@ public class PreController {
   }
 
   // 가게 정보 불러오기
-  @GetMapping("/pre/getRestaurant")
+  @GetMapping("/pre/owner/getRestaurant")
   public ResponseEntity<PreResponse> getRest(@RequestHeader("Authorization") String authorization) {
     try {
       ResponseDTO jwtInfo = preService.tokenCheck(authorization);
@@ -194,7 +201,7 @@ public class PreController {
   }
 
   //    가게 정보 수정하기
-  @PutMapping("/pre/updateRest/{resIdx}")
+  @PutMapping("/pre/owner/updateRest/{resIdx}")
   public ResponseEntity<PreResponse> updateRest(
           @PathVariable("resIdx") int resIdx, // URL 경로에서 resIdx를 받음
           @RequestBody RestaurantDTO rest // 수정된 RestaurantDTO 객체를 받음
@@ -211,7 +218,7 @@ public class PreController {
   }
 
   // 가게 시간 지정하기
-  @PostMapping("/pre/timeset")
+  @PostMapping("/pre/owner/timeset")
   public ResponseEntity<PreResponse> setTime (@RequestBody TimeRequest timeRequest) {
     List<TimeDTO> timeList = timeRequest.getTimeList();
     boolean success = preService.insertTime(timeList);

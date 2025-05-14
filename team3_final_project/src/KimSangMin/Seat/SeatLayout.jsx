@@ -23,7 +23,7 @@ const SeatLayout = () => {
 
     useEffect(() => {
         if (resIdx) {
-            axios.get(`http://localhost:8080/pre/loadSeat/1}`)
+            axios.get(`http://localhost:8080/pre/owner/loadSeat/${resIdx}`)
                 .then((response) => {
                     console.log(response.data);
                     const { success, data } = response.data;
