@@ -14,6 +14,7 @@ import useRsvTimeStore from "../../stores/useRsvTimeStore.jsx";
 import {useEffect} from "react";
 
 function SeatPage() {
+  const Nv = useNavigate()
   const userStore = useUserStore((state) => state.user)
   const resStore = useResStoreSjh((state) => state.res)
   const seatId = useSeatIdStore((state) => state.seatId)
@@ -26,6 +27,10 @@ function SeatPage() {
   const resIdx = resStore.resIdx
   const rsvDate = rsvDateStore
   const rsvTime = rsvTimeStore
+
+  window.addEventListener("popstate", () => {
+    console.log("뒤로가기")
+  })
 
   console.log("userIdx : " + userIdx)
   console.log("seatId : " + seatId)
@@ -72,11 +77,7 @@ function SeatPage() {
         console.log(err)
       })
     }
-
   }
-
-  const Nv = useNavigate()
-
 
   return (
     <div className={'app-container  container py-4'}>

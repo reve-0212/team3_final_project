@@ -5,6 +5,7 @@ import axios from "axios";
 import useRestaurantStore from "../../stores/useRestaurantStore.jsx";
 import useUserStore from "../../stores/useUserStore.jsx";
 import useReservationIdxStore from "../../stores/useReservationIdxStore.jsx"
+import useResStoreSjh from "../../stores/useResStoreSjh.jsx";
 
 const MenuSelector = () => {
   // 좌석 세팅에서 선택한 reservationIdx 가지고 있기
@@ -32,7 +33,9 @@ const MenuSelector = () => {
   // const [reservationIdx, setReservationIdx] = useState(null);
 
   const userStore = useUserStore((state) => state.user)
-  const resIdx = useRestaurantStore((state) => state.restaurantIdx);
+  const res = useResStoreSjh((state)=>state.res)
+  const resIdx = res.resIdx
+  // const resIdx = useRestaurantStore((state) => state.restaurantIdx);
   const userIdx = userStore.userIdx
   console.log("userIdx")
   console.log(userIdx)

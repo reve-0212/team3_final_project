@@ -5,11 +5,9 @@ import "../SjhCss.css"
 import useUserStore from "../../stores/useUserStore.jsx";
 import {Link, useNavigate} from "react-router-dom";
 import {apiLogin} from "../service/ApiService.js"
-import useRestaurantStore from "../../stores/useRestaurantStore.jsx";
 
 function Login() {
   const setUser = useUserStore((state) => state.setUser);
-  const setResIdx = useRestaurantStore((state) => state.setRestaurantIdx)
 
   const Nv = useNavigate();
 
@@ -19,12 +17,15 @@ function Login() {
     const userId = formData.get('userId')
     const userPass = formData.get('userPass')
 
-    setResIdx("asdf")
     try {
       const userData = await apiLogin(userId, userPass);
-      setUser(userData)
-      alert("로그인 완료!")
-      Nv("/")
+      if (userData) {
+        setUser(userData)
+        alert("로그인 성공!")
+        Nv("/")
+      } else {
+        alert("아이디 혹은 비밀번호가 틀렸습니다")
+      }
     } catch (err) {
       alert(`로그인 실패 : ${err}`)
     }

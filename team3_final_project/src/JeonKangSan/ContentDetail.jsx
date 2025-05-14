@@ -15,8 +15,7 @@ function ContentDetail() {
   const setRes = useResStoreSjh((state) => state.setRes)
 
   useKakaoLoader({appkey: import.meta.env.VITE_REACT_APP_KAKAO_MAP_API_KEY})
-  // console.log(userStore.userIdx)
-  const userIdx = userStore.userIdx
+  const userIdx = userStore && userStore.userIdx !== null ? userStore.userIdx : ""
 
   const [ActTab, setActTab] = useState("상세정보");
   const Nv = useNavigate();
@@ -24,7 +23,6 @@ function ContentDetail() {
   const [storeInfo, setStoreInfo] = useState({});
   const [bestMenus, setBestMenus] = useState([]);
   const [timeSlots, setTimeSlots] = useState([]);
-  const [selectedTime, setSelectedTime] = useState(null);
   const {resIdx} = useParams();
 
   const [parsedTags, setParsedTags] = useState([]);
@@ -209,15 +207,15 @@ function ContentDetail() {
               <h4 className="extra-bold">해시 태그</h4>
 
               {parsedTags.length > 0 ? (
-                  <div className="d-flex flex-wrap gap-2 ps-2 pt-2">
-                    {parsedTags.map((tag, idx) => (
-                        <div key={idx}>
-                          <span className="badge">#{tag}</span>
-                        </div>
-                    ))}
-                  </div>
+                <div className="d-flex flex-wrap gap-2 ps-2 pt-2">
+                  {parsedTags.map((tag, idx) => (
+                    <div key={idx}>
+                      <span className="badge">#{tag}</span>
+                    </div>
+                  ))}
+                </div>
               ) : (
-                  <div className="ps-2 pt-2 text-muted small">등록된 해시태그가 없습니다</div>
+                <div className="ps-2 pt-2 text-muted small">등록된 해시태그가 없습니다</div>
               )}
             </div>
           </div>
@@ -252,20 +250,33 @@ function ContentDetail() {
               <button key={idx}
                       className={"btn m-1"}
                       style={{backgroundColor: "#FFD700"}}>
-            {/*<button*/}
-            {/*    key={idx}*/}
-            {/*    className={`btn ${selectedTime === time ? "btn-primary" : "btn-outline-primary"}`}*/}
-            {/*    onClick={() => setSelectedTime(time)}*/}
-            {/*>*/}
+                {/*<button*/}
+                {/*    key={idx}*/}
+                {/*    className={`btn ${selectedTime === time ? "btn-primary" : "btn-outline-primary"}`}*/}
+                {/*    onClick={() => setSelectedTime(time)}*/}
+                {/*>*/}
                 {time}
               </button>
             ))}
           </div>
 
-          <button className="common-btn w-100" onClick={() => {
-            Nv(`/book/visit/${userIdx}/${resIdx}`)
-          }}>예약하기
-          </button>
+          {userStore && userStore.userIdx !== null ? (
+            <button
+              className="common-btn w-100"
+              onClick={() => {
+                Nv(`/book/visit/${userIdx}/${resIdx}`)
+              }}>예약하기
+            </button>
+          ) : (
+            <button
+              className="common-btn w-100"
+              onClick={() => {
+                Nv("/user/login")
+              }}>로그인 후 사용해주세요
+            </button>
+
+          )}
+
         </div>
       </div>
     </div>
