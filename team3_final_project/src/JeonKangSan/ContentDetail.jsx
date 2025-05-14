@@ -39,8 +39,6 @@ function ContentDetail() {
     lng: 126.570667
   })
 
-  // console.log(timeSlots)
-
   // 현재 주소 값의 맨 뒤에서 1번째 값 가져옴
   const pathIdx = window.location.pathname;
   console.log(pathIdx[pathIdx.length - 1])

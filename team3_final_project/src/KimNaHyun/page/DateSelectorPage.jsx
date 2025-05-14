@@ -9,6 +9,7 @@ import useRsvDateStore from "../../stores/useRsvDateStore.jsx";
 import useRsvTimeStore from "../../stores/useRsvTimeStore.jsx";
 import useUserStore from "../../stores/useUserStore.jsx";
 import useResStoreSjh from "../../stores/useResStoreSjh.jsx";
+import usePeopleStore from "../../stores/usePeopleStore.jsx";
 
 function DateTimeSelectorPage() {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -16,7 +17,6 @@ function DateTimeSelectorPage() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const storeResIdx = useRestaurantStore((state) => state.restaurantIdx);
   const setRsvDate = useRsvDateStore((state) => state.setRsvDate)
   const rsvDate = useRsvDateStore((state) => state.rsvDate)
   const setRsvTime = useRsvTimeStore((state) => state.setRsvTime)
@@ -24,8 +24,13 @@ function DateTimeSelectorPage() {
   const userStore = useUserStore((state)=>state.user)
   const res = useResStoreSjh((state) => state.res)
 
-  console.log(userStore)
-  console.log(res)
+  useEffect(()=>{
+    console.log(userStore)
+  },[userStore])
+
+  useEffect(() => {
+    console.log(res)
+  }, [res]);
 
   useEffect(() => {
     if (selectedDate) {

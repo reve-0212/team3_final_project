@@ -2,10 +2,11 @@ import React, {useEffect, useState} from 'react';
 import Button from "./Button.jsx";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
-import useRestaurantStore from "../../stores/useRestaurantStore.jsx";
 import useUserStore from "../../stores/useUserStore.jsx";
 import useReservationIdxStore from "../../stores/useReservationIdxStore.jsx"
 import useResStoreSjh from "../../stores/useResStoreSjh.jsx";
+import usePeopleStore from "../../stores/usePeopleStore.jsx";
+import useRsvDateTimeStore from "../../stores/useRsvDateTimeStore.jsx";
 
 const MenuSelector = () => {
   const Nv = useNavigate();
@@ -14,6 +15,10 @@ const MenuSelector = () => {
 
   const userStore = useUserStore((state) => state.user)
   const res = useResStoreSjh((state) => state.res)
+  const people = usePeopleStore((state) => state.people)
+  const rsvDateTime = useRsvDateTimeStore((state) => state.rsvDateTime)
+  const [allPeople, setAllPeople] = useState(0)
+
   const resIdx = res.resIdx
   const userIdx = userStore.userIdx
 
@@ -35,17 +40,35 @@ const MenuSelector = () => {
     console.log(reservationIdx)
   }, [reservationIdx]);
 
+  useEffect(() => {
+    console.log("people")
+    console.log(people)
+    console.log("people.woman")
+    console.log(people.woman)
+    console.log("people.man")
+    console.log(people.man)
+    console.log("people.baby")
+    console.log(people.baby)
 
-  window.addEventListener("popstate", () => {
-    console.log("뒤로가기")
-  })
+    setAllPeople(people.woman + people.man + people.baby)
+  }, [people]);
+  console.log("-----allPeople-----")
+  console.log(allPeople)
+
+  useEffect(() => {
+    console.log("rsvDateTime")
+    console.log(rsvDateTime)
+  }, []);
+
+  // window.addEventListener("popstate", () => {
+  //   console.log("뒤로가기")
+  // })
 
   // 메뉴 데이터 로드
   useEffect(() => {
     if (!resIdx) return; // resIdx가 없는 경우 API 호출을 하지 않도록 처리
 
-    axios
-      .get(`http://localhost:8080/api/menu/${resIdx}`)
+    axios.get(`http://localhost:8080/api/menu/${resIdx}`)
       .then(res => {
         console.log(res.data);
         setMenuItems(res.data);
@@ -62,6 +85,9 @@ const MenuSelector = () => {
       [menuIdx]: (prev[menuIdx] || 0) + 1,
     }));
   };
+
+  console.log("-----menuItems-----")
+  console.log(menuItems)
 
   const handleDecrease = (menuIdx) => {
     setQuantities((prev) => {
@@ -84,29 +110,82 @@ const MenuSelector = () => {
       return;
     }
 
-    const menuList = Object.entries(quantities).map(([menuIdx, quantity]) => ({
-      menuIdx: parseInt(menuIdx),
-      quantity,
-    }));
+    const menuList = Object.entries(quantities).map(([menuIdx, quantity]) => {
+      // item.menuIdx 와 menuIdx 가 같은 것을 찾아 menu 에 넣는다
+      const menu = menuItems.find((item) => item.menuIdx === parseInt(menuIdx));
+
+      // menu 안에 들어간 메뉴 이름과 가격을 가져온다
+      return {
+        menuIdx: parseInt(menuIdx),
+        menuName: menu.menuName,
+        menuPrice: menu.menuPrice,
+        quantity,
+        totalPrice: menu.menuPrice * quantity
+      }
+    });
+
+    console.log("-----menuList-----")
+    console.log(menuList)
 
     for (let i = 0; i < menuList.length; i++) {
       console.log(menuList[i])
       console.log(menuList[i].menuIdx)
+      console.log(menuList[i].menuName)
+      console.log(menuList[i].menuPrice)
       console.log(menuList[i].quantity)
+      console.log(menuList[i].totalPrice)
+      console.log(allPeople)
 
-      axios.put("http://localhost:8080/reserveMenu", null, {
-        params: {
-          reservationIdx: reservationIdx,
-          menuIdx: menuList[i].menuIdx,
-          menuQuantity: menuList[i].quantity
-        }, headers: {
-          Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
-        }
-      }).then((res) => {
-        console.log(res)
-      }).catch((err) => {
+      axios.all([
+        axios.put("http://localhost:8080/reserveMenu", null, {
+          params: {
+            reservationIdx: reservationIdx,
+            menuIdx: menuList[i].menuIdx,
+            menuQuantity: menuList[i].quantity
+          }, headers: {
+            Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
+          }
+        }),
+        axios.put("http://localhost:8080/saveHistory", null, {
+          params: {
+            reservationIdx: reservationIdx,
+            resIdx: resIdx,
+            reservationDate: rsvDateTime,
+            rsvPeople: allPeople,
+            rsvMan: people.man,
+            rsvWoman: people.woman,
+            rsvBaby: people.baby,
+            menuIdx: menuList[i].menuIdx,
+            menuName: menuList[i].menuName,
+            menuPrice: menuList[i].menuPrice,
+            menuSCount: menuList[i].quantity,
+            menuSTP: menuList[i].totalPrice
+          }, headers: {
+            Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
+          }
+        })
+      ]).then(
+        axios.spread((res1, res2) => {
+          console.log(res1)
+          console.log(res2)
+        })
+      ).catch((err) => {
         console.log(err)
       })
+
+      // axios.put("http://localhost:8080/reserveMenu", null, {
+      //   params: {
+      //     reservationIdx: reservationIdx,
+      //     menuIdx: menuList[i].menuIdx,
+      //     menuQuantity: menuList[i].quantity
+      //   }, headers: {
+      //     Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
+      //   }
+      // }).then((res) => {
+      //   console.log(res)
+      // }).catch((err) => {
+      //   console.log(err)
+      // })
     }
   };
 
@@ -203,7 +282,7 @@ const MenuSelector = () => {
             })}
             <Button btnName={'다음'} onClick={() => {
               handleSubmit()
-              Nv("/book/reg")
+              // Nv("/book/reg")
             }}/>
           </ul>
         )}

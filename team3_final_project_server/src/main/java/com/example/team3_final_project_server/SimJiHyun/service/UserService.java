@@ -120,7 +120,7 @@ public class UserService {
     userMapper.reserveSeat(reservationIdx, seatId);
   }
 
-//  메뉴 예약하기
+  //  메뉴 예약하기
   public void reserveMenu(int reservationIdx, int menuIdx, int menuQuantity) {
     userMapper.reserveMenu(reservationIdx, menuIdx, menuQuantity);
   }
@@ -155,5 +155,13 @@ public class UserService {
 
   public List<RrsmDTO> getMenu(int reservationIdx, int restaurantIdx) {
     return userMapper.getMenu(reservationIdx, restaurantIdx);
+  }
+
+  //  히스토리 저장용
+  public void saveHistory(int reservationIdx, int resIdx, String reservationDate,
+                          int rsvPeople, int rsvMan, int rsvWoman, int rsvBaby,
+                          int menuIdx, String menuName, int menuPrice, int menuSCount, int menuSTP) {
+    userMapper.saveHistory(reservationIdx, resIdx, reservationDate, rsvPeople, rsvMan, rsvWoman,
+            rsvBaby, menuIdx, menuName, menuPrice, menuSCount, menuSTP);
   }
 }

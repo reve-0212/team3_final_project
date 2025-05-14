@@ -1,8 +1,5 @@
 import Button from "../components/Button.jsx";
-import SeatImg from "../components/SeatImg.jsx";
 import {useNavigate} from "react-router-dom";
-import ReservationPage from "../../KimSangMin/Seat/ReservationPage.jsx";
-import SeatLayout from "../../KimSangMin/Seat/SeatLayout.jsx";
 import SeatLayoutTest from "../../simJiHyun/SeatLayoutTest.jsx";
 import useUserStore from "../../stores/useUserStore.jsx";
 import axios from "axios";
@@ -12,6 +9,8 @@ import useReservationIdxStore from "../../stores/useReservationIdxStore.jsx";
 import useRsvDateStore from "../../stores/useRsvDateStore.jsx";
 import useRsvTimeStore from "../../stores/useRsvTimeStore.jsx";
 import {useEffect} from "react";
+import usePeopleStore from "../../stores/usePeopleStore.jsx";
+import useRsvDateTimeStore from "../../stores/useRsvDateTimeStore.jsx";
 
 function SeatPage() {
   const Nv = useNavigate()
@@ -22,11 +21,18 @@ function SeatPage() {
   const reservationIdx = useReservationIdxStore((state) => state.reservationIdx)
   const rsvDateStore = useRsvDateStore((state) => state.rsvDate)
   const rsvTimeStore = useRsvTimeStore((state) => state.rsvTime)
+  const people = usePeopleStore((state) => state.people)
+  const setRsvDateTimeStore = useRsvDateTimeStore((state) => state.setRsvDateTime)
 
   const userIdx = userStore.userIdx
   const resIdx = resStore.resIdx
   const rsvDate = rsvDateStore
   const rsvTime = rsvTimeStore
+  const rsvDateTime = rsvDate + " " + rsvTime
+
+  useEffect(() => {
+    console.log(people)
+  }, [people]);
 
   console.log("userIdx : " + userIdx)
   console.log("seatId : " + seatId)
@@ -83,6 +89,7 @@ function SeatPage() {
 
       <Button btnName={'다음'} onClick={() => {
         reserveSeat()
+        setRsvDateTimeStore(rsvDateTime)
         Nv(`/book/menu/${userIdx}/${resIdx}`)
       }}/>
     </div>

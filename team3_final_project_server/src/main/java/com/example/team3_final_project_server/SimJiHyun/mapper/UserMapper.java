@@ -63,4 +63,9 @@ public interface UserMapper {
   ReservationRestaurantJoinDTO getStoreInfo(int reservationIdx);
 
   List<RrsmDTO> getMenu(int reservationIdx, int restaurantIdx);
+
+  //  히스토리 저장용
+  void saveHistory(int reservationIdx, int resIdx, String reservationDate,
+                   int rsvPeople, int rsvMan, int rsvWoman, int rsvBaby,
+                   int menuIdx, String menuName, int menuPrice, int menuSCount, int menuSTP);
 }

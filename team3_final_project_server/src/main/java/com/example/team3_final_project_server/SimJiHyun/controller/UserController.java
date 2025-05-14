@@ -107,9 +107,9 @@ public class UserController {
     return userService.getBook(reservationIdx, restaurantIdx);
   }
 
-//  예약 메뉴 정보 가져오기
+  //  예약 메뉴 정보 가져오기
   @GetMapping("/getMenu")
-  public List<RrsmDTO> getMenu(@RequestParam int reservationIdx, @RequestParam int restaurantIdx){
+  public List<RrsmDTO> getMenu(@RequestParam int reservationIdx, @RequestParam int restaurantIdx) {
     System.out.println("reservationIdx : " + reservationIdx);
     System.out.println("restaurantIdx : " + restaurantIdx);
     return userService.getMenu(reservationIdx, restaurantIdx);
@@ -201,5 +201,40 @@ public class UserController {
   @GetMapping("/getStoreInfo")
   public ReservationRestaurantJoinDTO getStoreInfo(@RequestParam int reservationIdx) {
     return userService.getStoreInfo(reservationIdx);
+  }
+
+  @PutMapping("/saveHistory")
+  public void saveHistory(
+          @RequestParam int reservationIdx,
+          @RequestParam int resIdx,
+          @RequestParam String reservationDate,
+          @RequestParam int rsvPeople,
+          @RequestParam int rsvMan,
+          @RequestParam int rsvWoman,
+          @RequestParam int rsvBaby,
+          @RequestParam int menuIdx,
+          @RequestParam String menuName,
+          @RequestParam int menuPrice,
+          @RequestParam int menuSCount,
+          @RequestParam int menuSTP
+  ) {
+    System.out.print("reservationIdx : " + reservationIdx);
+    System.out.print(" resIdx : " + resIdx);
+    System.out.println(" reservationDate : " + reservationDate);
+
+    System.out.print("rsvPeople : " + rsvPeople);
+    System.out.print(" rsvMan : " + rsvMan);
+    System.out.print(" rsvWoman : " + rsvWoman);
+    System.out.println(" rsvBaby : " + rsvBaby);
+
+    System.out.print("menuIdx : " + menuIdx);
+    System.out.print(" menuName : " + menuName);
+    System.out.print(" menuPrice : " + menuPrice);
+    System.out.print(" menuSCount : " + menuSCount);
+    System.out.print(" menuSTP : " + menuSTP);
+
+    userService.saveHistory(reservationIdx, resIdx, reservationDate,
+            rsvPeople, rsvMan, rsvWoman, rsvBaby,
+            menuIdx, menuName, menuPrice, menuSCount, menuSTP);
   }
 }

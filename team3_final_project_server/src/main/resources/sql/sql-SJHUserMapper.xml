@@ -213,4 +213,13 @@
     on res.res_idx = rst.res_idx
     where res.reservation_idx = #{reservationIdx};
   </select>
+
+  <insert id="saveHistory">
+    insert into reservation_history (reservation_idx, res_idx, reservation_date,
+    rsv_people, rsv_man, rsv_woman, rsv_baby,
+    menu_idx, menu_name, menu_price, menu_sold_count, menu_sold_total_price)
+    values (#{reservationIdx}, #{resIdx}, #{reservationDate},
+    #{rsvPeople}, #{rsvMan}, #{rsvWoman}, #{rsvBaby},
+    #{menuIdx}, #{menuName}, #{menuPrice}, #{menuSCount}, #{menuSTP});
+  </insert>
 </mapper>
