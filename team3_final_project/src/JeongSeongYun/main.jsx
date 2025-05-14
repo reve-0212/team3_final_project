@@ -74,12 +74,6 @@ function main() {
           <Route path="/pre/admin" element={<AdminLogin/>}/> {/*  관리자 로그인 */}
           <Route path="/pre/reg" element={<PreRegPage/>}/> {/* 사장님 정보 입력 버튼 */}
           <Route path="/pre/info" element={<PreInfoPage/>}/> {/*  사장님 정보 입력 페이지 */}
-
-          {/* 사장 페이지  */}
-          <Route path="/pre" element={<OwnerLogin/>}/>
-          <Route path="/pre/PreSelect" element={<PreSelect/>}/> {/* 오늘 or 웨이팅 선택 페이지  */}
-          <Route path="/pre/PreMain" element={<PreMain/>}/> {/* 예약가게 메인*/}
-          {/*<Route path="/pre/PreCh" element={<PreCh/>}/> /!* 예약가게 매출 통계 *!/*/}
           <Route path="/pre/PreRe" element={<PreRe/>}/> {/* 예약가게 리뷰 보기*/}
           {/*<Route path="/pre/PreDayCh" element={<PreDayCh/>}/> /!* 예약 날짜 차트 *!/*/}
           {/*<Route path="/pre/PreReSet1" element={<PreReSet/>}/> /!* 예약가게 셋팅 *!/*/}
@@ -87,18 +81,24 @@ function main() {
           <Route path="/pre/PreReSet" element={<PreReSetTabs/>}/> {/* 예약가게 셋팅 Tabs */}
           <Route path="/pre/PreCh" element={<PreChTabs/>}/> {/* 예약가게 매출 통계 Tabs */}
 
-          <Route path={"/pre/layout/:resIdx"} element={<SeatLayout/>} />
+          <Route path={"/pre/layout/:resIdx"} element={<SeatLayout/>}/>
+
+          {/* 사장 페이지  */}
+          <Route path="/pre" element={<OwnerLogin/>}/>
+          <Route path="/pre/PreSelect" element={<PreSelect/>}/> {/* 오늘 or 웨이팅 선택 페이지  */}
+          <Route path="/pre/PreMain" element={<PreMain/>}/> {/* 예약가게 메인*/}
+          <Route path="/pre/update" element={<PreUpdatePage/>}/> {/*  사장 정보 수정 */}
+          <Route path="/pre/PreReSet" element={<PreReSetTabs/>}/> {/* 예약가게 셋팅 Tabs */}
+          <Route path="/pre/PreCh" element={<PreChTabs/>}/> {/* 예약가게 매출 통계 Tabs */}
 
           <Route path="/pre/PreToday/:resIdx" element={<TodayReservation/>}/> {/* 오늘 예약  */}
           <Route path="/pre/PrePast" element={<PastDateReservation/>}/> {/* 지난날짜 예약 */}
 
           <Route path="/pre/MenuList" element={<CeoMenuList/>}/> {/* 메뉴 리스트 */}
           <Route path="/pre/MenuListEdit" element={<CeoMenuListEdit/>}/> {/* 메뉴판 수정 */}
-            <Route path="/pre/MenuEdit/:menuId" element={<CeoMenuEdit/>}/> {/* 메뉴 슈정 */}
-            <Route path="/pre/NewMenu" element={<CeoNewMenu/>}/> {/* 메뉴 등록 */}
           <Route path="/pre/PreRe" element={<PreRe/>}/> {/* 예약가게 리뷰 보기*/}
-
-
+          <Route path="/pre/MenuEdit/:menuIdx" element={<CeoMenuEdit/>}/> {/* 메뉴 슈정 */}
+          <Route path="/pre/NewMenu" element={<CeoNewMenu/>}/> {/* 메뉴 등록 */}
 
           <Route path="/pre/PreWaSet" element={<PreWaSet/>}/> {/* 웨이팅 가게 셋팅 */}
           <Route path="/pre/WaMain" element={<CeoMain/>}/> {/*웨이팅 메인 */}

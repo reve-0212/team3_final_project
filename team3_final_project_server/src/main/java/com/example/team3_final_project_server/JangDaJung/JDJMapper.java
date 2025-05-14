@@ -39,10 +39,10 @@ public interface JDJMapper {
     List<MenuDTO> selectMenuList(int resIdx);
 
 //    메뉴 리스트 페이지에서 숨기기 해제
-    void updateUnhidden(@Param("menuIdx") int menuIdx, @Param("menuHidden") String menuHidden);
+    void updateUnhidden(@Param("menuIdx") int menuIdx, @Param("menuHidden") boolean menuHidden);
 
 //    메뉴 리스트 페이지에서 품절 해제
-    void updateUnSoldOut(@Param("menuIdx") int menuIdx, @Param("menuSoldOut") String menuSoldOut);
+    void updateUnSoldOut(@Param("menuIdx") int menuIdx, @Param("menuSoldOut") boolean menuSoldOut);
 
 //    새 메뉴 등록
     void newMenu(MenuDTO menuDTO);
@@ -51,5 +51,14 @@ public interface JDJMapper {
     int selectMaxMenuSort(int resIdx);
 
 //    메뉴 리스트 수정
-    void updateMenu(MenuDTO menu);
+    void updateMenuList(MenuDTO menu);
+
+//     menuEdit 페이지에서 기본 정보 불러오기
+    MenuDTO getMenuById(@Param("menuIdx") int menuIdx);
+
+//    메뉴 정보 수정
+    void editMenu(MenuDTO menuDTO);
+
+//    메뉴 삭제
+    void deleteMenu(@Param("menuIdx") int menuIdx);
 }

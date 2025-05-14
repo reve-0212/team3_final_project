@@ -9,33 +9,7 @@ function CeoNewMenu() {
 
     const navigate = useNavigate()
 
-    const [previewImg, setPreviewImg] = useState(null);
-    const [menuImageFile, setMenuImageFile] = useState(null);
-    const maxFileSize = 5 * 1024 * 1024; // 파일 업로드 용량 제한 5MB
-
-    // 파일 선택 시 실행
-    const handleImgChange = (e) => {
-        const file = e.target.files[0];
-
-        if (file) {
-            if (file.size > maxFileSize) {
-                alert("파일 용량은 5MB를 넘을 수 없습니다.");
-                setPreviewImg(null);  // 미리보기 초기화
-                setMenuImageFile(null); // 파일 초기화
-                return;
-            }
-
-            const imgUrl = URL.createObjectURL(file);
-            setPreviewImg(imgUrl);
-            setMenuImageFile(file); // ✅ 파일 저장
-        }
-    };
-
-    // 사진 삭제 버튼 클릭 시 미리보기 초기화
-    const handleRemoveImg = (e) => {
-        e.stopPropagation(); // 부모 div 클릭 방지
-        setPreviewImg(null);
-    };
+    const [imageUrl, setImageUrl] = useState('');
 
     // 등록 버튼 클릭시 모달
     const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -45,27 +19,21 @@ function CeoNewMenu() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const formData = new FormData();
-        formData.append('resIdx', 1); // 예시: 가게 ID (실제 값으로 변경)
-        formData.append('menuName', e.target.menuName.value);
-        formData.append('menuPrice', parseInt(e.target.menuPrice.value));
-        formData.append('menuExplanation', e.target.menuExplanation.value);
-        formData.append('menuHidden', 'false');
-        formData.append('menuSoldOut', 'false');
+        const uploadData = {
+            resIdx: 1, // 실제 resIdx로 바꿔야 함
+            menuName: e.target.menuName.value,
+            menuPrice: parseInt(e.target.menuPrice.value),
+            menuExplanation: e.target.menuExplanation.value,
+            menuImage: imageUrl  // 이미지 URL 전송
+        };
 
-        if (e.target.menuImage.files.length > 0) {
-            formData.append('menuImage', e.target.menuImage.files[0]); // 파일
-        }
-
-        console.log(formData);
         try {
-            const response = await axios.post('http://localhost:8080/menu/newMenu', formData);
+            const response = await axios.post('http://localhost:8080/menu/newMenu', uploadData);
             if (response.status === 200) {
                 setShowSuccessModal(true);
             }
         } catch (error) {
             console.error("메뉴 추가 실패:", error);
-            alert("메뉴 추가에 실패했습니다.");
         }
     };
 
@@ -103,48 +71,24 @@ function CeoNewMenu() {
                         </div>
 
                         <div className={'mb-5 menu-item-text'}>
-                            <label className={'form-label fw-bold'}>사진을 추가해주세요. <span className={'menu-item-essential'}>* 필수</span></label>
-                            <div
-                                className={'upload-box border rounded p-4 text-center mt-2'}
-                                onClick={() => document.getElementById('menu-image-upload').click()}
-                                style={{cursor: 'pointer'}}
-                            >
-                                {previewImg ? (
-                                    <>
-                                        <img
-                                            src={previewImg}
-                                            alt={'미리보기'}
-                                            style={{
-                                                width: '100%',
-                                                maxHeight: '200px',
-                                                objectFit: 'cover',
-                                                borderRadius: '0.5rem'
-                                            }}
-                                        />
-                                        <button
-                                            className="btnImgDel"
-                                            onClick={handleRemoveImg}
-                                        >
-                                            &times;
-                                        </button>
-                                    </>
-                                ) : (
-                                    <>
-                                        <i className={'bi bi-camera'} style={{fontSize: "2rem"}}></i>
-                                        <p className={'mb-1'} style={{fontSize: '0.9rem'}}>사진추가</p>
-                                    </>
-                                )}
-                            </div>
-                            <small className="menu-item-essential">* 한 장 선택 가능</small>
-                            {/* 숨긴 파일 선택 input */}
+                            <label className={'form-label fw-bold'}>이미지 URL을 입력해주세요. <span className={'menu-item-essential'}>* 필수</span></label>
                             <input
                                 name="menuImage"
-                                type="file"
-                                id="menu-image-upload"
-                                className="d-none"
-                                accept="image/*"
-                                onChange={handleImgChange}
+                                type="text"
+                                className="new-menu-input mt-2"
+                                placeholder="예) https://example.com/image.jpg"
+                                value={imageUrl}
+                                onChange={(e) => setImageUrl(e.target.value)}
                             />
+                            {imageUrl && (
+                                <div className="mt-3 upload-box rounded">
+                                    <img
+                                        src={imageUrl}
+                                        alt="미리보기"
+                                        style={{ width: '100%', maxHeight: '200px', objectFit: 'cover', borderRadius: '0.5rem' }}
+                                    />
+                                </div>
+                            )}
                         </div>
 
                         <div className="mb-5 menu-item-text">

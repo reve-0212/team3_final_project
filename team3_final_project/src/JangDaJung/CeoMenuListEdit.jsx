@@ -26,7 +26,7 @@ function SortableItem({ item, onCheck, checked }) {
         setNodeRef,
         transform,
         transition,
-    } = useSortable({ id: item.id });
+    } = useSortable({ id: item.menuIdx });
 
     const style = {
         transform: transform ? CSS.Transform.toString(transform) : "",
@@ -47,7 +47,7 @@ function SortableItem({ item, onCheck, checked }) {
             <input
                 type="checkbox"
                 checked={checked}
-                onChange={() => onCheck(item.id)}
+                onChange={() => onCheck(item.menuIdx)}
                 style={{ margin: "0 10px" }}
             />
 
@@ -57,9 +57,9 @@ function SortableItem({ item, onCheck, checked }) {
                 style={{ minWidth: "150px" }}
             >
                 <h5 className={"mb-1"}>
-                    {item.name}{" "}
-                    {item.soldOut && <span style={{ color: "red", fontSize: "0.8rem" }}>(품절)</span>}
-                    {item.hidden && <span style={{ color: "red", fontSize: "0.8rem" }}>(숨김)</span>}
+                    {item.menuName}{" "}
+                    {item.menuSoldOut && <span style={{ color: "red", fontSize: "0.8rem" }}>(품절)</span>}
+                    {item.menuHidden && <span style={{ color: "red", fontSize: "0.8rem" }}>(숨김)</span>}
                 </h5>
                 <small className={"text-muted"}>{item.price}원</small>
             </div>
@@ -68,15 +68,15 @@ function SortableItem({ item, onCheck, checked }) {
                 className={"flex-grow-2 text-start text-muted"}
                 style={{ minWidth: "200px" }}
             >
-                {item.description}
+                {item.menuExplanation}
             </div>
             <div
                 className={"flex-grow-1 text-end"}
                 style={{ minWidth: "100px" }}
             >
                 <img
-                    src={item.imageUrl}
-                    alt={item.name}
+                    src={item.menuImage}
+                    alt={item.menuName}
                     className={"img-fluid rounded"}
                     style={{
                         width: "80px",
@@ -96,16 +96,23 @@ function CeoMenuListEdit() {
     // 체크된 메뉴 ID들 (숨김/품절)
     const [selectedIds, setSelectedIds] = useState([]);
 
+    // const resIdx = useUserStore(state => state.user.resIdx); // 예시
+    const resIdx = 1; // 현재는 하드코딩된 테스트용 값
+
     // 데이터 받아오기
     useEffect(() => {
-        axios.get('http://localhost:8080/menu/list')
-            .then((response) => {
+        if (!resIdx) return;
+
+        axios.get('http://localhost:8080/menu/list', {
+            params: {resIdx: resIdx}
+        })
+            .then(response => {
                 setMenuList(response.data);
             })
-            .catch((err) => {
-                console.log("메뉴 리스트 데이터 불러오기 실패", err);
+            .catch(err => {
+                console.error("메뉴 불러오기 실패", err);
             });
-    }, []);
+    }, [resIdx]);
 
     // 메뉴 순서 수정(드래그)
     const sensors = useSensors(
@@ -124,25 +131,18 @@ function CeoMenuListEdit() {
         if (!over) return;
 
         if (active.id !== over.id) {
-            const oldIndex = menuList.findIndex(item => item.id === active.id);
-            const newIndex = menuList.findIndex(item => item.id === over.id);
+            const oldIndex = menuList.findIndex(item => item.menuIdx === active.id);
+            const newIndex = menuList.findIndex(item => item.menuIdx === over.id);
 
             const newMenuList = arrayMove(menuList, oldIndex, newIndex);
             setMenuList(newMenuList);
-            saveMenuOrder(newMenuList); // 백엔드용 함수
         }
     };
 
-    // 백엔드 연결용(메뉴 순서 변경 된것)
-    const saveMenuOrder  = (newOrder) => {
-        console.log("순서 저장할 데이터:", newOrder);
-        // 나중에 이 부분만 axios.post로 바꾸면 됨
-    }
-
     // 체크박스 선택/해제 (숨김/품절)
-    const handleCheck = (menuId) => {
+    const handleCheck = (menuIdx) => {
         setSelectedIds(prev =>
-            prev.includes(menuId) ? prev.filter(id => id !== menuId) : [...prev, menuId]
+            prev.includes(menuIdx) ? prev.filter(id => id !== menuIdx) : [...prev, menuIdx]
         );
     };
 
@@ -150,8 +150,8 @@ function CeoMenuListEdit() {
     const handleHideSelected = () => {
         setMenuList(prevList =>
             prevList.map(menu =>
-                selectedIds.includes(menu.id)
-                    ? { ...menu, hidden: true }  // 임시로 hidden 처리
+                selectedIds.includes(menu.menuIdx)
+                    ? { ...menu, menuHidden: true }  // 임시로 hidden 처리
                     : menu
             )
         );
@@ -162,7 +162,7 @@ function CeoMenuListEdit() {
     const handleSoldOut = () => {
         setMenuList((prev) =>
             prev.map((item) =>
-                selectedIds.includes(item.id) ? { ...item, soldOut: true } : item
+                selectedIds.includes(item.menuIdx) ? { ...item, menuSoldOut: true } : item
             )
         );
         setSelectedIds([]); // 체크박스 해제
@@ -175,11 +175,20 @@ function CeoMenuListEdit() {
 
     // 확인 버튼 -> 저장 후 리스트 페이지로(숨김, 품절, 순서 변경 된 값)
     const handleSave = () => {
-        // 실제 서버 저장 로직은 여기서 호출
-        console.log("저장된 메뉴:", menuList);
-        // 나중에 여기 axios.post 연결
-        // axios.post('/api/hide-menus', { ids: selectedHiddenIds });
-        navigate("/pre/MenuList");
+        const updatedList = menuList.map((menu, index) => ({
+            ...menu,
+            menuSort: index  // 드래그된 순서대로 인덱스를 menuSort로
+        }));
+
+        axios.post('http://localhost:8080/menu/listEdit', updatedList)
+            .then(() => {
+                alert("저장 완료!");
+                navigate("/pre/MenuList");
+            })
+            .catch((err) => {
+                console.error("메뉴 저장 실패:", err);
+                alert("저장 실패");
+            });
     };
 
     return (
@@ -207,9 +216,9 @@ function CeoMenuListEdit() {
                                 <ul className={"list-unstyled"}>
                                     {menuList.map((menu) => (
                                         <SortableItem
-                                            key={menu.id}
-                                            item={menu}
-                                            checked={selectedIds.includes(menu.id)}
+                                            key={menu.menuIdx}
+                                            item={{ ...menu, id: menu.menuIdx }}
+                                            checked={selectedIds.includes(menu.menuIdx)}
                                             onCheck={handleCheck}
                                         />
                                     ))}

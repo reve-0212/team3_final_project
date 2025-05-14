@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.*;
 import java.util.List;
 import java.util.Map;
 
@@ -58,14 +59,12 @@ public class JDJServiceImpl implements JDJService {
 //    메뉴 리스트 페이지에서 숨기기 해제
     @Override
     public void updateUnhidden(int menuIdx, boolean hidden) {
-        String hiddenStr = hidden ? "Y" : "N";
-        jdjMapper.updateUnhidden(menuIdx, hiddenStr);
+        jdjMapper.updateUnhidden(menuIdx, hidden);
     }
 
     @Override
     public void updateUnSoldOut(int menuIdx, boolean soldOut) {
-        String soldOutStr = soldOut ? "Y" : "N";
-        jdjMapper.updateUnSoldOut(menuIdx, soldOutStr);
+        jdjMapper.updateUnSoldOut(menuIdx, soldOut);
     }
 
     @Override
@@ -73,6 +72,7 @@ public class JDJServiceImpl implements JDJService {
         // 가장 큰 menuSort 값을 찾아서 +1로 설정
         int maxMenuSort = jdjMapper.selectMaxMenuSort(menuDTO.getResIdx());
         menuDTO.setMenuSort(maxMenuSort + 1);  // 가장 큰 menuSort + 1로 설정
+
         jdjMapper.newMenu(menuDTO);  // 메뉴 저장
     }
 
@@ -82,9 +82,33 @@ public class JDJServiceImpl implements JDJService {
     }
 
     @Override
-    public void updateMenuList(List<MenuDTO> menus) {
-        for (MenuDTO menu : menus) {
-            jdjMapper.updateMenu(menu); // 하나씩 업데이트
-        }
+    public void updateMenuList(MenuDTO menuDTO) {
+        jdjMapper.updateMenuList(menuDTO);
+    }
+
+    //    menuEdit 페이지에서 기본 정보 불러오기
+    @Override
+    public MenuDTO getMenuById(int menuIdx) {
+        return jdjMapper.getMenuById(menuIdx);
+    }
+
+//    메뉴 정보 수정
+    @Override
+    public void editMenu(int menuIdx, String menuName, int menuPrice, String menuExplanation, String menuImage) throws Exception {
+        MenuDTO menuDTO = new MenuDTO();
+        menuDTO.setMenuIdx(menuIdx);
+        menuDTO.setMenuName(menuName);
+        menuDTO.setMenuPrice(menuPrice);
+        menuDTO.setMenuExplanation(menuExplanation);
+        menuDTO.setMenuImage(menuImage);
+
+        System.out.println("menuIdx in Service: " + menuIdx);
+        jdjMapper.editMenu(menuDTO);
+    }
+
+//    메뉴 삭제
+    @Override
+    public void deleteMenu(int menuIdx) {
+        jdjMapper.deleteMenu(menuIdx);
     }
 }
