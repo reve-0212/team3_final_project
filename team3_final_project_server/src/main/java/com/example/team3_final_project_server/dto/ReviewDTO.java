@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class ReviewDTO {
-  private int ReviewIdx;
+  private int reviewIdx;
   private int userIdx;
   private int resIdx;
   private int menuIdx;

@@ -110,7 +110,7 @@ public class SecurityConfig {
 
 //                    모든 사용자용
                     .requestMatchers("/user/**", "/latestDetails", "/bookmark", "/contentDetail", "/review", "/", "/api/visitors").permitAll()
-                    .requestMatchers("/jsy/contents/**", "/jsy/ownerLogin", "/contents/**", "/detail/**", "/bestmenu/**", "/reservedSeat/**", "/isSeatAvailable/**","/getStoreLocation").permitAll()
+                    .requestMatchers("/jsy/contents/**", "/jsy/ownerLogin", "/contents/**", "/detail/**", "/reviews/**", "/bestmenu/**", "/reservedSeat/**", "/isSeatAvailable/**","/getStoreLocation").permitAll()
                     .requestMatchers("/api/**", "/auth/**", "/api/auth/signup").permitAll()
                     .requestMatchers("/api/visitors", "/api/visitors/**","/reserveMenu/**").permitAll()
 
