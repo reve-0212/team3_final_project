@@ -112,6 +112,7 @@ public class UserController {
   public List<RrsmDTO> getMenu(@RequestParam int reservationIdx, @RequestParam int restaurantIdx) {
     System.out.println("reservationIdx : " + reservationIdx);
     System.out.println("restaurantIdx : " + restaurantIdx);
+
     return userService.getMenu(reservationIdx, restaurantIdx);
   }
 
@@ -133,9 +134,9 @@ public class UserController {
   }
 
   //  좌석 조회하기
-  @GetMapping("/loadSeat/{resIdx}")
-  public ResponseEntity<PreResponse> loadSeat(@PathVariable int resIdx) {
-    List<SeatDTO> seats = userService.loadSeat(resIdx);
+  @GetMapping("/userLoadSeat/{useResIdx}")
+  public ResponseEntity<PreResponse> loadSeat(@PathVariable int useResIdx) {
+    List<SeatDTO> seats = userService.loadSeat(useResIdx);
 //        System.out.println("API 요청: " + resIdx);
 
     if (seats != null && !seats.isEmpty()) {

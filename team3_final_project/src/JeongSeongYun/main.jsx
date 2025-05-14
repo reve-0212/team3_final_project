@@ -148,11 +148,11 @@ function main() {
               <Route path={"/review"} element={<SjhReview/>}/>
 
               {/*모바일 전용 사장 로그인*/}
-              <Route path={"/pre/login"} element={<OwnerLoginSjh/>}/>
+              <Route path={"/pre/web/login"} element={<OwnerLoginSjh/>}/>
               {/*웨이팅 웹앱*/}
-              <Route path="/pre/PreWait" element={<PreWait/>}/>
+              <Route path="/pre/web/PreWait" element={<PreWait/>}/>
               {/*예약 웹앱*/}
-              <Route path="/pre/PreReserve" element={<PreReserve/>}/>
+              <Route path="/pre/web/PreReserve" element={<PreReserve/>}/>
 
               <Route path={"/*"} element={<ErrorPage/>}/>
             </Routes>

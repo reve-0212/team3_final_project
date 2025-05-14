@@ -106,7 +106,7 @@ public class SecurityConfig {
 
                     //로그인한 사용자용
                     .requestMatchers("/waiting/**", "/book/**", "/latestDetails", "/book/info").hasRole("USER")
-                    .requestMatchers(GET, "/userReservation", "/getBook", "/loadSeat/**","/getMenuInfo","/getStoreInfo","/getMenu").hasRole("USER")
+                    .requestMatchers(GET, "/userReservation", "/getBook", "/userLoadSeat/**","/getMenuInfo","/getStoreInfo","/getMenu").hasRole("USER")
                     .requestMatchers(PUT, "/cancelBook", "/reserveSeat","/reserveMenu","/saveHistory").hasRole("USER")
 
 //                    모든 사용자용

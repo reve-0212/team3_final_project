@@ -26,7 +26,7 @@ function VisitPage() {
   const userIdxStore = useUserStore((state) => state.user)
   const res = useResStoreSjh((state) => state.res)
   const setPeople = usePeopleStore((state) => state.setPeople)
-
+8
   useEffect(() => {
     console.log(res)
   }, [res]);
