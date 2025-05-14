@@ -18,7 +18,7 @@ function OwnerLogin() {
         const userData = { userId, userPass };
         console.log(userData);
 
-        axios.post("http://localhost:8080/pre/login", userData, {
+        axios.post("http://localhost:8080/pre/owner/login", userData, {
             headers: {
                 'Content-Type': 'application/json'
             }

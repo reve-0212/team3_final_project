@@ -6,6 +6,7 @@ function SeatManager() {
     const [elements, setElements] = useState([]);
     const [isModified, setIsModified] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
+    const [selectedSeat, setSelectedSeat] = useState(null); // 수정할 좌석을 선택하기 위한 상태 추가
 
     const elementImages = {
         "입구": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTESmRSGmfn9fst6CzAeCwniu3Wm4qVKZPlxw&s",
@@ -39,17 +40,23 @@ function SeatManager() {
     };
 
     const updateSeat = (id, x, y) => {
+        if (!id) return;
         const token = localStorage.getItem('jwtToken');
         if (!token) {
             alert("로그인이 필요합니다.");
             return;
         }
 
-        axios.put("http://localhost:8080/pre/seats/update", {
-            seatId: id,
+        const updatedSeat = elements.find(el => el.id === id);
+        if (!updatedSeat) return;
+
+        const cleanSeat = {
+            seatId: updatedSeat.id,
             x: x,
             y: y
-        }, {
+        };
+
+        axios.put("http://localhost:8080/pre/owner/seats/update", [cleanSeat], {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
@@ -61,65 +68,52 @@ function SeatManager() {
         });
     };
 
-    // 좌표 드래그
     const hDr = (id, e, data) => {
         const currentEl = elements.find(el => el.id === id);
+        if (!currentEl) return;
+
         const size = getSize(currentEl.type);
+        const newX = Math.min(Math.max(0, data.x), 830);
+        const newY = Math.min(Math.max(0, data.y), 290);
 
-        const newX = Math.min(Math.max(0, data.x), 830);  // X 좌표 제한
-        const newY = Math.min(Math.max(0, data.y), 290);  // Y 좌표 제한
-
-        // 좌석이 겹치는지 확인
         const overlapping = isOverlapping(newX, newY, size, size);
         if (overlapping) return;
 
-        // 위치 업데이트만 수행, ID는 변경되지 않도록 함
-        setElements(prev => {
-            const updatedElements = prev.map(el =>
-                el.id === id ? { ...el, x: newX, y: newY } : el  // 동일한 ID에 대해 위치만 변경
-            );
-
-            console.log('Updated elements after setElements:', updatedElements);  // 업데이트된 상태 로그
-
-            return updatedElements;
-        });
-
+        setElements(prev => prev.map(el =>
+            el.id === id ? { ...el, x: newX, y: newY } : el
+        ));
+        updateSeat(id, newX, newY);
         setIsModified(true);
-        updateSeat(id, newX, newY);  // 서버에 새로운 위치 저장
     };
 
+    const deleteEl = () => {
+        if (elements.length === 0) return;
+        const lastSeat = elements[elements.length - 1];
 
-    // 좌석 삭제
-        const deleteEl = () => {
-            // 삭제할 좌석의 ID를 추출 (예시: 마지막 좌석의 ID)
-            const deleteSeat = elements[elements.length - 1].id;
+        const token = localStorage.getItem('jwtToken');
+        if (!token) {
+            alert("로그인이 필요합니다.");
+            return;
+        }
 
-            // JWT 토큰 가져오기
-            const token = localStorage.getItem('jwtToken');
-            if (!token) {
-                alert("로그인이 필요합니다.");
-                return;
-            }
+        const updatedElements = elements.filter(el => el.id !== lastSeat.id);
+        setElements(updatedElements);
+        setIsModified(true);
 
-            // 서버에 삭제 요청 보내기
-            axios.delete(`http://localhost:8080/pre/seats/delete/${deleteSeat}`, {
+        if (lastSeat.id) {
+            axios.delete(`http://localhost:8080/pre/owner/seats/delete/${lastSeat.id}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 }
             }).then(() => {
                 console.log("좌석 삭제 완료");
-                // 배열에서 마지막 요소 삭제 (UI 업데이트)
-                setElements(prev => prev.slice(0, -1));
-                setIsModified(true);
             }).catch(error => {
                 console.error("좌석 삭제 실패:", error.response ? error.response.data : error.message);
             });
-        };
+        }
+    };
 
-
-
-    // 좌석 배치도 저장
     const saveToServer = () => {
         if (isSaving) return;
         setIsSaving(true);
@@ -131,7 +125,7 @@ function SeatManager() {
             return;
         }
 
-        axios.post("http://localhost:8080/pre/seats/save", elements, {
+        axios.post("http://localhost:8080/pre/owner/seats/save", elements, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
@@ -147,7 +141,6 @@ function SeatManager() {
         });
     };
 
-    // db에 저장된 좌석 배치도 불러오기
     useEffect(() => {
         const token = localStorage.getItem("jwtToken");
         if (!token) {
@@ -155,7 +148,7 @@ function SeatManager() {
             return;
         }
 
-        axios.get("http://localhost:8080/pre/seats/load", {
+        axios.get("http://localhost:8080/pre/owner/seats/load", {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`
@@ -182,7 +175,6 @@ function SeatManager() {
         });
     }, []);
 
-    // 좌석 추가하기
     const addEl = (type) => {
         const newSeat = {
             id: elements.length + 1,
@@ -194,11 +186,13 @@ function SeatManager() {
             isReserved: false,
             res_idx: null,
         };
-        setElements(prev => [...prev, newSeat]);  // 새로운 좌석을 추가
+        setElements(prev => [...prev, newSeat]);
         setIsModified(true);
     };
 
-
+    const handleSelectSeat = (seat) => {
+        setSelectedSeat(seat); // 클릭한 좌석을 선택하여 selectedSeat 상태에 저장
+    };
 
     return (
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "600px", padding: "2rem" }}>
@@ -211,22 +205,23 @@ function SeatManager() {
                     <button onClick={() => addEl("6인석")}>+ 6인석 추가</button>
                     <button onClick={deleteEl} disabled={elements.length === 0}>⎌ 좌석 삭제</button>
                     <button onClick={saveToServer} disabled={!isModified || isSaving}>저장</button>
+                    <button onClick={() => updateSeat(selectedSeat?.id, selectedSeat?.x, selectedSeat?.y)} disabled={!selectedSeat}>수정</button> {/* 수정버튼 활성화 조건 추가 */}
                 </div>
                 <div style={{
-                    width: "100%", height: "400px", backgroundColor: "#FFFFFF",border:"1px solid black", position: "relative",
+                    width: "100%", height: "400px", backgroundColor: "#FFFFFF", border: "1px solid black", position: "relative",
                     borderRadius: "5px", overflow: "hidden"
                 }}>
-                    {elements.map((seat) => (
+                    {elements.map((seat, index) => (
                         <Draggable
-                            key={seat.id}
+                            key={index}
                             position={{ x: seat.x, y: seat.y }}
                             onStop={(e, data) => hDr(seat.id, e, data)}
                         >
                             <div style={{
                                 position: "absolute", width: `${getSize(seat.type)}px`, height: `${getSize(seat.type)}px`,
-                                backgroundColor: "#FFFFFF",border:"1px solid black", borderRadius: "5px", display: "flex", justifyContent: "center",
+                                backgroundColor: "#FFFFFF", border: "1px solid black", borderRadius: "5px", display: "flex", justifyContent: "center",
                                 alignItems: "center", padding: "5px", cursor: "move", boxShadow: "0 4px 8px rgba(0,0,0,0.2)"
-                            }}>
+                            }} onClick={() => handleSelectSeat(seat)}>
                                 <img
                                     src={seat.image}
                                     alt={seat.type}

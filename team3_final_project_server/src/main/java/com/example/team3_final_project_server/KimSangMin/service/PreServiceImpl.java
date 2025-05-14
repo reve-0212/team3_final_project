@@ -79,8 +79,13 @@ public class PreServiceImpl implements PreService {
   //    좌석 수정
   @Override
   public boolean updateSeats(List<SeatDTO> seats) {
-    int result = preMapper.updateSeats(seats);
-    return result > 0;
+    int updated = 0;
+    for (SeatDTO seat : seats) {
+      if (seat.getSeatId() != null) {
+        updated += preMapper.updateSeats(seats);
+      }
+    }
+    return updated == seats.size();
   }
 
   //    좌석 삭제
