@@ -1,9 +1,6 @@
 package com.example.team3_final_project_server.KimSangMin.service;
 
-import com.example.team3_final_project_server.dto.ResponseDTO;
-import com.example.team3_final_project_server.dto.RestaurantDTO;
-import com.example.team3_final_project_server.dto.SeatDTO;
-import com.example.team3_final_project_server.dto.TimeDTO;
+import com.example.team3_final_project_server.dto.*;
 
 import java.util.List;
 
@@ -40,4 +37,6 @@ public interface PreService {
   boolean updateSeats(SeatDTO seat);
 
   boolean deleteSeate(Integer seatId, Integer resIdx);
+
+  boolean cateSave(CategoryDTO category);
 }

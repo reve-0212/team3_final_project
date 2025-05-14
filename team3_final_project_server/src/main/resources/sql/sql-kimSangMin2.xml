@@ -10,6 +10,11 @@
         VALUES (#{resIdx}, #{type}, #{name}, #{x}, #{y}, #{image}, #{isSelected})
     </insert>
 
+    <insert id="cateSave">
+        INSERT INTO category (res_idx, category_addr, category_name, category_tag )
+        VALUES (#{resIdx}, #{categoryAddr} , #{categoryName}, #{categoryTag} )
+    </insert>
+
     <select id="checkSeatExists" resultType="boolean">
         SELECT COUNT(*) > 0
         FROM seat_table

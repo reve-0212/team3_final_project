@@ -101,6 +101,13 @@ public class PreServiceImpl implements PreService {
     return result > 0;
   }
 
+//  카테고리 생성
+  @Override
+  public boolean cateSave(CategoryDTO category) {
+    int result = preMapper.cateSave(category);
+    return result > 0;
+  }
+
 
   // 가게 정보 수정하기
   @Override

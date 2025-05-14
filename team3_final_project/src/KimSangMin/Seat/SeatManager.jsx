@@ -287,7 +287,7 @@ function SeatManager() {
                     // 기존 좌석과 새로운 좌석을 결합하여 반환
                     return [...prevElements, ...newElements];
                 });
-            }
+             }
             setIsModified(false);
         }).catch(() => {
             console.error("좌석 불러오기 실패");

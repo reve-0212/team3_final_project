@@ -63,6 +63,7 @@ function PreReSet() {
     {value: "감전동", label: "감전동"},
   ];
 
+
   //  이미지 업로드
   const [img, setImg] = useState(["", "", ""]);
   // 미리보기 활성화 여부
@@ -131,8 +132,6 @@ function PreReSet() {
   const hfChange = (e, field) => {
     setRestData({...restData, [field]: e.target.value});
   };
-
-
 
 
   // 데이터 불러오기
@@ -337,29 +336,9 @@ function PreReSet() {
                 className="form-control"
                 style={{width: "300px", height: "50px", display: "inline-block", marginRight: "10px"}}
             />
-            {/*<button type="button" onClick={hSearch} className="btn btn-outline-warning btn-sm">*/}
-            {/*  검색*/}
-            {/*</button>*/}
             <button type="button" onClick={openDaumPostcode} className="btn btn-outline-warning btn-sm">
               검색
             </button>
-
-            {/*/!* 검색 후 결과 선택 시 값 입력됨 *!/*/}
-            {/*<ul style={{marginTop: "10px"}}>*/}
-            {/*  {searchResults.map((result, index) => (*/}
-            {/*      <li*/}
-            {/*          key={index}*/}
-            {/*          style={{cursor: "pointer"}}*/}
-            {/*          onClick={() => {*/}
-            {/*            hfChange({target: {value: result.address_name}}, "Address1");*/}
-            {/*            setSearchResults([]);*/}
-            {/*            setAddress("");*/}
-            {/*          }}*/}
-            {/*      >*/}
-            {/*        📍 {result.address_name}*/}
-            {/*      </li>*/}
-            {/*  ))}*/}
-            {/*</ul>*/}
           </div>
 
           <hr/>

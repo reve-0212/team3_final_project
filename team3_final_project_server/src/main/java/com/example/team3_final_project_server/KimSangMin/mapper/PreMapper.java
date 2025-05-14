@@ -1,5 +1,6 @@
 package com.example.team3_final_project_server.KimSangMin.mapper;
 
+import com.example.team3_final_project_server.dto.CategoryDTO;
 import com.example.team3_final_project_server.dto.RestaurantDTO;
 import com.example.team3_final_project_server.dto.SeatDTO;
 import com.example.team3_final_project_server.dto.TimeDTO;
@@ -34,4 +35,6 @@ public interface PreMapper {
     void saveSeat(SeatDTO seat);
 
     boolean checkSeatExists(SeatDTO seat);
+
+    int cateSave(CategoryDTO category);
 }

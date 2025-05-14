@@ -177,6 +177,33 @@ public class PreController {
     }
   }
 
+
+  @PostMapping("/pre/owner/saveCate")
+  public ResponseEntity<PreResponse> cateSave(@RequestBody CategoryDTO category, @RequestHeader("Authorization") String authorization) {
+    try {
+      ResponseDTO jwtInfo = preService.tokenCheck(authorization);
+      int userIdx = jwtInfo.getUserIdx();
+
+      Integer resIdx = preService.findResIdx(userIdx);
+
+      // 저장 처리
+      boolean success = preService.cateSave(category);
+      category.setResIdx(resIdx);
+
+      if (success) {
+        PreResponse response = new PreResponse(true, "정보 저장 성공", category);
+        return ResponseEntity.ok(response);
+      } else {
+        PreResponse response = new PreResponse(false, "정보 저장 실패", null);
+        return ResponseEntity.badRequest().body(response);
+      }
+    } catch (Exception e) {
+      PreResponse response = new PreResponse(false, "토큰이 유효하지 않거나 인증 실패", null);
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
+  }
+
+
   // 가게 정보 불러오기
   @GetMapping("/pre/owner/getRestaurant")
   public ResponseEntity<PreResponse> getRest(@RequestHeader("Authorization") String authorization) {
@@ -232,4 +259,7 @@ public class PreController {
       return ResponseEntity.badRequest().body(response);
     }
   }
+
+
+
 }
