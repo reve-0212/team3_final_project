@@ -103,7 +103,7 @@
             menu_sort AS menuSort
         FROM menu
         WHERE res_idx = #{resIdx}
-        ORDER BY menu_sort ASC
+        ORDER BY menu_sort DESC
     </select>
 
 <!--    메뉴 리스트 페이지에서 숨기기 해제-->
@@ -125,7 +125,7 @@
         INSERT INTO menu
             (res_idx, menu_name, menu_price, menu_explanation, menu_image, menu_hidden, menu_sold_out, menu_sort)
         VALUES
-            (#{resIdx}, #{menuName}, #{menuPrice}, #{menuExplanation}, #{menuImage}, #{menuHidden}, #{menuSoldOut}, #{menuSort})
+            (#{resIdx}, #{menuName}, #{menuPrice}, #{menuExplanation}, #{menuImage}, #{menuHidden, jdbcType=VARCHAR}, #{menuSoldOut, jdbcType=VARCHAR}, #{menuSort})
     </insert>
 
     <select id="selectMaxMenuSort" resultType="int">
@@ -139,9 +139,32 @@
     <update id="updateMenuList">
         UPDATE menu
         SET
-            menu_sort = #{menuSort}
-            menu_hidden = #{menuHidden}
+            menu_sort = #{menuSort},
+            menu_hidden = #{menuHidden},
             menu_sold_out = #{menuSoldOut}
         WHERE menu_idx = #{menuIdx}
     </update>
+
+<!--    menuEdit 페이지에서 기본 정보 불러오기-->
+    <select id="getMenuById" resultType="com.example.team3_final_project_server.dto.MenuDTO">
+        SELECT menu_idx, menu_name, menu_price, menu_explanation, menu_image
+        FROM menu
+        WHERE menu_idx = #{menuIdx}
+    </select>
+
+<!--    메뉴 정보 수정-->
+    <update id="editMenu" parameterType="com.example.team3_final_project_server.dto.MenuDTO">
+        UPDATE menu
+        SET
+            menu_name = #{menuName},
+            menu_price = #{menuPrice},
+            menu_explanation = #{menuExplanation},
+            menu_image = #{menuImage}
+        WHERE menu_idx = #{menuIdx}
+    </update>
+<!--    메뉴 삭제-->
+    <delete id="deleteMenu" parameterType="int">
+        DELETE FROM menu
+        WHERE menu_idx = #{menuIdx}
+    </delete>
 </mapper>

@@ -149,7 +149,7 @@ function CeoMenuList() {
                                         {filteredMenu.map(menu => (
                                             <li key={menu.menuIdx}
                                                 className="border-bottom py-3 d-flex align-items-start justify-content-between flex-wrap menu-item"
-                                                onClick={() => handleEdit(menu.id)}>
+                                                onClick={() => handleEdit(menu.menuIdx)}>
                                                 {/* 1. 이름, 가격 */}
                                                 <div style={{ flexBasis: '30%', flexShrink: 0 }}>
                                                     <h5 className="mb-1">

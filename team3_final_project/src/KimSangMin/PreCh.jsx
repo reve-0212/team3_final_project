@@ -147,30 +147,34 @@ function PreCh() {
                   <h3 className={'mb-0'} style={{color: '#FFCD83'}}>
                     {filteredData.reduce((sum, item) => sum + item.totalPrice, 0).toLocaleString()}원
                   </h3>
-                </div>{!loading && (
-                <table
-                    className={'table table-bordered table-sm text-center'}
-                    style={{tableLayout: 'fixed', width: '100%', fontSize: '14px'}}
-                >
-                  <thead>
-                  <tr>
-                    <th>메뉴</th>
-                    <th>가격</th>
-                    <th>판매량</th>
-                    <th>메뉴별 매출</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  {filteredData.map((item, idx) => (
-                      <tr key={idx}>
-                        <td>{item.menuName}</td>
-                        <td>{item.price.toLocaleString()}원</td>
-                        <td>{item.count}개</td>
-                        <td>{item.totalPrice.toLocaleString()}원</td>
-                      </tr>
-                  ))}
-                  </tbody>
-                </table>)}
+                </div>
+                  {!loading && (
+                      <div  style={{maxHeight: '35vh', overflowY: 'auto'}}>
+                        <table
+                            className={'table table-bordered table-sm text-center PreChTable'}
+                            style={{tableLayout: 'fixed', width: '100%', fontSize: '14px' }}
+                        >
+                          <thead>
+                          <tr>
+                            <th>메뉴</th>
+                            <th>가격</th>
+                            <th>판매량</th>
+                            <th>메뉴별 매출</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          {filteredData.map((item, idx) => (
+                              <tr key={idx}>
+                                <td>{item.menuName}</td>
+                                <td>{item.price.toLocaleString()}원</td>
+                                <td>{item.count}개</td>
+                                <td>{item.totalPrice.toLocaleString()}원</td>
+                              </tr>
+                          ))}
+                          </tbody>
+                        </table>
+                      </div>
+                  )}
               </div>
             </div>
           </div>

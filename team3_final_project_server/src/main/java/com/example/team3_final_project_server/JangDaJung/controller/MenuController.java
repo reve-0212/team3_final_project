@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -49,85 +50,78 @@ public class MenuController {
 
     //    새 메뉴 등록하기
     @PostMapping("/newMenu")
-    public ResponseEntity<Void> newMenu(
-        @ModelAttribute MenuDTO menuDTO,
-        @RequestParam(value = "menuImage", required = false) MultipartFile menuImage) {
+    public ResponseEntity<Void> newMenu(@RequestBody MenuDTO menuDTO) {
         System.out.println("Received MenuDTO: " + menuDTO.toString());
         try {
-            String imagePath = null;
-            if (menuImage != null && !menuImage.isEmpty()) {
-                imagePath = saveImage(menuImage);
-            }
-
-            // 이미지 경로 세팅
-            menuDTO.setMenuImage(imagePath);
-
-            // 정렬 번호 자동 설정
+            // menuImage는 클라이언트가 보낸 URL 그대로 사용
             int maxMenuSort = jdjService.selectMaxMenuSort(menuDTO.getResIdx());
             menuDTO.setMenuSort(maxMenuSort + 1);
 
             jdjService.newMenu(menuDTO);
             return ResponseEntity.ok().build();
-
-        } catch (IOException e) {
+        }
+        catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-//    (
-//        @RequestParam("resIdx") int resIdx,
-//        @RequestParam("menuName") String menuName,
-//        @RequestParam("menuPrice") int menuPrice,
-//        @RequestParam("menuExplanation") String menuExplanation,
-//        @RequestParam(value = "menuImage", required = false) MultipartFile menuImage,
-//        @RequestParam("menuHidden") boolean menuHidden,
-//        @RequestParam("menuSoldOut") boolean menuSoldOut,
-//        @RequestParam("menuSort") int menuSort) {
-//
-//        try {
-//            // 1. 메뉴 이미지 저장 (서버에 파일 저장 후 경로 반환)
-//            String imagePath = null;
-//            if (menuImage != null && !menuImage.isEmpty()) {
-//                imagePath = saveImage(menuImage);  // 이미지 저장 함수
-//            }
-//            // 2. MenuDTO 객체 생성 후 값 설정
-//            MenuDTO menu = new MenuDTO();
-//            menu.setResIdx(resIdx);
-//            menu.setMenuName(menuName);
-//            menu.setMenuPrice(menuPrice);
-//            menu.setMenuExplanation(menuExplanation);
-//            menu.setMenuImage(imagePath); // 이미지 경로 추가
-//            menu.setMenuHidden(menuHidden);
-//            menu.setMenuSoldOut(menuSoldOut);
-//            menu.setMenuSort(menuSort);
-//
-//            // 3. DB에 메뉴 등록 (메뉴 저장 로직)
-//            jdjService.newMenu(menu);
-//
-//            return ResponseEntity.ok().build(); // 성공적으로 처리된 경우
-//        }
-//        catch (IOException e) {
-//            // 파일 저장 오류 처리
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
-//    }
 
-    // 이미지 저장 (서버에 저장 후 경로 반환)
-    private String saveImage(MultipartFile menuImage) throws IOException {
-        String uploadDir = "/path/to/save/images/"; // 서버에 이미지 저장할 경로
-        String fileName = UUID.randomUUID().toString() + "_" + menuImage.getOriginalFilename(); // 파일 이름 생성
-        Path filePath = Paths.get(uploadDir, fileName); // 저장 경로
+    //    menuEdit 페이지에서 기본 정보 불러오기
+    @GetMapping("/{menuIdx}")
+    public ResponseEntity<MenuDTO> getMenuById(@PathVariable int menuIdx) {
+        MenuDTO menuDTO = jdjService.getMenuById(menuIdx);
+        return ResponseEntity.ok(menuDTO);
+    }
 
-        // 파일 저장
-        Files.copy(menuImage.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+//    메뉴 정보 수정 페이지
+    @PutMapping("/edit/{menuIdx}")
+    public ResponseEntity<?> editMenu(
+        @PathVariable int menuIdx,
+        @RequestParam("menuName") String menuName,
+        @RequestParam("menuPrice") int menuPrice,
+        @RequestParam("menuExplanation") String menuExplanation,
+        @RequestParam("menuImage") String menuImage
+        ) {
+        System.out.println("Received menuIdx: " + menuIdx);
+        // menuIdx가 0일 경우, 오류를 반환하도록 처리
+        if (menuIdx == 0) {
+            return ResponseEntity.badRequest().body("Invalid menuIdx");
+        }
 
-        // 저장된 이미지 파일 경로 반환
-        return "/images/" + fileName;
+        try {
+            jdjService.editMenu(menuIdx, menuName, menuPrice, menuExplanation, menuImage);
+            return ResponseEntity.ok("수정 성공");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("수정 실패: " + e.getMessage());
+        }
     }
 
 //    메뉴 리스트 수정 페이지
-    @PutMapping("/listEdit")
+    @Transactional
+    @PostMapping("/listEdit")
     public ResponseEntity<?> updateMenuList(@RequestBody List<MenuDTO> menus) {
-        jdjService.updateMenuList(menus);
-        return ResponseEntity.ok().build();
+        try {
+            for (MenuDTO menuDTO : menus) {
+                jdjService.updateMenuList(menuDTO);
+            }
+            System.out.println("Updating menu list: " + menus);
+            return ResponseEntity.ok().build();
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("저장 실패");
+        }
+    }
+
+//    메뉴 삭제
+    @DeleteMapping("/delete/{menuIdx}")
+    public ResponseEntity<String> deleteMenu(@PathVariable int menuIdx) {
+        try {
+            jdjService.deleteMenu(menuIdx);
+            return ResponseEntity.ok("메뉴가 삭제되었습니다.");
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("메뉴 삭제 실패: " + e.getMessage());
+        }
     }
 }

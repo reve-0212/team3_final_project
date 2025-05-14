@@ -10,7 +10,7 @@ public class MenuDTO {
   private int menuPrice;
   private String menuExplanation;
   private String menuImage;
-  private boolean menuHidden;
-  private boolean menuSoldOut;
+  private boolean menuHidden = false;
+  private boolean menuSoldOut = false;
   private int menuSort; // 정렬 순서용
 }
