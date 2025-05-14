@@ -2,50 +2,73 @@ import React, {useEffect, useState} from 'react';
 import Button from "./Button.jsx";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
-import useRestaurantStore from "../../stores/useRestaurantStore.jsx";
 import useUserStore from "../../stores/useUserStore.jsx";
 import useReservationIdxStore from "../../stores/useReservationIdxStore.jsx"
+import useResStoreSjh from "../../stores/useResStoreSjh.jsx";
+import usePeopleStore from "../../stores/usePeopleStore.jsx";
+import useRsvDateTimeStore from "../../stores/useRsvDateTimeStore.jsx";
 
 const MenuSelector = () => {
+  const Nv = useNavigate();
+  const [menuItems, setMenuItems] = useState([]);
+  const [quantities, setQuantities] = useState({});
+
+  const userStore = useUserStore((state) => state.user)
+  const res = useResStoreSjh((state) => state.res)
+  const people = usePeopleStore((state) => state.people)
+  const rsvDateTime = useRsvDateTimeStore((state) => state.rsvDateTime)
+  const [allPeople, setAllPeople] = useState(0)
+
+  const resIdx = res.resIdx
+  const userIdx = userStore.userIdx
+
   // 좌석 세팅에서 선택한 reservationIdx 가지고 있기
   const reservationIdx = useReservationIdxStore((state) => state.reservationIdx)
+
+  useEffect(() => {
+    console.log("userIdx")
+    console.log(userIdx)
+  }, [userIdx])
+
+  useEffect(() => {
+    console.log("resIdx")
+    console.log(resIdx)
+  }, [resIdx]);
 
   useEffect(() => {
     console.log("reservationIdx")
     console.log(reservationIdx)
   }, [reservationIdx]);
 
+  useEffect(() => {
+    console.log("people")
+    console.log(people)
+    console.log("people.woman")
+    console.log(people.woman)
+    console.log("people.man")
+    console.log(people.man)
+    console.log("people.baby")
+    console.log(people.baby)
 
-  // 이전 페이지에서 전달받은 예약 정보
-  // const {
-  //   // userIdx,
-  //   // resIdx,
-  //   rsvDate,
-  //   rsvTime,
-  // } = location.state || {};
-  // console.log(rsvDate)
-  // console.log(rsvTime)
+    setAllPeople(people.woman + people.man + people.baby)
+  }, [people]);
+  console.log("-----allPeople-----")
+  console.log(allPeople)
 
-  const Nv = useNavigate();
-  const [menuItems, setMenuItems] = useState([]);
-  const [quantities, setQuantities] = useState({});
-  // const [reservationIdx, setReservationIdx] = useState(null);
+  useEffect(() => {
+    console.log("rsvDateTime")
+    console.log(rsvDateTime)
+  }, []);
 
-  const userStore = useUserStore((state) => state.user)
-  const resIdx = useRestaurantStore((state) => state.restaurantIdx);
-  const userIdx = userStore.userIdx
-  console.log("userIdx")
-  console.log(userIdx)
-  console.log("resIdx")
-  console.log(resIdx)
-
+  // window.addEventListener("popstate", () => {
+  //   console.log("뒤로가기")
+  // })
 
   // 메뉴 데이터 로드
   useEffect(() => {
     if (!resIdx) return; // resIdx가 없는 경우 API 호출을 하지 않도록 처리
 
-    axios
-      .get(`http://localhost:8080/api/menu/${resIdx}`)
+    axios.get(`http://localhost:8080/api/menu/${resIdx}`)
       .then(res => {
         console.log(res.data);
         setMenuItems(res.data);
@@ -56,45 +79,15 @@ const MenuSelector = () => {
       });
   }, [resIdx]);  // resIdx가 변경될 때마다 다시 데이터 로딩
 
-  // useEffect(() => {
-  //     axios.get(`http://localhost:8080/api/menu/${resIdx}`)
-  //         .then(res => {
-  //             console.log(res.data);
-  //             setReservationItem(res.data);
-  //         })
-  //         .catch(err => {
-  //             console.log(err);
-  //         });
-  // }, [resIdx]);
-
-
-  // 예약번호 조회
-  // useEffect(() => {
-  //   if (!userIdx || !resIdx || !rsvDate || !rsvTime) return;
-  //   axios.get(`http://localhost:8080/api/menu/find`, {
-  //     params: {
-  //       userIdx,
-  //       resIdx,
-  //       rsvDate,
-  //       rsvTime
-  //     }
-  //   })
-  //     .then(res => {
-  //       setReservationIdx(res.data.reservationIdx); // 예약번호 저장
-  //       console.log("예약번호:", res.data.reservationIdx);
-  //     })
-  //     .catch(err => {
-  //       console.error("예약 정보 조회 실패", err);
-  //     });
-  // }, [userIdx, resIdx, rsvDate, rsvTime]);
-
-
   const handleIncrease = (menuIdx) => {
     setQuantities((prev) => ({
       ...prev,
       [menuIdx]: (prev[menuIdx] || 0) + 1,
     }));
   };
+
+  console.log("-----menuItems-----")
+  console.log(menuItems)
 
   const handleDecrease = (menuIdx) => {
     setQuantities((prev) => {
@@ -117,29 +110,83 @@ const MenuSelector = () => {
       return;
     }
 
-    const menuList = Object.entries(quantities).map(([menuIdx, quantity]) => ({
-      menuIdx: parseInt(menuIdx),
-      quantity,
-    }));
+    const menuList = Object.entries(quantities).map(([menuIdx, quantity]) => {
+      // item.menuIdx 와 menuIdx 가 같은 것을 찾아 menu 에 넣는다
+      const menu = menuItems.find((item) => item.menuIdx === parseInt(menuIdx));
 
-    // const userIdx = 1; // 임의 사용자 ID
-    // const resIdx = 1; // 임의 예약 ID
-
-    axios.post(`http://localhost:8080/api/menu/${userIdx}/${resIdx}`, {
-      menuIdx: menuList
-    }, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`
+      // menu 안에 들어간 메뉴 이름과 가격을 가져온다
+      return {
+        menuIdx: parseInt(menuIdx),
+        menuName: menu.menuName,
+        menuPrice: menu.menuPrice,
+        quantity,
+        totalPrice: menu.menuPrice * quantity
       }
-    })
-      .then(() => {
-        alert("메뉴 선택이 완료되었습니다.");
-        Nv(`/book/reg/${userIdx}/${resIdx}`);
+    });
+
+    console.log("-----menuList-----")
+    console.log(menuList)
+
+    for (let i = 0; i < menuList.length; i++) {
+      console.log(menuList[i])
+      console.log(menuList[i].menuIdx)
+      console.log(menuList[i].menuName)
+      console.log(menuList[i].menuPrice)
+      console.log(menuList[i].quantity)
+      console.log(menuList[i].totalPrice)
+      console.log(allPeople)
+
+      axios.all([
+        axios.put("http://localhost:8080/reserveMenu", null, {
+          params: {
+            reservationIdx: reservationIdx,
+            menuIdx: menuList[i].menuIdx,
+            menuQuantity: menuList[i].quantity
+          }, headers: {
+            Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
+          }
+        }),
+        axios.put("http://localhost:8080/saveHistory", null, {
+          params: {
+            reservationIdx: reservationIdx,
+            resIdx: resIdx,
+            reservationDate: rsvDateTime,
+            rsvPeople: allPeople,
+            rsvMan: people.man,
+            rsvWoman: people.woman,
+            rsvBaby: people.baby,
+            menuIdx: menuList[i].menuIdx,
+            menuName: menuList[i].menuName,
+            menuPrice: menuList[i].menuPrice,
+            menuSCount: menuList[i].quantity,
+            menuSTP: menuList[i].totalPrice
+          }, headers: {
+            Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
+          }
+        })
+      ]).then(
+        axios.spread((res1, res2) => {
+          console.log(res1)
+          console.log(res2)
+        })
+      ).catch((err) => {
+        console.log(err)
       })
-      .catch((err) => {
-        alert("메뉴 전송 실패");
-        console.error(err);
-      });
+
+      // axios.put("http://localhost:8080/reserveMenu", null, {
+      //   params: {
+      //     reservationIdx: reservationIdx,
+      //     menuIdx: menuList[i].menuIdx,
+      //     menuQuantity: menuList[i].quantity
+      //   }, headers: {
+      //     Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
+      //   }
+      // }).then((res) => {
+      //   console.log(res)
+      // }).catch((err) => {
+      //   console.log(err)
+      // })
+    }
   };
 
   return (
@@ -233,7 +280,10 @@ const MenuSelector = () => {
                 </li>
               );
             })}
-            <Button btnName={'다음'} onClick={handleSubmit}/>
+            <Button btnName={'다음'} onClick={() => {
+              handleSubmit()
+              // Nv("/book/reg")
+            }}/>
           </ul>
         )}
       </div>

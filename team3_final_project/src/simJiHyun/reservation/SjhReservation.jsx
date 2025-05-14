@@ -12,8 +12,6 @@ function SjhReservation() {
   const [reservations, setReservations] = useState([])
   const user = useUserStore((state) => state.user)
 
-  // console.log("userIdx : " + user.userIdx)
-
   // 예약 여부 보기
   const userReservation = () => {
     axios.get(`http://localhost:8080/userReservation`, {
@@ -40,8 +38,8 @@ function SjhReservation() {
   const filteredReservations = reservations.filter(r => {
       // comeDatetime 에 값이 있으면 이용한거
       // cancelDatetime 에 값이 있으면 취소한거
-      const isVisited = r.reservation.rsvComeDatetime !== null
-      const isCancelled = r.reservation.rsvCancelDatetime !== null
+      const isVisited = r.reservationDTO?.rsvComeDatetime !== null
+      const isCancelled = r.reservationDTO?.rsvCancelDatetime !== null
 
       switch (filterType) {
         case "expected":
@@ -73,15 +71,14 @@ function SjhReservation() {
                   <SjhReservationCard
                     key={r.index}
                     filterType={r.filterType}
-                    reservationIdx={r.reservation.reservationIdx}
-                    restaurantIdx={r.restaurant.resIdx}
-                    isUse={r.reservation.rsvComeDatetime}
-                    isCancel={r.reservation.rsvCancelDatetime}
-                    restName={r.restaurant.resName}
-                    menuIdx={r.smenu.menuIdx}
-                    date={r.reservation.rsvDate}
-                    time={r.reservation.rsvTime}
-                    people={r.reservation.rsvPeople}/>
+                    reservationIdx={r.reservationDTO.reservationIdx}
+                    restaurantIdx={r.restaurantDTO.resIdx}
+                    isUse={r.reservationDTO.rsvComeDatetime}
+                    isCancel={r.reservationDTO.rsvCancelDatetime}
+                    restName={r.restaurantDTO.resName}
+                    date={r.reservationDTO.rsvDate}
+                    time={r.reservationDTO.rsvTime}
+                    people={r.reservationDTO.rsvPeople}/>
                 )
               )
             ) : (

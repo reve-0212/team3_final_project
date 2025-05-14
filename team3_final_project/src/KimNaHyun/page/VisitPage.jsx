@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import Button from "../components/Button.jsx";
-import useRestaurantStore from "../../stores/useRestaurantStore.jsx";
 import useUserStore from "../../stores/useUserStore.jsx";
 import useResStoreSjh from "../../stores/useResStoreSjh.jsx";
+import usePeopleStore from "../../stores/usePeopleStore.jsx";
 
 function VisitorBtn({gender, count, onChange}) {
   const increase = () => onChange(gender, count + 1);
@@ -23,12 +23,30 @@ function VisitorBtn({gender, count, onChange}) {
 
 function VisitPage() {
   const Nv = useNavigate();
-  const setResIdx = useRestaurantStore((state) => state.setRestaurantIdx);
   const userIdxStore = useUserStore((state) => state.user)
   const res = useResStoreSjh((state) => state.res)
-  console.log(res)
+  const setPeople = usePeopleStore((state) => state.setPeople)
+8
+  useEffect(() => {
+    console.log(res)
+  }, [res]);
 
   const [visitors, setVisitors] = useState({man: 0, woman: 0, baby: 0});
+
+  useEffect(() => {
+    console.log("visitors.man")
+    console.log(visitors.man)
+  }, [visitors.man]);
+
+  useEffect(() => {
+    console.log("visitors.woman")
+    console.log(visitors.woman)
+  }, [visitors.woman]);
+
+  useEffect(() => {
+    console.log("visitors.baby")
+    console.log(visitors.baby)
+  }, [visitors.baby]);
 
   const handleCountChange = (gender, quantity) => {
     setVisitors((prev) => ({
@@ -45,19 +63,11 @@ function VisitPage() {
 
     const userIdx = userIdxStore.userIdx;
     const resIdx = res.resIdx;
-    // setResIdx(resIdx);
+
+    setPeople(visitors)
 
     // 다음 페이지로 데이터 전달 (state로)
-    Nv(`/book/date/${userIdx}/${resIdx}`, {
-      state: {
-        userIdx,
-        resIdx,
-        rsvMan,
-        rsvWoman,
-        rsvBaby,
-        rsvPeople,
-      }
-    });
+    Nv(`/book/date/${userIdx}/${resIdx}`);
   };
 
   return (

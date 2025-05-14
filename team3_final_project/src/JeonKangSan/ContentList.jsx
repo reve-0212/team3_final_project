@@ -6,13 +6,14 @@ import {faBookmark} from "@fortawesome/free-solid-svg-icons";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import noImage from '../JeongSeongYun/img/noimage.jpg';
+import useRestaurantStore from "../stores/useRestaurantStore.jsx";
 
 
 function ContentList() {
-
-  // JSY 작업
-  const { category  } = useParams();
+  const {category} = useParams();
   const [restaurants, setRestaurants] = useState([]);
+  const setResIdx = useRestaurantStore((state) => state.setRestaurantIdx)
+
   console.log("category : " + category)
 
   useEffect(() => {
@@ -26,7 +27,7 @@ function ContentList() {
   useEffect(() => {
     console.log("restaurants")
     console.log(restaurants);
-  },[restaurants])
+  }, [restaurants])
 
 
   const Nv = useNavigate();
@@ -53,10 +54,10 @@ function ContentList() {
         {/* 지역 선택 콤보박스 */}
         <div className="position-relative">
           <select
-              className="btn-jks btn-sm button-seebox me-auto text-start"
-              style={{ width: 'auto', appearance: 'none' }}
-              aria-label="지역 선택"
-              onChange={(e) => Nv(`/contentList/${category}/${e.target.value}`)}
+            className="btn-jks btn-sm button-seebox me-auto text-start"
+            style={{width: 'auto', appearance: 'none'}}
+            aria-label="지역 선택"
+            onChange={(e) => Nv(`/contentList/${category}/${e.target.value}`)}
           >
             <option value="중구">중구</option>
             <option value="서구">서구</option>
@@ -105,24 +106,34 @@ function ContentList() {
       <div className="mb-5">
 
         {restaurants.map((res, index) => (
-          <div className="card mb-4" style={{ cursor: 'pointer' }} key={index}>
+          <div className="card mb-4" style={{cursor: 'pointer'}} key={index}>
             <div className="card-body text-start">
               <div className="d-flex justify-content-between align-items-center">
                 <h5 className="card-title mb-0 fw-semibold flex-fill"
-                    onClick={() => Nv(`/resdetail/${res.resIdx}`)}>
+                    onClick={() => {
+                      setResIdx(res.resIdx)
+                      Nv(`/resdetail/${res.resIdx}`)
+                    }}>
                   {res.resName || "식당 이름"}
                 </h5>
                 <button className="btn-jks btn-sm" onClick={() => toggleBookmark(res.resIdx)}>
-                  <FontAwesomeIcon icon={bookmarks[res.resIdx] ? faBookmark : faBookmarkRegular} />
+                  <FontAwesomeIcon icon={bookmarks[res.resIdx] ? faBookmark : faBookmarkRegular}/>
                 </button>
               </div>
 
               {/*1. resDetail 로 가고 싶으지 아니면 contentDetail 로 가고싶은지?*/}
 
-              <p className="card-text my-2" onClick={() => Nv(`/resdetail/${res.resIdx}`)}>
+              <p className="card-text my-2" onClick={() => {
+                setResIdx(res.resIdx)
+                Nv(`/resdetail/${res.resIdx}`)
+              }}>
                 ⭐ {res.avgRating || "0.0"}
               </p>
-              <small className="text-muted d-flex flex-fill" onClick={() => Nv(`/resdetail/${res.resIdx}`)}>
+              <small className="text-muted d-flex flex-fill" onClick={() => {
+                setResIdx(res.resIdx)
+                Nv(`/resdetail/${res.resIdx}`)
+              }}
+              >
                 {res.categoryName || "카테고리"} · {res.resAddress1 || "주소"}
               </small>
               <div className="d-flex gap-2 my-2">
@@ -137,15 +148,19 @@ function ContentList() {
               </div>
             </div>
 
-            <div className="px-3 pb-3" onClick={() => Nv(`/resdetail/${res.resIdx}`)}>
+            <div className="px-3 pb-3" onClick={() => {
+              setResIdx(res.resIdx)
+              Nv(`/resdetail/${res.resIdx}`)
+            }}
+            >
               <div className="d-flex justify-content-between gap-2 position-relative">
                 {[res.resImage1, res.resImage2, res.resImage3].map((imgSrc, i) => (
-                  <div className="rounded overflow-hidden" style={{ width: '33.3%', height: '150px' }} key={i}>
+                  <div className="rounded overflow-hidden" style={{width: '33.3%', height: '150px'}} key={i}>
                     <img
                       src={imgSrc || noImage}
                       alt={`음식${i + 1}`}
                       className="w-100 h-100"
-                      style={{ objectFit: 'cover' }}
+                      style={{objectFit: 'cover'}}
                     />
                   </div>
                 ))}

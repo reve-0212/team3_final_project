@@ -19,6 +19,10 @@ function SjhLocation() {
     lng: 0
   })
 
+  useEffect(() => {
+    console.log(myLocation)
+  }, [myLocation]);
+
   // 가게 위치
   const [storePositions, setStorePositions] = useState([])
 
@@ -71,6 +75,7 @@ function SjhLocation() {
           style={{
             whiteSpace: "nowrap",
             margin: "10px",
+            borderRadius:"10px"
           }} onClick={() => {
           Nv(`/resdetail/${markerId}`)
         }}>

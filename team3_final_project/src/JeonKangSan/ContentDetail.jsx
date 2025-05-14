@@ -9,14 +9,17 @@ import {useNavigate, useParams} from "react-router-dom";
 import useUserStore from "../stores/useUserStore.jsx";
 import {Map, MapMarker, useKakaoLoader} from "react-kakao-maps-sdk";
 import useResStoreSjh from "../stores/useResStoreSjh.jsx";
+import useRestaurantStore from "../stores/useRestaurantStore.jsx";
 
 function ContentDetail() {
   const userStore = useUserStore((state) => state.user)
   const setRes = useResStoreSjh((state) => state.setRes)
+  const resIdxDetail = useRestaurantStore((state) => state.restaurantIdx)
+  console.log("-----residx-----")
+  console.log(resIdxDetail)
 
   useKakaoLoader({appkey: import.meta.env.VITE_REACT_APP_KAKAO_MAP_API_KEY})
-  // console.log(userStore.userIdx)
-  const userIdx = userStore.userIdx
+  const userIdx = userStore && userStore.userIdx !== null ? userStore.userIdx : ""
 
   const [ActTab, setActTab] = useState("상세정보");
   const Nv = useNavigate();
@@ -24,7 +27,6 @@ function ContentDetail() {
   const [storeInfo, setStoreInfo] = useState({});
   const [bestMenus, setBestMenus] = useState([]);
   const [timeSlots, setTimeSlots] = useState([]);
-  const [selectedTime, setSelectedTime] = useState(null);
   const {resIdx} = useParams();
 
   const [parsedTags, setParsedTags] = useState([]);
@@ -40,13 +42,6 @@ function ContentDetail() {
     lat: 33.450701,
     lng: 126.570667
   })
-
-  // console.log(timeSlots)
-
-  // 현재 주소 값의 맨 뒤에서 1번째 값 가져옴
-  const pathIdx = window.location.pathname;
-  console.log(pathIdx[pathIdx.length - 1])
-  const shortPathIdx = pathIdx[pathIdx.length - 1]
 
   // const filteredAndSortedReviews = reviews
   //     .filter(review => {
@@ -72,7 +67,7 @@ function ContentDetail() {
   useEffect(() => {
     axios.all([
         // res1 : 가게 상세 정보 가져오기
-        axios.get(`http://localhost:8080/detail/${shortPathIdx}`),
+        axios.get(`http://localhost:8080/detail/${resIdxDetail}`),
         // res2 : 가게 메뉴 가져오기
         axios.get(`http://localhost:8080/bestmenu/${resIdx}`),
       ]
@@ -81,10 +76,16 @@ function ContentDetail() {
         const data1 = res1.data
         const data2 = res2.data
 
+        console.log(data1)
+        console.log(data2)
+
+        console.log(data1.resReserveTime.split(",")[0])
+
         setStoreInfo(data1);
         setRes(data1)
         setCenter({lat: data1.resLat, lng: data1.resLng})
         setPosition({lat: data1.resLat, lng: data1.resLng})
+        setTimeSlots(data1.resReserveTime.split(","))
         setBestMenus(data2);
       })
     ).catch((err) => {
@@ -95,21 +96,6 @@ function ContentDetail() {
   // 시간 데이터 집어넣기
   useEffect(() => {
     if (!storeInfo.resReserveTime) return;
-
-    // 시작 시간 ~ 종료 시간 에서 ~ 를 기준으로 나눈 후 공백을 제거한다
-    const [start, end] = storeInfo.resReserveTime.split("~").map(t => t.trim())
-    // 시간:분 의 start(end)Hour 를 : 를 기준으로 나눈 후 시간 데이터만 가져온다.
-    const startHour = parseInt(start.split(":")[0], 10);
-    const endHour = parseInt(end.split(":")[0], 10);
-
-    // slots 라는 배열을 생성하고 startHour 에서 endHour 까지 하나씩 더한 후 slots 배열에 넣는다
-    // timeSlots 에 slots 배열을 넣는다
-    const slots = [];
-    for (let h = startHour; h < endHour; h++) {
-      const hourStr = `${String(h).padStart(2, '0')}:00`;
-      slots.push(hourStr)
-    }
-    setTimeSlots(slots)
   }, [storeInfo.resReserveTime]);
 
   return (
@@ -209,15 +195,15 @@ function ContentDetail() {
               <h4 className="extra-bold">해시 태그</h4>
 
               {parsedTags.length > 0 ? (
-                  <div className="d-flex flex-wrap gap-2 ps-2 pt-2">
-                    {parsedTags.map((tag, idx) => (
-                        <div key={idx}>
-                          <span className="badge">#{tag}</span>
-                        </div>
-                    ))}
-                  </div>
+                <div className="d-flex flex-wrap gap-2 ps-2 pt-2">
+                  {parsedTags.map((tag, idx) => (
+                    <div key={idx}>
+                      <span className="badge">#{tag}</span>
+                    </div>
+                  ))}
+                </div>
               ) : (
-                  <div className="ps-2 pt-2 text-muted small">등록된 해시태그가 없습니다</div>
+                <div className="ps-2 pt-2 text-muted small">등록된 해시태그가 없습니다</div>
               )}
             </div>
           </div>
@@ -247,25 +233,38 @@ function ContentDetail() {
         {/* 예약 등록, 웨이팅 등록*/}
         <div className="d-flex flex-column gap-2 mb-4">
           <div className="text-start"><h4 className="extra-bold">예약 가능 시간</h4></div>
-          <div className={"d-flex align-items-center flex-wrap"}>
+          <div className={"d-flex align-items-center justify-content-center flex-wrap"}>
             {timeSlots.map((time, idx) => (
               <button key={idx}
                       className={"btn m-1"}
                       style={{backgroundColor: "#FFD700"}}>
-            {/*<button*/}
-            {/*    key={idx}*/}
-            {/*    className={`btn ${selectedTime === time ? "btn-primary" : "btn-outline-primary"}`}*/}
-            {/*    onClick={() => setSelectedTime(time)}*/}
-            {/*>*/}
+                {/*<button*/}
+                {/*    key={idx}*/}
+                {/*    className={`btn ${selectedTime === time ? "btn-primary" : "btn-outline-primary"}`}*/}
+                {/*    onClick={() => setSelectedTime(time)}*/}
+                {/*>*/}
                 {time}
               </button>
             ))}
           </div>
 
-          <button className="common-btn w-100" onClick={() => {
-            Nv(`/book/visit/${userIdx}/${resIdx}`)
-          }}>예약하기
-          </button>
+          {userStore && userStore.userIdx !== null ? (
+            <button
+              className="common-btn w-100"
+              onClick={() => {
+                Nv(`/book/visit/${userIdx}/${resIdx}`)
+              }}>예약하기
+            </button>
+          ) : (
+            <button
+              className="common-btn w-100"
+              onClick={() => {
+                Nv("/user/login")
+              }}>로그인 후 사용해주세요
+            </button>
+
+          )}
+
         </div>
       </div>
     </div>

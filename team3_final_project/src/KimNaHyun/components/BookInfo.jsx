@@ -16,28 +16,48 @@ function BookInfo() {
   const reservationIdx = useReservationIdxStore(state => state.reservationIdx)
   const restaurantIdx = useRestaurantStore(state => state.restaurantIdx)
   const [reservations, setReservations] = useState({})
+  const [menus, setMenus] = useState([])
   const Nv = useNavigate();
-  const location = useGeolocation()
 
   useEffect(() => {
-    // 예약 번호
-    axios.get("http://localhost:8080/getBook", {
-      params: {
-        reservationIdx: reservationIdx,
-        restaurantIdx: restaurantIdx
-      },
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`
-      }
+    axios.all([
+      // 예약 정보 가져오기 (메뉴 제외)
+      axios.get("http://localhost:8080/getBook", {
+        params: {
+          reservationIdx: reservationIdx,
+          restaurantIdx: restaurantIdx
+        },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`
+        }
+      }),
+      // 예약 정보 가져오기 (메뉴만)
+      axios.get("http://localhost:8080/getMenu", {
+        params: {
+          reservationIdx: reservationIdx,
+          restaurantIdx: restaurantIdx
+        },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`
+        }
+      })
+    ]).then(
+      axios.spread((res1, res2) => {
+        console.log("-----res1-----")
+        console.log(res1.data)
+        setReservations(res1.data)
+        console.log("-----res2-----")
+        console.log(res2.data)
+        setMenus(res2.data)
+      })).catch((err) => {
+      console.log(err)
     })
-      .then((res) => {
-        console.log(res.data)
-        setReservations(res.data)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
   }, []);
+
+  console.log("---reservations---")
+  console.log(reservations)
+  console.log("---menus---")
+  console.log(menus)
 
   const rsvTime = reservations.reservation?.rsvTime
   const shortRsvTime = rsvTime ? rsvTime.substring(0, 5) : "";
@@ -46,7 +66,7 @@ function BookInfo() {
     <div className={'app-container container py-4'}>
 
       <section>
-        <h3 style={{color: '#5D4037', fontWeight: 'bold'}}>{reservations.restaurant?.resName} <FontAwesomeIcon
+        <h3 style={{color: '#5D4037', fontWeight: 'bold'}}>{reservations.restaurantDTO?.resName} <FontAwesomeIcon
           icon={faAngleRight}/>
         </h3>
         <div className={'text-secondary'}>태그</div>
@@ -63,15 +83,17 @@ function BookInfo() {
         </ul>
         <ul className={'d-flex justify-content-between mb-2 fw-bold'}>
           <li>선택 메뉴</li>
-          <li>{reservations.menu?.menuName}</li>
+          <div>
+          {menus.map((index) => (<li>{index.menuDTO?.menuName} {index.selectedMenuDTO?.menuQuantity} 개</li>))}
+          </div>
         </ul>
         <ul className={'d-flex justify-content-between mb-2 fw-bold'}>
           <li>총 입장 인원</li>
-          <li>{reservations.reservation?.rsvPeople}명</li>
+          <li>{reservations.reservationDTO?.rsvPeople}명</li>
         </ul>
         <ul className={'d-flex justify-content-between mb-2 fw-bold'}>
           <li>예약 일시</li>
-          <li>{reservations.reservation?.rsvDate} {shortRsvTime}</li>
+          <li>{reservations.reservationDTO?.rsvDate} {shortRsvTime}</li>
         </ul>
       </section>
 
@@ -82,8 +104,8 @@ function BookInfo() {
         </ul>
 
         <StoreMap
-          resLat={reservations.restaurant?.resLat}
-          resLng={reservations.restaurant?.resLng}/>
+          resLat={reservations.restaurantDTO?.resLat}
+          resLng={reservations.restaurantDTO?.resLng}/>
 
       </section>
 
@@ -92,7 +114,7 @@ function BookInfo() {
           <li><FontAwesomeIcon icon={faCircleExclamation}/></li>
           <li style={{paddingLeft: '6px'}}>매장 유의사항</li>
         </ul>
-        <div>{reservations.restaurant?.resIntroduce}</div>
+        <div>{reservations.restaurantDTO?.resIntroduce}</div>
       </section>
 
       <Button btnName={'예약 취소하기'} onClick={() => {
@@ -102,7 +124,7 @@ function BookInfo() {
       {/*A && B 일 때 둘다 true 라면 B 렌더링
                         onClose 함수를 넘긴다 (openModal 상태를 false 로 만든다)*/}
       {openModal && <CancelPopup
-        restName={reservations.restaurant?.resName}
+        restName={reservations.restaurantDTO?.resName}
         onClose={() => {
           axios.put("http://localhost:8080/cancelBook", null,
             {

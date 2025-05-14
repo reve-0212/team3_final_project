@@ -93,6 +93,8 @@ function main() {
           <Route path="/pre/PreReSet" element={<PreReSetTabs/>}/> {/* 예약가게 셋팅 Tabs */}
           <Route path="/pre/PreCh" element={<PreChTabs/>}/> {/* 예약가게 매출 통계 Tabs */}
 
+          <Route path={"/pre/layout/:resIdx"} element={<SeatLayout/>}/>
+
           <Route path="/pre/PreToday/:resIdx" element={<TodayReservation/>}/> {/* 오늘 예약  */}
           <Route path="/pre/PrePast" element={<PastDateReservation/>}/> {/* 지난날짜 예약 */}
 
@@ -101,7 +103,6 @@ function main() {
           <Route path="/pre/PreRe" element={<PreRe/>}/> {/* 예약가게 리뷰 보기*/}
           <Route path="/pre/MenuEdit/:menuIdx" element={<CeoMenuEdit/>}/> {/* 메뉴 슈정 */}
           <Route path="/pre/NewMenu" element={<CeoNewMenu/>}/> {/* 메뉴 등록 */}
-
           <Route path="/pre/PreWaSet" element={<PreWaSet/>}/> {/* 웨이팅 가게 셋팅 */}
           <Route path="/pre/WaMain" element={<CeoMain/>}/> {/*웨이팅 메인 */}
           <Route path="/pre/WaToday" element={<TodayWaiting/>}/> {/* 현재 웨이팅 */}
@@ -146,7 +147,6 @@ function main() {
               <Route path={"/book/date/:userIdx/:resIdx"} element={<DateSelectorPage/>}/>
               <Route path={"/book/seat/:userIdx/:resIdx"} element={<SeatPage/>}/>
               <Route path={"/book/menu/:userIdx/:resIdx"} element={<MenuSelectorPage/>}/>
-              <Route path={"/book/menu"} element={<MenuSelectorPage/>}/>
               <Route path={"/book/reg"} element={<BookRegPage/>}/>
               <Route path={"/book/info/:resIdx"} element={<BookInfoPage/>}/>
 
@@ -155,11 +155,11 @@ function main() {
               <Route path={"/review"} element={<SjhReview/>}/>
 
               {/*모바일 전용 사장 로그인*/}
-              {/*<Route path={"/pre/login"} element={<OwnerLoginSjh/>}/>*/}
+              {/*<Route path={"/pre/web/login"} element={<OwnerLoginSjh/>}/>*/}
               {/*웨이팅 웹앱*/}
-              <Route path="/pre/PreWait" element={<PreWait/>}/>
+              <Route path="/pre/web/PreWait" element={<PreWait/>}/>
               {/*예약 웹앱*/}
-              <Route path="/pre/PreReserve" element={<PreReserve/>}/>
+              <Route path="/pre/web/PreReserve" element={<PreReserve/>}/>
 
               <Route path={"/*"} element={<ErrorPage/>}/>
             </Routes>

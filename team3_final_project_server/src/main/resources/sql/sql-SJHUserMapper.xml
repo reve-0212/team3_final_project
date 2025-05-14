@@ -41,10 +41,10 @@
   </update>
 
   <!--조인용 -->
-  <resultMap id="ResvJoinRestMapSJH" type="com.example.team3_final_project_server.dto.join.ResvJoinRestSMenuDTO">
-    <association property="reservation" javaType="com.example.team3_final_project_server.dto.ReservationDTO">
+  <resultMap id="reservationRestaurantJoinMap2"
+             type="com.example.team3_final_project_server.dto.join.ReservationRestaurantJoinDTO">
+    <association property="reservationDTO" javaType="com.example.team3_final_project_server.dto.ReservationDTO">
       <result column="reservation_idx" property="reservationIdx"/>
-      <result column="user_idx" property="userIdx"/>
       <result column="rsv_people" property="rsvPeople"/>
       <result column="rsv_date" property="rsvDate"/>
       <result column="rsv_time" property="rsvTime"/>
@@ -52,67 +52,72 @@
       <result column="rsv_cancel_datetime" property="rsvCancelDatetime"/>
     </association>
 
-    <association property="restaurant" javaType="com.example.team3_final_project_server.dto.RestaurantDTO">
+    <association property="restaurantDTO" javaType="com.example.team3_final_project_server.dto.RestaurantDTO">
       <result column="res_idx" property="resIdx"/>
       <result column="res_name" property="resName"/>
-    </association>
-
-    <association property="sMenu" javaType="com.example.team3_final_project_server.dto.SelectedMenuDTO">
-      <result column="menu_idx" property="menuIdx"/>
-      <result column="menu_quantity" property="menuQuantity"/>
     </association>
   </resultMap>
 
   <!--예약 리스트 가져오기-->
-  <select id="userReservation" parameterType="int" resultMap="ResvJoinRestMapSJH">
-    select rsv.reservation_idx, rsv.user_idx, rsv.rsv_people, rsv.rsv_date, rsv.rsv_time,
-    rsv.rsv_come_datetime, rsv.rsv_cancel_datetime, res.res_idx, res.res_name,
-    sm.menu_idx, sm.menu_quantity
+  <select id="userReservation" parameterType="int" resultMap="reservationRestaurantJoinMap2">
+    select rsv.reservation_idx, rsv.rsv_people, rsv.rsv_date, rsv.rsv_time, rsv.rsv_come_datetime,
+    rsv.rsv_cancel_datetime, res.res_idx, res.res_name
     from reservation as rsv
     join restaurant as res
-    join selected_menu as sm
     on rsv.res_idx = res.res_idx
     where rsv.user_idx=#{userIdx}
     order by rsv.rsv_date desc;
   </select>
 
   <!--  조인용 map-->
-  <resultMap id="ResvRestMenuJoinMap" type="com.example.team3_final_project_server.dto.join.ResvRestMenuJoinDTO">
-    <association property="reservation" javaType="com.example.team3_final_project_server.dto.ReservationDTO">
+  <resultMap id="rrJoin" type="com.example.team3_final_project_server.dto.join.ReservationRestaurantJoinDTO">
+    <association property="reservationDTO" javaType="com.example.team3_final_project_server.dto.ReservationDTO">
       <result column="reservation_idx" property="reservationIdx"/>
-      <result column="user_idx" property="userIdx"/>
       <result column="rsv_people" property="rsvPeople"/>
       <result column="rsv_date" property="rsvDate"/>
       <result column="rsv_time" property="rsvTime"/>
     </association>
-
-    <association property="restaurant" javaType="com.example.team3_final_project_server.dto.RestaurantDTO">
+    <association property="restaurantDTO" javaType="com.example.team3_final_project_server.dto.RestaurantDTO">
       <result column="res_name" property="resName"/>
-      <result column="res_address1" property="resAddress1"/>
-      <result column="res_address2" property="resAddress2"/>
-      <result column="res_introduce" property="resIntroduce"/>
       <result column="res_lat" property="resLat"/>
       <result column="res_lng" property="resLng"/>
-    </association>
-
-    <association property="menu" javaType="com.example.team3_final_project_server.dto.MenuDTO">
-      <result column="menu_name" property="menuName"/>
-      <result column="menu_price" property="menuPrice"/>
-      <result column="menu_explanation" property="menuExplanation"/>
+      <result column="res_introduce" property="resIntroduce"/>
     </association>
   </resultMap>
 
   <!--  예약 상세 정보 가져오기-->
-  <select id="getBook" parameterType="int" resultMap="ResvRestMenuJoinMap">
-    select rsv.reservation_idx, rsv.user_idx, rsv.rsv_people, rsv.rsv_date, rsv.rsv_time,
-    res.res_name, res.res_address1, res.res_address2, res.res_introduce, res.res_lat, res.res_lng,
-    menu.menu_name, menu.menu_price, menu.menu_explanation
+  <select id="getBook" resultMap="rrJoin">
+    select rsv.reservation_idx, rsv.rsv_people, rsv.rsv_date, rsv.rsv_time,
+    res.res_name, res.res_lat, res.res_lng, res.res_introduce
     from reservation as rsv
     join restaurant as res
+    on rsv.res_idx = res.res_idx
+    where rsv.reservation_idx = #{reservationIdx}
+    and res.res_idx = #{restaurantIdx};
+  </select>
+
+  <!--  예약 메뉴 상세 정보 보기 전용 map-->
+  <resultMap id="rrsmJoinMap" type="com.example.team3_final_project_server.dto.join.RrsmDTO">
+    <association property="menuDTO" javaType="com.example.team3_final_project_server.dto.MenuDTO">
+      <result column="menu_name" property="menuName"/>
+    </association>
+    <association property="selectedMenuDTO" javaType="com.example.team3_final_project_server.dto.SelectedMenuDTO">
+      <result column="menu_quantity" property="menuQuantity"/>
+    </association>
+  </resultMap>
+
+  <!--  예약 메뉴 상세 정보 가져오기-->
+  <select id="getMenu" parameterType="int" resultMap="rrsmJoinMap">
+    select menu.menu_name, sm.menu_quantity
+    from reservation as rsv
+    join restaurant as res
+    join selected_menu as sm
     join menu as menu
-    where reservation_idx = #{reservationIdx}
-    and res.res_idx=#{restaurantIdx}
-    and menu.menu_name = "name";
+    on rsv.res_idx = res.res_idx
+    and rsv.reservation_idx = sm.reservation_idx
+    and sm.menu_idx = menu.menu_idx
+    where rsv.reservation_idx = #{reservationIdx}
+    and res.res_idx = #{restaurantIdx};
   </select>
 
   <!--예약 취소하기-->
@@ -132,9 +137,16 @@
     and rsv_time=#{rsvTime};
   </select>
 
+  <!--  좌석 예약하기-->
   <insert id="reserveSeat">
     insert into selected_seat(reservation_idx, seat_id)
     values (#{reservationIdx}, #{seatId});
+  </insert>
+
+  <!--  메뉴 예약하기-->
+  <insert id="reserveMenu">
+    insert into selected_menu (reservation_idx, menu_idx, menu_quantity)
+    values (#{reservationIdx}, #{menuIdx}, #{menuQuantity});
   </insert>
 
   <select id="isSeatAvailable" resultType="int">
@@ -159,4 +171,55 @@
     FROM seat_table
     WHERE res_idx = #{resIdx}
   </select>
+
+  <select id="getReg" resultType="com.example.team3_final_project_server.dto.ReservationDTO">
+    select * from reservation where reservation_idx = #{reservationIdx};
+  </select>
+
+  <!--  조인용 map-->
+  <resultMap id="ResvSelectMenuJoinMap"
+             type="com.example.team3_final_project_server.dto.join.ReservationSelectedMenuMenuJoinDTO">
+    <association property="menu" javaType="com.example.team3_final_project_server.dto.MenuDTO">
+      <result column="menu_name" property="menuName"/>
+    </association>
+    <association property="selectedMenu" javaType="com.example.team3_final_project_server.dto.SelectedMenuDTO">
+      <result column="menu_quantity" property="menuQuantity"/>
+    </association>
+  </resultMap>
+
+  <select id="getMenuInfo" resultMap="ResvSelectMenuJoinMap">
+    select m.menu_name, sm.menu_quantity
+    from reservation as r
+    join selected_menu as sm
+    join menu as m
+    on r.reservation_idx = sm.reservation_idx
+    and sm.menu_idx = m.menu_idx
+    where r.reservation_idx=#{reservationIdx};
+  </select>
+
+  <!--  조인용 map-->
+  <resultMap id="reservationRestaurantJoinMap"
+             type="com.example.team3_final_project_server.dto.join.ReservationRestaurantJoinDTO">
+    <association property="restaurantDTO" javaType="com.example.team3_final_project_server.dto.RestaurantDTO">
+      <result column="res_name" property="resName"/>
+      <result column="res_introduce" property="resIntroduce"/>
+    </association>
+  </resultMap>
+
+  <select id="getStoreInfo" resultMap="reservationRestaurantJoinMap">
+    select rst.res_name, rst.res_introduce
+    from reservation as res
+    join restaurant as rst
+    on res.res_idx = rst.res_idx
+    where res.reservation_idx = #{reservationIdx};
+  </select>
+
+  <insert id="saveHistory">
+    insert into reservation_history (reservation_idx, res_idx, reservation_date,
+    rsv_people, rsv_man, rsv_woman, rsv_baby,
+    menu_idx, menu_name, menu_price, menu_sold_count, menu_sold_total_price)
+    values (#{reservationIdx}, #{resIdx}, #{reservationDate},
+    #{rsvPeople}, #{rsvMan}, #{rsvWoman}, #{rsvBaby},
+    #{menuIdx}, #{menuName}, #{menuPrice}, #{menuSCount}, #{menuSTP});
+  </insert>
 </mapper>

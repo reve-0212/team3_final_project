@@ -2,16 +2,20 @@ import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";  // useParams를 사용하여 URL 파라미터를 받습니다.
 import axios from "axios";
 import useSeatIdStore from "../stores/useSeatIdStore.jsx";
+import useRestaurantStore from "../stores/useRestaurantStore.jsx";
 // import './SeatLayout.css'; // 좌석 스타일링
 
 const SeatLayout = () => {
-  const {resIdx} = useParams();  // URL 파라미터에서 resIdx 값을 가져옵니다.
+  // const {resIdx} = useParams();  // URL 파라미터에서 resIdx 값을 가져옵니다.
   const [seats, setSeats] = useState([]);
   const [seatSelect, setSeatSelect] = useState([]);
   const setSeatId = useSeatIdStore((state) => state.setSeatId)
   const seatId = useSeatIdStore((state) => state.seatId)
-  console.log("resIdx")
-  console.log(resIdx)
+  const useResIdx = useRestaurantStore((state) => state.restaurantIdx)
+  console.log("------useRes-------")
+  console.log(useResIdx)
+  // console.log("resIdx")
+  // console.log(resIdx)
 
   // 좌석선택기능
   const hSeat = (seatId) => {
@@ -26,8 +30,8 @@ const SeatLayout = () => {
 
   // 좌석 정보 불러오기
   useEffect(() => {
-    if (resIdx) {
-      axios.get(`http://localhost:8080/loadSeat/${resIdx}`, {
+    if (useResIdx) {
+      axios.get(`http://localhost:8080/userLoadSeat/${useResIdx}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`
         }
@@ -38,7 +42,7 @@ const SeatLayout = () => {
 
           if (success && Array.isArray(data)) {
             setSeats(data);
-            // console.log("좌석 데이터 확인:", data); // 추가
+            console.log("좌석 데이터 확인:", data); // 추가
           } else {
             console.error(message);
           }
@@ -48,9 +52,9 @@ const SeatLayout = () => {
           console.error("좌석 정보를 불러오는 중 오류 발생:", error);
         });
     } else {
-      console.error("resIdx 값이 없습니다.");
+      console.error("useResIdx 값이 없습니다.");
     }
-  }, [resIdx]);
+  }, [useResIdx]);
 
   useEffect(() => {
     setSeatId(seatSelect)
