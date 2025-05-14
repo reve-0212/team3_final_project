@@ -129,8 +129,14 @@ public class SecurityConfig {
                     .requestMatchers("/pre/seats/update").permitAll()
                     .requestMatchers("/pre/seats/delete").permitAll()
 
+                    .requestMatchers("/pre/reservations").hasRole("OWNER") // 이건 인증된 사장만 가능
+                    .requestMatchers("/pre/TodayLoadSeat/**","/pre/resIdxByUser").permitAll()
+                    .requestMatchers("/pre/refresh").permitAll()
+
 //                    관리자 전용 페이지
                     .requestMatchers("/pre/admin/**").permitAll()
+                    .requestMatchers("/pre/admin/login").permitAll()
+                    .requestMatchers("/pre/admin/SaveOwnerInfo").hasRole("ADMIN")
 //                    .requestMatchers("/auth/**", "/contentList/**", "/jsy/contents/**", "/pre/**", "/api/**", "/user/**").permitAll()
 //                    .requestMatchers("/admin/**").hasRole("ADMIN")
 //                    .requestMatchers("/member/**", "/board/**").hasAnyRole("ADMIN", "MEMBER")

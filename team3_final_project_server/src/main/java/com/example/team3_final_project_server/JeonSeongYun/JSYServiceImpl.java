@@ -1,10 +1,7 @@
 package com.example.team3_final_project_server.JeonSeongYun;
 
 import com.example.team3_final_project_server.configuration.jwt.JwtTokenProvider;
-import com.example.team3_final_project_server.dto.ReservationDTO;
-import com.example.team3_final_project_server.dto.ResponseDTO;
-import com.example.team3_final_project_server.dto.RestaurantListDTO;
-import com.example.team3_final_project_server.dto.UserDTO;
+import com.example.team3_final_project_server.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -14,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -85,5 +83,22 @@ public class JSYServiceImpl implements JSYService {
   @Override
   public List<ReservationDTO> getResList(String seatId) {
     return jsyMapper.getResList(seatId);
+  }
+
+  @Override
+  public List<SeatDTO> TodayLoadSeat(String resIdx) {
+      try {
+        List<SeatDTO> seats = jsyMapper.TodayLoadSeat(resIdx);
+        System.out.println("Loaded seats: " + seats);  // 로그 출력
+        return seats;
+      } catch (Exception e) {
+        return null;
+      }
+  }
+
+  @Override
+  public Optional<Integer> findResIdxByUser(int userIdx) {
+    Integer resIdx = jsyMapper.findResIdxByUser(userIdx);
+    return Optional.ofNullable(resIdx);
   }
 }

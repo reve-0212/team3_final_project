@@ -91,4 +91,21 @@
             reservation_idx
     </select>
 
+<!--    좌석 불러오기 -->
+    <select id="TodayLoadSeat" parameterType="String" resultType="com.example.team3_final_project_server.dto.SeatDTO">
+        SELECT
+            seat_id As seatId, res_idx AS resIdx, type, name, x, y, image, is_selected As isSelected
+        FROM
+            seat_table
+        WHERE
+            res_idx = #{resIdx}
+    </select>
+
+
+    <select id="findResIdxByUser" resultType="int" parameterType="int">
+        SELECT res_idx
+        FROM restaurant
+        WHERE user_idx = #{userIdx}
+    </select>
+
 </mapper>

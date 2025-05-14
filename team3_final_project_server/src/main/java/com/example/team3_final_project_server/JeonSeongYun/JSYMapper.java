@@ -2,6 +2,7 @@ package com.example.team3_final_project_server.JeonSeongYun;
 
 import com.example.team3_final_project_server.dto.ReservationDTO;
 import com.example.team3_final_project_server.dto.RestaurantListDTO;
+import com.example.team3_final_project_server.dto.SeatDTO;
 import com.example.team3_final_project_server.dto.UserDTO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -21,4 +22,8 @@ public interface JSYMapper {
     void saveOwner(UserDTO newUser);
 
     List<ReservationDTO> getResList(String seatId);
+
+    List<SeatDTO> TodayLoadSeat(String resIdx);
+
+    Integer findResIdxByUser(int userIdx);
 }
