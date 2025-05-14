@@ -3,7 +3,9 @@ package com.example.team3_final_project_server.KimNaHyun;
 import com.example.team3_final_project_server.dto.MenuDTO;
 import com.example.team3_final_project_server.dto.ReservationDTO;
 import com.example.team3_final_project_server.dto.RestaurantListDTO;
+import com.example.team3_final_project_server.dto.ReviewDTO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,4 +20,7 @@ public interface KNHMapper {
 
     List<ReservationDTO> getResIdx(int userIdx, int resIdx, String rsvDate, String rsvTime);
 
+    String selectResReserveTime(@Param("resIdx") int resIdx);
+
+    void insertReview(ReviewDTO reviewDTO);
 }

@@ -2,6 +2,7 @@ package com.example.team3_final_project_server.KimNaHyun;
 
 import com.example.team3_final_project_server.dto.MenuDTO;
 import com.example.team3_final_project_server.dto.ReservationDTO;
+import com.example.team3_final_project_server.dto.ReviewDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,5 +41,14 @@ public class KNHServiceImpl implements KNHService {
     return knhMapper.getResIdx(userIdx, resIdx, rsvDate, rsvTime);
   }
 
+
+  @Override
+  public String getResReserveTime(int resIdx) {
+    return knhMapper.selectResReserveTime(resIdx);
+  }
+
+  public void submitReview(ReviewDTO reviewDTO) throws Exception {
+    knhMapper.insertReview(reviewDTO);
+  }
 
 }
