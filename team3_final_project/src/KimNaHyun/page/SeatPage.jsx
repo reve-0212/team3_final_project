@@ -1,6 +1,6 @@
 import Button from "../components/Button.jsx";
 import SeatImg from "../components/SeatImg.jsx";
-import {useNavigate, useParams} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import ReservationPage from "../../KimSangMin/Seat/ReservationPage.jsx";
 import SeatLayout from "../../KimSangMin/Seat/SeatLayout.jsx";
 import SeatLayoutTest from "../../simJiHyun/SeatLayoutTest.jsx";
@@ -28,10 +28,6 @@ function SeatPage() {
   const rsvDate = rsvDateStore
   const rsvTime = rsvTimeStore
 
-  window.addEventListener("popstate", () => {
-    console.log("뒤로가기")
-  })
-
   console.log("userIdx : " + userIdx)
   console.log("seatId : " + seatId)
   console.log("resIdx : " + resIdx)
@@ -50,12 +46,10 @@ function SeatPage() {
         Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`
       }
     }).then((res) => {
-      // Nv(`/book/menu/${userIdx}/${resIdx}`);
       console.log(res.data)
       setReservationIdxStore(res.data)
     }).catch((err) => {
       console.log(err)
-      // Nv(`/book/menu/${userIdx}/${resIdx}`);
     })
   }, []);
 

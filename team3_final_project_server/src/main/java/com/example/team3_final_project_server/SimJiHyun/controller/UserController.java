@@ -4,8 +4,7 @@ import com.example.team3_final_project_server.KimSangMin.response.PreResponse;
 import com.example.team3_final_project_server.SimJiHyun.mapper.UserMapper;
 import com.example.team3_final_project_server.SimJiHyun.service.UserService;
 import com.example.team3_final_project_server.dto.*;
-import com.example.team3_final_project_server.dto.join.ResvJoinRestSMenuDTO;
-import com.example.team3_final_project_server.dto.join.ResvRestMenuJoinDTO;
+import com.example.team3_final_project_server.dto.join.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -96,16 +95,24 @@ public class UserController {
 
   //  예약 정보 리스트 가져오기
   @GetMapping("/userReservation")
-  public List<ResvJoinRestSMenuDTO> userReservation(@RequestParam int userIdx) {
+  public List<ReservationRestaurantJoinDTO> userReservation(@RequestParam int userIdx) {
     return userService.userReservation(userIdx);
   }
 
-  //  예약 상세 정보 가져오기
+  //  예약 상세 정보 가져오기(메뉴 제외)
   @GetMapping("/getBook")
-  public ResvRestMenuJoinDTO getBook(@RequestParam int reservationIdx, @RequestParam int restaurantIdx) {
+  public ReservationRestaurantJoinDTO getBook(@RequestParam int reservationIdx, @RequestParam int restaurantIdx) {
     System.out.println("reservationIdx : " + reservationIdx);
     System.out.println("restaurantIdx : " + restaurantIdx);
     return userService.getBook(reservationIdx, restaurantIdx);
+  }
+
+//  예약 메뉴 정보 가져오기
+  @GetMapping("/getMenu")
+  public List<RrsmDTO> getMenu(@RequestParam int reservationIdx, @RequestParam int restaurantIdx){
+    System.out.println("reservationIdx : " + reservationIdx);
+    System.out.println("restaurantIdx : " + restaurantIdx);
+    return userService.getMenu(reservationIdx, restaurantIdx);
   }
 
   //  예약 취소하기
@@ -154,6 +161,16 @@ public class UserController {
     userService.reserveSeat(reservationIdx, seatId);
   }
 
+  @PutMapping("/reserveMenu")
+  public void reserveMenu(@RequestParam int reservationIdx,
+                          @RequestParam int menuIdx,
+                          @RequestParam int menuQuantity) {
+    System.out.println("reservationIdx : " + reservationIdx);
+    System.out.println("menuIdx : " + menuIdx);
+    System.out.println("menuQuantity : " + menuQuantity);
+    userService.reserveMenu(reservationIdx, menuIdx, menuQuantity);
+  }
+
   @GetMapping("/isSeatAvailable/{shortPathIdx}")
   public int isSeatAvailable(@PathVariable int shortPathIdx) {
     System.out.println("shortPathIdx : " + shortPathIdx);
@@ -171,4 +188,18 @@ public class UserController {
     return userService.getStoreLocation();
   }
 
+  @GetMapping("/getReg")
+  public ReservationDTO getReg(@RequestParam int reservationIdx) {
+    return userService.getReg(reservationIdx);
+  }
+
+  @GetMapping("/getMenuInfo")
+  public List<ReservationSelectedMenuMenuJoinDTO> getMenuInfo(@RequestParam int reservationIdx) {
+    return userService.getMenuInfo(reservationIdx);
+  }
+
+  @GetMapping("/getStoreInfo")
+  public ReservationRestaurantJoinDTO getStoreInfo(@RequestParam int reservationIdx) {
+    return userService.getStoreInfo(reservationIdx);
+  }
 }

@@ -140,7 +140,6 @@ function main() {
               <Route path={"/book/date/:userIdx/:resIdx"} element={<DateSelectorPage/>}/>
               <Route path={"/book/seat/:userIdx/:resIdx"} element={<SeatPage/>}/>
               <Route path={"/book/menu/:userIdx/:resIdx"} element={<MenuSelectorPage/>}/>
-              <Route path={"/book/menu"} element={<MenuSelectorPage/>}/>
               <Route path={"/book/reg"} element={<BookRegPage/>}/>
               <Route path={"/book/info/:resIdx"} element={<BookInfoPage/>}/>
 

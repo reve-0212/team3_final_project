@@ -3,8 +3,7 @@ package com.example.team3_final_project_server.SimJiHyun.service;
 import com.example.team3_final_project_server.SimJiHyun.mapper.UserMapper;
 import com.example.team3_final_project_server.configuration.jwt.JwtTokenProvider;
 import com.example.team3_final_project_server.dto.*;
-import com.example.team3_final_project_server.dto.join.ResvJoinRestSMenuDTO;
-import com.example.team3_final_project_server.dto.join.ResvRestMenuJoinDTO;
+import com.example.team3_final_project_server.dto.join.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -97,12 +96,12 @@ public class UserService {
   }
 
   //  예약 리스트 가져오기
-  public List<ResvJoinRestSMenuDTO> userReservation(int userIdx) {
+  public List<ReservationRestaurantJoinDTO> userReservation(int userIdx) {
     return userMapper.userReservation(userIdx);
   }
 
   //  예약 상세 정보 가져오기
-  public ResvRestMenuJoinDTO getBook(int reservationIdx, int restaurantIdx) {
+  public ReservationRestaurantJoinDTO getBook(int reservationIdx, int restaurantIdx) {
     return userMapper.getBook(reservationIdx, restaurantIdx);
   }
 
@@ -121,6 +120,11 @@ public class UserService {
     userMapper.reserveSeat(reservationIdx, seatId);
   }
 
+//  메뉴 예약하기
+  public void reserveMenu(int reservationIdx, int menuIdx, int menuQuantity) {
+    userMapper.reserveMenu(reservationIdx, menuIdx, menuQuantity);
+  }
+
   public int isSeatAvailable(int shortPathIdx) {
     return userMapper.isSeatAvailable(shortPathIdx);
   }
@@ -137,4 +141,19 @@ public class UserService {
     return userMapper.loadSeat(resIdx);
   }
 
+  public ReservationDTO getReg(int reservationIdx) {
+    return userMapper.getReg(reservationIdx);
+  }
+
+  public List<ReservationSelectedMenuMenuJoinDTO> getMenuInfo(int reservationIdx) {
+    return userMapper.getMenuInfo(reservationIdx);
+  }
+
+  public ReservationRestaurantJoinDTO getStoreInfo(int reservationIdx) {
+    return userMapper.getStoreInfo(reservationIdx);
+  }
+
+  public List<RrsmDTO> getMenu(int reservationIdx, int restaurantIdx) {
+    return userMapper.getMenu(reservationIdx, restaurantIdx);
+  }
 }

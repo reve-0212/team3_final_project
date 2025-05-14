@@ -106,35 +106,15 @@ public class SecurityConfig {
 
                     //로그인한 사용자용
                     .requestMatchers("/waiting/**", "/book/**", "/latestDetails", "/book/info").hasRole("USER")
-                    .requestMatchers(GET, "/userReservation", "/getBook", "/loadSeat/**").hasRole("USER")
-                    .requestMatchers(PUT, "/cancelBook", "/reserveSeat").hasRole("USER")
+                    .requestMatchers(GET, "/userReservation", "/getBook", "/loadSeat/**","/getMenuInfo","/getStoreInfo","/getMenu").hasRole("USER")
+                    .requestMatchers(PUT, "/cancelBook", "/reserveSeat","/reserveMenu").hasRole("USER")
 
 //                    모든 사용자용
                     .requestMatchers("/user/**", "/latestDetails", "/bookmark", "/contentDetail", "/review", "/", "/api/visitors").permitAll()
                     .requestMatchers("/jsy/contents/**", "/jsy/ownerLogin", "/contents/**", "/detail/**", "/bestmenu/**", "/reservedSeat/**", "/isSeatAvailable/**","/getStoreLocation").permitAll()
                     .requestMatchers("/api/**", "/auth/**", "/api/auth/signup").permitAll()
-                    .requestMatchers("/api/visitors", "/api/visitors/**").permitAll()
+                    .requestMatchers("/api/visitors", "/api/visitors/**","/reserveMenu/**").permitAll()
 
-//                    로그인한 사용자용
-                    .requestMatchers("/waiting/**", "/book/**", "/latestDetails", "/book/info").hasRole("USER")
-                    .requestMatchers(GET, "/userReservation", "/getBook").hasRole("USER")
-                    .requestMatchers(PUT, "/cancelBook", "/resSeat").hasRole("USER")
-
-//                    사장 전용
-//                    .requestMatchers("/pre/**").hasRole("OWNER")
-                    .requestMatchers("/pre/login").permitAll()  // 로그인은 모두 허용
-                    .requestMatchers("/pre/resave").permitAll()
-                    .requestMatchers("/pre/seats/save").permitAll()// 이건 인증된 사장만 가능
-                    .requestMatchers("/pre/func").permitAll()
-                    .requestMatchers("/pre/seats/update").permitAll()
-                    .requestMatchers("/pre/seats/delete").permitAll()
-
-//                    관리자 전용 페이지
-                    .requestMatchers("/pre/admin/**").permitAll()
-//                    .requestMatchers("/auth/**", "/contentList/**", "/jsy/contents/**", "/pre/**", "/api/**", "/user/**").permitAll()
-//                    .requestMatchers("/admin/**").hasRole("ADMIN")
-//                    .requestMatchers("/member/**", "/board/**").hasAnyRole("ADMIN", "MEMBER")
-//                    .requestMatchers("/pre/**").hasRole("OWNER")
 //            나머지 url은 모두 인증 받은 사용자만 사용 가능
                     .anyRequest().authenticated())
 

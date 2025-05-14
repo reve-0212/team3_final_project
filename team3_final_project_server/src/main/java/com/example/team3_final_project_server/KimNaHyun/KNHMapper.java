@@ -12,7 +12,6 @@ public interface KNHMapper {
 
     List<MenuDTO> getAllMenus(int resIdx);
 
-
     void updateRsvDate(int userIdx, int resIdx, int rsvPeople, int rsvMan, int rsvWoman, int rsvBaby,  String rsvDate, String rsvTime) throws Exception;
 
     void updateRsvMenu(int userIdx, int resIdx) throws Exception;
