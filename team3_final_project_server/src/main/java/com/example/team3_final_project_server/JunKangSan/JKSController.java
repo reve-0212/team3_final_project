@@ -36,12 +36,16 @@ public class JKSController {
         return jksService.getBestMenu(resIdx);
     }
 
+
+
     //  리뷰
     @GetMapping("/reviews/{resIdx}")
     @ResponseBody
-    public List<ReviewDTO> getReviews(@RequestParam int resIdx) {
-        return jksService.getReviewsByResIdx(resIdx);
+    public List<ReviewDTO> getAllReviews(@PathVariable int resIdx) {
+        return jksService.getAllReviews(resIdx);
     }
+
+
 
 
     //  리뷰 평균

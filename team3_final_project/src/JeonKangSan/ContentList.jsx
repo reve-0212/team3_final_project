@@ -15,10 +15,13 @@ function ContentList() {
   const [restaurants, setRestaurants] = useState([]);
   console.log("category : " + category)
 
+
+  // jks 작업
+
   useEffect(() => {
     axios.get(`http://localhost:8080/contents/${category}`)
       .then(res => {
-        console.log(setRestaurants);
+        console.log("받아온 데이터:", res.data); // 여기에서 확인
         setRestaurants(res.data);
       }).catch(err => console.log('데이터 가져오기 오류 :', err));
   }, [category]);
@@ -26,6 +29,11 @@ function ContentList() {
   useEffect(() => {
     console.log("restaurants")
     console.log(restaurants);
+
+
+    if (restaurants.length > 0) {
+      console.log("첫 번째 식당 평균 평점:", restaurants[0].avgRating);
+    }
   },[restaurants])
 
 

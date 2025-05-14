@@ -4,9 +4,12 @@ import lombok.Data;
 
 @Data
 public class ReviewDTO {
-  private int ReviewIdx;
+//  private int ReviewIdx;
+  private int reviewIdx;
+
   private int userIdx;
-  private int restaurantIdx;
+//  private int restaurantIdx;
+  private int resIdx;
   private int menuIdx;
   private String isOnePick;
   private double reviewRating;

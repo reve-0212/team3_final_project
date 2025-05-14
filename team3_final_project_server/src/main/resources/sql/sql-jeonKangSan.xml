@@ -10,10 +10,27 @@
         SELECT * FROM restaurant
     </select>
 
+
+<!--    리뷰 -->
     <select id="getAllReviews" parameterType="int" resultType="com.example.team3_final_project_server.dto.ReviewDTO">
-        SELECT *
-        FROM review
-        WHERE res_idx = #{resIdx}
+        SELECT
+        r.review_idx,
+        r.user_idx,
+        r.res_idx,
+        r.review_rating,
+        r.review_content,
+        r.review_write_date,
+        r.review_image_1,
+        r.review_image_2,
+        r.review_image_3
+        FROM
+        review r
+        JOIN
+        restaurant res ON r.res_idx = res.res_idx
+        WHERE
+        r.res_idx = #{resIdx}
+        ORDER BY
+        r.review_write_date DESC;
     </select>
 
     <select id="getRestaurantsByResIdx" resultType="com.example.team3_final_project_server.dto.RestaurantDTO">
@@ -50,6 +67,9 @@
         WHERE category_addr LIKE CONCAT('%', #{categoryAddr}, '%')
     </select>
 
+
+<!--상세보기 -->
+
     <select id="getRstListByPath" parameterType="int">
         SELECT
         r.res_idx,
@@ -70,6 +90,10 @@
         LEFT JOIN category c ON r.res_idx = c.res_idx
         WHERE r.res_idx = #{resIdx}
     </select>
+
+
+
+
 
     <select id="getBestMenu" resultType="com.example.team3_final_project_server.dto.MenuDTO">
         select m.menu_name, m.menu_price, m.menu_explanation, m.menu_image
