@@ -39,6 +39,7 @@
     "suneditor": "^2.47.5",
     "suneditor-react": "^3.6.1",
     "swiper": "^11.2.6",
+    "uuid": "^11.1.0",
     "zustand": "^5.0.4"
   },
   "devDependencies": {

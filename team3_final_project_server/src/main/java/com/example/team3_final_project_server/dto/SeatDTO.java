@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 @Data
-@JsonIgnoreProperties(ignoreUnknown = true)  // 이 줄 추가
 public class SeatDTO {
     private Integer seatId;
     private int userIdx;

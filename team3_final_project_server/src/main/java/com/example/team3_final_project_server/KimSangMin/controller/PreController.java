@@ -83,7 +83,7 @@ public class PreController {
 
   //    좌석 정보 수정하기
   @PutMapping("/pre/owner/seats/update")
-  public ResponseEntity<PreResponse> updateSeat (@RequestBody List<SeatDTO> seats, @RequestHeader("Authorization") String authorization) {
+  public ResponseEntity<PreResponse> updateSeat(@RequestBody(required = false) SeatDTO seat, @RequestHeader("Authorization") String authorization) {
     try {
       // Authorization 헤더에서 Bearer를 제거하고 JWT 토큰만 추출
       if (authorization != null && authorization.startsWith("Bearer ")) {
@@ -99,16 +99,16 @@ public class PreController {
         }
 
         // 좌석 업데이트를 위한 가게 정보 설정
-        for (SeatDTO seat : seats) {
-          seat.setResIdx(resIdx);
+        if (seat.getResIdx() == null) {
+          seat.setResIdx(resIdx);  // resIdx가 없으면 자동으로 세팅
         }
 
         // 좌석 업데이트 수행
-        boolean success = preService.updateSeats(seats);
+        boolean success = preService.updateSeats(seat);
 
         // 성공 여부에 따라 응답 반환
         if (success) {
-          PreResponse response = new PreResponse(true, "좌석 업데이트 성공", seats);
+          PreResponse response = new PreResponse(true, "좌석 업데이트 성공", seat);
           return ResponseEntity.ok(response);
         } else {
           PreResponse response = new PreResponse(false, "좌석 업데이트 실패", null);
@@ -123,6 +123,7 @@ public class PreController {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
   }
+
 
   //    좌석 삭제하기
   @DeleteMapping("/pre/owner/seats/delete/{seatId}")
