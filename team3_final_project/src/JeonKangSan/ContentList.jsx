@@ -120,7 +120,7 @@ function ContentList() {
               {/*1. resDetail 로 가고 싶으지 아니면 contentDetail 로 가고싶은지?*/}
 
               <p className="card-text my-2" onClick={() => Nv(`/resdetail/${res.resIdx}`)}>
-                {/*⭐ {res.avgRating || "0.0"}*/}
+                ⭐ {res.avgRating || "0.0"}
               </p>
               <small className="text-muted d-flex flex-fill" onClick={() => Nv(`/resdetail/${res.resIdx}`)}>
                 {res.categoryName || "카테고리"} · {res.resAddress1 || "주소"}
