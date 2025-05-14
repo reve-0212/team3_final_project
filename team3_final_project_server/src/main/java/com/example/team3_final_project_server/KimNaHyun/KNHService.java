@@ -2,6 +2,7 @@ package com.example.team3_final_project_server.KimNaHyun;
 
 import com.example.team3_final_project_server.dto.MenuDTO;
 import com.example.team3_final_project_server.dto.ReservationDTO;
+import com.example.team3_final_project_server.dto.ReviewDTO;
 
 import java.util.List;
 
@@ -14,4 +15,8 @@ public interface KNHService {
     void updateRsvMenu(int userIdx, int resIdx) throws Exception;
 
     List<ReservationDTO> getResIdx(int userIdx, int resIdx, String rsvDate, String rsvTime);
+
+    String getResReserveTime(int resIdx);
+
+    void submitReview(ReviewDTO reviewDTO) throws Exception;
 }

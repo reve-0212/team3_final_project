@@ -3,7 +3,9 @@ package com.example.team3_final_project_server.KimNaHyun;
 
 import com.example.team3_final_project_server.dto.MenuDTO;
 import com.example.team3_final_project_server.dto.ReservationDTO;
+import com.example.team3_final_project_server.dto.ReviewDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,22 +21,6 @@ public class KNHController {
     private KNHService knhService;
 
 
-    // 방문자 페이지
-//    @PostMapping("/visitors/{userIdx}/{resIdx}")
-//    public void getRsvIdx(
-//            @PathVariable("userIdx") int userIdx,
-//            @PathVariable("resIdx") int resIdx,
-//            @RequestBody ReservationDTO reservationDTO)
-//            throws Exception {
-//  System.out.println("/visitors/{userIdx}/{resIdx} 받아온 값 : " + resIdx);
-//        System.out.println("userIdx : " + userIdx);
-//        System.out.println("resIdx : " + resIdx);
-//        System.out.println("rsvMan : " + reservationDTO.getRsvMan());
-//        System.out.println("rsvWoman : " + reservationDTO.getRsvWoman());
-//        System.out.println("rsvBaby : " + reservationDTO.getRsvBaby());
-//        System.out.println("rsvPeople : " + reservationDTO.getRsvPeople());
-//        knhService.getRsvIdx(userIdx, resIdx, reservationDTO.getRsvMan(), reservationDTO.getRsvWoman(), reservationDTO.getRsvBaby(), reservationDTO.getRsvPeople());
-//    }
 
 
     // 예약 페이지
@@ -53,11 +39,7 @@ public class KNHController {
         );
     }
 
-//    @PostMapping("/visitors/date")
-//    public void saveDateTime(@RequestBody ReservationDTO dto) {
-//        System.out.println(dto);
-//        knhService.saveDateTime(dto);
-//    }
+
 
     // 메뉴
     @GetMapping("/menu/{resIdx}")
@@ -79,10 +61,7 @@ public class KNHController {
     }
 
 
-    //    @GetMapping("/menu")
-//    public List<MenuDTO> getAllMenus(@RequestParam("resIdx") int resIdx) {
-//        return knhService.getAllMenus(resIdx);
-//    }
+
 // 아이디,날짜 데이터로 예약번호 조회
     @GetMapping("/menu/find")
     public Integer getResIdx(
@@ -95,15 +74,36 @@ public class KNHController {
 
         if (reservations != null && !reservations.isEmpty()) {
             Integer reservationIdx = reservations.get(0).getReservationIdx();
-            System.out.println("✅ 반환된 reservationIdx = " + reservationIdx); // 콘솔 확인용
             return reservationIdx;
         } else {
-            System.out.println("⚠️ 예약 정보가 없습니다.");
             return null;
         }
     }
 
+
+    @GetMapping("/time/{resIdx}")
+    public ResponseEntity<String> getResReserveTime(@PathVariable int resIdx) {
+        String resReserveTime = knhService.getResReserveTime(resIdx);
+
+        if (resReserveTime != null) {
+            return ResponseEntity.ok(resReserveTime);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/review")
+    public String submitReview(@RequestBody ReviewDTO reviewDTO) throws Exception {
+        try {
+            knhService.submitReview(reviewDTO);
+            return "리뷰 등록 성공";
+        } catch (Exception e) {
+            return "리뷰 등록 실패: " + e.getMessage();
+        }
+    }
 }
+
+
 
 
 
