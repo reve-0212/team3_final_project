@@ -17,7 +17,6 @@ function SeatPage() {
   const userStore = useUserStore((state) => state.user)
   const resStore = useResStoreSjh((state) => state.res)
   const seatId = useSeatIdStore((state) => state.seatId)
-  const setReservationIdxStore = useReservationIdxStore((state) => state.setReservationIdx)
   const reservationIdx = useReservationIdxStore((state) => state.reservationIdx)
   const rsvDateStore = useRsvDateStore((state) => state.rsvDate)
   const rsvTimeStore = useRsvTimeStore((state) => state.rsvTime)
@@ -41,75 +40,77 @@ function SeatPage() {
   console.log("rsvDate : " + rsvDate)
   console.log("rsvTime : " + rsvTime)
 
-  useEffect(() => {
-    axios.get("http://localhost:8080/searchResIdx", {
-      params: {
-        userIdx: userIdx,
-        resIdx: resIdx,
-        rsvDate: rsvDate,
-        rsvTime: rsvTime
-      }, headers: {
-        Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`
-      }
-    }).then((res) => {
-      console.log(res.data)
-      setReservationIdxStore(res.data)
-    }).catch((err) => {
-      console.log(err)
-    })
-  }, []);
+  // useEffect(() => {
+  //   axios.get("http://localhost:8080/searchResIdx", {
+  //     params: {
+  //       userIdx: userIdx,
+  //       resIdx: resIdx,
+  //       rsvDate: rsvDate,
+  //       rsvTime: rsvTime
+  //     }, headers: {
+  //       Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`
+  //     }
+  //   }).then((res) => {
+  //     console.log(res.data)
+  //     setReservationIdxStore(res.data)
+  //   }).catch((err) => {
+  //     console.log(err)
+  //   })
+  // }, []);
 
-  useEffect(() => {
-    const handlePopState = () => {
-      const shouldLeave = window.confirm("현재까지 예약한 내역이 초기화됩니다. 계속 하시겠습니까?")
-      // 아니요 를 누르면 히스토리에 지금 이 페이지를 한번 더 저장한다
-      // 사용자가 뒤로가기를 눌렀을 때 이 페이지로 다시 돌아옴
-      if (shouldLeave) {
-        axios.delete("http://localhost:8080/deleteReservation", {
-          params: {
-            userIdx: userIdx,
-            reservationIdx: reservationIdx
-          }, headers: {
-            Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`
-          }
-        }).then((res) => {
-          console.log(res.data)
-        }).catch((err) => {
-          console.log(err)
-        })
+  // useEffect(() => {
+  //   // history 에 현재 위치 push 해서 popstate 가 작동하게 한다
+  //   // window.history.pushState(null, "", window.location.href)
+  //
+  //   const handlePopState = () => {
+  //     const shouldLeave = window.confirm("현재까지 예약한 내역이 초기화됩니다. 계속 하시겠습니까?")
+  //
+  //     if (shouldLeave) {
+  //       axios.delete("http://localhost:8080/deleteReservation", {
+  //         params: {
+  //           userIdx: userIdx,
+  //           reservationIdx: reservationIdx
+  //         }, headers: {
+  //           Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`
+  //         }
+  //       }).then((res) => {
+  //         console.log(res.data)
+  //       }).catch((err) => {
+  //         console.log(err)
+  //       })
+  //
+  //       Nv(`/book/date/${userIdx}/${resIdx}`)
+  //     } else {
+  //       Nv(`/book/seat/${userIdx}/${resIdx}`)
+  //     }
+  //   }
+  //
+  //   window.addEventListener("popstate", handlePopState);
+  //
+  //   return () => {
+  //     window.removeEventListener("popstate", handlePopState)
+  //   }
+  // }, [reservationIdx])
 
-        window.history.pushState(null, "", window.location.href)
-      }
-    }
+  // console.log("searchReservationIdx")
+  // console.log(reservationIdx)
 
-    // 끝나면 handlePopState 이벤트 없애기
-    window.history.pushState(null, "", window.location.href)
-    window.addEventListener("popstate", handlePopState);
-
-    return () => {
-      window.removeEventListener("popstate", handlePopState)
-    }
-  }, [])
-
-  console.log("searchReservationIdx")
-  console.log(reservationIdx)
-
-  const reserveSeat = () => {
-    for (let i = 0; i < seatId.length; i++) {
-      axios.put("http://localhost:8080/reserveSeat", null, {
-        params: {
-          reservationIdx: reservationIdx,
-          seatId: seatId[i]
-        }, headers: {
-          Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`
-        }
-      }).then((res) => {
-        console.log(res.data)
-      }).catch((err) => {
-        console.log(err)
-      })
-    }
-  }
+  // const reserveSeat = () => {
+  //   for (let i = 0; i < seatId.length; i++) {
+  //     axios.put("http://localhost:8080/reserveSeat", null, {
+  //       params: {
+  //         reservationIdx: reservationIdx,
+  //         seatId: seatId[i]
+  //       }, headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`
+  //       }
+  //     }).then((res) => {
+  //       console.log(res.data)
+  //     }).catch((err) => {
+  //       console.log(err)
+  //     })
+  //   }
+  // }
 
   return (
     <div className={'app-container  container py-4'}>
@@ -120,7 +121,7 @@ function SeatPage() {
       </div>
 
       <Button btnName={'다음'} onClick={() => {
-        reserveSeat()
+        // reserveSeat()
         setRsvDateTimeStore(rsvDateTime)
         Nv(`/book/menu/${userIdx}/${resIdx}`)
       }}/>

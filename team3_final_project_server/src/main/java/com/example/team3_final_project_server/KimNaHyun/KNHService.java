@@ -14,9 +14,9 @@ public interface KNHService {
 
   void updateRsvMenu(int userIdx, int resIdx) throws Exception;
 
-  List<ReservationDTO> getResIdx(int userIdx, int resIdx, String rsvDate, String rsvTime);
+    List<ReservationDTO> getResIdx(int userIdx, int resIdx, String rsvDate, String rsvTime);
 
-  String getResReserveTime(int resIdx);
+    String getResReserveTime(int resIdx);
 
-  void submitReview(ReviewDTO reviewDTO) throws Exception;
+    void submitReview(ReviewDTO reviewDTO) throws Exception;
 }

@@ -13,6 +13,8 @@
     /*max-width: 850px;*/
     /*margin: 0 auto;*/
     text-align: left;
+    max-height: 500px; /* 원하는 고정 높이로 조절 */
+    overflow-y: auto;
 }
 
 .menu-search-box{

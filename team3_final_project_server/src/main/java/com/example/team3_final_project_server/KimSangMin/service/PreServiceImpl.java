@@ -23,10 +23,16 @@ public class PreServiceImpl implements PreService {
   //    좌석 정보 저장
   @Override
   public boolean saveSeats(List<SeatDTO> seats) {
-    try{
-      preMapper.saveSeats(seats);
+    try {
+      for (SeatDTO seat : seats) {
+        // 중복된 좌석이 존재하는지 확인
+        boolean exists = preMapper.checkSeatExists(seat);
+        if (!exists) {
+          preMapper.saveSeat(seat);  // 새 좌석만 추가
+        }
+      }
       return true;
-    } catch (Exception e){
+    } catch (Exception e) {
       e.printStackTrace();
       return false;
     }
@@ -78,9 +84,14 @@ public class PreServiceImpl implements PreService {
 
   //    좌석 수정
   @Override
-  public boolean updateSeats(List<SeatDTO> seats) {
-    int result = preMapper.updateSeats(seats);
-    return result > 0;
+  public boolean updateSeats(SeatDTO seat) {
+    try {
+      int updateCount = preMapper.updateSeats(seat);  // 수정된 row 수
+      return updateCount > 0;  // 0이면 실패
+    } catch (Exception e) {
+      e.printStackTrace();
+      return false;
+    }
   }
 
   //    좌석 삭제

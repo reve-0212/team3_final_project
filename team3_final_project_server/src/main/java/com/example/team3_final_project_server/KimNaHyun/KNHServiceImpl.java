@@ -47,7 +47,12 @@ public class KNHServiceImpl implements KNHService {
   }
 
   @Override
+  public String getResReserveTime(int resIdx) {
+    return knhMapper.selectResReserveTime(resIdx);
+  }
+
   public void submitReview(ReviewDTO reviewDTO) throws Exception {
     knhMapper.insertReview(reviewDTO);
   }
+
 }

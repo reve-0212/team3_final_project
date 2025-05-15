@@ -1,4 +1,4 @@
-function CancelPopup({restName,onClose}) {
+function CancelPopup(props) {
     // onClose 함수를 받는다
     return (
         <div className="position-fixed top-0 start-0 w-100 h-100
@@ -6,7 +6,7 @@ function CancelPopup({restName,onClose}) {
              style={{background: "rgba(0,0,0,0.4)", zIndex: 1050}}>
             <div className="bg-white p-4 text-center rounded-4"
                  style={{maxWidth: "400px", width: "100%"}}>
-                <p className="fs-5 mb-0">{restName}</p>
+                <p className="fs-5 mb-0">{props.restName}</p>
                 <p className="fs-5">예약을 취소할까요?</p>
 
                 <div className="d-flex flex-row justify-content-center gap-3 mt-3">
@@ -15,13 +15,13 @@ function CancelPopup({restName,onClose}) {
                     <button type="button"
                             className="btn rounded-3 flex-fill"
                             style={{border: "1px solid #D9D9D9", maxWidth: "180px"}}
-                            onClick={onClose}>
+                            onClick={props.onClose}>
                         아니요
                     </button>
                     <button type="button"
                             className="btn rounded-3 flex-fill text-white"
                             style={{backgroundColor: "#FFA31C", maxWidth: "180px"}}
-                            onClick={onClose}>
+                            onClick={props.onCancelConfirm}>
                         네, 취소할게요
                     </button>
                 </div>

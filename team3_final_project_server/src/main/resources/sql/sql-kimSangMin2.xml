@@ -5,13 +5,16 @@
 <mapper namespace="com.example.team3_final_project_server.KimSangMin.mapper.PreMapper">
 
     <!--    좌석 저장 -->
-    <insert id="saveSeats">
+    <insert id="saveSeat">
         INSERT INTO seat_table (res_idx, type, name, x, y, image, is_selected)
-        VALUES
-        <foreach collection="seats" item="seat" separator=",">
-            (#{seat.resIdx}, #{seat.type}, #{seat.name}, #{seat.x}, #{seat.y}, #{seat.image}, #{seat.isSelected})
-        </foreach>
+        VALUES (#{resIdx}, #{type}, #{name}, #{x}, #{y}, #{image}, #{isSelected})
     </insert>
+
+    <select id="checkSeatExists" resultType="boolean">
+        SELECT COUNT(*) > 0
+        FROM seat_table
+        WHERE res_idx = #{resIdx} AND type = #{type} AND name = #{name}
+    </select>
 
     <select id="findResIdx" resultType="int" parameterType="int">
         SELECT res_idx
@@ -72,17 +75,16 @@
     </select>
 
 <!--    좌석 수정하기 -->
-    <update id="updateSeats">
-        <foreach collection="seats" item="seat" index="index" open="" separator=";" close="">
-            UPDATE seats
-            SET x = #{seat.x},
-            y = #{seat.y},
-            res_idx = #{seat.resIdx}
-            WHERE seat_id = #{seat.seatId}
-        </foreach>
+    <update id="updateSeats" parameterType="com.example.team3_final_project_server.dto.SeatDTO">
+        UPDATE seat_table
+        SET x = #{x},
+        y = #{y},
+        res_idx = #{resIdx}
+        WHERE seat_id = #{seatId}
     </update>
 
-<!--    좌석 삭제하기 -->
+
+    <!--    좌석 삭제하기 -->
     <delete id="deleteSeat" parameterType="map">
         DELETE FROM seat_table
         WHERE seat_id = #{seatId} AND res_idx = #{resIdx}

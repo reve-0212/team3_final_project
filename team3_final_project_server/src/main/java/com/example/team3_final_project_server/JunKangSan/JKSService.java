@@ -10,7 +10,7 @@ public interface JKSService {
 
     List<RestaurantDTO> getAllRestaurants();
 
-    List<ReviewDTO> getReviewsByResIdx(int resIdx);
+    List<ReviewDTO> getAllReviews(int resIdx);
 
     RestaurantDTO getRestaurantsByResIdx(int resIdx);
 

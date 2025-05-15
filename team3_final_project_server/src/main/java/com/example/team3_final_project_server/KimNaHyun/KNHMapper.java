@@ -20,7 +20,7 @@ public interface KNHMapper {
 
   List<ReservationDTO> getResIdx(int userIdx, int resIdx, String rsvDate, String rsvTime);
 
-  String selectResReserveTime(@Param("resIdx") int resIdx);
+    String selectResReserveTime(@Param("resIdx") int resIdx);
 
-  void insertReview(ReviewDTO reviewDTO);
+    void insertReview(ReviewDTO reviewDTO);
 }

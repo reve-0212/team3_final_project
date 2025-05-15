@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";  // useParams를 사용하여 URL 파라미터를 받습니다.
 import axios from "axios";
 import useSeatIdStore from "../stores/useSeatIdStore.jsx";
 import useRestaurantStore from "../stores/useRestaurantStore.jsx";
@@ -12,10 +11,6 @@ const SeatLayout = () => {
   const setSeatId = useSeatIdStore((state) => state.setSeatId)
   const seatId = useSeatIdStore((state) => state.seatId)
   const useResIdx = useRestaurantStore((state) => state.restaurantIdx)
-  console.log("------useRes-------")
-  console.log(useResIdx)
-  // console.log("resIdx")
-  // console.log(resIdx)
 
   // 좌석선택기능
   const hSeat = (seatId) => {

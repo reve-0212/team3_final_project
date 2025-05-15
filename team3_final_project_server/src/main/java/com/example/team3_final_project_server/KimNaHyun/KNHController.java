@@ -21,22 +21,6 @@ public class KNHController {
   private KNHService knhService;
 
 
-  // 방문자 페이지
-//    @PostMapping("/visitors/{userIdx}/{resIdx}")
-//    public void getRsvIdx(
-//            @PathVariable("userIdx") int userIdx,
-//            @PathVariable("resIdx") int resIdx,
-//            @RequestBody ReservationDTO reservationDTO)
-//            throws Exception {
-//  System.out.println("/visitors/{userIdx}/{resIdx} 받아온 값 : " + resIdx);
-//        System.out.println("userIdx : " + userIdx);
-//        System.out.println("resIdx : " + resIdx);
-//        System.out.println("rsvMan : " + reservationDTO.getRsvMan());
-//        System.out.println("rsvWoman : " + reservationDTO.getRsvWoman());
-//        System.out.println("rsvBaby : " + reservationDTO.getRsvBaby());
-//        System.out.println("rsvPeople : " + reservationDTO.getRsvPeople());
-//        knhService.getRsvIdx(userIdx, resIdx, reservationDTO.getRsvMan(), reservationDTO.getRsvWoman(), reservationDTO.getRsvBaby(), reservationDTO.getRsvPeople());
-//    }
 
 
   // 예약 페이지
@@ -55,11 +39,7 @@ public class KNHController {
     );
   }
 
-//    @PostMapping("/visitors/date")
-//    public void saveDateTime(@RequestBody ReservationDTO dto) {
-//        System.out.println(dto);
-//        knhService.saveDateTime(dto);
-//    }
+
 
   // 메뉴
   @GetMapping("/menu/{resIdx}")
@@ -92,13 +72,14 @@ public class KNHController {
 
     if (reservations != null && !reservations.isEmpty()) {
       Integer reservationIdx = reservations.get(0).getReservationIdx();
-      System.out.println("✅ 반환된 reservationIdx = " + reservationIdx); // 콘솔 확인용
+
       return reservationIdx;
     } else {
-      System.out.println("⚠️ 예약 정보가 없습니다.");
+
       return null;
     }
   }
+
 
     @GetMapping("/time/{resIdx}")
     public ResponseEntity<String> getResReserveTime(@PathVariable int resIdx) {
@@ -121,6 +102,8 @@ public class KNHController {
         }
     }
 }
+
+
 
 
 

@@ -1,72 +1,123 @@
 import {faStar as faStarRegular} from "@fortawesome/free-regular-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCamera, faStar} from "@fortawesome/free-solid-svg-icons";
-import {useState} from "react";
+import React, {useState} from "react";
 import ReviewTitle from "../reviewTitle.jsx";
 import {useNavigate} from "react-router-dom";
+import axios from "axios";
 import useUserStore from "../../stores/useUserStore.jsx";
+import Button from "../../KimNaHyun/components/Button.jsx";
 
 function SjhReview() {
-  const userState = useUserStore((state) => state.user)
+  const userState = useUserStore((state) => state.user);
 
-  // 별점 초기값은 0
   const [starScore, setStarScore] = useState(0);
+  const [reviewContent, setReviewContent] = useState("");
+  const [reviewImage1, setReviewImage1] = useState("");
+  const [reviewImage2, setReviewImage2] = useState("");
+  const [reviewImage3, setReviewImage3] = useState("");
 
   const Nv = useNavigate();
 
-  // 별점 매기기 위한 핸들러
-  // 별을 누르면 해당하는 i+1 번째 별에 i+1 점수가 매겨진다
-  // i+1 이 starScore 보다 같거나 작다면 꽉 찬 별을, 아니면 빈 별을 출력한다
+  // 별점 컴포넌트 렌더링
   const ratingStarHandler = () => {
     let result = [];
     for (let i = 0; i < 5; i++) {
-      result.push(<span key={i + 1} onClick={() => setStarScore(i + 1)}>
-                {i + 1 <= starScore ?
-                  <FontAwesomeIcon icon={faStar}/> : <FontAwesomeIcon icon={faStarRegular}/>}
-            </span>)
-      console.log("starScore : " + starScore);
+      result.push(
+        <span key={i + 1} onClick={() => setStarScore(i + 1)}>
+          {i + 1 <= starScore ? (
+            <FontAwesomeIcon icon={faStar}/>
+          ) : (
+            <FontAwesomeIcon icon={faStarRegular}/>
+          )}
+        </span>
+      );
     }
     return result;
-  }
+  };
+
+  // 리뷰 등록 처리
+  const handleSubmitReview = () => {
+    if (starScore === 0 || reviewContent.trim() === "") {
+      alert("별점과 리뷰 내용을 작성해주세요.");
+      return;
+    }
+
+    const reviewData = {
+      userIdx: userState?.userIdx ?? 0,
+      resIdx: 2, // 예시 값
+      menuIdx: 1,       // 예시 값
+      isOnePick: "N",
+      reviewRating: starScore,
+      reviewContent: reviewContent,
+      reviewWriteDate: new Date().toLocaleDateString(),
+      reviewVisitedDate: new Date().toLocaleDateString(),
+      reviewImage1: reviewImage1,
+      reviewImage2: reviewImage2,
+      reviewImage3: reviewImage3,
+      reviewType: "S", //
+    };
+
+    axios.post("http://localhost:8080/api/review", reviewData, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
+      },
+    })
+      .then((response) => {
+        console.log("리뷰 등록 성공:", response);
+        alert("리뷰가 성공적으로 등록되었습니다.");
+        Nv("/user/reviewList");
+      })
+      .catch((error) => {
+        console.error("리뷰 등록 실패:", error);
+        alert("리뷰 등록에 실패했습니다. 다시 시도해주세요.");
+      });
+  };
 
   return (
     <div className={"container"}>
-      <ReviewTitle review={"일반리뷰 등록"} onePick={"원픽리뷰 등록"}/>
-
+      <h3 className={'basic-font'} style={{fontSize: '23px', textAlign: 'center', fontWeight: 'bold'}}>리뷰 등록하기</h3>
       <div className={"d-flex flex-column justify-content-center align-items-center"}>
         <p className={"fs-6 mb-0"}>방문한 가게는 어떠셨나요?</p>
 
-        <div className={"fs-3"}>
-          {ratingStarHandler()}
-        </div>
+        <div className={"fs-3 text-warning"}>{ratingStarHandler()}</div>
 
-        <textarea className={"form-control mt-3"} rows={10} style={{resize: "none"}}/>
+        <textarea
+          className={"form-control mt-3"}
+          rows={10}
+          style={{resize: "none"}}
+          value={reviewContent}
+          onChange={(e) => setReviewContent(e.target.value)}
+          placeholder="리뷰 내용을 작성하세요..."
+        />
       </div>
 
       <div className={"mt-3 mb-5"}>
         <div
           style={{
-            width: "100px", height: "100px", backgroundColor: "white",
-            border: "1px solid #A9A9A9"
+            width: "100px",
+            height: "100px",
+            backgroundColor: "white",
+            border: "1px solid #A9A9A9",
           }}
-          className={"rounded-3 d-flex flex-column justify-content-center align-items-center"}>
+          className={"rounded-3 d-flex flex-column justify-content-center align-items-center"}
+        >
           <FontAwesomeIcon icon={faCamera} className={"fs-3"}/>
           <p className={"fs-6 mb-0"}>사진 0/5</p>
         </div>
       </div>
 
-      <div className={"d-flex justify-content-center"}>
-        <button type={"button"} className={"btn rounded-3 text-light fw-bold flex-fill py-3 mt-5"}
-                style={{backgroundColor: "#FFA31C"}}
-                onClick={() => {
-                  Nv("/reviewList")
-                }}>등록하기
-        </button>
-      </div>
-
-
+      {/*<button*/}
+      {/*    type={"button"}*/}
+      {/*    className={"btn rounded-3 text-light fw-bold flex-fill py-3 mt-5"}*/}
+      {/*    style={{ backgroundColor: "#FFA31C" }}*/}
+      {/*    onClick={handleSubmitReview}*/}
+      {/*>*/}
+      {/*    등록하기*/}
+      {/*</button>*/}
+      <Button btnName="리뷰 등록하기" onClick={handleSubmitReview}/>
     </div>
   );
 }
 
-export default SjhReview
+export default SjhReview;

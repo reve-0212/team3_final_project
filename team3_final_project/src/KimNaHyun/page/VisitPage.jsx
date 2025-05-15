@@ -26,7 +26,7 @@ function VisitPage() {
   const userIdxStore = useUserStore((state) => state.user)
   const res = useResStoreSjh((state) => state.res)
   const setPeople = usePeopleStore((state) => state.setPeople)
-8
+
   useEffect(() => {
     console.log(res)
   }, [res]);
@@ -56,10 +56,6 @@ function VisitPage() {
   };
 
   const handleSubmit = () => {
-    const rsvMan = visitors.man;
-    const rsvWoman = visitors.woman;
-    const rsvBaby = visitors.baby;
-    const rsvPeople = rsvMan + rsvWoman + rsvBaby;
 
     const userIdx = userIdxStore.userIdx;
     const resIdx = res.resIdx;

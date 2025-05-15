@@ -26,4 +26,7 @@ public class RestaurantDTO {
   // category 테이블
   private String categoryTag;
   private String categoryName;
+
+
+  private Double avgRating;
 }

@@ -4,114 +4,105 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import Button from "../components/Button.jsx";
-import useRestaurantStore from "../../stores/useRestaurantStore.jsx";
 import useRsvDateStore from "../../stores/useRsvDateStore.jsx";
 import useRsvTimeStore from "../../stores/useRsvTimeStore.jsx";
 import useUserStore from "../../stores/useUserStore.jsx";
 import useResStoreSjh from "../../stores/useResStoreSjh.jsx";
 import usePeopleStore from "../../stores/usePeopleStore.jsx";
 
-function DateTimeSelectorPage() {
+// 최종 에약 확정 페이지에서 한번에 예약하기
+
+function DateSelectorPage() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
+  const [openingHours, setOpeningHours] = useState([]); // 초기값 제거
+
   const navigate = useNavigate();
-  const location = useLocation();
 
-  const setRsvDate = useRsvDateStore((state) => state.setRsvDate)
-  const rsvDate = useRsvDateStore((state) => state.rsvDate)
-  const setRsvTime = useRsvTimeStore((state) => state.setRsvTime)
-  const rsvTime = useRsvTimeStore((state) => state.rsvTime)
-  const userStore = useUserStore((state)=>state.user)
+  const setRsvDate = useRsvDateStore((state) => state.setRsvDate);
+  const setRsvTime = useRsvTimeStore((state) => state.setRsvTime);
+  const userStore = useUserStore((state) => state.user);
   const res = useResStoreSjh((state) => state.res)
+  const people = usePeopleStore((state) => state.people)
 
-  useEffect(()=>{
-    console.log(userStore)
-  },[userStore])
+  const userIdx = userStore.userIdx
+  const resIdx = res.resIdx
+  const rsvMan = people.man
+  const rsvWoman = people.woman
+  const rsvBaby = people.baby
+  const rsvPeople = people.man + people.woman + people.baby
+  const today = new Date();
 
+  // 영업시간 받아오기
   useEffect(() => {
-    console.log(res)
-  }, [res]);
+    if (!resIdx) return;
 
+    axios
+      .get(`http://localhost:8080/api/time/${resIdx}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
+        },
+      })
+      .then((response) => {
+        setOpeningHours(response.data.split(","))
+      })
+      .catch((err) => {
+        console.error("영업시간 불러오기 실패:", err);
+        alert("식당 정보를 불러오지 못했습니다.");
+      });
+  }, [resIdx]);
+
+  // 날짜 상태 저장
   useEffect(() => {
     if (selectedDate) {
-      const formattedDate = selectedDate.toLocaleDateString('sv-SE')
+      const formattedDate = selectedDate.toLocaleDateString("sv-SE");
       setRsvDate(formattedDate);
     }
   }, [selectedDate]);
 
+  // 시간 상태 저장
   useEffect(() => {
-    if(selectedTime){
-      setRsvTime(selectedTime)
+    if (selectedTime) {
+      setRsvTime(selectedTime);
     }
   }, [selectedTime]);
 
-  console.log("rsvDate")
-  console.log(rsvDate)
-  console.log("rsvTime")
-  console.log(rsvTime)
-
-  // 이전 페이지에서 전달된 데이터
-  const {
-    userIdx,
-    resIdx,
-    rsvMan,
-    rsvWoman,
-    rsvBaby,
-    rsvPeople,
-  } = location.state || {};
-  console.log(userIdx, resIdx, rsvMan, rsvWoman, rsvBaby, rsvPeople);
-
-  // 9시부터 19시까지 1시간 간격의 시간 슬롯
-  const timeSlots = [];
-  for (let hour = 9; hour <= 19; hour++) {
-    let hourStr = hour < 10 ? `0${hour}:00` : `${hour}:00`;
-    timeSlots.push(hourStr);
-  }
-
-  const handleTimeSelect = (time) => {
-    setSelectedTime(time);
-  };
-
+  // 예약 전송
   const handleSubmit = () => {
     if (!selectedDate || !selectedTime) {
       alert("날짜와 시간을 모두 선택해주세요.");
       return;
     }
 
-    const formattedDate = selectedDate.toLocaleDateString('sv-SE');
+    const formattedDate = selectedDate.toLocaleDateString("sv-SE");
     const formattedDateTime = `${formattedDate} ${selectedTime}:00`;
 
-    const userIdx = userStore.userIdx; // 예시 사용자 ID
-    const resIdx = res.resIdx; // 예시 가게 ID
-    console.log("userIdx")
-    console.log(userIdx)
-    console.log("resIdx")
-    console.log(resIdx)
+    // const postData = {
+    //   userIdx,
+    //   resIdx,
+    //   rsvPeople,
+    //   rsvMan,
+    //   rsvWoman,
+    //   rsvBaby,
+    //   rsvDate: formattedDate,
+    //   rsvTime: formattedDateTime,
+    // };
 
-    const postData = {
-      userIdx,
-      resIdx,
-      rsvPeople,
-      rsvMan,
-      rsvWoman,
-      rsvBaby,
-      rsvDate: formattedDate,
-      rsvTime: formattedDateTime,
-    };
-
-    axios.put(`http://localhost:8080/api/date`, postData, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`
-      }
-    })
-      .then((res) => {
-        const newReservationIdx = res.data?.reservationIdx || resIdx;
-        navigate(`/book/seat/${userIdx}/${newReservationIdx}`);
-      })
-      .catch((err) => {
-        alert("예약 정보 전송에 실패했습니다.");
-        console.error(err);
-      });
+    // axios
+    //   .put(`http://localhost:8080/api/date`, postData, {
+    //     headers: {
+    //       Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
+    //     },
+    //   })
+    //   .then((res) => {
+    //     const newReservationIdx = res.data?.reservationIdx || resIdx;
+    //     navigate(`/book/seat/${userIdx}/${newReservationIdx}`);
+    //   })
+    //   .catch((err) => {
+    //     alert("예약 정보 전송에 실패했습니다.");
+    //     console.error(err);
+    //   });
+    navigate(`/book/seat/${userIdx}/${resIdx}`)
   };
 
   return (
@@ -126,6 +117,8 @@ function DateTimeSelectorPage() {
           dateFormat="yyyy-MM-dd"
           placeholderText="날짜를 선택하세요"
           inline
+          minDate={new Date()}
+          maxDate={new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000)}
         />
         {selectedDate && (
           <p className="basic-font fw-bold" style={{marginTop: "10px"}}>
@@ -136,12 +129,16 @@ function DateTimeSelectorPage() {
 
       {/* 시간 선택 */}
       <section className="mb-4">
-        <h5>시간 선택</h5>
+        <h5>
+          시간 선택
+          <span style={{fontSize: "0.9rem", color: "#888"}}>
+          </span>
+        </h5>
         <div>
-          {timeSlots.map((time, index) => (
+          {openingHours.map((index) => (
             <button
               key={index}
-              onClick={() => handleTimeSelect(time)}
+              onClick={() => setSelectedTime(index)}
               style={{
                 margin: "5px",
                 padding: "7px 20px",
@@ -149,12 +146,9 @@ function DateTimeSelectorPage() {
                 cursor: "pointer",
                 border: "1px solid #ccc",
                 borderRadius: "15px",
-                backgroundColor: selectedTime === time ? "#5D4037" : "#fff",
-                color: selectedTime === time ? "#fff" : "#000",
-              }}
-            >
-              {time}
-            </button>
+                backgroundColor: selectedTime === index ? "#5D4037" : "#fff",
+                color: selectedTime === index ? "#fff" : "#000",
+              }}>{index}</button>
           ))}
         </div>
         {selectedTime && (
@@ -170,4 +164,4 @@ function DateTimeSelectorPage() {
   );
 }
 
-export default DateTimeSelectorPage;
+export default DateSelectorPage;
