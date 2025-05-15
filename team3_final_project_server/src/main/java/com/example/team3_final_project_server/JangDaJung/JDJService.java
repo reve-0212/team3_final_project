@@ -2,6 +2,7 @@ package com.example.team3_final_project_server.JangDaJung;
 
 import com.example.team3_final_project_server.dto.MenuDTO;
 import com.example.team3_final_project_server.dto.ReservationHistoryDTO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,11 @@ public interface JDJService {
     //    시간대별 예약팀 수
     List<Map<String, Object>> getTeamCountByHour(String startDate, String endDate, int resIdx);
 
+    //    가게 영업시간 불러오기(통계페ㅐ이지에서 쓰려고 했던거)
+//    Map<String, String> getResTime(int resIdx);
+
+//    가게 예약 시간대 불러오기(메인페이지
+    List<String> getResTime(int resIdx);
 
 //    ---- 메뉴 페이지
 

@@ -34,6 +34,12 @@ public interface JDJMapper {
     //    시간대별 예약팀 수
     List<Map<String, Object>> selectTeamCountByHour(String startDate, String endDate, int resIdx);
 
+    //    가게 영업시간 불러오기(통계 페이지에서 쓰려고 했던거
+//    Map<String, String> getResTime(int resIdx);
+
+//    가게 예약 가능 시간대 불러오기(메인페이지)
+    List<String> getResTime(@Param("resIdx") int resIdx);
+
 //    ---- 메뉴 페이지
 //    메뉴 리스트
     List<MenuDTO> selectMenuList(int resIdx);

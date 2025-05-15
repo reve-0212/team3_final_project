@@ -4,91 +4,91 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.team3_final_project_server.JeonSeongYun.JSYMapper">
 
-    <select id="getRstListByCategory" resultType="com.example.team3_final_project_server.dto.RestaurantListDTO">
-        SELECT
-            b.category_name,
-            ROUND(AVG(rv.review_rating), 1) AS avg_rating,
-            COUNT(rv.review_idx) AS rv_count,
-            a.res_option_1,
-            a.res_idx,
-            a.res_address2,
-            a.res_introduce,
-            a.res_price_range,
-            a.reserve_or_waiting,
-            a.res_image1,
-            a.res_image2,
-            a.res_image3,
-            a.res_name
-        FROM
-            category b
-        JOIN
-            restaurant a
-        ON
-            b.res_idx = a.res_idx
-        LEFT JOIN
-            review rv
-        ON
-            a.res_idx = rv.res_idx
-        WHERE
-            b.category_name = #{category}
-        GROUP BY
-        b.category_name,
-        a.res_option_1,
-        a.res_idx,
-        a.res_address2,
-        a.res_introduce,
-        a.res_price_range,
-        a.reserve_or_waiting,
-        a.res_image1,
-        a.res_image2,
-        a.res_image3,
-        a.res_name;
-    </select>
+<!--    <select id="getRstListByCategory" resultType="com.example.team3_final_project_server.dto.RestaurantListDTO">-->
+<!--        SELECT-->
+<!--            b.category_name,-->
+<!--            ROUND(AVG(rv.review_rating), 1) AS avg_rating,-->
+<!--            COUNT(rv.review_idx) AS rv_count,-->
+<!--            a.res_option_1,-->
+<!--            a.res_idx,-->
+<!--            a.res_address2,-->
+<!--            a.res_introduce,-->
+<!--            a.res_price_range,-->
+<!--            a.reserve_or_waiting,-->
+<!--            a.res_image1,-->
+<!--            a.res_image2,-->
+<!--            a.res_image3,-->
+<!--            a.res_name-->
+<!--        FROM-->
+<!--            category b-->
+<!--        JOIN-->
+<!--            restaurant a-->
+<!--        ON-->
+<!--            b.res_idx = a.res_idx-->
+<!--        LEFT JOIN-->
+<!--            review rv-->
+<!--        ON-->
+<!--            a.res_idx = rv.res_idx-->
+<!--        WHERE-->
+<!--            b.category_name = #{category}-->
+<!--        GROUP BY-->
+<!--        b.category_name,-->
+<!--        a.res_option_1,-->
+<!--        a.res_idx,-->
+<!--        a.res_address2,-->
+<!--        a.res_introduce,-->
+<!--        a.res_price_range,-->
+<!--        a.reserve_or_waiting,-->
+<!--        a.res_image1,-->
+<!--        a.res_image2,-->
+<!--        a.res_image3,-->
+<!--        a.res_name;-->
+<!--    </select>-->
 
-    <select id="findByAdminId" resultType="com.example.team3_final_project_server.dto.UserDTO" parameterType="String">
-        SELECT * FROM user WHERE user_id = #{userId} AND role = 'ROLE_ADMIN'
-    </select>
+<!--    <select id="findByAdminId" resultType="com.example.team3_final_project_server.dto.UserDTO" parameterType="String">-->
+<!--        SELECT * FROM user WHERE user_id = #{userId} AND role = 'ROLE_ADMIN'-->
+<!--    </select>-->
 
 
-    <select id="existsByUserEmail" resultType="boolean">
-        SELECT COUNT(*) > 0 FROM user WHERE user_email = #{userEmail}
-    </select>
+<!--    <select id="existsByUserEmail" resultType="boolean">-->
+<!--        SELECT COUNT(*) > 0 FROM user WHERE user_email = #{userEmail}-->
+<!--    </select>-->
 
-    <!-- 아이디로 사용자 존재 여부 확인 -->
-    <select id="existsByUserId" resultType="boolean">
-        SELECT COUNT(*) > 0 FROM user WHERE user_id = #{userId}
-    </select>
+<!--    &lt;!&ndash; 아이디로 사용자 존재 여부 확인 &ndash;&gt;-->
+<!--    <select id="existsByUserId" resultType="boolean">-->
+<!--        SELECT COUNT(*) > 0 FROM user WHERE user_id = #{userId}-->
+<!--    </select>-->
 
-    <insert id="saveOwner" parameterType="com.example.team3_final_project_server.dto.UserDTO">
-        INSERT INTO user (user_id, user_pass, user_nick, user_call, user_email, role, bs_name, bs_number)
-        VALUES (#{userId}, #{userPass}, #{userNick}, #{userCall}, #{userEmail}, #{role}, #{bsName}, #{bsNumber})
-    </insert>
+<!--    <insert id="saveOwner" parameterType="com.example.team3_final_project_server.dto.UserDTO">-->
+<!--        INSERT INTO user (user_id, user_pass, user_nick, user_call, user_email, role, bs_name, bs_number)-->
+<!--        VALUES (#{userId}, #{userPass}, #{userNick}, #{userCall}, #{userEmail}, #{role}, #{bsName}, #{bsNumber})-->
+<!--    </insert>-->
 
-    <select id="getResList" parameterType="string" resultType="com.example.team3_final_project_server.dto.ReservationDTO">
-        SELECT
-            a.reservation_idx,
-            c.user_nick,
-            a.rsv_people,
-            c.user_call,
-            CONCAT(a.rsv_date, ' ', TIME_FORMAT(a.rsv_time, '%H:%i')) AS rsv_time,
-            b.seat_id,
-            (
-                SELECT COUNT(*)
-                FROM reservation r
-                WHERE r.user_idx = a.user_idx
-                AND r.rsv_come_datetime IS NOT NULL
-            ) AS visit_count
-        FROM
-            reservation a
-        JOIN
-            selected_seat b ON a.reservation_idx = b.reservation_idx
-        JOIN
-            user c ON a.user_idx = c.user_idx
-        WHERE
-            b.seat_id = #{seatId}
-            AND (a.rsv_come_datetime IS NULL AND a.rsv_cancel_datetime IS NULL)
-        ORDER BY
-            reservation_idx
-    </select>
+<!--    <select id="getResList" parameterType="string" resultType="com.example.team3_final_project_server.dto.ReservationDTO">-->
+<!--        SELECT-->
+<!--            a.reservation_idx,-->
+<!--            c.user_nick,-->
+<!--            a.rsv_people,-->
+<!--            c.user_call,-->
+<!--            CONCAT(a.rsv_date, ' ', TIME_FORMAT(a.rsv_time, '%H:%i')) AS rsv_time,-->
+<!--            b.seat_id,-->
+<!--            (-->
+<!--                SELECT COUNT(*)-->
+<!--                FROM reservation r-->
+<!--                WHERE r.user_idx = a.user_idx-->
+<!--                AND r.rsv_come_datetime IS NOT NULL-->
+<!--            ) AS visit_count-->
+<!--        FROM-->
+<!--            reservation a-->
+<!--        JOIN-->
+<!--            selected_seat b ON a.reservation_idx = b.reservation_idx-->
+<!--        JOIN-->
+<!--            user c ON a.user_idx = c.user_idx-->
+<!--        WHERE-->
+<!--            b.seat_id = #{seatId}-->
+<!--            AND (a.rsv_come_datetime IS NULL AND a.rsv_cancel_datetime IS NULL)-->
+<!--        ORDER BY-->
+<!--            reservation_idx-->
+<!--    </select>-->
 
 </mapper>
