@@ -5,17 +5,17 @@ import axios from "axios";
 import useUserStore from "../../stores/useUserStore.jsx";
 import useReservationIdxStore from "../../stores/useReservationIdxStore.jsx"
 import useResStoreSjh from "../../stores/useResStoreSjh.jsx";
+import useMenuStore from "../../stores/useMenuStore.jsx";
 import usePeopleStore from "../../stores/usePeopleStore.jsx";
 import useRsvDateTimeStore from "../../stores/useRsvDateTimeStore.jsx";
-import useMenuIdxStore from "../../stores/useMenuIdxStore.jsx";
 
 const MenuSelector = () => {
   const Nv = useNavigate();
   const [menuItems, setMenuItems] = useState([]);
   const [quantities, setQuantities] = useState({});
-
   const userStore = useUserStore((state) => state.user)
   const res = useResStoreSjh((state) => state.res)
+  const setMenu = useMenuStore((state) => state.setMenu)
   const people = usePeopleStore((state) => state.people)
   const rsvDateTime = useRsvDateTimeStore((state) => state.rsvDateTime)
   const [allPeople, setAllPeople] = useState(0)
@@ -25,8 +25,6 @@ const MenuSelector = () => {
 
   // 좌석 세팅에서 선택한 reservationIdx 가지고 있기
   const reservationIdx = useReservationIdxStore((state) => state.reservationIdx)
-
-
 
   useEffect(() => {
     console.log("userIdx")
@@ -89,9 +87,6 @@ const MenuSelector = () => {
     }));
   };
 
-  console.log("-----menuItems-----")
-  console.log(menuItems)
-
   const handleDecrease = (menuIdx) => {
     setQuantities((prev) => {
       const current = prev[menuIdx] || 0;
@@ -127,69 +122,7 @@ const MenuSelector = () => {
       }
     });
 
-    console.log("-----menuList-----")
-    console.log(menuList)
-
-    for (let i = 0; i < menuList.length; i++) {
-      console.log(menuList[i])
-      console.log(menuList[i].menuIdx)
-      console.log(menuList[i].menuName)
-      console.log(menuList[i].menuPrice)
-      console.log(menuList[i].quantity)
-      console.log(menuList[i].totalPrice)
-      console.log(allPeople)
-
-      axios.all([
-        axios.put("http://localhost:8080/reserveMenu", null, {
-          params: {
-            reservationIdx: reservationIdx,
-            menuIdx: menuList[i].menuIdx,
-            menuQuantity: menuList[i].quantity
-          }, headers: {
-            Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
-          }
-        }),
-        axios.put("http://localhost:8080/saveHistory", null, {
-          params: {
-            reservationIdx: reservationIdx,
-            resIdx: resIdx,
-            reservationDate: rsvDateTime,
-            rsvPeople: allPeople,
-            rsvMan: people.man,
-            rsvWoman: people.woman,
-            rsvBaby: people.baby,
-            menuIdx: menuList[i].menuIdx,
-            menuName: menuList[i].menuName,
-            menuPrice: menuList[i].menuPrice,
-            menuSCount: menuList[i].quantity,
-            menuSTP: menuList[i].totalPrice
-          }, headers: {
-            Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
-          }
-        })
-      ]).then(
-        axios.spread((res1, res2) => {
-          console.log(res1)
-          console.log(res2)
-        })
-      ).catch((err) => {
-        console.log(err)
-      })
-
-      // axios.put("http://localhost:8080/reserveMenu", null, {
-      //   params: {
-      //     reservationIdx: reservationIdx,
-      //     menuIdx: menuList[i].menuIdx,
-      //     menuQuantity: menuList[i].quantity
-      //   }, headers: {
-      //     Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
-      //   }
-      // }).then((res) => {
-      //   console.log(res)
-      // }).catch((err) => {
-      //   console.log(err)
-      // })
-    }
+    setMenu(menuList)
   };
 
   return (
@@ -285,7 +218,7 @@ const MenuSelector = () => {
             })}
             <Button btnName={'다음'} onClick={() => {
               handleSubmit()
-              // Nv("/book/reg")
+              Nv("/book/reg")
             }}/>
           </ul>
         )}

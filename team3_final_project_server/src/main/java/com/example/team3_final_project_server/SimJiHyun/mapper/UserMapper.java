@@ -68,4 +68,16 @@ public interface UserMapper {
   void saveHistory(int reservationIdx, int resIdx, String reservationDate,
                    int rsvPeople, int rsvMan, int rsvWoman, int rsvBaby,
                    int menuIdx, String menuName, int menuPrice, int menuSCount, int menuSTP);
+
+  //  뒤로가기 누르면 아까 예약했던 데이터 삭제
+  void deleteReservation(int userIdx, int reservationIdx);
+
+  //  뒤로 가기 누르면 아까 예약한 좌석 삭제
+  void deleteSeat(int reservationIdx);
+
+  //  에약한거 취소하면 history 에 들어감
+  void cancelBookHistory(int reservationIdx);
+
+  //  모든 예약하기
+  void bookAllReg(int userIdx, int resIdx, int rsvPeople, int rsvMan, int rsvWoman, int rsvBaby, String rsvDate, String rsvTime);
 }

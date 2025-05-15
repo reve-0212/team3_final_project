@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -123,6 +124,13 @@ public class UserController {
     userService.cancelBook(reservationIdx);
   }
 
+  //  예약 취소할 때 히스토리에 넣기
+  @PutMapping("/cancelBookHistory")
+  public void cancelBookHistory(@RequestParam int reservationIdx) {
+    System.out.println("reservationIdx : " + reservationIdx);
+    userService.cancelBookHistory(reservationIdx);
+  }
+
   //  예약 번호 찾기
   @GetMapping("/searchResIdx")
   public int searchResIdx(@RequestParam int userIdx, @RequestParam int resIdx, @RequestParam String rsvDate, @RequestParam String rsvTime) {
@@ -157,6 +165,7 @@ public class UserController {
   //  좌석 예약하기
   @PutMapping("/reserveSeat")
   public void reserveSeat(@RequestParam int reservationIdx, @RequestParam int seatId) {
+    System.out.println("reserveSeat");
     System.out.println("reservationIdx : " + reservationIdx);
     System.out.println("seatId : " + seatId);
     userService.reserveSeat(reservationIdx, seatId);
@@ -166,6 +175,8 @@ public class UserController {
   public void reserveMenu(@RequestParam int reservationIdx,
                           @RequestParam int menuIdx,
                           @RequestParam int menuQuantity) {
+    System.out.println("reserveMenu");
+
     System.out.println("reservationIdx : " + reservationIdx);
     System.out.println("menuIdx : " + menuIdx);
     System.out.println("menuQuantity : " + menuQuantity);
@@ -238,4 +249,39 @@ public class UserController {
             rsvPeople, rsvMan, rsvWoman, rsvBaby,
             menuIdx, menuName, menuPrice, menuSCount, menuSTP);
   }
+
+  @DeleteMapping("/deleteReservation")
+  public void deleteReservation(@RequestParam int userIdx, @RequestParam int reservationIdx) {
+    System.out.println("userIdx : " + userIdx);
+    System.out.println("reservationIdx : " + reservationIdx);
+    userService.deleteReservation(userIdx, reservationIdx);
+  }
+
+  @DeleteMapping("/deleteSeat")
+  public void deleteSeat(@RequestParam int reservationIdx) {
+    System.out.println("reservationIdx : " + reservationIdx);
+    userService.deleteSeat(reservationIdx);
+  }
+
+  @PutMapping("/bookAllReg")
+  public void bookAllReg(
+          @RequestParam int userIdx,
+          @RequestParam int resIdx,
+          @RequestParam int rsvPeople,
+          @RequestParam int rsvMan,
+          @RequestParam int rsvWoman,
+          @RequestParam int rsvBaby,
+          @RequestParam String rsvDate,
+          @RequestParam String rsvTime) {
+    System.out.println("userIdx : " + userIdx);
+    System.out.println("resIdx : " + resIdx);
+    System.out.println("rsvPeople : " + rsvPeople);
+    System.out.println("rsvMan : " + rsvMan);
+    System.out.println("rsvWoman : " + rsvWoman);
+    System.out.println("rsvBaby : " + rsvBaby);
+    System.out.println("rsvDate : " + rsvDate);
+    System.out.println("rsvTime : " + rsvTime);
+    userService.bookAllReg(userIdx, resIdx, rsvPeople, rsvMan, rsvWoman, rsvBaby, rsvDate, rsvTime);
+  }
+
 }

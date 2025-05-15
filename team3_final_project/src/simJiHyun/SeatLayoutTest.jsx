@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";  // useParams를 사용하여 URL 파라미터를 받습니다.
 import axios from "axios";
 import useSeatIdStore from "../stores/useSeatIdStore.jsx";
 import useRestaurantStore from "../stores/useRestaurantStore.jsx";
@@ -12,10 +11,6 @@ const SeatLayout = () => {
   const setSeatId = useSeatIdStore((state) => state.setSeatId)
   const seatId = useSeatIdStore((state) => state.seatId)
   const useResIdx = useRestaurantStore((state) => state.restaurantIdx)
-  console.log("------useRes-------")
-  console.log(useResIdx)
-  // console.log("resIdx")
-  // console.log(resIdx)
 
   // 좌석선택기능
   const hSeat = (seatId) => {
@@ -77,7 +72,6 @@ const SeatLayout = () => {
           {seats.map((seat, index) => {
             const isUnavailable = seat.type === "창문" || seat.type === "입구";
             const isSelected = seatSelect.includes(seat.seatId);
-            // console.log(`좌석 ID: ${seat.seatId}, 선택 여부: ${isSelected}`);
 
             const seatWidth = seat.type === "4인석" ? "80px" : seat.type === "6인석" ? "100px" : "50px";
             const seatHeight = seat.type === "6인석" ? "100px" : seat.type === "4인석" ? "80px" : "50px";

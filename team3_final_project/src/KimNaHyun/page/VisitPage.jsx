@@ -26,27 +26,7 @@ function VisitPage() {
   const userIdxStore = useUserStore((state) => state.user)
   const res = useResStoreSjh((state) => state.res)
   const setPeople = usePeopleStore((state) => state.setPeople)
-8
-  useEffect(() => {
-    console.log(res)
-  }, [res]);
-
   const [visitors, setVisitors] = useState({man: 0, woman: 0, baby: 0});
-
-  useEffect(() => {
-    console.log("visitors.man")
-    console.log(visitors.man)
-  }, [visitors.man]);
-
-  useEffect(() => {
-    console.log("visitors.woman")
-    console.log(visitors.woman)
-  }, [visitors.woman]);
-
-  useEffect(() => {
-    console.log("visitors.baby")
-    console.log(visitors.baby)
-  }, [visitors.baby]);
 
   const handleCountChange = (gender, quantity) => {
     setVisitors((prev) => ({
@@ -55,14 +35,7 @@ function VisitPage() {
     }));
   };
 
-
-
-
   const handleSubmit = () => {
-    const rsvMan = visitors.man;
-    const rsvWoman = visitors.woman;
-    const rsvBaby = visitors.baby;
-    const rsvPeople = rsvMan + rsvWoman + rsvBaby;
 
     const userIdx = userIdxStore.userIdx;
     const resIdx = res.resIdx;

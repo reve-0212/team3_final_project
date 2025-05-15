@@ -7,8 +7,7 @@ import {useEffect, useState} from "react";
 import useReservationIdxStore from "../../stores/useReservationIdxStore.jsx";
 import axios from "axios";
 import useRestaurantStore from "../../stores/useRestaurantStore.jsx";
-import {useNavigate} from "react-router-dom";
-
+import {useNavigate, useSearchParams} from "react-router-dom";
 
 function BookInfo() {
   // 모달을 열지 말지 결정한다
@@ -18,6 +17,8 @@ function BookInfo() {
   const [reservations, setReservations] = useState({})
   const [menus, setMenus] = useState([])
   const Nv = useNavigate();
+  const [searchParams] = useSearchParams();
+  const type = searchParams.get("type")
 
 
   useEffect(() => {
@@ -44,21 +45,12 @@ function BookInfo() {
       })
     ]).then(
       axios.spread((res1, res2) => {
-        console.log("-----res1-----")
-        console.log(res1.data)
         setReservations(res1.data)
-        console.log("-----res2-----")
-        console.log(res2.data)
         setMenus(res2.data)
       })).catch((err) => {
       console.log(err)
     })
   }, []);
-
-  console.log("---reservations---")
-  console.log(reservations)
-  console.log("---menus---")
-  console.log(menus)
 
   const rsvTime = reservations.reservation?.rsvTime
   const shortRsvTime = rsvTime ? rsvTime.substring(0, 5) : "";
@@ -85,7 +77,7 @@ function BookInfo() {
         <ul className={'d-flex justify-content-between mb-2 fw-bold'}>
           <li>선택 메뉴</li>
           <div>
-          {menus.map((index) => (<li>{index.menuDTO?.menuName} {index.selectedMenuDTO?.menuQuantity} 개</li>))}
+            {menus.map((index) => (<li>{index.menuDTO?.menuName} {index.selectedMenuDTO?.menuQuantity} 개</li>))}
           </div>
         </ul>
         <ul className={'d-flex justify-content-between mb-2 fw-bold'}>
@@ -118,9 +110,15 @@ function BookInfo() {
         <div>{reservations.restaurantDTO?.resIntroduce}</div>
       </section>
 
-      <Button btnName={'예약 취소하기'} onClick={() => {
-        setOpenModal(true)
-      }}/>
+      {type === 'book' && (
+        <Button btnName={"메인으로 가기"} onClick={() => Nv("/main")}/>
+      )}
+
+      {type === 'cancel' && (
+        <Button btnName={'예약 취소하기'} onClick={() => {
+          setOpenModal(true)
+        }}/>
+      )}
 
       {/*A && B 일 때 둘다 true 라면 B 렌더링
                         onClose 함수를 넘긴다 (openModal 상태를 false 로 만든다)*/}

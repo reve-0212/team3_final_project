@@ -68,7 +68,10 @@ function SjhReservationCard(props) {
                     onClick={() => {
                       setReservationIdx(props.reservationIdx);
                       setRestaurantIdx(props.restaurantIdx);
-                      Nv(`/book/info/${props.reservationIdx}`);
+// 상태에 따라 type 값 다르게 넘기기
+                          let type = "cancel"
+                          if (isCompleted || isCancelled) type = "complete"
+                          Nv(`/book/info/${props.reservationIdx}?type=${type}`);
                     }}
                 >
                   예약 상세
@@ -101,28 +104,39 @@ function SjhReservationCard(props) {
                     </button>
                 )}
 
-                {openModal && (
-                    <CancelPopup
-                        restName={props.restName}
-                        onClose={() => {
-                          axios
-                              .put("http://localhost:8080/cancelBook", null, {
-                                params: { reservationIdx: props.reservationIdx },
-                                headers: {
-                                  Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
-                                },
-                              })
-                              .then((res) => {
-                                alert("예약이 취소되었습니다");
-                                Nv("/latestDetails");
-                              })
-                              .catch((err) => {
-                                console.error(err);
-                              });
-                          setOpenModal(false);
-                        }}
-                    />
-                )}
+                {openModal && <CancelPopup
+                  restName={props.restName}
+                  onClose={() => setOpenModal(false)}
+                  onCancelConfirm={() => {
+                    axios.all([
+                      axios.put("http://localhost:8080/cancelBook", null,
+                        {
+                          params: {reservationIdx: props.reservationIdx},
+                          headers: {Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`}
+                        }),
+                      axios.put("http://localhost:8080/cancelBookHistory", null,
+                        {
+                          params: {reservationIdx: props.reservationIdx},
+                          headers: {Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`}
+                        })
+                    ]).then(() => {
+                      axios.spread((res1, res2) => {
+                        console.log("-----res1-----")
+                        console.log(res1.data)
+                        console.log("-----res2-----")
+                        console.log(res2.data)
+                        alert("예약이 취소되었습니다")
+                      })
+                    }).catch((err) => {
+                      alert("예약 취소 중 오류가 발생했습니다")
+                      console.log(err)
+                    }).finally(() => {
+                      setOpenModal(false)
+                      location.reload()
+                    })
+                  }}/>
+                }
+
               </div>
             </Accordion.Body>
           </Accordion.Item>
