@@ -1,9 +1,6 @@
 package com.example.team3_final_project_server.KimSangMin.service;
 
-import com.example.team3_final_project_server.dto.ResponseDTO;
-import com.example.team3_final_project_server.dto.RestaurantDTO;
-import com.example.team3_final_project_server.dto.SeatDTO;
-import com.example.team3_final_project_server.dto.TimeDTO;
+import com.example.team3_final_project_server.dto.*;
 
 import java.util.List;
 
@@ -13,7 +10,7 @@ public interface PreService {
   boolean reSave(RestaurantDTO restaurant);
 
   //  가게 정보 수정하기
-  boolean updateRest(int resIdx, RestaurantDTO rest);
+  boolean updateRest(int resIdx, RestaurantDTO storeData);
 
   //    가게 정보 불러오기
   RestaurantDTO getRest(int userIdx);
@@ -37,7 +34,9 @@ public interface PreService {
   RestaurantDTO getRestByUserIdx(int userIdx);
 
 
-  boolean updateSeats(List<SeatDTO> seats);
+  boolean updateSeats(SeatDTO seat);
 
   boolean deleteSeate(Integer seatId, Integer resIdx);
+
+  boolean cateSave(CategoryDTO category);
 }

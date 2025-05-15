@@ -121,13 +121,16 @@ public class SecurityConfig {
                     .requestMatchers(PUT, "/cancelBook", "/resSeat").hasRole("USER")
 
 //                    사장 전용
-//                    .requestMatchers("/pre/**").hasRole("OWNER")
-                    .requestMatchers("/pre/login").permitAll()  // 로그인은 모두 허용
-                    .requestMatchers("/pre/resave").permitAll()
-                    .requestMatchers("/pre/seats/save").permitAll()// 이건 인증된 사장만 가능
-                    .requestMatchers("/pre/func").permitAll()
-                    .requestMatchers("/pre/seats/update").permitAll()
-                    .requestMatchers("/pre/seats/delete").permitAll()
+                    .requestMatchers("/pre/owner/saveCate").hasRole("OWNER")
+                    .requestMatchers("/pre/owner/resave").hasRole("OWNER")
+                    .requestMatchers("/pre/owner/seats/save").hasRole("OWNER")// 이건 인증된 사장만 가능
+                    .requestMatchers("/pre/owner/func").hasRole("OWNER")
+                    .requestMatchers(PUT, "/pre/owner/updateRest/**").hasRole("OWNER")
+                    .requestMatchers(GET, "/pre/owner/getRestaurant").hasRole("OWNER")
+                    .requestMatchers(PUT,"/pre/owner/seats/update").hasRole("OWNER")
+                    .requestMatchers(DELETE,"/pre/owner/seats/delete").hasRole("OWNER")
+
+                    .requestMatchers("/pre/owner/login").permitAll()  // 로그인은 모두 허용
 
                     .requestMatchers("/pre/reservations", "/pre/reservations/**").hasRole("OWNER") // 이건 인증된 사장만 가능
                     .requestMatchers("/pre/TodayLoadSeat/**","/pre/resIdxByUser").permitAll()

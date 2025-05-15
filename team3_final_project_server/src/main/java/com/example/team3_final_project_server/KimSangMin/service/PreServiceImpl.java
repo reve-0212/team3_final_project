@@ -6,8 +6,10 @@ import com.example.team3_final_project_server.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.stream.DoubleStream.builder;
@@ -22,15 +24,44 @@ public class PreServiceImpl implements PreService {
 
   //    좌석 정보 저장
   @Override
+  @Transactional
   public boolean saveSeats(List<SeatDTO> seats) {
-    try{
-      preMapper.saveSeats(seats);
+    try {
+      if (seats == null || seats.isEmpty()) return true;
+
+      int resIdx = seats.get(0).getResIdx();
+
+      Integer maxResSeatId = preMapper.getResSeatNum(resIdx);
+      int nextResSeatId = (maxResSeatId == null ? 0 : maxResSeatId) + 1;
+
+
+//      중복 좌석 체크
+      List<SeatDTO> uniqSeat = new ArrayList<>();
+      for (SeatDTO seat : seats) {
+        boolean exists = preMapper.checkSeatExists(seat);
+        if (!exists) uniqSeat.add(seat);
+      }
+       for (SeatDTO seat : uniqSeat) {
+         seat.setResIdx(resIdx);
+
+         String type = seat.getType();
+//         type을 가져와 type가 창문, 입구가 아닌 것들에 한해서 resSeatId++
+         if(!"창문".equalsIgnoreCase(type) && !"입구".equalsIgnoreCase(type)) {
+           seat.setResSeatId(nextResSeatId++);
+         } else{
+//           type이 창문, 입구라면 res_seat_id는 null 값
+           seat.setResSeatId(null);
+         }
+         preMapper.saveSeat(seat);
+       }
       return true;
-    } catch (Exception e){
+    } catch (Exception e) {
       e.printStackTrace();
       return false;
     }
   }
+
+
   // userIdx로 resIdx 찾기
   @Override
   public Integer findResIdx(int userIdx) {
@@ -78,9 +109,14 @@ public class PreServiceImpl implements PreService {
 
   //    좌석 수정
   @Override
-  public boolean updateSeats(List<SeatDTO> seats) {
-    int result = preMapper.updateSeats(seats);
-    return result > 0;
+  public boolean updateSeats(SeatDTO seat) {
+    try {
+      int updateCount = preMapper.updateSeats(seat);  // 수정된 row 수
+      return updateCount > 0;  // 0이면 실패
+    } catch (Exception e) {
+      e.printStackTrace();
+      return false;
+    }
   }
 
   //    좌석 삭제
@@ -90,11 +126,18 @@ public class PreServiceImpl implements PreService {
     return result > 0;
   }
 
+//  카테고리 생성
+  @Override
+  public boolean cateSave(CategoryDTO category) {
+    int result = preMapper.cateSave(category);
+    return result > 0;
+  }
+
 
   // 가게 정보 수정하기
   @Override
-  public boolean updateRest(int resIdx, RestaurantDTO rest) {
-    int result = preMapper.updateRest(resIdx,rest);
+  public boolean updateRest(int resIdx, RestaurantDTO storeData) {
+    int result = preMapper.updateRest(resIdx,storeData);
     return result > 0;
   }
 

@@ -1,5 +1,6 @@
 package com.example.team3_final_project_server.KimSangMin.mapper;
 
+import com.example.team3_final_project_server.dto.CategoryDTO;
 import com.example.team3_final_project_server.dto.RestaurantDTO;
 import com.example.team3_final_project_server.dto.SeatDTO;
 import com.example.team3_final_project_server.dto.TimeDTO;
@@ -10,12 +11,12 @@ import java.util.List;
 @Mapper
 public interface PreMapper {
 
-    void saveSeats(List<SeatDTO> seats);
+//    void saveSeats(List<SeatDTO> seats);
 
 
     void insertTime(TimeDTO time);
 
-    int updateRest(int resIdx, RestaurantDTO rest);
+    int updateRest(int resIdx, RestaurantDTO storeData);
 
     RestaurantDTO getRest(int resIdx);
 
@@ -27,7 +28,15 @@ public interface PreMapper {
 
     Integer findResIdx(int userIdx);
 
-    int updateSeats(List<SeatDTO> seats);
+    int updateSeats(SeatDTO seat);
 
     int deleteSeat(Integer seatId, Integer resIdx);
+
+    void saveSeat(SeatDTO seat);
+
+    boolean checkSeatExists(SeatDTO seat);
+
+    int cateSave(CategoryDTO category);
+
+    int getResSeatNum(int resSeatId);
 }
