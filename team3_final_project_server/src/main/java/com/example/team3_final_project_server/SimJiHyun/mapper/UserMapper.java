@@ -77,4 +77,7 @@ public interface UserMapper {
 
   //  에약한거 취소하면 history 에 들어감
   void cancelBookHistory(int reservationIdx);
+
+  //  모든 예약하기
+  void bookAllReg(int userIdx, int resIdx, int rsvPeople, int rsvMan, int rsvWoman, int rsvBaby, String rsvDate, String rsvTime);
 }
