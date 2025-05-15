@@ -5,11 +5,10 @@ import com.example.team3_final_project_server.dto.ReservationHistoryDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.*;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +16,11 @@ public class JDJServiceImpl implements JDJService {
 
     @Autowired
     private JDJMapper jdjMapper;
+
+    @Override
+    public Optional<Integer> findResIdxByUserIdx(int userIdx) {
+        return jdjMapper.selectResIdxByUserIdx(userIdx);
+    }
 
 //  ----- 통계 페이지
 
@@ -47,6 +51,30 @@ public class JDJServiceImpl implements JDJService {
     public List<Map<String, Object>> getTeamCountByHour(String startDate, String endDate, int resIdx) {
         return jdjMapper.selectTeamCountByHour(startDate, endDate, resIdx);
     }
+
+//    가게 영업시간 불러오기(통계페이지)
+//    @Override
+//    public Map<String, String> getResTime(int resIdx) {
+//        String resTime = jdjMapper.getResTime(resIdx).toString();
+//
+//        String[] resTimeArr = resTime.split("~");
+//        String openTime = resTimeArr.length > 0 ? resTimeArr[0] : "00:00";
+//        String closeTime = resTimeArr.length > 1 ? resTimeArr[1] : "23:59";
+//
+//        Map<String, String> result = new HashMap<>();
+//        result.put("open_time", openTime);
+//        result.put("close_time", closeTime);
+//
+//        return result;
+//    }
+
+//    가게 예약시간대 불러오기(메인페이지)
+    @Override
+    public List<String> getResTime(int resIdx) {
+        return jdjMapper.getResTime(resIdx);
+    }
+
+
 
 //  ---- 메뉴 페이지
 

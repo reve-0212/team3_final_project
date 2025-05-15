@@ -27,16 +27,20 @@ function PreCh() {
     // 로딩중
     const [loading, setLoading] = useState(false);
 
-    const formatDate = (date) => {
+    // 날짜 문자열에 시간 포함 (시작은 00:00:00, 끝은 23:59:59)
+    const formatDateStart = (date) => {
         if (!date) return '';
-        return date.toISOString().split('T')[0];
+        // 날짜 -1 되는것 고침
+        const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+        return `${localDate.toISOString().split('T')[0]} 00:00:00`;
     };
 
-    // 날짜 범위
-    // const isInRange = (dateStr, from, to) => {
-    //   const d = new Date(dateStr);
-    //   return (!from || d >= from) && (!to || d <= to);
-    // };
+    const formatDateEnd = (date) => {
+        if (!date) return '';
+        // 날짜 -1 되는것 고침
+        const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+        return `${localDate.toISOString().split('T')[0]} 23:59:59`;
+    }
 
     // api 호출 (판매 메뉴 데이터)
     const fetchData = async () => {
@@ -45,8 +49,8 @@ function PreCh() {
             //   서버에서 데이터 받아옴
             const response = await axios.get('http://localhost:8080/api/history/sales', {
                 params: {
-                    startDate: formatDate(seDay.from),
-                    endDate: formatDate(seDay.to),
+                    startDate: formatDateStart(seDay.from),
+                    endDate: formatDateEnd(seDay.to),
                     resIdx: 1
                 }
             });
@@ -89,7 +93,8 @@ function PreCh() {
                   }}
               >
                 <p style={{margin: 0}}>
-                  {seDay.from && seDay.to ? `${formatDate(seDay.from)} ~ ${formatDate(seDay.to)}` : '날짜 선택'}
+                  {seDay.from && seDay.to ?
+                      `${formatDateStart(seDay.from).split(' ')[0]} ~ ${formatDateEnd(seDay.to).split(' ')[0]}` : '날짜 선택'}
                 </p>
                 {cal && (
                     <div className={'calendar-popup'} onClick={(e) => e.stopPropagation()}>

@@ -1,7 +1,7 @@
 import WaBanner from "../KimSangMin/WaBanner.jsx";
 import "./css/CeoNewMenu.css";
-import {useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {useNavigate, useParams} from "react-router-dom";
 import ReBanner from "../KimSangMin/ReBanner.jsx";
 import axios from "axios";
 
@@ -9,6 +9,10 @@ function CeoNewMenu() {
 
     const navigate = useNavigate()
 
+    // 미리보기 기능때문에 value 값만으로 아니고 state 로 관리 해줘야함
+    const [menuName, setMenuName] = useState('');
+    const [menuPrice, setMenuPrice] = useState('');
+    const [menuExplanation, setMenuExplanation] = useState('');
     const [imageUrl, setImageUrl] = useState('');
 
     // 등록 버튼 클릭시 모달
@@ -16,14 +20,31 @@ function CeoNewMenu() {
     // 취소 버튼 클릭 시 모달
     const [showCancelModal, setShowCancelModal] = useState(false);
 
+    const [menuList, setMenuList] = useState([]); // 메뉴 전체 리스트 상태 추가
+
+    const { resIdx } = useParams();
+
+    useEffect(() => {
+        if (!resIdx) return;
+
+        axios.get('http://localhost:8080/menu/list', {
+            params: {resIdx: resIdx}
+        })
+            .then(response => {
+                setMenuList(response.data);
+            })
+            .catch(err => {
+                console.error("메뉴 불러오기 실패", err);
+            });
+    }, [resIdx]);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         const uploadData = {
-            resIdx: 1, // 실제 resIdx로 바꿔야 함
-            menuName: e.target.menuName.value,
-            menuPrice: parseInt(e.target.menuPrice.value),
-            menuExplanation: e.target.menuExplanation.value,
+            resIdx: resIdx, // 실제 resIdx로 바꿔야 함
+            menuName: menuName,
+            menuPrice: parseInt(menuPrice),
+            menuExplanation: menuExplanation,
             menuImage: imageUrl  // 이미지 URL 전송
         };
 
@@ -35,6 +56,7 @@ function CeoNewMenu() {
         } catch (error) {
             console.error("메뉴 추가 실패:", error);
         }
+        console.log("보내는 데이터", uploadData)
     };
 
     const handleCancel = () => {
@@ -50,6 +72,17 @@ function CeoNewMenu() {
         setShowSuccessModal(false);
         navigate('/pre/MenuList');  // 리스트 페이지로 이동
     };
+
+    const previewMenu = {
+            menuName,
+            menuPrice,
+            menuExplanation,
+            menuImage: imageUrl,
+            isPreview: true
+        };
+
+    const combinedMenuList = [previewMenu, ...menuList];
+
     return (
         <>
             <ReBanner />
@@ -57,52 +90,104 @@ function CeoNewMenu() {
                 <div style={{marginTop: '10vh', marginLeft: '200px', position: 'relative'}}>
                     <h2 className={'new-menu-title mb-4'}>메뉴 추가</h2>
                     <hr/>
-                    <form className={'new-menu-container mt-5'} onSubmit={handleSubmit}>
-                        <div className={'mb-5 menu-item-text'}>
-                            <label className={'form-label fw-bold'}>메뉴명을 입력해주세요. <span
-                                className={'menu-item-essential'}>* 필수</span></label>
-                            <input name="menuName" type={'text'} className={'new-menu-input mt-2'} placeholder={'예) 하와이안 피자'}/>
-                        </div>
-
-                        <div className={'mb-5 menu-item-text'}>
-                            <label className={'form-label fw-bold'}>메뉴 금액을 입력해주세요 <span
-                                className={'menu-item-essential'}>* 필수</span></label>
-                            <input name="menuPrice" type={'text'} className={'new-menu-input mt-2'} placeholder={'예) 12000'}/>
-                        </div>
-
-                        <div className={'mb-5 menu-item-text'}>
-                            <label className={'form-label fw-bold'}>이미지 URL을 입력해주세요. <span className={'menu-item-essential'}>* 필수</span></label>
-                            <input
-                                name="menuImage"
-                                type="text"
-                                className="new-menu-input mt-2"
-                                placeholder="예) https://example.com/image.jpg"
-                                value={imageUrl}
-                                onChange={(e) => setImageUrl(e.target.value)}
-                            />
-                            {imageUrl && (
-                                <div className="mt-3 upload-box rounded">
-                                    <img
-                                        src={imageUrl}
-                                        alt="미리보기"
-                                        style={{ width: '100%', maxHeight: '200px', objectFit: 'cover', borderRadius: '0.5rem' }}
+                    {/* 입력폼 & 미리보기 나란히 배치 */}
+                    <div className="row px-5">
+                        {/* 왼쪽 입력 폼 */}
+                        <div className="col-md-7 pe-5">
+                            <form className={'new-menu-container mt-4'} onSubmit={handleSubmit}>
+                                <div className={'mb-4 menu-item-text'}>
+                                    <label className={'form-label fw-bold'}>메뉴명을 입력해주세요. <span
+                                        className={'menu-item-essential'}>* 필수</span></label>
+                                    <input
+                                        name="menuName"
+                                        type={'text'}
+                                        className={'new-menu-input mt-1'}
+                                        placeholder={'예) 하와이안 피자'}
+                                        value={menuName}
+                                        onChange={(e) => setMenuName(e.target.value)}
                                     />
                                 </div>
-                            )}
+
+                                <div className={'mb-4 menu-item-text'}>
+                                    <label className={'form-label fw-bold'}>메뉴 금액을 입력해주세요 <span
+                                        className={'menu-item-essential'}>* 필수</span></label>
+                                    <input
+                                        name="menuPrice"
+                                        type={'text'}
+                                        className={'new-menu-input mt-1'}
+                                        placeholder={'예) 12000'}
+                                        value={menuPrice}
+                                        onChange={(e) => setMenuPrice(e.target.value)}
+                                    />
+                                </div>
+
+                                <div className={'mb-4 menu-item-text'}>
+                                    <label className={'form-label fw-bold'}>이미지 URL을 입력해주세요. <span className={'menu-item-essential'}>* 필수</span></label>
+                                    <input
+                                        name="menuImage"
+                                        type="text"
+                                        className="new-menu-input mt-1"
+                                        placeholder="예) https://example.com/image.jpg"
+                                        value={imageUrl}
+                                        onChange={(e) => setImageUrl(e.target.value)}
+                                    />
+                                    {imageUrl && (
+                                        <div className="mt-3 upload-box rounded">
+                                            <img
+                                                src={imageUrl}
+                                                alt="미리보기"
+                                                style={{ width: '100%', maxHeight: '200px', objectFit: 'cover', borderRadius: '0.5rem' }}
+                                            />
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="mb-4 menu-item-text">
+                                    <label className="form-label fw-bold">메뉴를 소개해주세요. <span className="menu-item-essential">* (최대 100자)</span></label>
+                                    <textarea
+                                        name="menuExplanation"
+                                        className="new-menu-input mt-1" rows="3"
+                                        placeholder="메뉴의 구성이나 재료 등 구체적인 설명을 제공해주세요."
+                                        value={menuExplanation}
+                                        onChange={(e) => setMenuExplanation(e.target.value)}
+                                    ></textarea>
+                                </div>
+
+                                <div className="d-flex justify-content-end">
+                                    <button type="button" className="btn btn-cancel me-2" onClick={handleCancel}>취소</button>
+                                    <button type="submit" className="btn btn-warning text-white">등록
+                                    </button>
+                                </div>
+                            </form>
                         </div>
 
-                        <div className="mb-5 menu-item-text">
-                            <label className="form-label fw-bold">메뉴를 소개해주세요. <span className="menu-item-essential">* (최대 100자)</span></label>
-                            <textarea  name="menuExplanation" className="new-menu-input mt-2" rows="3"
-                                      placeholder="메뉴의 구성이나 재료 등 구체적인 설명을 제공해주세요."></textarea>
+                        {/* 오른쪽 미리보기 */}
+                        <div className="col-md-5 ps-4 mt-4">
+                            <h5 className="mb-3 fw-bold text-center">앱 화면 미리보기</h5>
+                            <div className={'preview-list'}>
+                                {combinedMenuList.map((menu, idx) => (
+                                    <div key={idx} className="d-flex justify-content-between align-items-center border-bottom py-3">
+                                        <div className="text-start">
+                                            <div>{menu.isPreview && <span className="menu-item-essential"> (작성중)</span>}</div>
+                                            <div className="fw-bold">
+                                                {menu.menuName || '메뉴명'}
+                                            </div>
+                                            <div className="text-muted small">{menu.menuExplanation || '메뉴 설명'}</div>
+                                            <div className="fw-bold mt-3">{menu.menuPrice ? `${menu.menuPrice} 원` : '금액'}</div>
+                                        </div>
+                                        <div className="bg-light d-flex justify-content-center align-items-center"
+                                             style={{width: "64px", height: "64px", borderRadius: "6px", overflow: 'hidden'}}>
+                                            {menu.menuImage ? (
+                                                <img src={menu.menuImage} alt="미리보기" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                                            ) : (
+                                                <span className="text-muted small">사진</span>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
-
-                        <div className="d-flex justify-content-end">
-                            <button type="button" className="btn btn-cancel me-2" onClick={handleCancel}>취소</button>
-                            <button type="submit" className="btn btn-warning text-white">등록
-                            </button>
-                        </div>
-                    </form>
+                    </div>
 
                     {/* 등록 성공 모달 */}
                     {showSuccessModal && (

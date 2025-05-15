@@ -21,6 +21,12 @@
 <!--        )-->
 <!--    </insert>-->
 
+<!--    resIdx 불러오기-->
+    <select id="selectResIdxByUserIdx" parameterType="int" resultType="int">
+        SELECT res_idx
+        FROM restaurant
+        WHERE user_idx = #{userIdx}
+    </select>
 <!--    통계 페이지 -->
 
     <!-- 메뉴 여러개 선택해서 예약할 수  있도록 history 저장 -->
@@ -45,6 +51,7 @@
         SELECT *
         FROM reservation_history
         WHERE reservation_date BETWEEN #{startDate} AND #{endDate}
+            AND checkout_date IS NOT NULL
     </select>
 
     <!--  성별-->
@@ -57,6 +64,7 @@
         FROM reservation_history
         WHERE reservation_date BETWEEN #{startDate} AND #{endDate}
             AND res_idx = #{resIdx}
+            AND checkout_date IS NOT NULL
     </select>
 
 <!--    메뉴 불러와서 판매량 계산 -->
@@ -70,6 +78,7 @@
         LEFT JOIN reservation_history h
             ON m.menu_idx = h.menu_idx
             AND h.reservation_date BETWEEN #{startDate} AND #{endDate}
+            AND h.checkout_date IS NOT NULL
         WHERE m.res_idx = #{resIdx}
         GROUP BY m.menu_idx
     </select>
@@ -77,15 +86,32 @@
     <!--    시간대별 예약팀 수-->
     <select id="selectTeamCountByHour" resultType="map">
         SELECT
-        HOUR(reservation_date) as hour,
-        COUNT(DISTINCT reservation_idx) AS teamCount,
-        SUM(rsv_people) AS visitorCount
+            DATE_FORMAT(reservation_date, '%H:%i') as hour,
+            COUNT(DISTINCT reservation_idx) AS teamCount,
+            SUM(rsv_people) AS visitorCount
         FROM reservation_history
         WHERE reservation_date BETWEEN #{startDate} AND #{endDate}
-        AND res_idx = #{resIdx}
-        GROUP BY HOUR(reservation_date)
+            AND res_idx = #{resIdx}
+            AND checkout_date IS NOT NULL
+        GROUP BY DATE_FORMAT(reservation_date, '%H:%i')
         ORDER BY hour
     </select>
+
+<!--    가게 영업시간 불러오기 통계 페이지에서 쓰려고 했던거-->
+<!--    <select id="getResTime" resultType="map">-->
+<!--        SELECT res_reserve_time-->
+<!--        FROM restaurant-->
+<!--        WHERE res_idx = #{resIdx}-->
+<!--    </select>-->
+
+<!--    가게 예약 가능 시간 불러오기(메인페이지)-->
+    <select id="getResTime" resultType="string">
+        SELECT res_reserve_time
+        FROM restaurant
+        WHERE res_idx = #{resIdx}
+    </select>
+
+<!--    -->
 
 <!--    메뉴 페이지-->
 

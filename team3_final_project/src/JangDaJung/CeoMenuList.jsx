@@ -1,10 +1,8 @@
-import WaBanner from "../KimSangMin/WaBanner.jsx";
 import {useEffect, useState} from "react";
 import "./css/CeoMenuList.css"
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import ReBanner from "../KimSangMin/ReBanner.jsx";
 import axios from "axios";
-// import useUserStore from "../store/user"; ← 로그인 구현 시 사용할 zustand 등
 
 function CeoMenuList() {
 
@@ -14,16 +12,16 @@ function CeoMenuList() {
     const [searchKeyword, setSearchKeyword] = useState(''); // 검색 버튼 누른 뒤 확정된 값
 
     const [menuList, setMenuList] = useState([]);
+    // const [resIdx, setResIdx] = useState(null);
 
-    // const resIdx = useUserStore(state => state.user.resIdx); // 예시
-    const resIdx = 1; // 현재는 하드코딩된 테스트용 값
+    const { resIdx } = useParams();
 
     // 메뉴 불러오기
     useEffect(() => {
         if (!resIdx) return;
 
         axios.get('http://localhost:8080/menu/list', {
-            params: {resIdx: resIdx}
+            params: {resIdx}
         })
             .then(response => {
                 setMenuList(response.data);

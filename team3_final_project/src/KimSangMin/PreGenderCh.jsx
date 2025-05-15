@@ -1,5 +1,5 @@
 import ReBanner from "./ReBanner.jsx";
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {DayPicker} from "react-day-picker";
 import {Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import {useEffect, useState} from "react";
@@ -16,6 +16,7 @@ function PreGenderCh() {
     const [yetDay, setYetDay] = useState({ from: today, to: today });
     const [cal, setCal] = useState(false);
 
+    const { resIdx } = useParams();
     // 페이지 로딩
     const [loading, setLoading] = useState(false);
 
@@ -35,7 +36,7 @@ function PreGenderCh() {
                 params: {
                     startDate: formatDate(seDay.from),
                     endDate: formatDate(seDay.to),
-                    resIdx: 1
+                    resIdx: resIdx
                 }
             });
             const data = response.data;
