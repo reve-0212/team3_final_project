@@ -129,6 +129,7 @@
         r.res_price_range AS resPriceRange,
         r.reserve_or_waiting AS reserveOrWaiting,
         r.res_option_1 AS resOption1,
+        c.category_name AS categoryName,
         IFNULL(AVG(rv.review_rating), 0) AS avgRating,
         COUNT(rv.review_idx) AS reviewCount
         FROM restaurant r
