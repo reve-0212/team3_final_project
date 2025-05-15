@@ -104,12 +104,24 @@
         order by m.menu_sort desc;
     </select>
 
+<!--    <select id="getRstListByCategory" parameterType="string"-->
+<!--            resultType="com.example.team3_final_project_server.dto.RestaurantDTO">-->
+<!--        SELECT *-->
+<!--        FROM restaurant r-->
+<!--        JOIN category c ON r.res_idx = c.res_idx-->
+<!--        WHERE c.category_name LIKE CONCAT('%', #{category}, '%');-->
+<!--    </select>-->
+
     <select id="getRstListByCategory" parameterType="string"
             resultType="com.example.team3_final_project_server.dto.RestaurantDTO">
-        SELECT *
+        SELECT
+        r.*,
+        IFNULL(AVG(rv.review_rating), 0) AS avgRating
         FROM restaurant r
         JOIN category c ON r.res_idx = c.res_idx
-        WHERE c.category_name LIKE CONCAT('%', #{category}, '%');
+        LEFT JOIN review rv ON r.res_idx = rv.res_idx
+        WHERE c.category_name LIKE CONCAT('%', #{category}, '%')
+        GROUP BY r.res_idx
     </select>
 
 </mapper>

@@ -1,5 +1,5 @@
 import "./JksSheet.css";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams, useLocation } from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBookmark as faBookmarkRegular} from "@fortawesome/free-regular-svg-icons";
 import {faBookmark} from "@fortawesome/free-solid-svg-icons";
@@ -9,27 +9,45 @@ import noImage from '../JeongSeongYun/img/noimage.jpg';
 import useRestaurantStore from "../stores/useRestaurantStore.jsx";
 
 
+// jsy 작업
+
 function ContentList() {
-  const {category} = useParams();
+  const { category } = useParams();
   const [restaurants, setRestaurants] = useState([]);
   const setResIdx = useRestaurantStore((state) => state.setRestaurantIdx)
+  const [sortOption, setSortOption] = useState("가까운 순");
 
   console.log("category : " + category)
 
 
   // jks 작업
 
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const region = queryParams.get("region") || "중구";
+  const [selectedRegion, setSelectedRegion] = useState("중구");
+
   useEffect(() => {
-    axios.get(`http://localhost:8080/contents/${category}`)
+    axios.get(`http://localhost:8080/contents/${category}`, {
+      params: { region: region }
+    })
       .then(res => {
-        console.log("받아온 데이터:", res.data); // 여기에서 확인
+        console.log("받아온 데이터:", res.data); // 여기서 avgRating 확인
         setRestaurants(res.data);
       }).catch(err => console.log('데이터 가져오기 오류 :', err));
-  }, [category]);
+  }, [category, region]);
 
   useEffect(() => {
     console.log("restaurants")
     console.log(restaurants);
+
+    const sortedRestaurants = [...restaurants].sort((a, b) => {
+      switch (sortOption) {
+        case "별점 높은 순": return (b.avgRating || 0) - (a.avgRating || 0);
+        case "리뷰 많은 순": return (b.reviewCount || 0) - (a.reviewCount || 0);
+        default: return 0;
+      }
+    });
 
 
     if (restaurants.length > 0) {
@@ -56,16 +74,25 @@ function ContentList() {
 
       {/* 상단 필터 버튼 - */}
       <div className="d-flex gap-2 mb-4">
-        <button className="btn-jks btn-outline-secondary btn-sm"><i className="fa-solid fa-rotate-right"></i> 초기화
+        <button
+            className="btn-jks btn-outline-secondary btn-sm"
+            onClick={() => {
+              setSelectedRegion("중구"); // 기본 지역
+              setSortOption("가까운 순"); // 기본 정렬
+            }}
+        >
+          <i className="fa-solid fa-rotate-right"></i> 초기화
         </button>
 
         {/* 지역 선택 콤보박스 */}
         <div className="position-relative">
           <select
-            className="btn-jks btn-sm button-seebox me-auto text-start"
-            style={{width: 'auto', appearance: 'none'}}
-            aria-label="지역 선택"
-            onChange={(e) => Nv(`/contentList/${category}/${e.target.value}`)}
+              className="btn-jks btn-sm button-seebox me-auto text-start"
+              style={{width: 'auto', appearance: 'none'}}
+              aria-label="지역 선택"
+              onChange={(e) => {setSelectedRegion(e.target.value);
+                Nv(`/contentList/${category}?region=${e.target.value}`);
+              }}
           >
             <option value="중구">중구</option>
             <option value="서구">서구</option>
@@ -87,19 +114,17 @@ function ContentList() {
         {/* 정렬 기준 선택 콤보박스 */}
         <div className="position-relative d-inline-block">
           <select
-            className="btn-jks button-seebox btn-sm text-start"
-            style={{
-              width: 'auto',
-              appearance: 'none',
-              paddingRight: '2rem'
-            }}
-            aria-label="정렬 기준 선택"
+              className="btn-jks button-seebox btn-sm text-start"
+              style={{ width: 'auto', appearance: 'none', paddingRight: '2rem' }}
+              aria-label="정렬 기준 선택"
+              onChange={(e) => Nv(`/contentList/${category}?region=${e.target.value}`)} // 추가
           >
             <option>가까운 순</option>
             <option>별점 높은 순</option>
-            <option>대기 짧은 순</option>
             <option>리뷰 많은 순</option>
           </select>
+
+
           <i
             className="fa-solid fa-chevron-down position-absolute top-50 translate-middle-y me-1 text-white"
             style={{right: '10px', pointerEvents: 'none'}}
@@ -135,7 +160,7 @@ function ContentList() {
                 setResIdx(res.resIdx)
                 Nv(`/resdetail/${res.resIdx}`)
               }}>
-                ⭐ {res.avgRating || "0.0"}
+                ⭐ {typeof res.avgRating === "number" ? res.avgRating.toFixed(1) : "0.0"}
               </p>
               <small className="text-muted d-flex flex-fill" onClick={() => {
                 setResIdx(res.resIdx)

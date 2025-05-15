@@ -138,14 +138,44 @@ function ContentDetail() {
 
         {/* 별점 및 영업정보 */}
         <div className="text-start mb-4">
-          <small className="fw-bold">
-            ⭐{  reviews.length > 0
-              ? (reviews.reduce((acc, cur) => acc + cur.reviewRating, 0) / reviews.length).toFixed(1)
-              : "0.0" } 리뷰 {reviews.length}개
-          </small><br/>
+            <div className="d-flex gap-2 mb-2">
+              {/* 평균 평점 */}
+              <span style={{
+                backgroundColor: "#F5F5F5",
+                padding: "4px 12px",
+                borderRadius: "8px",
+                fontWeight: "600",
+                color: "#212529",
+                fontSize: "0.9rem",
+                display: "inline-block"
+              }}>⭐ {reviews.length > 0
+                  ? (reviews.reduce((acc, cur) => acc + cur.reviewRating, 0) / reviews.length).toFixed(1)
+                  : "0.0"}</span>
+
+              {/* 리뷰 개수 */}
+              <span style={{
+                backgroundColor: "#F5F5F5",
+                padding: "4px 12px",
+                borderRadius: "8px",
+                fontWeight: "600",
+                color: "#212529",
+                fontSize: "0.9rem",
+                display: "inline-block"
+              }}>리뷰 {reviews.length}개</span>
+            </div>
           <hr/>
-          <small className="fw-bold">영업시간 {storeInfo ? storeInfo.resReserveTime : ""}</small><br/>
-          <small className="fw-bold">전화번호 {storeInfo ? storeInfo.resCall : ""}</small>
+          <div className="d-flex flex-column gap-2 mb-3">
+            <div className="d-flex align-items-center gap-2">
+              <i className="fa-regular fa-clock text-secondary"></i>
+              <span className="fw-semibold text-dark">영업시간:</span>
+              <span>{storeInfo?.resReserveTime || "-"}</span>
+            </div>
+            <div className="d-flex align-items-center gap-2">
+              <i className="fa-solid fa-phone text-secondary"></i>
+              <span className="fw-semibold text-dark">전화번호:</span>
+              <span>{storeInfo?.resCall || "-"}</span>
+            </div>
+          </div>
           <hr/>
         </div>
         {/* 탭메뉴 */}
@@ -215,7 +245,7 @@ function ContentDetail() {
                   ))}
                 </div>
               ) : (
-                <div className="ps-2 pt-2 text-muted small">등록된 해시태그가 없습니다</div>
+                <div className="ps-2 pt-2 text-muted small"></div>
               )}
             </div>
           </div>
