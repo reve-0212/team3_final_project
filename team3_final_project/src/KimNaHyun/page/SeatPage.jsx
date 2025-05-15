@@ -60,10 +60,12 @@ function SeatPage() {
   }, []);
 
   useEffect(() => {
+    // history 에 현재 위치 push 해서 popstate 가 작동하게 한다
+    // window.history.pushState(null, "", window.location.href)
+
     const handlePopState = () => {
       const shouldLeave = window.confirm("현재까지 예약한 내역이 초기화됩니다. 계속 하시겠습니까?")
-      // 아니요 를 누르면 히스토리에 지금 이 페이지를 한번 더 저장한다
-      // 사용자가 뒤로가기를 눌렀을 때 이 페이지로 다시 돌아옴
+
       if (shouldLeave) {
         axios.delete("http://localhost:8080/deleteReservation", {
           params: {
@@ -78,18 +80,18 @@ function SeatPage() {
           console.log(err)
         })
 
-        window.history.pushState(null, "", window.location.href)
+        Nv(`/book/date/${userIdx}/${resIdx}`)
+      } else {
+        Nv(`/book/seat/${userIdx}/${resIdx}`)
       }
     }
 
-    // 끝나면 handlePopState 이벤트 없애기
-    window.history.pushState(null, "", window.location.href)
     window.addEventListener("popstate", handlePopState);
 
     return () => {
       window.removeEventListener("popstate", handlePopState)
     }
-  }, [])
+  }, [reservationIdx])
 
   console.log("searchReservationIdx")
   console.log(reservationIdx)

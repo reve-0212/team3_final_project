@@ -25,6 +25,37 @@ const MenuSelector = () => {
   // 좌석 세팅에서 선택한 reservationIdx 가지고 있기
   const reservationIdx = useReservationIdxStore((state) => state.reservationIdx)
 
+  // 뒤로가기 시 좌석 데이터 삭제
+  useEffect(() => {
+    const handlePopState = () => {
+      const shouldLeave = window.confirm("현재까지 예약한 내역이 초기화됩니다. 계속 하시겠습니까?")
+
+      if (shouldLeave) {
+        axios.delete("http://localhost:8080/deleteSeat", {
+          params: {
+            reservationIdx: reservationIdx
+          }, headers: {
+            Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`
+          }
+        }).then((res) => {
+          console.log(res.data)
+        }).catch((err) => {
+          console.log(err)
+        })
+
+        Nv(`/book/seat/${userIdx}/${resIdx}`)
+      } else {
+        Nv(`/book/menu/${userIdx}/${resIdx}`)
+      }
+    }
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState)
+    }
+  }, [reservationIdx])
+
   useEffect(() => {
     console.log("userIdx")
     console.log(userIdx)
@@ -172,20 +203,6 @@ const MenuSelector = () => {
       ).catch((err) => {
         console.log(err)
       })
-
-      // axios.put("http://localhost:8080/reserveMenu", null, {
-      //   params: {
-      //     reservationIdx: reservationIdx,
-      //     menuIdx: menuList[i].menuIdx,
-      //     menuQuantity: menuList[i].quantity
-      //   }, headers: {
-      //     Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
-      //   }
-      // }).then((res) => {
-      //   console.log(res)
-      // }).catch((err) => {
-      //   console.log(err)
-      // })
     }
   };
 
@@ -282,7 +299,7 @@ const MenuSelector = () => {
             })}
             <Button btnName={'다음'} onClick={() => {
               handleSubmit()
-              // Nv("/book/reg")
+              Nv("/book/reg")
             }}/>
           </ul>
         )}
