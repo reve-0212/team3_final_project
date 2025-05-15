@@ -27,10 +27,6 @@ function DateSelectorPage() {
 
   const userIdx = userStore.userIdx
   const resIdx = res.resIdx
-  const rsvMan = people.man
-  const rsvWoman = people.woman
-  const rsvBaby = people.baby
-  const rsvPeople = people.man + people.woman + people.baby
   const today = new Date();
 
   // 영업시간 받아오기
@@ -74,34 +70,6 @@ function DateSelectorPage() {
       return;
     }
 
-    const formattedDate = selectedDate.toLocaleDateString("sv-SE");
-    const formattedDateTime = `${formattedDate} ${selectedTime}:00`;
-
-    // const postData = {
-    //   userIdx,
-    //   resIdx,
-    //   rsvPeople,
-    //   rsvMan,
-    //   rsvWoman,
-    //   rsvBaby,
-    //   rsvDate: formattedDate,
-    //   rsvTime: formattedDateTime,
-    // };
-
-    // axios
-    //   .put(`http://localhost:8080/api/date`, postData, {
-    //     headers: {
-    //       Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
-    //     },
-    //   })
-    //   .then((res) => {
-    //     const newReservationIdx = res.data?.reservationIdx || resIdx;
-    //     navigate(`/book/seat/${userIdx}/${newReservationIdx}`);
-    //   })
-    //   .catch((err) => {
-    //     alert("예약 정보 전송에 실패했습니다.");
-    //     console.error(err);
-    //   });
     navigate(`/book/seat/${userIdx}/${resIdx}`)
   };
 

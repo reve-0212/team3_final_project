@@ -71,7 +71,11 @@ function SjhReservationCard(props) {
                         onClick={() => {
                           setReservationIdx(props.reservationIdx)
                           setRestaurantIdx(props.restaurantIdx)
-                          Nv(`/book/info/${props.reservationIdx}`)
+
+                          // 상태에 따라 type 값 다르게 넘기기
+                          let type = "cancel"
+                          if (isCompleted || isCancelled) type = "complete"
+                          Nv(`/book/info/${props.reservationIdx}?type=${type}`)
                         }}>예약 상세
                 </button>
 

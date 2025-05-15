@@ -23,37 +23,6 @@ const MenuSelector = () => {
 
   const resIdx = res.resIdx
 
-  // 뒤로가기 시 좌석 데이터 삭제
-  // useEffect(() => {
-  //   const handlePopState = () => {
-  //     const shouldLeave = window.confirm("현재까지 예약한 내역이 초기화됩니다. 계속 하시겠습니까?")
-  //
-  //     if (shouldLeave) {
-  //       axios.delete("http://localhost:8080/deleteSeat", {
-  //         params: {
-  //           reservationIdx: reservationIdx
-  //         }, headers: {
-  //           Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`
-  //         }
-  //       }).then((res) => {
-  //         console.log(res.data)
-  //       }).catch((err) => {
-  //         console.log(err)
-  //       })
-  //
-  //       Nv(`/book/seat/${userIdx}/${resIdx}`)
-  //     } else {
-  //       Nv(`/book/menu/${userIdx}/${resIdx}`)
-  //     }
-  //   }
-  //
-  //   window.addEventListener("popstate", handlePopState);
-  //
-  //   return () => {
-  //     window.removeEventListener("popstate", handlePopState)
-  //   }
-  // }, [reservationIdx])
-
   // 메뉴 데이터 로드
   useEffect(() => {
     if (!resIdx) return; // resIdx가 없는 경우 API 호출을 하지 않도록 처리
@@ -75,9 +44,6 @@ const MenuSelector = () => {
       [menuIdx]: (prev[menuIdx] || 0) + 1,
     }));
   };
-
-  // console.log("-----menuItems-----")
-  // console.log(menuItems)
 
   const handleDecrease = (menuIdx) => {
     setQuantities((prev) => {
@@ -114,59 +80,7 @@ const MenuSelector = () => {
       }
     });
 
-    console.log("-----menuList-----")
-    console.log(menuList)
     setMenu(menuList)
-
-    // for (let i = 0; i < menuList.length; i++) {
-    //   console.log(menuList[i])
-    //   console.log(menuList[i].menuIdx)
-    //   console.log(menuList[i].menuName)
-    //   console.log(menuList[i].menuPrice)
-    //   console.log(menuList[i].quantity)
-    //   console.log(menuList[i].totalPrice)
-    //   console.log(allPeople)
-
-    // axios.all([
-    //   axios.put("http://localhost:8080/reserveMenu", null, {
-    //     params: {
-    //       reservationIdx: reservationIdx,
-    //       menuIdx: menuList[i].menuIdx,
-    //       menuQuantity: menuList[i].quantity
-    //     }, headers: {
-    //       Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
-    //     }
-    //   }),
-    //   axios.put("http://localhost:8080/saveHistory", null, {
-    //     params: {
-    //       reservationIdx: reservationIdx,
-    //       resIdx: resIdx,
-    //       reservationDate: rsvDateTime,
-    //       rsvPeople: allPeople,
-    //       rsvMan: people.man,
-    //       rsvWoman: people.woman,
-    //       rsvBaby: people.baby,
-    //       menuIdx: menuList[i].menuIdx,
-    //       menuName: menuList[i].menuName,
-    //       menuPrice: menuList[i].menuPrice,
-    //       menuSCount: menuList[i].quantity,
-    //       menuSTP: menuList[i].totalPrice
-    //     }, headers: {
-    //       Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
-    //     }
-    //   })
-    // ]).then(
-    //   axios.spread((res1, res2) => {
-    //     console.log(res1)
-    //     console.log(res2)
-    //   })
-    // ).catch((err) => {
-    //   console.log(err)
-    // })
-    // }
-
-    console.log("-----menu-----")
-    console.log(menu)
   };
 
   return (

@@ -10,6 +10,8 @@ import useRsvDateTimeStore from "../../stores/useRsvDateTimeStore.jsx";
 import useSeatIdStore from "../../stores/useSeatIdStore.jsx";
 import useMenuStore from "../../stores/useMenuStore.jsx";
 import axios from "axios";
+import useReservationIdxStore from "../../stores/useReservationIdxStore.jsx";
+import useRestaurantStore from "../../stores/useRestaurantStore.jsx";
 
 function BookReg() {
   const Nv = useNavigate();
@@ -23,34 +25,6 @@ function BookReg() {
   const selectedSeat = useSeatIdStore((state) => state.seatId)
   const selectedMenu = useMenuStore((state) => state.menu)
   let allPeople = 0
-
-  const [reservationInfo, setReservationInfo] = useState([])
-  const [reservationMenu, setReservationMenu] = useState([])
-  const [restaurantInfo, setRestaurantInfo] = useState([])
-  const [selectedSeatList, setSelectedSeatList] = useState([])
-
-  const userIdx = userStore.userIdx
-
-  useEffect(() => {
-    console.log("userStore.userIdx : " + userStore.userIdx)
-    console.log("resIdx : " + res.resIdx)
-    console.log(res)
-
-    allPeople = people.man + people.woman + people.baby
-    console.log("allPeople : " + allPeople)
-
-    console.log("people.man : " + people.man)
-    console.log("people.woman : " + people.woman)
-    console.log("people.baby : " + people.baby)
-    console.log("rsvDate : " + rsvDate)
-    console.log("rsvTime : " + rsvTime)
-    console.log("rsvDateTime : " + rsvDateTime)
-    console.log("selectedSeat : " + selectedSeat)
-    console.log("selectedSeatList")
-    console.log(selectedSeat)
-    console.log("selectedMenuList")
-    console.log(selectedMenu)
-  }, [])
 
   return (
     <div className={'app-container container py-4'}>
@@ -167,8 +141,12 @@ function BookReg() {
               }
             })
           }
-          // alert("예약 성공!")
 
+          useReservationIdxStore.getState().setReservationIdx(searchRes.data)
+          useRestaurantStore.getState().setRestaurantIdx(res.resIdx)
+
+          alert("예약 성공!")
+          Nv(`/book/info/${res.resIdx}?type=book`)
         } catch (e) {
           console.log(e)
         }

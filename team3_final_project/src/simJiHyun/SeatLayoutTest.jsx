@@ -72,7 +72,6 @@ const SeatLayout = () => {
           {seats.map((seat, index) => {
             const isUnavailable = seat.type === "창문" || seat.type === "입구";
             const isSelected = seatSelect.includes(seat.seatId);
-            // console.log(`좌석 ID: ${seat.seatId}, 선택 여부: ${isSelected}`);
 
             const seatWidth = seat.type === "4인석" ? "80px" : seat.type === "6인석" ? "100px" : "50px";
             const seatHeight = seat.type === "6인석" ? "100px" : seat.type === "4인석" ? "80px" : "50px";
