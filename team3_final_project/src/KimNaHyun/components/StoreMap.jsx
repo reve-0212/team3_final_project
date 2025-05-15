@@ -1,5 +1,4 @@
 import {Map, MapMarker, useKakaoLoader} from "react-kakao-maps-sdk";
-import useGeolocation from "../../stores/useGeolocation.jsx";
 
 function StoreMap(props) {
   useKakaoLoader({appkey: import.meta.env.VITE_REACT_APP_KAKAO_MAP_API_KEY})

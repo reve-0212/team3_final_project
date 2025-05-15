@@ -96,7 +96,6 @@ function SjhReservationCard(props) {
                         onClick={() => {
                           setReservationIdx(props.reservationIdx);
                           setRestaurantIdx(props.restaurantIdx);
-                          setUserIdx(props.userIdx);
                           Nv("/review");
                         }}
                     >

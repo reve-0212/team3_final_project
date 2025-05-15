@@ -6,7 +6,6 @@ import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import useUserStore from "../../stores/useUserStore.jsx";
 import useRestaurantStore from "../../stores/useRestaurantStore.jsx";
-import useRestaurantStore from "../../stores/useRestaurantStore.jsx";
 
 function SjhReview() {
   const userState = useUserStore((state) => state.user);
@@ -16,27 +15,29 @@ function SjhReview() {
   const [reviewContent, setReviewContent] = useState("");
   const [reviewImage, setReviewImage] = useState([])
 
-  console.log("userIdx : " + userState.userIdx)
-  console.log("resIdx : " + resIdx)
+  useEffect(() => {
+    console.log("userIdx : " + userState.userIdx)
+    console.log("resIdx : " + resIdx)
+  }, []);
 
   const Nv = useNavigate();
 
-    // 별점 컴포넌트 렌더링
-    const ratingStarHandler = () => {
-        let result = [];
-        for (let i = 0; i < 5; i++) {
-            result.push(
-                <span key={i + 1} onClick={() => setStarScore(i + 1)}>
-                    {i + 1 <= starScore ? (
-                        <FontAwesomeIcon icon={faStar} />
-                    ) : (
-                        <FontAwesomeIcon icon={faStarRegular} />
-                    )}
-                </span>
-            );
-        }
-        return result;
-    };
+  // 별점 컴포넌트 렌더링
+  const ratingStarHandler = () => {
+    let result = [];
+    for (let i = 0; i < 5; i++) {
+      result.push(
+        <span key={i + 1} onClick={() => setStarScore(i + 1)}>
+          {i + 1 <= starScore ? (
+            <FontAwesomeIcon icon={faStar}/>
+          ) : (
+            <FontAwesomeIcon icon={faStarRegular}/>
+          )}
+        </span>
+      );
+    }
+    return result;
+  };
 
   const uploadToCloudinary = async (file) => {
     console.log("업로드할 파일:", file);
@@ -104,19 +105,19 @@ function SjhReview() {
     };
 
     // 서버로 리뷰 등록 요청
-        axios
-            .post("http://localhost:8080/api/review", reviewData, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
-                },
-            })
-            .then((response) => {
-                console.log("리뷰 등록 성공:", response);
-                const reviewIdx = response.data.reviewIdx; // 여기서 얻은 ID
-                alert("리뷰가 성공적으로 등록되었습니다.");
+    axios
+      .post("http://localhost:8080/api/review", reviewData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
+        },
+      })
+      .then((response) => {
+        console.log("리뷰 등록 성공:", response);
+        const reviewIdx = response.data.reviewIdx; // 여기서 얻은 ID
+        alert("리뷰가 성공적으로 등록되었습니다.");
 
-                // 다음 페이지로 이동하면서 reviewIdx 전달
-                Nv(`/user/reviewList?reviewIdx=${reviewIdx}`);
+        // 다음 페이지로 이동하면서 reviewIdx 전달
+        Nv(`/user/reviewList?reviewIdx=${reviewIdx}`);
       })
       .catch((error) => {
         console.error("리뷰 등록 실패:", error);
