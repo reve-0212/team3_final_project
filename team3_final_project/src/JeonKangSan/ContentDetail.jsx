@@ -166,11 +166,21 @@ function ContentDetail() {
             </div>
           <hr/>
           <div className="d-flex flex-column gap-2 mb-3">
-            <div className="d-flex align-items-center gap-2">
+            <div className="d-flex align-items-center gap-2 flex-wrap">
               <i className="fa-regular fa-clock text-secondary"></i>
               <span className="fw-semibold text-dark">영업시간:</span>
-              <span>{storeInfo?.resReserveTime || "-"}</span>
+              <div
+                  className="d-flex flex-wrap gap-3"
+                  style={{ maxWidth: "240px" }} // 너비 기준 설정
+              >
+                {(storeInfo?.resReserveTime || "-")
+                    .split(',')
+                    .map((time, idx) => (
+                        <span key={idx}>{time}</span>
+                    ))}
+              </div>
             </div>
+
             <div className="d-flex align-items-center gap-2">
               <i className="fa-solid fa-phone text-secondary"></i>
               <span className="fw-semibold text-dark">전화번호:</span>

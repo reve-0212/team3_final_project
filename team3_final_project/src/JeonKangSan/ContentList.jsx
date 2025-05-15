@@ -72,11 +72,6 @@ function ContentList() {
 
 
 
-    // 테스트
-
-    if (restaurants.length > 0) {
-      console.log("첫 번째 식당 평균 평점:", restaurants[0].avgRating);
-    }
   }, [restaurants])
 
 
