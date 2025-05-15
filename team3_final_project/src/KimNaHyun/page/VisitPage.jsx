@@ -56,10 +56,6 @@ function VisitPage() {
   };
 
   const handleSubmit = () => {
-    const rsvMan = visitors.man;
-    const rsvWoman = visitors.woman;
-    const rsvBaby = visitors.baby;
-    const rsvPeople = rsvMan + rsvWoman + rsvBaby;
 
     const userIdx = userIdxStore.userIdx;
     const resIdx = res.resIdx;

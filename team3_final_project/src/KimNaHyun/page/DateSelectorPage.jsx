@@ -10,11 +10,12 @@ import useUserStore from "../../stores/useUserStore.jsx";
 import useResStoreSjh from "../../stores/useResStoreSjh.jsx";
 import usePeopleStore from "../../stores/usePeopleStore.jsx";
 
+// 최종 에약 확정 페이지에서 한번에 예약하기
+
 function DateSelectorPage() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
-  const [timeSlots, setTimeSlots] = useState([]);
-  const [openingHours, setOpeningHours] = useState(""); // 초기값 제거
+  const [openingHours, setOpeningHours] = useState([]); // 초기값 제거
 
   const navigate = useNavigate();
 
@@ -24,13 +25,13 @@ function DateSelectorPage() {
   const res = useResStoreSjh((state) => state.res)
   const people = usePeopleStore((state) => state.people)
 
-  console.log(res.resIdx)
   const userIdx = userStore.userIdx
   const resIdx = res.resIdx
   const rsvMan = people.man
   const rsvWoman = people.woman
   const rsvBaby = people.baby
   const rsvPeople = people.man + people.woman + people.baby
+  const today = new Date();
 
   // 영업시간 받아오기
   useEffect(() => {
@@ -43,42 +44,13 @@ function DateSelectorPage() {
         },
       })
       .then((response) => {
-        // 응답에서 바로 data를 추출하여 trimming 후 설정
-        const hours = response.data?.trim() ?? "";
-        console.log("최종 파싱된 영업시간:", hours);
-        setOpeningHours(hours);
+        setOpeningHours(response.data.split(","))
       })
       .catch((err) => {
         console.error("영업시간 불러오기 실패:", err);
         alert("식당 정보를 불러오지 못했습니다.");
       });
   }, [resIdx]);
-
-  // 시간 슬롯 생성
-  useEffect(() => {
-    const parseBusinessHours = (hoursStr) => {
-      if (!hoursStr.includes("~")) return {startHour: 0, endHour: 0};
-
-      const [start, end] = hoursStr.replace(/\s/g, "").split("~");
-      const startHour = parseInt(start.split(":")[0], 10);
-      const endHour = parseInt(end.split(":")[0], 10);
-
-      return {startHour, endHour};
-    };
-
-    if (openingHours) {
-      const {startHour, endHour} = parseBusinessHours(openingHours);
-      console.log("⏰ 파싱된 영업시간:", {startHour, endHour});
-
-      const slots = [];
-      for (let hour = startHour; hour <= endHour; hour++) {
-        slots.push(`${hour.toString().padStart(2, "0")}:00`);
-      }
-
-      console.log("✅ 생성된 시간 슬롯:", slots);
-      setTimeSlots(slots);
-    }
-  }, [openingHours]);
 
   // 날짜 상태 저장
   useEffect(() => {
@@ -105,31 +77,32 @@ function DateSelectorPage() {
     const formattedDate = selectedDate.toLocaleDateString("sv-SE");
     const formattedDateTime = `${formattedDate} ${selectedTime}:00`;
 
-    const postData = {
-      userIdx,
-      resIdx,
-      rsvPeople,
-      rsvMan,
-      rsvWoman,
-      rsvBaby,
-      rsvDate: formattedDate,
-      rsvTime: formattedDateTime,
-    };
+    // const postData = {
+    //   userIdx,
+    //   resIdx,
+    //   rsvPeople,
+    //   rsvMan,
+    //   rsvWoman,
+    //   rsvBaby,
+    //   rsvDate: formattedDate,
+    //   rsvTime: formattedDateTime,
+    // };
 
-    axios
-      .put(`http://localhost:8080/api/date`, postData, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
-        },
-      })
-      .then((res) => {
-        const newReservationIdx = res.data?.reservationIdx || resIdx;
-        navigate(`/book/seat/${userIdx}/${newReservationIdx}`);
-      })
-      .catch((err) => {
-        alert("예약 정보 전송에 실패했습니다.");
-        console.error(err);
-      });
+    // axios
+    //   .put(`http://localhost:8080/api/date`, postData, {
+    //     headers: {
+    //       Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
+    //     },
+    //   })
+    //   .then((res) => {
+    //     const newReservationIdx = res.data?.reservationIdx || resIdx;
+    //     navigate(`/book/seat/${userIdx}/${newReservationIdx}`);
+    //   })
+    //   .catch((err) => {
+    //     alert("예약 정보 전송에 실패했습니다.");
+    //     console.error(err);
+    //   });
+    navigate(`/book/seat/${userIdx}/${resIdx}`)
   };
 
   return (
@@ -144,6 +117,8 @@ function DateSelectorPage() {
           dateFormat="yyyy-MM-dd"
           placeholderText="날짜를 선택하세요"
           inline
+          minDate={new Date()}
+          maxDate={new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000)}
         />
         {selectedDate && (
           <p className="basic-font fw-bold" style={{marginTop: "10px"}}>
@@ -160,10 +135,10 @@ function DateSelectorPage() {
           </span>
         </h5>
         <div>
-          {timeSlots.map((time, index) => (
+          {openingHours.map((index) => (
             <button
               key={index}
-              onClick={() => setSelectedTime(time)}
+              onClick={() => setSelectedTime(index)}
               style={{
                 margin: "5px",
                 padding: "7px 20px",
@@ -171,12 +146,9 @@ function DateSelectorPage() {
                 cursor: "pointer",
                 border: "1px solid #ccc",
                 borderRadius: "15px",
-                backgroundColor: selectedTime === time ? "#5D4037" : "#fff",
-                color: selectedTime === time ? "#fff" : "#000",
-              }}
-            >
-              {time}
-            </button>
+                backgroundColor: selectedTime === index ? "#5D4037" : "#fff",
+                color: selectedTime === index ? "#fff" : "#000",
+              }}>{index}</button>
           ))}
         </div>
         {selectedTime && (
