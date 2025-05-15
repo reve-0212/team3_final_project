@@ -19,8 +19,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.PUT;
+import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 @RequiredArgsConstructor
@@ -107,7 +106,8 @@ public class SecurityConfig {
                     //로그인한 사용자용
                     .requestMatchers("/waiting/**", "/book/**", "/latestDetails", "/book/info").hasRole("USER")
                     .requestMatchers(GET, "/userReservation", "/getBook", "/userLoadSeat/**","/getMenuInfo","/getStoreInfo","/getMenu").hasRole("USER")
-                    .requestMatchers(PUT, "/cancelBook", "/reserveSeat","/reserveMenu","/saveHistory").hasRole("USER")
+                    .requestMatchers(PUT, "/cancelBook", "/reserveSeat","/reserveMenu","/saveHistory","/cancelBookHistory").hasRole("USER")
+                    .requestMatchers(DELETE, "/deleteReservation").hasRole("USER")
 
 //                    모든 사용자용
                     .requestMatchers("/user/**", "/latestDetails", "/bookmark", "/contentDetail", "/review", "/", "/api/visitors").permitAll()

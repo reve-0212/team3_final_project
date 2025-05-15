@@ -115,7 +115,6 @@ public class JwtTokenProvider {
 
 //    JWT 토큰에 저장되어 있었던 사용자 권한 정보를 가져와서 스프링 시큐리티에서 사용하는 권한 타입으로 변환
     Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(claims.get("role").toString()));
-    System.out.println("authorities : " + authorities);
 
 //    jwt 토큰을 통해서 가져온 데이터로 UserDTO 객체 생성
     UserDTO member = UserDTO.builder()

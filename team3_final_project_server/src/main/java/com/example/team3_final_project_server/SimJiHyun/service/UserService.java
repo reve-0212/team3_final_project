@@ -164,4 +164,16 @@ public class UserService {
     userMapper.saveHistory(reservationIdx, resIdx, reservationDate, rsvPeople, rsvMan, rsvWoman,
             rsvBaby, menuIdx, menuName, menuPrice, menuSCount, menuSTP);
   }
+
+  public void deleteReservation(int userIdx, int reservationIdx) {
+    userMapper.deleteReservation(userIdx, reservationIdx);
+  }
+
+  public void deleteSeat(int reservationIdx) {
+    userMapper.deleteSeat(reservationIdx);
+  }
+
+  public void cancelBookHistory(int reservationIdx) {
+    userMapper.cancelBookHistory(reservationIdx);
+  }
 }
