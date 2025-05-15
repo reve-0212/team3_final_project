@@ -1,10 +1,15 @@
 import { Button } from "react-bootstrap";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import ReBanner from "./ReBanner.jsx";
 import axios from "axios";
 
 function PreTimeSet({ onEditClick }) {
 
+    localStorage.getItem('jwtToken')
+    useEffect(() => {
+        const storedToken = localStorage.getItem('jwtToken');
+        console.log("📦 페이지 로드시 token:", storedToken);
+    }, []);
 
 
     const input = [
@@ -76,7 +81,7 @@ function PreTimeSet({ onEditClick }) {
         { value: "감전동", label: "감전동" },
     ];
 
-    const [hashTag , setHashTag ] = useState([]);
+    const [hashTag , setHashTag ] = useState(['']);
     const [selectedCate, setSelectedCate] = useState('');
     const [selectedAddr, setSelectedAddr] = useState('');
 
@@ -103,7 +108,9 @@ function PreTimeSet({ onEditClick }) {
         e.preventDefault();
 
         const token = localStorage.getItem('jwtToken');
-        console.log("토큰" , token)
+        console.log("토큰 헤더:", {
+            Authorization: `Bearer ${token}`,
+        });
         if (!token) {
             alert("로그인이 필요합니다.");
             return;
@@ -112,11 +119,12 @@ function PreTimeSet({ onEditClick }) {
         const cateData = {
             categoryName : selectedCate,
             categoryAddr : selectedAddr,
-            categoryTag : hashTag,
+            categoryTag : hashTag.join(","),
         };
 
         axios.post("http://localhost:8080/pre/owner/saveCate",cateData,{
             headers :{
+                "Content-Type" : "application/json",
                 Authorization: `Bearer ${token}`
             }
         })

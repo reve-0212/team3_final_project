@@ -37,4 +37,6 @@ public interface PreMapper {
     boolean checkSeatExists(SeatDTO seat);
 
     int cateSave(CategoryDTO category);
+
+    int getResSeatNum(int resSeatId);
 }

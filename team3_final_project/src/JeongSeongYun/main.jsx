@@ -90,6 +90,7 @@ function main() {
 
 
           <Route path={"/pre/layout/:resIdx"} element={<SeatLayout/>} />
+          <Route path="/pre/PreTimeSet" element={<PreTimeSet/>}/> {/*시간 카테 기능*/}
 
           <Route path="/pre/PreToday/:resIdx" element={<TodayReservation/>}/> {/* 오늘 예약  */}
           <Route path="/pre/PrePast" element={<PastDateReservation/>}/> {/* 지난날짜 예약 */}

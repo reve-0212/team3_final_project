@@ -179,29 +179,41 @@ public class PreController {
 
 
   @PostMapping("/pre/owner/saveCate")
-  public ResponseEntity<PreResponse> cateSave(@RequestBody CategoryDTO category, @RequestHeader("Authorization") String authorization) {
+  public ResponseEntity<PreResponse> cateSave(@RequestBody CategoryDTO category,
+                                              @RequestHeader("Authorization") String authorization) {
     try {
-      ResponseDTO jwtInfo = preService.tokenCheck(authorization);
+      if (category == null) {
+        return ResponseEntity.badRequest().body(new PreResponse(false, "카테고리 데이터가 없습니다", null));
+      }
+
+      String token = null;
+      if (authorization != null && authorization.startsWith("Bearer ")) {
+        token = authorization.substring(7);
+      } else {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(new PreResponse(false, "토큰 형식이 올바르지 않습니다", null));
+      }
+
+      ResponseDTO jwtInfo = preService.tokenCheck(token);
       int userIdx = jwtInfo.getUserIdx();
 
       Integer resIdx = preService.findResIdx(userIdx);
-
-      // 저장 처리
-      boolean success = preService.cateSave(category);
       category.setResIdx(resIdx);
 
+      boolean success = preService.cateSave(category);
+
       if (success) {
-        PreResponse response = new PreResponse(true, "정보 저장 성공", category);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(new PreResponse(true, "정보 저장 성공", category));
       } else {
-        PreResponse response = new PreResponse(false, "정보 저장 실패", null);
-        return ResponseEntity.badRequest().body(response);
+        return ResponseEntity.badRequest().body(new PreResponse(false, "정보 저장 실패", null));
       }
     } catch (Exception e) {
-      PreResponse response = new PreResponse(false, "토큰이 유효하지 않거나 인증 실패", null);
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+      e.printStackTrace();  // 여기서 에러 로그 꼭 확인하세요!
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+              .body(new PreResponse(false, "토큰이 유효하지 않거나 인증 실패", null));
     }
   }
+
 
 
   // 가게 정보 불러오기

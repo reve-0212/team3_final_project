@@ -178,6 +178,7 @@ function SeatManager() {
         const newSeat = {
             id: `${type}-${newPosition.x}-${newPosition.y}`, // 고유한 ID로 좌석 추가
             type: type,
+            resSeatId: null,
             name: `${type} 좌석`,
             x: newPosition.x,  // 새 위치 적용
             y: newPosition.y,  // 새 위치 적용
@@ -276,6 +277,7 @@ function SeatManager() {
                         id: seat.seatId, // 서버에서 받은 seatId를 사용
                         type: seat.type,
                         name: seat.name,
+                        resSeatId: seat.resSeatId,
                         x: seat.x,
                         y: seat.y,
                         shape: seat.shape,

@@ -6,8 +6,10 @@ import com.example.team3_final_project_server.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.stream.DoubleStream.builder;
@@ -22,21 +24,44 @@ public class PreServiceImpl implements PreService {
 
   //    좌석 정보 저장
   @Override
+  @Transactional
   public boolean saveSeats(List<SeatDTO> seats) {
     try {
+      if (seats == null || seats.isEmpty()) return true;
+
+      int resIdx = seats.get(0).getResIdx();
+
+      Integer maxResSeatId = preMapper.getResSeatNum(resIdx);
+      int nextResSeatId = (maxResSeatId == null ? 0 : maxResSeatId) + 1;
+
+
+//      중복 좌석 체크
+      List<SeatDTO> uniqSeat = new ArrayList<>();
       for (SeatDTO seat : seats) {
-        // 중복된 좌석이 존재하는지 확인
         boolean exists = preMapper.checkSeatExists(seat);
-        if (!exists) {
-          preMapper.saveSeat(seat);  // 새 좌석만 추가
-        }
+        if (!exists) uniqSeat.add(seat);
       }
+       for (SeatDTO seat : uniqSeat) {
+         seat.setResIdx(resIdx);
+
+         String type = seat.getType();
+//         type을 가져와 type가 창문, 입구가 아닌 것들에 한해서 resSeatId++
+         if(!"창문".equalsIgnoreCase(type) && !"입구".equalsIgnoreCase(type)) {
+           seat.setResSeatId(nextResSeatId++);
+         } else{
+//           type이 창문, 입구라면 res_seat_id는 null 값
+           seat.setResSeatId(null);
+         }
+         preMapper.saveSeat(seat);
+       }
       return true;
     } catch (Exception e) {
       e.printStackTrace();
       return false;
     }
   }
+
+
   // userIdx로 resIdx 찾기
   @Override
   public Integer findResIdx(int userIdx) {
