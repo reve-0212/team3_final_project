@@ -24,7 +24,7 @@ function BookReg() {
   const rsvDateTime = useRsvDateTimeStore((state) => state.rsvDateTime)
   const selectedSeat = useSeatIdStore((state) => state.seatId)
   const selectedMenu = useMenuStore((state) => state.menu)
-  let allPeople = 0
+  const allPeople = people.man + people.woman + people.baby;
 
   return (
     <div className={'app-container container py-4'}>

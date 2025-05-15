@@ -35,8 +35,6 @@ function ContentDetail() {
 
   const [RevTab, setRevTab] = useState("rev"); // 'rev'
 
-
-
   // 지도 초기 중심좌표
   const [center, setCenter] = useState({
     lat: 33.450701,
