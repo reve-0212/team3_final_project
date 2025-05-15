@@ -19,8 +19,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.PUT;
+import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 @RequiredArgsConstructor
@@ -130,7 +129,7 @@ public class SecurityConfig {
                     .requestMatchers(PUT,"/pre/owner/seats/update").hasRole("OWNER")
                     .requestMatchers(DELETE,"/pre/owner/seats/delete").hasRole("OWNER")
 
-                    .requestMatchers("/pre/owner/login").permitAll()  // 로그인은 모두 허용
+                    .requestMatchers("/pre/login").permitAll()  // 로그인은 모두 허용
 
                     .requestMatchers("/pre/reservations", "/pre/reservations/**").hasRole("OWNER") // 이건 인증된 사장만 가능
                     .requestMatchers("/pre/TodayLoadSeat/**","/pre/resIdxByUser").permitAll()

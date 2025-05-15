@@ -45,15 +45,15 @@
 <!--    가게 정보 수정 -->
     <update id="updateRest">
         UPDATE restaurant SET
-        res_image1 = #{resImage1},
-        res_image2 = #{resImage2},
-        res_image3 = #{resImage3},
-        res_name = #{resName},
-        res_call = #{resCall},
-        res_address1 = #{resAddress1},
-        res_address2 = #{resAddress2},
-        res_introduce = #{resIntroduce},
-        res_reserve_time = #{resReserveTime}
+            res_image1 = #{storeData.resImage1},
+            res_image2 = #{storeData.resImage2},
+            res_image3 = #{storeData.resImage3},
+            res_name = #{storeData.resName},
+            res_call = #{storeData.resCall},
+            res_address1 = #{storeData.resAddress1},
+            res_address2 = #{storeData.resAddress2},
+            res_introduce = #{storeData.resIntroduce},
+            res_reserve_time = #{storeData.resReserveTime}
         WHERE res_idx = #{resIdx}
     </update>
 

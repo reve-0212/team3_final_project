@@ -50,7 +50,7 @@ public class OwnerController {
 
 
     //  사장님 로그인
-    @PostMapping("/pre/owner/login")
+    @PostMapping("/pre/login")
     public ResponseEntity<PreResponse> login(@RequestBody Map<String, String> userData) {
         String userId = userData.get("userId");
         String userPass = userData.get("userPass");

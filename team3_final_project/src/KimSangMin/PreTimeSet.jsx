@@ -5,10 +5,9 @@ import axios from "axios";
 
 function PreTimeSet({ onEditClick }) {
 
-    localStorage.getItem('jwtToken')
+    const token = localStorage.getItem('ACCESS_TOKEN');
     useEffect(() => {
-        const storedToken = localStorage.getItem('jwtToken');
-        console.log("📦 페이지 로드시 token:", storedToken);
+        console.log("📦 페이지 로드시 token:", token);
     }, []);
 
 
@@ -106,8 +105,6 @@ function PreTimeSet({ onEditClick }) {
 
     const hSubmit =(e) => {
         e.preventDefault();
-
-        const token = localStorage.getItem('jwtToken');
         console.log("토큰 헤더:", {
             Authorization: `Bearer ${token}`,
         });

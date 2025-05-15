@@ -3,6 +3,9 @@ import Draggable from "react-draggable";
 import axios from "axios";
 
 function SeatManager() {
+
+    const token = localStorage.getItem('ACCESS_TOKEN');
+
     // 좌석 요소들의 정보
     const [elements, setElements] = useState([]);
     // 수정이 되었는지 확인
@@ -52,7 +55,6 @@ function SeatManager() {
     // 좌석 수정하기
     const updateSeat = (id, x, y) => {
         if (!id) return;
-        const token = localStorage.getItem('jwtToken');
         if (!token) {
             alert("로그인이 필요합니다.");
             return;
@@ -119,8 +121,6 @@ function SeatManager() {
         // 요소중의 마지막에 생성된 요소를 기준으로 삭제
         const lastSeat = elements[elements.length - 1];
 
-        // 토큰 검사
-        const token = localStorage.getItem('jwtToken');
         if (!token) {
             alert("로그인이 필요합니다.");
             return;
@@ -208,7 +208,6 @@ function SeatManager() {
         if (isSaving) return;
         setIsSaving(true);
 
-        const token = localStorage.getItem('jwtToken');
         if (!token) {
             alert("로그인이 필요합니다.");
             setIsSaving(false);
@@ -244,7 +243,6 @@ function SeatManager() {
 
 // 서버에 저장된 좌석 불러오기
     useEffect(() => {
-        const token = localStorage.getItem("jwtToken");
         if (!token) {
             alert("로그인이 필요합니다.");
             return;

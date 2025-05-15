@@ -8,9 +8,8 @@ function PreFunction() {
     const [input, setInput] = useState([""]);
 
 
-    localStorage.getItem('jwtToken')
+    const storedToken = localStorage.getItem('ACCESS_TOKEN');
     useEffect(() => {
-        const storedToken = localStorage.getItem('jwtToken');
         console.log("📦 페이지 로드시 token:", storedToken);
     }, []);
 
