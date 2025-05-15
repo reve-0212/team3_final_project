@@ -176,4 +176,8 @@ public class UserService {
   public void cancelBookHistory(int reservationIdx) {
     userMapper.cancelBookHistory(reservationIdx);
   }
+
+  public void bookAllReg(int userIdx, int resIdx, int rsvPeople, int rsvMan, int rsvWoman, int rsvBaby, String rsvDate, String rsvTime) {
+    userMapper.bookAllReg(userIdx, resIdx, rsvPeople, rsvMan, rsvWoman, rsvBaby, rsvDate, rsvTime);
+  }
 }

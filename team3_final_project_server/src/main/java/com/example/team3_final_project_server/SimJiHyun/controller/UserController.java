@@ -165,6 +165,7 @@ public class UserController {
   //  좌석 예약하기
   @PutMapping("/reserveSeat")
   public void reserveSeat(@RequestParam int reservationIdx, @RequestParam int seatId) {
+    System.out.println("reserveSeat");
     System.out.println("reservationIdx : " + reservationIdx);
     System.out.println("seatId : " + seatId);
     userService.reserveSeat(reservationIdx, seatId);
@@ -174,6 +175,8 @@ public class UserController {
   public void reserveMenu(@RequestParam int reservationIdx,
                           @RequestParam int menuIdx,
                           @RequestParam int menuQuantity) {
+    System.out.println("reserveMenu");
+
     System.out.println("reservationIdx : " + reservationIdx);
     System.out.println("menuIdx : " + menuIdx);
     System.out.println("menuQuantity : " + menuQuantity);
@@ -259,4 +262,26 @@ public class UserController {
     System.out.println("reservationIdx : " + reservationIdx);
     userService.deleteSeat(reservationIdx);
   }
+
+  @PutMapping("/bookAllReg")
+  public void bookAllReg(
+          @RequestParam int userIdx,
+          @RequestParam int resIdx,
+          @RequestParam int rsvPeople,
+          @RequestParam int rsvMan,
+          @RequestParam int rsvWoman,
+          @RequestParam int rsvBaby,
+          @RequestParam String rsvDate,
+          @RequestParam String rsvTime) {
+    System.out.println("userIdx : " + userIdx);
+    System.out.println("resIdx : " + resIdx);
+    System.out.println("rsvPeople : " + rsvPeople);
+    System.out.println("rsvMan : " + rsvMan);
+    System.out.println("rsvWoman : " + rsvWoman);
+    System.out.println("rsvBaby : " + rsvBaby);
+    System.out.println("rsvDate : " + rsvDate);
+    System.out.println("rsvTime : " + rsvTime);
+    userService.bookAllReg(userIdx, resIdx, rsvPeople, rsvMan, rsvWoman, rsvBaby, rsvDate, rsvTime);
+  }
+
 }

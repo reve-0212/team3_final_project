@@ -237,4 +237,13 @@
   <delete id="deleteSeat">
     delete from selected_seat where reservation_idx=#{reservationIdx};
   </delete>
+
+  <insert id="bookAllReg">
+    insert into reservation (user_idx, res_idx,
+    rsv_people, rsv_man, rsv_woman, rsv_baby,
+    rsv_date, rsv_time)
+    values( #{userIdx},#{resIdx},
+    #{rsvPeople},#{rsvMan},#{rsvWoman},#{rsvBaby},
+    #{rsvDate},#{rsvTime});
+  </insert>
 </mapper>
