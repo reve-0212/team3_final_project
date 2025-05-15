@@ -62,7 +62,7 @@ function ReBanner() {
             }}>
                 <ul className="nav flex-column">
                     <li className="nav-item">
-                        <a className="nav-link text-black" href="/pre/PreMain">홈</a>
+                        <a className="nav-link text-black" href="/pre/PreMain/:resIdx">홈</a>
                     </li>
                     <br/>
 

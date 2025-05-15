@@ -4,159 +4,159 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.team3_final_project_server.SimJiHyun.mapper.UserMapper">
 
-<!--  &lt;!&ndash;아이디로 사용자 조회 (로그인용)&ndash;&gt;-->
-<!--  <select id="findByUserId" resultType="com.example.team3_final_project_server.dto.UserDTO" parameterType="String">-->
-<!--    SELECT * FROM user WHERE user_id = #{userId}-->
-<!--  </select>-->
+  <!--아이디로 사용자 조회 (로그인용)-->
+  <select id="findByUserId" resultType="com.example.team3_final_project_server.dto.UserDTO" parameterType="String">
+    SELECT * FROM user WHERE user_id = #{userId}
+  </select>
 
-<!--  &lt;!&ndash;이메일로 사용자 존재 여부 확인&ndash;&gt;-->
-<!--  <select id="existsByUserEmail" resultType="boolean">-->
-<!--    SELECT COUNT(*) > 0 FROM user WHERE user_email = #{userEmail}-->
-<!--  </select>-->
+  <!--이메일로 사용자 존재 여부 확인-->
+  <select id="existsByUserEmail" resultType="boolean">
+    SELECT COUNT(*) > 0 FROM user WHERE user_email = #{userEmail}
+  </select>
 
-<!--  &lt;!&ndash;아이디로 사용자 존재 여부 확인&ndash;&gt;-->
-<!--  <select id="existsByUserId" resultType="boolean">-->
-<!--    SELECT COUNT(*) > 0 FROM user WHERE user_id = #{userId}-->
-<!--  </select>-->
+  <!--아이디로 사용자 존재 여부 확인-->
+  <select id="existsByUserId" resultType="boolean">
+    SELECT COUNT(*) > 0 FROM user WHERE user_id = #{userId}
+  </select>
 
-<!--  &lt;!&ndash;회원 정보 저장&ndash;&gt;-->
-<!--  <insert id="save" parameterType="com.example.team3_final_project_server.dto.UserDTO">-->
-<!--    INSERT INTO user (user_id, user_pass, user_name, user_email, role)-->
-<!--    VALUES (#{userId}, #{userPass}, #{userName}, #{userEmail}, #{role})-->
-<!--  </insert>-->
+  <!--회원 정보 저장-->
+  <insert id="save" parameterType="com.example.team3_final_project_server.dto.UserDTO">
+    INSERT INTO user (user_id, user_pass, user_name, user_email, role)
+    VALUES (#{userId}, #{userPass}, #{userName}, #{userEmail}, #{role})
+  </insert>
 
-<!--  &lt;!&ndash;사용자 삭제&ndash;&gt;-->
-<!--  <delete id="deleteByUserId">-->
-<!--    DELETE FROM user WHERE user_id = #{userId}-->
-<!--  </delete>-->
+  <!--사용자 삭제-->
+  <delete id="deleteByUserId">
+    DELETE FROM user WHERE user_id = #{userId}
+  </delete>
 
-<!--  &lt;!&ndash;비밀번호 변경&ndash;&gt;-->
-<!--  <update id="updatePassword">-->
-<!--    update user set user_pass = #{hashed} where user_id = #{userId}-->
-<!--  </update>-->
+  <!--비밀번호 변경-->
+  <update id="updatePassword">
+    update user set user_pass = #{hashed} where user_id = #{userId}
+  </update>
 
-<!--  &lt;!&ndash;회원 정보 수정&ndash;&gt;-->
-<!--  <update id="updateField">-->
-<!--    update user set ${field} = #{value} where user_id = #{userId}-->
-<!--  </update>-->
+  <!--회원 정보 수정-->
+  <update id="updateField">
+    update user set ${field} = #{value} where user_id = #{userId}
+  </update>
 
-<!--  &lt;!&ndash;조인용 &ndash;&gt;-->
-<!--  <resultMap id="ResvJoinRestMapSJH" type="com.example.team3_final_project_server.dto.join.ResvJoinRestSMenuDTO">-->
-<!--    <association property="reservation" javaType="com.example.team3_final_project_server.dto.ReservationDTO">-->
-<!--      <result column="reservation_idx" property="reservationIdx"/>-->
-<!--      <result column="user_idx" property="userIdx"/>-->
-<!--      <result column="rsv_people" property="rsvPeople"/>-->
-<!--      <result column="rsv_date" property="rsvDate"/>-->
-<!--      <result column="rsv_time" property="rsvTime"/>-->
-<!--      <result column="rsv_come_datetime" property="rsvComeDatetime"/>-->
-<!--      <result column="rsv_cancel_datetime" property="rsvCancelDatetime"/>-->
-<!--    </association>-->
+  <!--조인용 -->
+  <resultMap id="ResvJoinRestMapSJH" type="com.example.team3_final_project_server.dto.join.ResvJoinRestSMenuDTO">
+    <association property="reservation" javaType="com.example.team3_final_project_server.dto.ReservationDTO">
+      <result column="reservation_idx" property="reservationIdx"/>
+      <result column="user_idx" property="userIdx"/>
+      <result column="rsv_people" property="rsvPeople"/>
+      <result column="rsv_date" property="rsvDate"/>
+      <result column="rsv_time" property="rsvTime"/>
+      <result column="rsv_come_datetime" property="rsvComeDatetime"/>
+      <result column="rsv_cancel_datetime" property="rsvCancelDatetime"/>
+    </association>
 
-<!--    <association property="restaurant" javaType="com.example.team3_final_project_server.dto.RestaurantDTO">-->
-<!--      <result column="res_idx" property="resIdx"/>-->
-<!--      <result column="res_name" property="resName"/>-->
-<!--    </association>-->
+    <association property="restaurant" javaType="com.example.team3_final_project_server.dto.RestaurantDTO">
+      <result column="res_idx" property="resIdx"/>
+      <result column="res_name" property="resName"/>
+    </association>
 
-<!--    <association property="sMenu" javaType="com.example.team3_final_project_server.dto.SelectedMenuDTO">-->
-<!--      <result column="menu_idx" property="menuIdx"/>-->
-<!--      <result column="menu_quantity" property="menuQuantity"/>-->
-<!--    </association>-->
-<!--  </resultMap>-->
+    <association property="sMenu" javaType="com.example.team3_final_project_server.dto.SelectedMenuDTO">
+      <result column="menu_idx" property="menuIdx"/>
+      <result column="menu_quantity" property="menuQuantity"/>
+    </association>
+  </resultMap>
 
-<!--  &lt;!&ndash;예약 리스트 가져오기&ndash;&gt;-->
-<!--  <select id="userReservation" parameterType="int" resultMap="ResvJoinRestMapSJH">-->
-<!--    select rsv.reservation_idx, rsv.user_idx, rsv.rsv_people, rsv.rsv_date, rsv.rsv_time,-->
-<!--    rsv.rsv_come_datetime, rsv.rsv_cancel_datetime, res.res_idx, res.res_name,-->
-<!--    sm.menu_idx, sm.menu_quantity-->
-<!--    from reservation as rsv-->
-<!--    join restaurant as res-->
-<!--    join selected_menu as sm-->
-<!--    on rsv.res_idx = res.res_idx-->
-<!--    where rsv.user_idx=#{userIdx}-->
-<!--    order by rsv.rsv_date desc;-->
-<!--  </select>-->
+  <!--예약 리스트 가져오기-->
+  <select id="userReservation" parameterType="int" resultMap="ResvJoinRestMapSJH">
+    select rsv.reservation_idx, rsv.user_idx, rsv.rsv_people, rsv.rsv_date, rsv.rsv_time,
+    rsv.rsv_come_datetime, rsv.rsv_cancel_datetime, res.res_idx, res.res_name,
+    sm.menu_idx, sm.menu_quantity
+    from reservation as rsv
+    join restaurant as res
+    join selected_menu as sm
+    on rsv.res_idx = res.res_idx
+    where rsv.user_idx=#{userIdx}
+    order by rsv.rsv_date desc;
+  </select>
 
-<!--  &lt;!&ndash;  조인용 map&ndash;&gt;-->
-<!--  <resultMap id="ResvRestMenuJoinMap" type="com.example.team3_final_project_server.dto.join.ResvRestMenuJoinDTO">-->
-<!--    <association property="reservation" javaType="com.example.team3_final_project_server.dto.ReservationDTO">-->
-<!--      <result column="reservation_idx" property="reservationIdx"/>-->
-<!--      <result column="user_idx" property="userIdx"/>-->
-<!--      <result column="rsv_people" property="rsvPeople"/>-->
-<!--      <result column="rsv_date" property="rsvDate"/>-->
-<!--      <result column="rsv_time" property="rsvTime"/>-->
-<!--    </association>-->
+  <!--  조인용 map-->
+  <resultMap id="ResvRestMenuJoinMap" type="com.example.team3_final_project_server.dto.join.ResvRestMenuJoinDTO">
+    <association property="reservation" javaType="com.example.team3_final_project_server.dto.ReservationDTO">
+      <result column="reservation_idx" property="reservationIdx"/>
+      <result column="user_idx" property="userIdx"/>
+      <result column="rsv_people" property="rsvPeople"/>
+      <result column="rsv_date" property="rsvDate"/>
+      <result column="rsv_time" property="rsvTime"/>
+    </association>
 
-<!--    <association property="restaurant" javaType="com.example.team3_final_project_server.dto.RestaurantDTO">-->
-<!--      <result column="res_name" property="resName"/>-->
-<!--      <result column="res_address1" property="resAddress1"/>-->
-<!--      <result column="res_address2" property="resAddress2"/>-->
-<!--      <result column="res_introduce" property="resIntroduce"/>-->
-<!--      <result column="res_lat" property="resLat"/>-->
-<!--      <result column="res_lng" property="resLng"/>-->
-<!--    </association>-->
+    <association property="restaurant" javaType="com.example.team3_final_project_server.dto.RestaurantDTO">
+      <result column="res_name" property="resName"/>
+      <result column="res_address1" property="resAddress1"/>
+      <result column="res_address2" property="resAddress2"/>
+      <result column="res_introduce" property="resIntroduce"/>
+      <result column="res_lat" property="resLat"/>
+      <result column="res_lng" property="resLng"/>
+    </association>
 
-<!--    <association property="menu" javaType="com.example.team3_final_project_server.dto.MenuDTO">-->
-<!--      <result column="menu_name" property="menuName"/>-->
-<!--      <result column="menu_price" property="menuPrice"/>-->
-<!--      <result column="menu_explanation" property="menuExplanation"/>-->
-<!--    </association>-->
-<!--  </resultMap>-->
+    <association property="menu" javaType="com.example.team3_final_project_server.dto.MenuDTO">
+      <result column="menu_name" property="menuName"/>
+      <result column="menu_price" property="menuPrice"/>
+      <result column="menu_explanation" property="menuExplanation"/>
+    </association>
+  </resultMap>
 
-<!--  &lt;!&ndash;  예약 상세 정보 가져오기&ndash;&gt;-->
-<!--  <select id="getBook" parameterType="int" resultMap="ResvRestMenuJoinMap">-->
-<!--    select rsv.reservation_idx, rsv.user_idx, rsv.rsv_people, rsv.rsv_date, rsv.rsv_time,-->
-<!--    res.res_name, res.res_address1, res.res_address2, res.res_introduce, res.res_lat, res.res_lng,-->
-<!--    menu.menu_name, menu.menu_price, menu.menu_explanation-->
-<!--    from reservation as rsv-->
-<!--    join restaurant as res-->
-<!--    join menu as menu-->
-<!--    where reservation_idx = #{reservationIdx}-->
-<!--    and res.res_idx=#{restaurantIdx}-->
-<!--    and menu.menu_name = "name";-->
-<!--  </select>-->
+  <!--  예약 상세 정보 가져오기-->
+  <select id="getBook" parameterType="int" resultMap="ResvRestMenuJoinMap">
+    select rsv.reservation_idx, rsv.user_idx, rsv.rsv_people, rsv.rsv_date, rsv.rsv_time,
+    res.res_name, res.res_address1, res.res_address2, res.res_introduce, res.res_lat, res.res_lng,
+    menu.menu_name, menu.menu_price, menu.menu_explanation
+    from reservation as rsv
+    join restaurant as res
+    join menu as menu
+    where reservation_idx = #{reservationIdx}
+    and res.res_idx=#{restaurantIdx}
+    and menu.menu_name = "name";
+  </select>
 
-<!--  &lt;!&ndash;예약 취소하기&ndash;&gt;-->
-<!--  <update id="cancelBook" parameterType="int">-->
-<!--    update reservation-->
-<!--    set rsv_cancel_datetime = now()-->
-<!--    where reservation_idx = #{reservationIdx};-->
-<!--  </update>-->
+  <!--예약 취소하기-->
+  <update id="cancelBook" parameterType="int">
+    update reservation
+    set rsv_cancel_datetime = now()
+    where reservation_idx = #{reservationIdx};
+  </update>
 
-<!--  &lt;!&ndash;  예약 번호 찾기&ndash;&gt;-->
-<!--  <select id="searchResIdx" resultType="int">-->
-<!--    select reservation_idx-->
-<!--    from reservation-->
-<!--    where user_idx=#{userIdx}-->
-<!--    and res_idx=#{resIdx}-->
-<!--    and rsv_date=#{rsvDate}-->
-<!--    and rsv_time=#{rsvTime};-->
-<!--  </select>-->
+  <!--  예약 번호 찾기-->
+  <select id="searchResIdx" resultType="int">
+    select reservation_idx
+    from reservation
+    where user_idx=#{userIdx}
+    and res_idx=#{resIdx}
+    and rsv_date=#{rsvDate}
+    and rsv_time=#{rsvTime};
+  </select>
 
-<!--  <insert id="reserveSeat">-->
-<!--    insert into selected_seat(reservation_idx, seat_id)-->
-<!--    values (#{reservationIdx}, #{seatId});-->
-<!--  </insert>-->
+  <insert id="reserveSeat">
+    insert into selected_seat(reservation_idx, seat_id)
+    values (#{reservationIdx}, #{seatId});
+  </insert>
 
-<!--  <select id="isSeatAvailable" resultType="int">-->
-<!--    select count(*)-->
-<!--    from reservation as r-->
-<!--    join selected_seat as s-->
-<!--    on r.reservation_idx = s.reservation_idx-->
-<!--    where r.res_idx = #{shortPathIdx}-->
-<!--    and r.rsv_time = "10:00";-->
-<!--  </select>-->
+  <select id="isSeatAvailable" resultType="int">
+    select count(*)
+    from reservation as r
+    join selected_seat as s
+    on r.reservation_idx = s.reservation_idx
+    where r.res_idx = #{shortPathIdx}
+    and r.rsv_time = "10:00";
+  </select>
 
-<!--  <select id="reservedSeat" resultType="int">-->
-<!--    select count(*) from seat_table where res_idx=#{shortPathIdx};-->
-<!--  </select>-->
+  <select id="reservedSeat" resultType="int">
+    select count(*) from seat_table where res_idx=#{shortPathIdx};
+  </select>
 
-<!--  <select id="getStoreLocation" resultType="com.example.team3_final_project_server.dto.RestaurantDTO">-->
-<!--    select * from restaurant;-->
-<!--  </select>-->
+  <select id="getStoreLocation" resultType="com.example.team3_final_project_server.dto.RestaurantDTO">
+    select * from restaurant;
+  </select>
 
-<!--  <select id="loadSeat" parameterType="int" resultType="com.example.team3_final_project_server.dto.SeatDTO">-->
-<!--    SELECT seat_id As seatId, res_idx AS resIdx, type, name, x, y, image, is_selected As isSelected-->
-<!--    FROM seat_table-->
-<!--    WHERE res_idx = #{resIdx}-->
-<!--  </select>-->
+  <select id="loadSeat" parameterType="int" resultType="com.example.team3_final_project_server.dto.SeatDTO">
+    SELECT seat_id As seatId, res_idx AS resIdx, type, name, x, y, image, is_selected As isSelected
+    FROM seat_table
+    WHERE res_idx = #{resIdx}
+  </select>
 </mapper>

@@ -1,16 +1,18 @@
 package com.example.team3_final_project_server.JangDaJung.controller;
 
 import com.example.team3_final_project_server.JangDaJung.JDJService;
+import com.example.team3_final_project_server.JeonSeongYun.JSYService;
+import com.example.team3_final_project_server.configuration.jwt.JwtTokenProvider;
 import com.example.team3_final_project_server.dto.ReservationHistoryDTO;
+import com.example.team3_final_project_server.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/history")
@@ -21,9 +23,41 @@ public class HistoryController {
     @Autowired
     private JDJService jdjService;
 
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
+//    resIdx 불러오기
+//    @GetMapping("/resIdx")
+//    public ResponseEntity<Integer> getResIdx(@RequestParam("userIdx") int userIdx) {
+//        Integer resIdx = jdjService.findResIdxByUserIdx(userIdx);
+//        return ResponseEntity.ok(resIdx);
+//    }
+
+    @GetMapping("/resIdxByUser")
+    public ResponseEntity<?> getResIdxByUser(@RequestHeader("Authorization") String authorizationHeader) {
+        // Authorization 헤더에서 토큰 추출
+        String token = authorizationHeader.replace("Bearer ", "");
+
+        // 토큰에서 인증 정보 얻기
+        Authentication authentication = jwtTokenProvider.getAuthentication(token);
+
+        // UserDTO 객체에서 userIdx 추출
+        UserDTO userDTO = (UserDTO) authentication.getPrincipal();
+        int userIdx = userDTO.getUserIdx();  // 여기서 userIdx를 추출
+
+        // userIdx를 통해 예약 정보를 조회
+        Optional<Integer> resIdx = jdjService.findResIdxByUserIdx(userIdx);
+
+        if (resIdx.isPresent()) {
+            return ResponseEntity.ok().body(resIdx.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body("등록된 레스토랑이 없습니다.");
+        }
+    }
+
 //    ------ 통계 페이지
 //    가게 메인 페이지에서 오늘의 예약 불러오기
-
 
 //    예약하기 -> 히스토리 테이블에 저장
     @PostMapping("/save")

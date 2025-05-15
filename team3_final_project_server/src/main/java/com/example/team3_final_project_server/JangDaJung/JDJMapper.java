@@ -7,9 +7,13 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Mapper
 public interface JDJMapper {
+
+//    resIdx 불러오기
+    Optional<Integer> selectResIdxByUserIdx(int userIdx);
 
 //    -----통계 페이지
 

@@ -1,4 +1,4 @@
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import WaBanner from "../KimSangMin/WaBanner.jsx";
 import {
@@ -95,9 +95,7 @@ function CeoMenuListEdit() {
     const [menuList, setMenuList] = useState([]);
     // 체크된 메뉴 ID들 (숨김/품절)
     const [selectedIds, setSelectedIds] = useState([]);
-
-    // const resIdx = useUserStore(state => state.user.resIdx); // 예시
-    const resIdx = 1; // 현재는 하드코딩된 테스트용 값
+    const { resIdx } = useParams();
 
     // 데이터 받아오기
     useEffect(() => {

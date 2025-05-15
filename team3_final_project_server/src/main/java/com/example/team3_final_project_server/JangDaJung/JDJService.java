@@ -2,13 +2,15 @@ package com.example.team3_final_project_server.JangDaJung;
 
 import com.example.team3_final_project_server.dto.MenuDTO;
 import com.example.team3_final_project_server.dto.ReservationHistoryDTO;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public interface JDJService {
 
+//  resIdx 불러오기
+    Optional<Integer> findResIdxByUserIdx(int userIdx);
 //    ---- 통계 페이지
 
     void saveHistories(List<ReservationHistoryDTO> historyList);

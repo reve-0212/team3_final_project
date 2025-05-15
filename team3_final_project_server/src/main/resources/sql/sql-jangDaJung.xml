@@ -21,6 +21,12 @@
 <!--        )-->
 <!--    </insert>-->
 
+<!--    resIdx 불러오기-->
+    <select id="selectResIdxByUserIdx" parameterType="int" resultType="int">
+        SELECT res_idx
+        FROM restaurant
+        WHERE user_idx = #{userIdx}
+    </select>
 <!--    통계 페이지 -->
 
     <!-- 메뉴 여러개 선택해서 예약할 수  있도록 history 저장 -->

@@ -7,6 +7,7 @@ import axios from "axios";
 
 function CeoMenuEdit() {
   const navigate = useNavigate()
+  const { resIdx } = useParams();
   const { menuIdx } = useParams();  // URL 파라미터로 menuId 받음
 
   // 메뉴 정보 상태
@@ -19,7 +20,11 @@ function CeoMenuEdit() {
   useEffect(() => {
     const fetchMenu = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/menu/${menuIdx}`);
+        const response = await axios.get(`http://localhost:8080/menu/${menuIdx}`, {
+          params: {
+            resIdx: resIdx
+          }
+        });
         const data = response.data;
         setMenuName(data.menuName);
         setMenuPrice(data.menuPrice);

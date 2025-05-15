@@ -5,12 +5,10 @@ import com.example.team3_final_project_server.dto.ReservationHistoryDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.*;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +16,11 @@ public class JDJServiceImpl implements JDJService {
 
     @Autowired
     private JDJMapper jdjMapper;
+
+    @Override
+    public Optional<Integer> findResIdxByUserIdx(int userIdx) {
+        return jdjMapper.selectResIdxByUserIdx(userIdx);
+    }
 
 //  ----- 통계 페이지
 

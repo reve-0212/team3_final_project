@@ -1,7 +1,7 @@
 import {Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import '../JangDaJung/css/CeoMain.css';
 import ReBanner from "./ReBanner.jsx";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
 
@@ -62,18 +62,53 @@ const reviewData = [
 ];
 
 function PreMain() {
+    console.log(localStorage.getItem('ACCESS_TOKEN'));
 
     const [timeSlots, setTimeSlots] = useState([]);
     const [reservationData, setReservationData] = useState([]);
-    const [storeName, setStoreName] = useState('김또깡 식당');
-    const resIdx = 1; // TODO: 실제 가게 ID로 교체
+    const [storeName, setStoreName] = useState('김또깡');
+    const [resIdx, setResIdx] = useState(null);
+    const navigate = useNavigate();
+    // const [tokenChecked, setTokenChecked] = useState(false);
 
     const today = new Date().toISOString().split('T')[0];
 
     useEffect(() => {
-        fetchResTime();
-        fetchReservationHistory();
+        const token = localStorage.getItem('ACCESS_TOKEN');
+        axios.get(`http://localhost:8080/api/history/resIdxByUser`, {
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        }).then((res) => {
+            const resIdx = res.data;
+            if (resIdx) {
+                setResIdx(resIdx); // 성공적으로 resIdx 설정
+                navigate(`/pre/PreMain/${resIdx}`);
+            } else {
+                alert("등록된 레스토랑이 없습니다.");
+                navigate("/pre");
+            }
+        }).catch((err) => {
+            console.error("레스토랑 조회 실패", err);
+            alert("레스토랑 정보를 가져오는 데 실패했습니다.");
+        });
     }, []);
+
+    // if (!tokenChecked) return null;
+
+    useEffect(() => {
+        if (resIdx !== null) {
+            fetchResTime();
+        }
+    }, [resIdx]);
+
+    useEffect(() => {
+        if (resIdx !== null && timeSlots.length > 0) {
+            fetchReservationHistory();
+        }
+    }, [resIdx, timeSlots]);
 
     const fetchResTime = async () => {
         try {

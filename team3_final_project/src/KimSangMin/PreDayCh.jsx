@@ -11,7 +11,7 @@ import {
     YAxis
 } from "recharts";
 import ReBanner from "../KimSangMin/ReBanner.jsx";
-import { Link } from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import axios from "axios";
 
 function PreDayCh() {
@@ -30,7 +30,7 @@ function PreDayCh() {
     // 페이지 로딩
     const [loading, setLoading] = useState(false);
 
-    const resIdx = 1; // 가게 ID
+    const { resIdx } = useParams();
 
     const formatDateStart = (date) => {
         if (!date) return '';

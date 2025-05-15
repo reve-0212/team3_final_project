@@ -1,7 +1,7 @@
 import WaBanner from "../KimSangMin/WaBanner.jsx";
 import "./css/CeoNewMenu.css";
 import {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import ReBanner from "../KimSangMin/ReBanner.jsx";
 import axios from "axios";
 
@@ -21,8 +21,8 @@ function CeoNewMenu() {
     const [showCancelModal, setShowCancelModal] = useState(false);
 
     const [menuList, setMenuList] = useState([]); // 메뉴 전체 리스트 상태 추가
-    // const resIdx = useUserStore(state => state.user.resIdx); // 예시
-    const resIdx = 1; // 현재는 하드코딩된 테스트용 값
+
+    const { resIdx } = useParams();
 
     useEffect(() => {
         if (!resIdx) return;
