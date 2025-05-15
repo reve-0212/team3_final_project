@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
 import LoginSignText from "../simJiHyun/LoginSignText.jsx";
+import Swal from "sweetalert2";
 
 function OwnerLogin() {
     const nv = useNavigate();
@@ -32,13 +33,39 @@ function OwnerLogin() {
                     localStorage.setItem('ACCESS_TOKEN', res.data.data.accessToken);
                     sessionStorage.setItem('REFRESH_TOKEN', res.data.data.refreshToken);
 
-                    nv("/pre/PreSelect");
+                    const token = res.data.data.accessToken;
+                    axios.get(`http://localhost:8080/pre/resIdxByUser`, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }).then((res) => {
+                        const resIdx = res.data;
+                        if(resIdx){
+                            nv(`/pre/PreMain/${resIdx}`);
+                        }
+                    }).catch((err) => {
+                        if (err.response && err.response.status === 404) {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: '알림',
+                                html: `<strong style="color:crimson;">등록된 <b>가게</b> · <b>레스토랑</b></strong>이 없습니다.<br/>
+                                        <span>가게 · 레스토랑 정보를 등록해 주세요.</span>`,
+                                confirmButtonText: '확인'
+                            })
+                            nv(`/pre/PreReSet`);
+                        } else {
+                            console.error("등록된 가게 · 레스토랑 조회 실패:", err);
+                            alert("가게 · 레스토랑 정보를 가져오는 데 실패했습니다.");
+                        }
+                    })
+
                 } else {
                     alert("로그인 실패");
                 }
             })
-            .catch((error) => {
-                alert("서버 오류가 발생했습니다: " + error);
+            .catch((err) => {
+                alert(err);
             });
     };
 

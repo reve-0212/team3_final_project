@@ -78,40 +78,6 @@ public class JSYController {
     }
   }
 
-//  @PostMapping("/refresh")
-//  public ResponseEntity<?> refreshAccessToken(@RequestBody Map<String, String> refreshTokenRequest) {
-//    String refreshToken = refreshTokenRequest.get("refreshToken");
-//
-//    System.out.println("refreshToken : " + refreshToken);
-//
-//    try {
-//      // 리프레시 토큰을 사용하여 새로운 액세스 토큰 생성
-//      String newAccessToken = jwtTokenProvider.refreshAccessToken(refreshToken);
-//
-//      // 기존의 JWT를 통해 사용자 정보 추출
-//      Authentication authentication = jwtTokenProvider.getAuthentication(refreshToken);
-//      UserDTO user = (UserDTO) authentication.getPrincipal();
-//
-//      // 새로운 액세스 토큰과 사용자 정보 포함한 ResponseDTO 반환
-//      ResponseDTO<?> response = ResponseDTO.builder()
-//              .accessToken(newAccessToken)
-//              .refreshToken(refreshToken)  // 원래의 리프레시 토큰도 함께 반환
-//              .userIdx(user.getUserIdx())
-//              .userId(user.getUserId())
-//              .userNick(user.getUserNick())
-//              .userCall(user.getUserCall())
-//              .userEmail(user.getUserEmail())
-//              .role(user.getRole())
-//              .bsName(user.getBsName())
-//              .bsNumber(user.getBsNumber())
-//              .build();
-//
-//      return ResponseEntity.ok(response);
-//
-//    } catch (RuntimeException e) {
-//      return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid or expired refresh token");
-//    }
-//  }
 
   //    좌석 정보 불러오기
   @GetMapping("/TodayLoadSeat/{resIdx}")
@@ -143,12 +109,36 @@ public class JSYController {
     // userIdx를 통해 예약 정보를 조회
     Optional<Integer> resIdx = jsyService.findResIdxByUser(userIdx);
 
+
     if (resIdx.isPresent()) {
       return ResponseEntity.ok().body(resIdx.get());
     } else {
       return ResponseEntity.status(HttpStatus.NOT_FOUND)
               .body("등록된 레스토랑이 없습니다.");
     }
+  }
+
+
+  @PutMapping("/reservation/status")
+  public ResponseEntity<String> updateStatus(@RequestBody ReservationDTO dto) {
+    System.out.println(dto);
+    boolean success = jsyService.updateReservationStatus(dto);
+    return success ? ResponseEntity.ok("상태 업데이트 완료") :
+            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 실패");
+  }
+
+  // 전체 resIdx 기준으로 예약목록리스트 들고오기
+  @GetMapping("/reservations/all")
+  public ResponseEntity<List<ReservationDTO>> getAllReservations(@RequestParam String resIdx) {
+    List<ReservationDTO> reservations = jsyService.findAllByResIdx(resIdx);
+    return ResponseEntity.ok(reservations);
+  }
+
+
+  @GetMapping("/Pastreservations/{resIdx}")
+  public ResponseEntity<List<ReservationDTO>> getPastReservations(@PathVariable String resIdx) {
+    List<ReservationDTO> list = jsyService.getPastReservations(resIdx);
+    return ResponseEntity.ok(list);
   }
 
 }

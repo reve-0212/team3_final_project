@@ -129,7 +129,7 @@ public class SecurityConfig {
                     .requestMatchers("/pre/seats/update").permitAll()
                     .requestMatchers("/pre/seats/delete").permitAll()
 
-                    .requestMatchers("/pre/reservations").hasRole("OWNER") // 이건 인증된 사장만 가능
+                    .requestMatchers("/pre/reservations", "/pre/reservations/**").hasRole("OWNER") // 이건 인증된 사장만 가능
                     .requestMatchers("/pre/TodayLoadSeat/**","/pre/resIdxByUser").permitAll()
                     .requestMatchers("/pre/refresh").permitAll()
 

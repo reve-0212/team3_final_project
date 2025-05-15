@@ -1,0 +1,89 @@
+.profile-card {
+    width: 100%;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 2rem 1.5rem 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 이미지와 텍스트를 가운데 정렬 */
+    gap: 10px;
+    position: relative;
+}
+
+.profile-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #ffd700;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    margin-top: 0; /* 맨 위에 딱 붙도록 */
+}
+
+.profile-info {
+    width: 100%;
+    display: flex;
+    justify-content: center; /* 가운데 정렬 */
+    align-items: center;     /* 세로 가운데 정렬 */
+    gap: 50px; /* 각 요소 사이 간격 */
+    color: #333;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.profile-info h2,
+.profile-info p,
+.profile-info span {
+    margin: 0; /* 줄바꿈 없애고 */
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+    line-height: 1.5;
+}
+
+.profile-info h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #222;
+}
+
+
+.edit-button {
+    margin-top: 20px;
+    padding: 10px 30px;
+    border: none;
+    background-color: #ffd700;
+    color: #333;
+    font-weight: 600;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    align-self: center; /* 버튼도 가운데 정렬 */
+}
+
+.edit-button:hover {
+    background-color: #e6c200;
+}
+
+
+.title-container {
+    position: absolute;
+    top: 1rem;
+    left: 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #333;
+    margin: 0;
+}
+
+.profile-subtitle {
+    font-size: 0.9rem;
+    color: #777;
+    margin: 0;
+    line-height: 1.1;
+    margin-top: 0.15rem;
+}

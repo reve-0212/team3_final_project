@@ -26,4 +26,10 @@ public interface JSYMapper {
     List<SeatDTO> TodayLoadSeat(String resIdx);
 
     Integer findResIdxByUser(int userIdx);
+
+    int updateReservationStatus(ReservationDTO dto);
+
+    List<ReservationDTO> findAllByResIdx(String resIdx);
+
+    List<ReservationDTO> getPastReservations(String resIdx);
 }

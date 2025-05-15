@@ -1,50 +1,38 @@
 import WaBanner from "../KimSangMin/WaBanner.jsx";
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
 
 import 'react-day-picker/dist/style.css';
 import './css/PastDateReservation.css';
 import {DayPicker} from "react-day-picker";
 import ReBanner from "../KimSangMin/ReBanner.jsx";
+import {useParams} from "react-router-dom";
+import axios from "axios";
 
 function PastDateReservation() {
-  // 예약 리스트 (더미데이터)
-  const pastReservations = [
-    {
-      id: 1,
-      status: '완료',
-      name: '장다정',
-      phone: '010-1234-5678',
-      people: 4,
-      reservationDate: '2025-05-01 18:00',
-      applicationDate: '2025-04-28 14:00',
-      completedDate: '2025-05-01 19:00',
-      cancelDate: '',
-    },
-    {
-      id: 2,
-      status: '신청',
-      name: '장다정',
-      phone: '010-9876-5432',
-      people: 2,
-      reservationDate: '2025-05-02 19:00',
-      applicationDate: '2025-04-30 10:00',
-      completedDate: '',
-      cancelDate: '',
-    },
-    {
-      id: 3,
-      status: '취소',
-      name: '장다정',
-      phone: '010-0000-0000',
-      people: 2,
-      reservationDate: '2025-05-02 19:00',
-      applicationDate: '2025-04-30 10:00',
-      completedDate: '',
-      cancelDate: '2025-05-01 19:00',
-    },
-  ];
 
-  // 예약 상태에 따라 색상 변경
+  const {resIdx} = useParams();
+  const [reservations, setReservations] = useState([]);
+
+  useEffect(() => {
+    if (!resIdx) return;
+
+    const token = localStorage.getItem("ACCESS_TOKEN");
+
+    axios.get(`http://localhost:8080/pre/Pastreservations/${resIdx}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+        .then((response) => {
+          console.log(response.data);
+          setReservations(response.data);
+        })
+        .catch((err) => {
+          console.error("예약 리스트 로딩 실패:", err);
+        });
+  }, [resIdx]);
+
   const getStatusColor = (status) => {
     if (status === '완료') return 'status-done text-white status-box';
     if (status === '신청') return 'status-request text-white status-box';
@@ -52,63 +40,175 @@ function PastDateReservation() {
     return '';
   };
 
-  // 검색창 드롭다운(이름, 전화번호)
-  const [searchType, setSearchType] = useState('name'); // 검색 조건
-  const [searchQuery, setSearchQuery] = useState(''); // 사용자가 입력한 검색어
+  const [searchType, setSearchType] = useState('name');
+  const [searchQuery, setSearchQuery] = useState('');
   const [searchKeyword, setSearchKeyword] = useState('');
-
-  // 리스트 예약상태 기준 드롭다운
   const [statusFilter, setStatusFilter] = useState('예약상태');
 
-  // 날짜 선택 달력
-  // 현재 적용된 날짜 범위
   const [reservationConfirmedRange, setReservationConfirmedRange] = useState({ from: undefined, to: undefined });
-  // 임시로 선택 중인 범위
   const [reservationTempRange, setReservationTempRange] = useState({ from: undefined, to: undefined });
   const [showCalendar, setShowCalendar] = useState(false);
+  const calendarRef = useRef(null);
 
-  // 날짜를 "YYYY.MM.DD" 형식으로 변환하는 함수
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+          calendarRef.current &&
+          !calendarRef.current.contains(event.target)
+      ) {
+        setShowCalendar(false);
+      }
+    };
+
+    if (showCalendar) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showCalendar]);
+
   const formatDate = (date) => {
     if (!date) return '';
     return date.toLocaleDateString('ko-KR').replace(/\./g, '').replace(/ /g, '.');
   };
 
-  // 검색 조건 필터링
-  const filteredData = pastReservations.filter(item => {
+  const filteredData = reservations.filter(item => {
     const matchesSearch =
-        searchKeyword === '' || // 검색어 없으면 통과
-        (searchType === 'name' && item.name.includes(searchKeyword)) ||
-        (searchType === 'phone' && item.phone.includes(searchKeyword));
+        searchKeyword === '' ||
+        (searchType === 'name' && item.userNick.includes(searchKeyword)) ||
+        (searchType === 'phone' && item.userCall.includes(searchKeyword));
 
     const matchesStatus =
         statusFilter === '예약상태' || item.status === statusFilter;
 
-    // 날짜 필터링 (entryDate 기준)
+
     const matchesDate = (() => {
       if (!reservationConfirmedRange.from || !reservationConfirmedRange.to) return true;
 
-      const reservationDate = new Date(item.reservationDate);
-
-      // 끝 날짜의 시간을 다음날 00:00 으로 만들어서 범위에 포함되도록 수정
+      const reservationDate = new Date(item.rsvDate);
       const toDate = new Date(reservationConfirmedRange.to);
       toDate.setDate(toDate.getDate() + 1);
 
       return reservationDate >= reservationConfirmedRange.from && reservationDate < toDate;
     })();
 
+
     return matchesSearch && matchesStatus && matchesDate;
   });
 
   const handleSearchButtonClick = () => {
-    setSearchKeyword(searchQuery); // 검색 버튼 누르면 확정
+    setSearchKeyword(searchQuery);
   };
 
-  // 엔터 키 눌렀을 때 검색되게 하는 함수
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       setSearchKeyword(searchQuery);
     }
   };
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedData = filteredData.slice(startIndex, endIndex);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchKeyword, statusFilter, reservationConfirmedRange]);
+
+  const renderPagination = () => {
+    if (totalPages < 1) return null;
+
+    const buttons = [];
+
+    const goToFirst = () => setCurrentPage(1);
+    const goToLast = () => setCurrentPage(totalPages);
+    const goToPrev = () => setCurrentPage(prev => Math.max(prev - 1, 1));
+    const goToNext = () => setCurrentPage(prev => Math.min(prev + 1, totalPages));
+
+    // 첫 페이지 버튼
+    buttons.push(
+        <button
+            key="first"
+            onClick={goToFirst}
+            className="btn btn-sm btn-outline-secondary mx-1"
+            title="첫 페이지"
+        >
+          &laquo;
+        </button>
+    );
+
+    // 이전 버튼
+    buttons.push(
+        <button
+            key="prev"
+            onClick={goToPrev}
+            className="btn btn-sm btn-outline-secondary mx-1"
+            title="이전 페이지"
+        >
+          &lsaquo;
+        </button>
+    );
+
+    // 숫자 버튼 (최대 5개)
+    const maxButtons = 5;
+    let startPage = Math.max(currentPage - Math.floor(maxButtons / 2), 1);
+    let endPage = startPage + maxButtons - 1;
+    if (endPage > totalPages) {
+      endPage = totalPages;
+      startPage = Math.max(endPage - maxButtons + 1, 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      buttons.push(
+          <button
+              key={i}
+              onClick={() => setCurrentPage(i)}
+              className={`btn btn-sm mx-1 ${currentPage === i ? 'btn-primary' : 'btn-outline-primary'}`}
+              style={{
+                borderRadius: '20px',
+                minWidth: '38px',
+                fontWeight: currentPage === i ? 'bold' : 'normal',
+              }}
+          >
+            {i}
+          </button>
+      );
+    }
+
+    // 다음 버튼
+    buttons.push(
+        <button
+            key="next"
+            onClick={goToNext}
+            className="btn btn-sm btn-outline-secondary mx-1"
+            title="다음 페이지"
+        >
+          &rsaquo;
+        </button>
+    );
+
+    // 마지막 페이지 버튼
+    buttons.push(
+        <button
+            key="last"
+            onClick={goToLast}
+            className="btn btn-sm btn-outline-secondary mx-1"
+            title="마지막 페이지"
+        >
+          &raquo;
+        </button>
+    );
+
+    return buttons;
+  };
+
 
   return (
       <>
@@ -124,13 +224,13 @@ function PastDateReservation() {
             <h2 className={'past-waiting-title mb-4'}>예약 내역</h2>
             <hr/>
             <div className={'d-flex align-items-center justify-content-center gap-3 mt-4'}>
-              {/*    날짜 범위 표시 */}
+              {/* 날짜 선택 박스 */}
               <div
                   className={'date-box d-flex align-items-center justify-content-center'}
                   style={{width: '300px', position: 'relative'}}
                   onClick={() => {
                     setShowCalendar(true);
-                    setReservationTempRange(reservationConfirmedRange) // 열 때는 현재 적용된 값으로 세팅
+                    setReservationTempRange(reservationConfirmedRange);
                   }}
               >
                 <p style={{margin: 0}}>
@@ -138,11 +238,8 @@ function PastDateReservation() {
                       ? `${formatDate(reservationConfirmedRange.from)} ~ ${formatDate(reservationConfirmedRange.to)}`
                       : '날짜 선택'}
                 </p>
-                {/* 달력 */}
                 {showCalendar && (
-                    <div className={'calendar-popup'}
-                         onClick={(e) => e.stopPropagation()}
-                    >
+                    <div className={'calendar-popup'} ref={calendarRef} onClick={(e) => e.stopPropagation()}>
                       <DayPicker
                           mode="range"
                           selected={reservationTempRange}
@@ -154,25 +251,40 @@ function PastDateReservation() {
                             className="btn btn-secondary"
                             onClick={(e) => {
                               e.stopPropagation();
-                              setShowCalendar(false)
+                              setShowCalendar(false);
                             }}>취소
                         </button>
                         <button
                             className="btn btn-primary"
                             onClick={(e) => {
                               e.stopPropagation();
-                              setReservationConfirmedRange(reservationTempRange); // 최종 확정
+                              const { from, to } = reservationTempRange || {};
+
+                              if (!from && !to) {
+                                // 아무 날짜도 선택하지 않았을 때 초기화
+                                setReservationConfirmedRange({ from: undefined, to: undefined });
+                                setReservationTempRange({ from: undefined, to: undefined });
+                              } else if (from && !to) {
+                                // from만 선택했을 때 to도 from과 동일하게 설정
+                                setReservationConfirmedRange({ from, to: from });
+                                setReservationTempRange({ from, to: from });
+                              } else {
+                                // 정상 범위 선택 시
+                                setReservationConfirmedRange(reservationTempRange);
+                              }
                               setShowCalendar(false);
                             }}
                         >
                           확인
                         </button>
+
+
                       </div>
                     </div>
                 )}
               </div>
 
-              {/*    검색창 */}
+              {/* 검색창 */}
               <div className={'search-box d-flex align-items-center'}
                    style={{borderRadius: '10px', overflow: 'hidden', width: '500px', paddingRight: '5px'}}>
                 <select
@@ -182,7 +294,7 @@ function PastDateReservation() {
                     style={{border: 'none', width: '30%', borderRadius: '0', margin: '0.3vw', height: '100%'}}
                 >
                   <option value="name">예약자명</option>
-                  <option value="phone">예약자 전화번호</option>
+                  <option value="phone">전화번호</option>
                 </select>
                 <input
                     type="text"
@@ -193,9 +305,7 @@ function PastDateReservation() {
                     className={'form-control'}
                     style={{border: 'none', width: '70%', height: '100%'}}
                 />
-                <button className="btn" style={{height: '3.5vw', whiteSpace: 'nowrap'}}
-                        onClick={handleSearchButtonClick}>검색
-                </button>
+                <button className="btn" style={{height: '3.5vw', whiteSpace: 'nowrap'}} onClick={handleSearchButtonClick}>검색</button>
               </div>
             </div>
 
@@ -210,58 +320,55 @@ function PastDateReservation() {
               <option value="완료">완료</option>
               <option value="취소">취소</option>
             </select>
-            {/*    리스트 출력부분 */}
+
+            {/* 예약 테이블 */}
             <div className={'mt-2'}>
-              <div>
-                <table className={'table me-3'} style={{tableLayout: 'fixed', width: '100%'}}>
-                  <colgroup>
-                    <col style={{width: '10%'}}/>
-                    <col style={{width: '15%'}}/>
-                    <col style={{width: '10%'}}/>
-                    <col style={{width: '5%'}}/>
-                    <col style={{width: '15%'}}/>
-                    <col style={{width: '15%'}}/>
-                    <col style={{width: '15%'}}/>
-                    <col style={{width: '15%'}}/>
-                  </colgroup>
-                  <thead className={'thead-light'}>
-                  <tr>
-                    <th>상태</th>
-                    <th>이용일</th>
-                    <th>예약자</th>
-                    <th>인원</th>
-                    <th>전화번호</th>
-                    <th>신청일시</th>
-                    <th>완료일시</th>
-                    <th>취소일시</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  {filteredData.length > 0 ? (
-                      filteredData.map((item, idx) => (
-                          <tr key={idx}>
-                            <td>
-                              <div className={getStatusColor(item.status)}>{item.status}</div>
-                            </td>
-                            <td>{item.reservationDate}</td>
-                            <td>{item.name}</td>
-                            <td>{item.people}</td>
-                            <td>{item.phone}</td>
-                            <td>{item.applicationDate}</td>
-                            <td>{item.completedDate || ''}</td>
-                            <td>{item.cancelDate || ''}</td>
-                          </tr>
-                      ))
-                  ) : (
-                      <tr>
-                        <td colSpan="8" className="text-center">
-                          검색 결과가 없습니다.
-                        </td>
-                      </tr>
-                  )}
-                  </tbody>
-                </table>
-              </div>
+              <table className={'table me-3'} style={{tableLayout: 'fixed', width: '100%'}}>
+                <colgroup>
+                  <col style={{width: '10%'}}/>
+                  <col style={{width: '15%'}}/>
+                  <col style={{width: '10%'}}/>
+                  <col style={{width: '5%'}}/>
+                  <col style={{width: '15%'}}/>
+                  <col style={{width: '15%'}}/>
+                  <col style={{width: '15%'}}/>
+                </colgroup>
+                <thead className={'thead-light'}>
+                <tr>
+                  <th>상태</th>
+                  <th>이용일</th>
+                  <th>예약자</th>
+                  <th>인원</th>
+                  <th>전화번호</th>
+                  <th>완료일시</th>
+                  <th>취소일시</th>
+                </tr>
+                </thead>
+                <tbody>
+                {paginatedData.length > 0 ? (
+                    paginatedData.map((item, idx) => (
+                        <tr key={idx}>
+                          <td><div className={getStatusColor(item.status)}>{item.status}</div></td>
+                          <td>{item.rsvDate}</td>
+                          <td>{item.userNick}</td>
+                          <td>{item.rsvPeople}</td>
+                          <td>{item.userCall}</td>
+                          <td>{item.rsvComeDatetime || ''}</td>
+                          <td>{item.rsvCancelDatetime || ''}</td>
+                        </tr>
+                    ))
+                ) : (
+                    <tr>
+                      <td colSpan="7" className="text-center">검색 결과가 없습니다.</td>
+                    </tr>
+                )}
+                </tbody>
+              </table>
+            </div>
+
+            {/* ✅ 페이지네이션 버튼 */}
+            <div className="d-flex justify-content-center my-4">
+              {renderPagination()}
             </div>
           </div>
         </div>
@@ -269,4 +376,4 @@ function PastDateReservation() {
   );
 }
 
-export default PastDateReservation
+export default PastDateReservation;

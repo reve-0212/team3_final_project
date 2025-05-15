@@ -10,6 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -100,5 +102,35 @@ public class JSYServiceImpl implements JSYService {
   public Optional<Integer> findResIdxByUser(int userIdx) {
     Integer resIdx = jsyMapper.findResIdxByUser(userIdx);
     return Optional.ofNullable(resIdx);
+  }
+
+  @Override
+  public boolean updateReservationStatus(ReservationDTO dto) {
+    String status = dto.getStatus();
+    String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+    if ("완료".equals(status)) {
+      dto.setRsvComeDatetime(now);
+      dto.setRsvCancelDatetime(null); // 혹시 이전 데이터가 있다면
+    } else if ("취소".equals(status)) {
+      dto.setRsvCancelDatetime(now);
+      dto.setRsvComeDatetime(null);
+    } else {
+      dto.setRsvComeDatetime(null);
+      dto.setRsvCancelDatetime(null);
+    }
+    System.out.println("서비스에서 나온 cancel 값: " + dto.getRsvCancelDatetime());
+    System.out.println("서비스에서 나온 come 값: " + dto.getRsvComeDatetime());
+    return jsyMapper.updateReservationStatus(dto) > 0;
+  }
+
+  @Override
+  public List<ReservationDTO> findAllByResIdx(String resIdx) {
+    return jsyMapper.findAllByResIdx(resIdx);
+  }
+
+  @Override
+  public List<ReservationDTO> getPastReservations(String resIdx) {
+    return jsyMapper.getPastReservations(resIdx);
   }
 }

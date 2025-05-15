@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ReBanner from "./ReBanner.jsx";
 
+import "./css/PreInfoPage.css";
+
+
 function PreInfoPage() {
     const nv = useNavigate();
 
@@ -93,128 +96,104 @@ function PreInfoPage() {
     };
 
     return (
-        <div
-            style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                height: "100vh",
-            }}
-        >
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "1rem",
-                    marginTop: "2rem",
-                }}
-            >
+        <div style={{
+            marginLeft: "250px",
+            paddingTop: "8rem",
+            paddingLeft: "1rem",
+            width: "calc(100% - 200px)",
+        }} className={'container'}>
                 <ReBanner/>
+                {/*<form className="container mt-5 p-4 rounded shadow bg-light" style={{ maxWidth: "600px" }} onSubmit={handleSubmit}>*/}
+                {/*    <h3 className="fw-bold text-center mb-4">사장님 정보</h3>*/}
 
-                <form className="info-form" onSubmit={handleSubmit}>
-                    <h3 style={{ fontWeight: "bold" }} className="pt-5 text-center">
-                        사장님 정보등록
-                    </h3>
-                    <div className="mt-4 d-flex justify-content-center flex-column align-items-center">
-                        <div className="mt-4">
-                            <label htmlFor="userId" className="form-label">
-                                아이디
-                            </label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="userId"
-                                name="userId"
-                                placeholder="아이디를 입력해주세요"
-                                value={userData.userId || ""}
-                                onChange={handleChange}
-                            />
+                {/*    /!* 아이디 - 읽기 전용 강조 박스 *!/*/}
+                {/*    <div className="mb-3">*/}
+                {/*        <label className="form-label fw-bold">아이디</label>*/}
+                {/*        <div className="border rounded p-2 bg-secondary text-white d-flex align-items-center">*/}
+                {/*            <FaIdBadge className="me-2" />*/}
+                {/*            {userData.userId || "불러오는 중..."}*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+
+                {/*    /!* 비밀번호 *!/*/}
+                {/*    <div className="mb-3">*/}
+                {/*        <label className="form-label fw-bold">비밀번호</label>*/}
+                {/*        <div className="border rounded p-2 bg-white d-flex align-items-center">*/}
+                {/*            <FaKey className="me-2 text-muted" />*/}
+                {/*            {userData.userPass || "설정되지 않음"}*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+
+                {/*    /!* 대표자 명 *!/*/}
+                {/*    <div className="mb-3">*/}
+                {/*        <label className="form-label fw-bold">대표자 명</label>*/}
+                {/*        <div className="border rounded p-2 bg-white d-flex align-items-center">*/}
+                {/*            <FaUser className="me-2 text-muted" />*/}
+                {/*            {userData.userNick || "미입력"}*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+
+                {/*    /!* 대표자 번호 *!/*/}
+                {/*    <div className="mb-3">*/}
+                {/*        <label className="form-label fw-bold">대표자 번호</label>*/}
+                {/*        <div className="border rounded p-2 bg-white d-flex align-items-center">*/}
+                {/*            <FaPhone className="me-2 text-muted" />*/}
+                {/*            {userData.userCall || "미입력"}*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+
+                {/*    /!* 사업장 이름 *!/*/}
+                {/*    <div className="mb-3">*/}
+                {/*        <label className="form-label fw-bold">사업장 이름</label>*/}
+                {/*        <div className="border rounded p-2 bg-white d-flex align-items-center">*/}
+                {/*            <FaStore className="me-2 text-muted" />*/}
+                {/*            {userData.bsName || "미입력"}*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+
+                {/*    /!* 사업자 번호 *!/*/}
+                {/*    <div className="mb-3">*/}
+                {/*        <label className="form-label fw-bold">사업자 번호</label>*/}
+                {/*        <div className="border rounded p-2 bg-white d-flex align-items-center">*/}
+                {/*            <FaIdBadge className="me-2 text-muted" />*/}
+                {/*            {userData.bsNumber || "미입력"}*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+
+                {/*    <div className="text-center mt-4">*/}
+                {/*        <button type="submit" className="btn btn-warning px-4 fw-bold">*/}
+                {/*            수정하기*/}
+                {/*        </button>*/}
+                {/*    </div>*/}
+                {/*</form>*/}
+
+
+                <div className="profile-container">
+                    {/* 프로필 카드 */}
+                    <div className="profile-card">
+                        <div className="title-container">
+                            <h1 className="profile-title">아웃백 스테이크</h1>
+                            <p className="profile-subtitle">111-01-12312</p>
                         </div>
-                        <div className="mt-4">
-                            <label htmlFor="userPass" className="form-label">
-                                비밀번호
-                            </label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="userPass"
-                                name="userPass"
-                                placeholder="비밀번호를 입력해주세요"
-                                value={userData.userPass || ""}
-                                onChange={handleChange}
-                            />
+
+                        <img src="/images/profile.jpg" alt="프로필" className="profile-image" />
+                        <div className="profile-info">
+                            <h2>홍길동</h2>
+                            <p>gildong@example.com</p>
+                            <span>가입일: 2024-01-15</span>
                         </div>
-                        <div className="mt-4">
-                            <label htmlFor="userNick" className="form-label">
-                                대표자 명
-                            </label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="userNick"
-                                name="userNick"
-                                placeholder="대표자명을 입력해주세요"
-                                value={userData.userNick || ""}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className="mt-4">
-                            <label htmlFor="userCall" className="form-label">
-                                대표자 번호
-                            </label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="userCall"
-                                name="userCall"
-                                placeholder="대표자 번호를 입력해주세요"
-                                value={userData.userCall || ""}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className="mt-4">
-                            <label htmlFor="bsName" className="form-label">
-                                사업장 이름
-                            </label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="bsName"
-                                name="bsName"
-                                placeholder="사업장 이름을 입력해주세요"
-                                value={userData.bsName || ""}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-                        <div className="mt-4">
-                            <label htmlFor="bsNumber" className="form-label">
-                                사업자 번호
-                            </label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="bsNumber"
-                                name="bsNumber"
-                                placeholder="사업자 번호를 입력해주세요"
-                                value={userData.bsNumber || ""}
-                                onChange={handleChange}
-                            />
-                        </div>
+                        <button className="edit-button">정보 수정</button>
                     </div>
 
-                    <div className="mt-5 mb-5 d-flex justify-content-center">
-                        <button
-                            type="submit"
-                            className="btn"
-                            style={{ backgroundColor: "#FFD727", padding: "10px 20px" }}
-                        >
-                            수정하기
-                        </button>
+                    {/* 비밀번호 변경 */}
+                    <div className="password-section">
+                        <h3>비밀번호 변경</h3>
+                        <input type="password" placeholder="현재 비밀번호" />
+                        <input type="password" placeholder="새 비밀번호" />
+                        <input type="password" placeholder="새 비밀번호 확인" />
+                        <button className="change-password-button">비밀번호 변경</button>
                     </div>
-                </form>
-            </div>
+                </div>
         </div>
     );
 }

@@ -78,21 +78,21 @@ function main() {
             {/* 사장 페이지  */}
             <Route path="/pre" element={<OwnerLogin/>}/>
             <Route path="/pre/PreSelect" element={<PreSelect/>}/> {/* 오늘 or 웨이팅 선택 페이지  */}
-            <Route path="/pre/PreMain" element={<PreMain/>}/> {/* 예약가게 메인*/}
+            <Route path="/pre/PreMain/:resIdx" element={<PreMain/>}/> {/* 예약가게 메인*/}
             <Route path="/pre/update" element={<PreUpdatePage/>}/> {/*  사장 정보 수정 */}
             <Route path="/pre/PreReSet" element={<PreReSetTabs/>}/> {/* 예약가게 셋팅 Tabs */}
-            <Route path="/pre/PreCh" element={<PreChTabs/>}/> {/* 예약가게 매출 통계 Tabs */}
+            <Route path="/pre/PreCh/:resIdx" element={<PreChTabs/>}/> {/* 예약가게 매출 통계 Tabs */}
 
             <Route path="/pre/PreToday/:resIdx" element={<TodayReservation/>}/> {/* 오늘 예약  */}
-            <Route path="/pre/PrePast" element={<PastDateReservation/>}/> {/* 지난날짜 예약 */}
+            <Route path="/pre/PrePast/:resIdx" element={<PastDateReservation/>}/> {/* 지난날짜 예약 */}
 
-            <Route path="/pre/MenuList" element={<CeoMenuList/>}/> {/* 메뉴 리스트 */}
+            <Route path="/pre/PreMenuList/:resIdx" element={<CeoMenuList/>}/> {/* 메뉴 리스트 */}
 
 
             <Route path="/pre/MenuListEdit" element={<CeoMenuListEdit/>}/> {/* 메뉴판 수정 */}
             <Route path="/pre/MenuEdit/:menuId" element={<CeoMenuEdit/>}/> {/* 메뉴 슈정 */}
             <Route path="/pre/NewMenu" element={<CeoNewMenu/>}/> {/* 메뉴 등록 */}
-            <Route path="/pre/PreRe" element={<PreRe/>}/> {/* 예약가게 리뷰 보기*/}
+            <Route path="/pre/PreRe/:resIdx" element={<PreRe/>}/> {/* 예약가게 리뷰 보기*/}
 
 
 

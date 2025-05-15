@@ -17,4 +17,10 @@ public interface JSYService {
     List<SeatDTO> TodayLoadSeat(String resIdx);
 
     Optional<Integer> findResIdxByUser(int userIdx);
+
+    boolean updateReservationStatus(ReservationDTO dto);
+
+    List<ReservationDTO> findAllByResIdx(String resIdx);
+
+    List<ReservationDTO> getPastReservations(String resIdx);
 }

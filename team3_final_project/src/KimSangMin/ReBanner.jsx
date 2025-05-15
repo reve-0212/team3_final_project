@@ -5,6 +5,7 @@ import useUserStore from "../stores/useUserStore.jsx";
 import {jwtDecode} from "jwt-decode";
 import {useEffect, useState} from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 function ReBanner() {
 
@@ -69,10 +70,9 @@ function ReBanner() {
 
 
     // 토큰 보내서 userIdx 찾고 찾은걸로 resIdx res.data로 뽑아내기
-    const handleClick = () => {
+    const handleNaviClick = (type) => {
         const token = localStorage.getItem('ACCESS_TOKEN');
 
-        // 토큰으로 userIdx를 서버에서 파악
         axios.get(`http://localhost:8080/pre/resIdxByUser`, {
             headers: {
                 'Content-Type': 'application/json',
@@ -81,15 +81,49 @@ function ReBanner() {
         }).then((res) => {
             const resIdx = res.data;
             if (resIdx) {
-                nv(`/pre/PreToday/${resIdx}`);
-            } else {
-                alert("등록된 레스토랑이 없습니다.");
+                let path = "";
+                switch(type) {
+                    case "PreToday":
+                        path = `/pre/PreToday/${resIdx}`;
+                        break;
+                    case "PrePast":
+                        path = `/pre/PrePast/${resIdx}`;
+                        break;
+                    case "PreMenuList":
+                        path = `/pre/PreMenuList/${resIdx}`;
+                        break;
+                    case "PreRe":
+                        path = `/pre/PreRe/${resIdx}`;
+                        break;
+                    case "PreCh":
+                        path = `/pre/PreCh/${resIdx}`;
+                        break;
+                    case "PreMain":
+                        path = `/pre/PreMain/${resIdx}`;
+                        break;
+                    // 다른 타입도 필요하면 추가 가능
+                    default:
+                        path = `/pre/PreMain/${resIdx}`;
+                }
+                nv(path);
             }
         }).catch((err) => {
-            console.error("등록된 레스토랑 조회 실패:", err);
-            alert("레스토랑 정보를 가져오는 데 실패했습니다.");
-        })
+            if (err.response && err.response.status === 404) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: '알림',
+                    html: `<strong style="color:crimson;">등록된 <b>가게</b> · <b>레스토랑</b></strong>이 없습니다.<br/>
+                                        <span>가게 · 레스토랑 정보를 등록해 주세요.</span>`,
+                    confirmButtonText: '확인'
+                })
+                nv(`/pre/PreReSet`);
+            } else {
+                console.error("등록된 가게 · 레스토랑 조회 실패:", err);
+                alert("가게 · 레스토랑 정보를 가져오는 데 실패했습니다.");
+            }
+        });
     };
+
 
     return (
         <div>
@@ -121,7 +155,9 @@ function ReBanner() {
             }}>
                 <ul className="nav flex-column">
                     <li className="nav-item">
-                        <a className="nav-link text-black" href="/pre/PreMain">홈</a>
+                        <a onClick={()=> handleNaviClick("PreMain")} className="nav-link text-black" style={{ cursor: "pointer" }}>
+                            홈
+                        </a>
                     </li>
                     <br/>
 
@@ -133,24 +169,32 @@ function ReBanner() {
                         <a className="nav-link text-black" href="/pre/PreReSet">가게정보</a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link text-black" href="/pre/PreCh">가게통계</a>
+                        <a onClick={()=> handleNaviClick("PreCh")} className="nav-link text-black" style={{ cursor: "pointer" }}>
+                            가게 통계
+                        </a>
                     </li>
                     <br/>
 
                     <li className="nav-item">
-                        <a onClick={handleClick} className="nav-link text-black" style={{ cursor: "pointer" }}>
+                        <a onClick={()=> handleNaviClick("PreToday")} className="nav-link text-black" style={{ cursor: "pointer" }}>
                             오늘 예약
                         </a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link text-black" href="/pre/PrePast">지난날짜 예약</a>
+                        <a onClick={()=> handleNaviClick("PrePast")} className="nav-link text-black" style={{ cursor: "pointer" }}>
+                            예약 내역
+                        </a>
                     </li>
                     <br/>
                     <li className="nav-item">
-                        <a className="nav-link text-black" href="/pre/MenuList">가게메뉴</a>
+                        <a onClick={()=> handleNaviClick("PreMenuList")} className="nav-link text-black" style={{ cursor: "pointer" }}>
+                            가게 메뉴
+                        </a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link text-black" href="/pre/PreRe">리뷰관리</a>
+                        <a onClick={()=> handleNaviClick("PreRe")} className="nav-link text-black" style={{ cursor: "pointer" }}>
+                            리뷰 관리
+                        </a>
                     </li>
                 </ul>
             </div>
