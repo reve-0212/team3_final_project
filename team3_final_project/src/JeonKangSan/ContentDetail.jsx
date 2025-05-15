@@ -81,6 +81,7 @@ function ContentDetail() {
     })
   }, [])
 
+  // 리뷰 불러오기
   useEffect(() => {
     axios.get(`http://localhost:8080/reviews/${resIdx}`)
         .then(res => {
@@ -89,10 +90,19 @@ function ContentDetail() {
         .catch(err => console.log("리뷰 불러오기 오류:", err));
   }, [resIdx]);
 
+  // 해시태그
+  useEffect(() => {
+    if (storeInfo && storeInfo.categoryTag) {
+      const tags = storeInfo.categoryTag.trim().split(/\s+/).map(tag => tag.replace(/^#/, ""));
+      setParsedTags(tags);
+    }
+  }, [storeInfo.categoryTag]);
+
   // 시간 데이터 집어넣기
   useEffect(() => {
     if (!storeInfo.resReserveTime) return;
   }, [storeInfo.resReserveTime]);
+
 
   return (
     <div className="app-container">
@@ -129,14 +139,54 @@ function ContentDetail() {
 
         {/* 별점 및 영업정보 */}
         <div className="text-start mb-4">
-          <small className="fw-bold">
-            ⭐{  reviews.length > 0
-              ? (reviews.reduce((acc, cur) => acc + cur.reviewRating, 0) / reviews.length).toFixed(1)
-              : "0.0" } 리뷰 {reviews.length}개
-          </small><br/>
+            <div className="d-flex gap-2 mb-2">
+              {/* 평균 평점 */}
+              <span style={{
+                backgroundColor: "#F5F5F5",
+                padding: "4px 12px",
+                borderRadius: "8px",
+                fontWeight: "600",
+                color: "#212529",
+                fontSize: "0.9rem",
+                display: "inline-block"
+              }}>⭐ {reviews.length > 0
+                  ? (reviews.reduce((acc, cur) => acc + cur.reviewRating, 0) / reviews.length).toFixed(1)
+                  : "0.0"}</span>
+
+              {/* 리뷰 개수 */}
+              <span style={{
+                backgroundColor: "#F5F5F5",
+                padding: "4px 12px",
+                borderRadius: "8px",
+                fontWeight: "600",
+                color: "#212529",
+                fontSize: "0.9rem",
+                display: "inline-block"
+              }}>리뷰 {reviews.length}개</span>
+            </div>
           <hr/>
-          <small className="fw-bold">영업시간 {storeInfo ? storeInfo.resReserveTime : ""}</small><br/>
-          <small className="fw-bold">전화번호 {storeInfo ? storeInfo.resCall : ""}</small>
+          <div className="d-flex flex-column gap-2 mb-3">
+            <div className="d-flex align-items-center gap-2 flex-wrap">
+              <i className="fa-regular fa-clock text-secondary"></i>
+              <span className="fw-semibold text-dark">영업시간:</span>
+              <div
+                  className="d-flex flex-wrap gap-3"
+                  style={{ maxWidth: "240px" }} // 너비 기준 설정
+              >
+                {(storeInfo?.resReserveTime || "-")
+                    .split(',')
+                    .map((time, idx) => (
+                        <span key={idx}>{time}</span>
+                    ))}
+              </div>
+            </div>
+
+            <div className="d-flex align-items-center gap-2">
+              <i className="fa-solid fa-phone text-secondary"></i>
+              <span className="fw-semibold text-dark">전화번호:</span>
+              <span>{storeInfo?.resCall || "-"}</span>
+            </div>
+          </div>
           <hr/>
         </div>
         {/* 탭메뉴 */}
@@ -206,7 +256,7 @@ function ContentDetail() {
                   ))}
                 </div>
               ) : (
-                <div className="ps-2 pt-2 text-muted small">등록된 해시태그가 없습니다</div>
+                <div className="ps-2 pt-2 text-muted small"></div>
               )}
             </div>
           </div>
@@ -286,48 +336,7 @@ function ContentDetail() {
         )}
 
 
-
-        {/*/!* 리뷰 *!/*/}
-        {/*{ActTab === "리뷰" && (*/}
-        {/*    <div className="mb-5 text-start">*/}
-        {/*      <h5 className="mt-5 text-start fw-bold">리뷰</h5>*/}
-
-        {/*      {reviews.map((review, idx) => (*/}
-        {/*          <div key={idx} className="border rounded p-3 mb-3 bg-white shadow-sm">*/}
-        {/*            /!* 사용자 이름 + 평점 *!/*/}
-        {/*            <div className="d-flex justify-content-between align-items-center mb-2">*/}
-        {/*              <div className="fw-bold">{review.userName || "사용자"}</div>*/}
-        {/*              <div className="text-warning">★ {review.reviewRating}</div>*/}
-        {/*            </div>*/}
-
-        {/*            /!* 작성일 *!/*/}
-        {/*            <div className="small text-muted mb-2">{review.reviewWriteDate}</div>*/}
-
-        {/*            /!* 리뷰 내용 *!/*/}
-        {/*            <div className="mb-2">{review.reviewContent}</div>*/}
-
-        {/*            /!* 이미지 리스트 *!/*/}
-        {/*            <div className="d-flex gap-2 flex-wrap">*/}
-        {/*              {[review.reviewImage1, review.reviewImage2, review.reviewImage3]*/}
-        {/*                  .filter(Boolean)*/}
-        {/*                  .map((img, i) => (*/}
-        {/*                      <div key={i} className="bg-light rounded" style={{ width: "100px", height: "100px", overflow: "hidden" }}>*/}
-        {/*                        <img*/}
-        {/*                            src={img}*/}
-        {/*                            alt={`리뷰 이미지 ${i}`}*/}
-        {/*                            style={{ width: "100%", height: "100%", objectFit: "cover" }}*/}
-        {/*                        />*/}
-        {/*                      </div>*/}
-        {/*                  ))}*/}
-        {/*            </div>*/}
-        {/*          </div>*/}
-        {/*      ))}*/}
-        {/*    </div>*/}
-        {/*)}*/}
-
-
-
-        {/* 예약 등록, 웨이팅 등록*/}
+        {/* 예약 등록 */}
         <div className="d-flex flex-column gap-2 mb-4">
           <div className="text-start"><h4 className="extra-bold">예약 가능 시간</h4></div>
           <div className={"d-flex align-items-center justify-content-center flex-wrap"}>

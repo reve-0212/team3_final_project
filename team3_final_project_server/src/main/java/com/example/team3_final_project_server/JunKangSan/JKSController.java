@@ -85,11 +85,36 @@ public class JKSController {
         return jksService.getRstListByCategory(category);
     }
 
+    @GetMapping("/contents/{category}/filter")
+    @ResponseBody
+    public List<RestaurantListDTO> getRstListByFilter(
+            @PathVariable("category") String category,
+            @RequestParam(required = false) String region,
+            @RequestParam(required = false) String sort
+    ) {
+        return jksService.getRstListByFilter(category, region, sort);
+    }
+
     // 가게 상세정보 + 해시태그
     @GetMapping("/detail/{pathIdx}")
     @ResponseBody
     public RestaurantDTO getRstListByPath(@PathVariable("pathIdx") int pathIdx) throws Exception {
         return jksService.getRstListByPath(pathIdx);
+    }
+
+    // 북마크 등록하기
+    @PostMapping("/bookmark")
+    @ResponseBody
+    public String insertBookmark(@RequestBody BookmarkDTO dto) {
+        jksService.insertBookmark(dto.getUserIdx(), dto.getResIdx());
+        return "Bookmark success";
+    }
+
+    @DeleteMapping("/bookmark")
+    @ResponseBody
+    public String deleteBookmark(@RequestBody BookmarkDTO dto) {
+        jksService.deleteBookmark(dto.getUserIdx(), dto.getResIdx());
+        return "Bookmark deleted";
     }
 
 }
