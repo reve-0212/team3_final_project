@@ -242,17 +242,35 @@ public class PreController {
   //    가게 정보 수정하기
   @PutMapping("/pre/owner/updateRest/{resIdx}")
   public ResponseEntity<PreResponse> updateRest(
-          @PathVariable("resIdx") int resIdx, // URL 경로에서 resIdx를 받음
-          @RequestBody RestaurantDTO rest // 수정된 RestaurantDTO 객체를 받음
-  ) {
-    boolean success = preService.updateRest(resIdx, rest);
+          @PathVariable int resIdx,
+          @RequestHeader("Authorization") String authorization,
+          @RequestBody RestaurantDTO storeData) {
 
-    if (success) {
-      PreResponse response = new PreResponse(true, "가게 정보가 수정되었습니다.", rest);
-      return ResponseEntity.ok(response);
-    } else {
-      PreResponse response = new PreResponse(false, "정보 수정 실패", null);
-      return ResponseEntity.badRequest().body(response);
+    try {
+      ResponseDTO jwtInfo = preService.tokenCheck(authorization);
+      int userIdx = jwtInfo.getUserIdx();
+
+      // 가게가 있는지 확인
+      RestaurantDTO existingRest = preService.getRestByUserIdx(userIdx);
+      if (existingRest == null || existingRest.getResIdx() != resIdx) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(new PreResponse(false, "본인의 가게가 아니거나 존재하지 않습니다.", null));
+      }
+
+      // 가게 정보 업데이트 처리 (서비스 메서드 필요)
+      boolean updateResult = preService.updateRest(resIdx, storeData);
+
+      if (updateResult) {
+        RestaurantDTO updatedRest = preService.getRestByUserIdx(userIdx);
+        return ResponseEntity.ok(new PreResponse(true, "가게 정보 수정 성공", updatedRest));
+      } else {
+        return ResponseEntity.badRequest()
+                .body(new PreResponse(false, "가게 정보 수정 실패", null));
+      }
+
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+              .body(new PreResponse(false, "토큰이 유효하지 않거나 인증 실패", null));
     }
   }
 

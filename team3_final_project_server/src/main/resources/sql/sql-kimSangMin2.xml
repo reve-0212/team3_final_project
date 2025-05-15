@@ -43,7 +43,7 @@
     </insert>
 
 <!--    가게 정보 수정 -->
-    <update id="updateRest" parameterType="com.example.team3_final_project_server.dto.RestaurantDTO">
+    <update id="updateRest">
         UPDATE restaurant SET
         res_image1 = #{resImage1},
         res_image2 = #{resImage2},

@@ -16,7 +16,7 @@ public interface PreMapper {
 
     void insertTime(TimeDTO time);
 
-    int updateRest(int resIdx, RestaurantDTO rest);
+    int updateRest(int resIdx, RestaurantDTO storeData);
 
     RestaurantDTO getRest(int resIdx);
 

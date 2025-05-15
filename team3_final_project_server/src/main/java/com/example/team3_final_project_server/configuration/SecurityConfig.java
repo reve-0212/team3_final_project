@@ -124,6 +124,8 @@ public class SecurityConfig {
                     .requestMatchers("/pre/owner/resave").hasRole("OWNER")
                     .requestMatchers("/pre/owner/seats/save").hasRole("OWNER")// 이건 인증된 사장만 가능
                     .requestMatchers("/pre/owner/func").hasRole("OWNER")
+                    .requestMatchers(PUT, "/pre/owner/updateRest/**").hasRole("OWNER")
+                    .requestMatchers(GET, "/pre/owner/getRestaurant").hasRole("OWNER")
                     .requestMatchers(PUT,"/pre/owner/seats/update").hasRole("OWNER")
                     .requestMatchers(DELETE,"/pre/owner/seats/delete").hasRole("OWNER")
 

@@ -136,8 +136,8 @@ public class PreServiceImpl implements PreService {
 
   // 가게 정보 수정하기
   @Override
-  public boolean updateRest(int resIdx, RestaurantDTO rest) {
-    int result = preMapper.updateRest(resIdx,rest);
+  public boolean updateRest(int resIdx, RestaurantDTO storeData) {
+    int result = preMapper.updateRest(resIdx,storeData);
     return result > 0;
   }
 

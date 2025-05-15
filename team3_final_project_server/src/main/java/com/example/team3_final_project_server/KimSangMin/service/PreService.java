@@ -10,7 +10,7 @@ public interface PreService {
   boolean reSave(RestaurantDTO restaurant);
 
   //  가게 정보 수정하기
-  boolean updateRest(int resIdx, RestaurantDTO rest);
+  boolean updateRest(int resIdx, RestaurantDTO storeData);
 
   //    가게 정보 불러오기
   RestaurantDTO getRest(int userIdx);

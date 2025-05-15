@@ -6,14 +6,12 @@ import axios from "axios";
 function PreReSet() {
   // restData : 가게에 입력하고자하는 기본정보 저장객체
   const [restData, setRestData] = useState({
-    Name: "가게이름",
-    Call: "가게번호",
-    Address1: "가게주소",
-    Address2: "가게 해시태그",
-    Introduce: "가게 소개",
-    resTime: []
+    Name: "",
+    Call: "",
+    Address1: "",
+    Address2: "",
+    Introduce: "",
   });
-
 
   const options = [
     {value: "중앙동", label: "중앙동"},
@@ -73,7 +71,7 @@ function PreReSet() {
   // const [searchResults, setSearchResults] = useState([]);
   const [resTime, setResTime] = useState([""]);
   const [dongOption, setDongOption] = useState(""); // 기본 옵션 설정
-  const [isSave,setIsSave] = useState(false);
+  const [isSave,setIsSave] = useState(true);
   const [resIdx, setResIdx] = useState("");
 
 
@@ -138,37 +136,52 @@ function PreReSet() {
   const token = localStorage.getItem('jwtToken');
 
   useEffect(() => {
-    if (token) {
-      axios.get("http://localhost:8080/pre/owner/getRestaurant", {  // 사용자 정보 API 호출
-        headers: { Authorization: `Bearer ${token}` }
-      })
-          .then(response => {
-            const storeData = response.data;  // 예시로 사용자 가게 정보 받기
-            console.log(response.data)
-            if (storeData && storeData.Name) {
-              setIsSave(false);
-              setResIdx(storeData.resIdx);
-              setRestData({
-                Name : storeData.Name,
-                Call : storeData.Call,
-                Address1: storeData.Address1,
-                Introduce: storeData.Introduce,
-              });
-              setDongOption(storeData.Address2); // 주소 2부분을 처리
-              setResTime(storeData.ReserveTime.split(","));
-              setImg([storeData.Image1, storeData.Image2, storeData.Image3]);
-            } else {
-              setIsSave(true);
-            }
-          })
-          .catch(error => {
-            console.log("사용자 정보 가져오기 실패", error);
-            if (error.response && error.response.status === 401) {
+    if (!token) return;
+
+    axios.get("http://localhost:8080/pre/owner/getRestaurant", {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+        .then(response => {
+          const storeData = response.data.data;
+          console.log(storeData)
+          if (storeData && storeData.resName) {
+            setIsSave(false);
+            setResIdx(storeData.resIdx);
+            setRestData({
+              Name: storeData.resName,
+              Call: storeData.resCall,
+              Address1: storeData.resAddress1,
+              Introduce: storeData.resIntroduce,
+            });
+            setDongOption(storeData.resAddress2);
+            setResTime(storeData.resReserveTime ? storeData.resReserveTime.split(",") : []);
+            setImg([
+              storeData.resImage1 || "",
+              storeData.resImage2 || "",
+              storeData.resImage3 || ""
+            ]);
+          } else {
+            setIsSave(true);
+          }
+        })
+        .catch(error => {
+          console.log("사용자 정보 가져오기 실패", error);
+          if (error.response) {
+            if (error.response.status === 401) {
               alert("토큰이 만료되었습니다. 다시 로그인 해주세요.");
+            } else if (error.response.status === 404) {
+              console.log("가게 정보 없음, 신규 등록 상태로 이동");
+              setIsSave(true);
+            } else {
+              console.error("기타 오류:", error.response.data);
             }
-          });
-    }
+          } else {
+            console.error("네트워크 오류:", error.message);
+          }
+        });
   }, [token]);
+
+
 
 
 // 데이터 저장 폼
@@ -211,8 +224,10 @@ function PreReSet() {
             console.log("오류 발생", error);
             alert("수정 중 오류가 발생했습니다.");
           });
-    } else {
-      // 저장이 안되있을 시에는 기본적으로 저장 버튼 활성화
+    }
+
+    // 처음 저장할 때
+    else {
       axios.post("http://localhost:8080/pre/owner/resave", storeData, {
         headers: {
           "Content-Type": "application/json",
@@ -222,7 +237,8 @@ function PreReSet() {
           .then((response) => {
             console.log("저장 성공", response.data);
             alert("가게 정보가 저장되었습니다.");
-            setIsSave(true);
+            setIsSave(false);
+            setResIdx(response.data.resIdx || "");
           })
           .catch((error) => {
             console.log("오류 발생", error);
@@ -428,14 +444,9 @@ function PreReSet() {
           <br/>
 
           <div style={{display: "flex", justifyContent: "flex-end"}}>
-            {isSave ? (
-                <button type="submit" className="btn btn-warning btn-lg mb-3">
-                  수정
-                </button>) : (
-                <button type="submit" className="btn btn-warning btn-lg mb-3">
-                  저장
-                </button>
-            )}
+            <button type="submit" className="btn btn-warning btn-lg mb-3">
+              {!isSave ? "수정" : "저장"}
+            </button>
           </div>
         </form>
       </div>
