@@ -10,7 +10,7 @@ import Button from "../../KimNaHyun/components/Button.jsx";
 import useRestaurantStore from "../../stores/useRestaurantStore.jsx";
 
 function SjhReview() {
-    const user = useUserStore((state) => state.user)
+    const userStore = useUserStore((state) => state.user);
     const restaurantIdx = useRestaurantStore((state) => state.restaurantIdx);
 
     const [starScore, setStarScore] = useState(0);
@@ -46,7 +46,7 @@ function SjhReview() {
         }
 
         const reviewData = {
-            user,
+            userIdx: user.userIdx,
             resIdx: restaurantIdx,
             reviewRating: starScore,
             reviewContent: reviewContent,
