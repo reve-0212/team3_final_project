@@ -7,7 +7,7 @@
   <insert id="updateRsvDate"
           parameterType="com.example.team3_final_project_server.dto.ReservationDTO">
     INSERT INTO reservation (user_idx, res_idx, rsv_people, rsv_man, rsv_woman, rsv_baby, rsv_date, rsv_time )
-        VALUES ( #{userIdx}, #{resIdx}, #{rsvPeople}, #{rsvMan}, #{rsvWoman}, #{rsvBaby}, #{rsvDate}, #{rsvTime});
+    VALUES ( #{userIdx}, #{resIdx}, #{rsvPeople}, #{rsvMan}, #{rsvWoman}, #{rsvBaby}, #{rsvDate}, #{rsvTime});
   </insert>
 
   <select id="getAllMenus" resultType="com.example.team3_final_project_server.dto.MenuDTO" parameterType="int">
@@ -19,8 +19,8 @@
   <select id="getResIdx" resultType="com.example.team3_final_project_server.dto.ReservationDTO" parameterType="int">
     SELECT reservation_idx
     FROM reservation
-    WHERE user_idx = #{userIdx} AND  res_idx = #{resIdx} AND rsv_date = #{rsvDate} AND rsv_time = #{rsvTime}
-        LIMIT 1
+    WHERE user_idx = #{userIdx} AND res_idx = #{resIdx} AND rsv_date = #{rsvDate} AND rsv_time = #{rsvTime}
+    LIMIT 1
   </select>
 
   <select id="updateRsvMenu" resultType="com.example.team3_final_project_server.dto.MenuDTO" parameterType="int">
@@ -29,4 +29,39 @@
     WHERE res_idx = #{resIdx}
   </select>
 
+  <select id="selectResReserveTime" parameterType="int" resultType="string">
+    SELECT res_reserve_time
+    FROM restaurant
+    WHERE res_idx = #{resIdx}
+  </select>
+
+  <insert id="insertReview" parameterType="com.example.team3_final_project_server.dto.ReviewDTO">
+    INSERT INTO review (
+    user_idx,
+    res_idx,
+    menu_idx,
+    is_one_pick,
+    review_rating,
+    review_content,
+    review_write_date,
+    review_visited_date,
+    review_image_1,
+    review_image_2,
+    review_image_3,
+    review_type
+    ) VALUES (
+    #{userIdx},
+    #{resIdx},
+    #{menuIdx},
+    #{isOnePick},
+    #{reviewRating},
+    #{reviewContent},
+    #{reviewWriteDate},
+    #{reviewVisitedDate},
+    #{reviewImage1},
+    #{reviewImage2},
+    #{reviewImage3},
+    #{reviewType}
+    );
+  </insert>
 </mapper>

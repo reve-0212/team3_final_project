@@ -3,7 +3,9 @@ package com.example.team3_final_project_server.KimNaHyun;
 
 import com.example.team3_final_project_server.dto.MenuDTO;
 import com.example.team3_final_project_server.dto.ReservationDTO;
+import com.example.team3_final_project_server.dto.ReviewDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -98,6 +100,26 @@ public class KNHController {
     }
   }
 
+    @GetMapping("/time/{resIdx}")
+    public ResponseEntity<String> getResReserveTime(@PathVariable int resIdx) {
+        String resReserveTime = knhService.getResReserveTime(resIdx);
+
+        if (resReserveTime != null) {
+            return ResponseEntity.ok(resReserveTime);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/review")
+    public String submitReview(@RequestBody ReviewDTO reviewDTO) throws Exception {
+        try {
+            knhService.submitReview(reviewDTO);
+            return "리뷰 등록 성공";
+        } catch (Exception e) {
+            return "리뷰 등록 실패: " + e.getMessage();
+        }
+    }
 }
 
 
