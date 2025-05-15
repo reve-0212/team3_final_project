@@ -230,8 +230,8 @@ function PreReSet() {
     else {
       axios.post("http://localhost:8080/pre/owner/resave", storeData, {
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
         }
       })
           .then((response) => {

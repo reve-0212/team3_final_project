@@ -177,7 +177,7 @@ public class PreController {
     }
   }
 
-
+// 가게 카테고리 저장하기
   @PostMapping("/pre/owner/saveCate")
   public ResponseEntity<PreResponse> cateSave(@RequestBody CategoryDTO category,
                                               @RequestHeader("Authorization") String authorization) {
@@ -252,12 +252,13 @@ public class PreController {
 
       // 가게가 있는지 확인
       RestaurantDTO existingRest = preService.getRestByUserIdx(userIdx);
+
       if (existingRest == null || existingRest.getResIdx() != resIdx) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(new PreResponse(false, "본인의 가게가 아니거나 존재하지 않습니다.", null));
       }
 
-      // 가게 정보 업데이트 처리 (서비스 메서드 필요)
+      // 가게 정보 업데이트 처리
       boolean updateResult = preService.updateRest(resIdx, storeData);
 
       if (updateResult) {
@@ -269,13 +270,16 @@ public class PreController {
       }
 
     } catch (Exception e) {
+      System.out.println("[ERROR] 인증 오류 또는 예외 발생: " + e.getMessage());
+      e.printStackTrace();
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
               .body(new PreResponse(false, "토큰이 유효하지 않거나 인증 실패", null));
     }
   }
 
+
   // 가게 시간 지정하기
-  @PostMapping("/pre/owner/timeset")
+  @PostMapping("/pre/owner/saveTime")
   public ResponseEntity<PreResponse> setTime (@RequestBody TimeRequest timeRequest) {
     List<TimeDTO> timeList = timeRequest.getTimeList();
     boolean success = preService.insertTime(timeList);
