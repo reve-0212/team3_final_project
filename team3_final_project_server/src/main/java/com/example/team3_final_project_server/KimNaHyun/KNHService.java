@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface KNHService {
 
-    List<MenuDTO> getAllMenus(int resIdx);
+  List<MenuDTO> getAllMenus(int resIdx);
 
-    void updateRsvDate(int userIdx, int resIdx,int rsvPeople, int rsvMan, int rsvWoman, int rsvBaby, String rsvDate, String rsvTime) throws Exception;
+  void updateRsvDate(int userIdx, int resIdx, int rsvPeople, int rsvMan, int rsvWoman, int rsvBaby, String rsvDate, String rsvTime) throws Exception;
 
-    void updateRsvMenu(int userIdx, int resIdx) throws Exception;
+  void updateRsvMenu(int userIdx, int resIdx) throws Exception;
 
     List<ReservationDTO> getResIdx(int userIdx, int resIdx, String rsvDate, String rsvTime);
 

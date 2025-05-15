@@ -22,12 +22,12 @@ public class KNHServiceImpl implements KNHService {
 
   @Override
   public List<MenuDTO> getAllMenus(int resIdx) {
-   return knhMapper.getAllMenus(resIdx);
+    return knhMapper.getAllMenus(resIdx);
   }
 
 
   @Override
-  public void updateRsvDate(int userIdx, int resIdx, int rsvPeople, int rsvMan, int rsvWoman, int rsvBaby,  String rsvDate, String rsvTime) throws Exception {
+  public void updateRsvDate(int userIdx, int resIdx, int rsvPeople, int rsvMan, int rsvWoman, int rsvBaby, String rsvDate, String rsvTime) throws Exception {
     knhMapper.updateRsvDate(userIdx, resIdx, rsvPeople, rsvMan, rsvWoman, rsvBaby, rsvDate, rsvTime);
   }
 
@@ -41,6 +41,10 @@ public class KNHServiceImpl implements KNHService {
     return knhMapper.getResIdx(userIdx, resIdx, rsvDate, rsvTime);
   }
 
+  @Override
+  public String getResReserveTime(int resIdx) {
+    return knhMapper.selectResReserveTime(resIdx);
+  }
 
   @Override
   public String getResReserveTime(int resIdx) {

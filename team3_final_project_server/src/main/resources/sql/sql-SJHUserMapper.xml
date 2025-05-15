@@ -127,6 +127,13 @@
     where reservation_idx = #{reservationIdx};
   </update>
 
+  <!--  예약 취소한거 history 에 들어가게-->
+  <update id="cancelBookHistory" parameterType="int">
+    update reservation_history
+    set cancel_date = now()
+    where reservation_idx = #{reservationIdx};
+  </update>
+
   <!--  예약 번호 찾기-->
   <select id="searchResIdx" resultType="int">
     select reservation_idx
@@ -222,4 +229,12 @@
     #{rsvPeople}, #{rsvMan}, #{rsvWoman}, #{rsvBaby},
     #{menuIdx}, #{menuName}, #{menuPrice}, #{menuSCount}, #{menuSTP});
   </insert>
+
+  <delete id="deleteReservation">
+    delete from reservation where user_idx = #{userIdx} and reservation_idx = #{reservationIdx};
+  </delete>
+
+  <delete id="deleteSeat">
+    delete from selected_seat where reservation_idx=#{reservationIdx};
+  </delete>
 </mapper>

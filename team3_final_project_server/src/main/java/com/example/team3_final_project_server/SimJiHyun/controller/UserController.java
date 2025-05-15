@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -121,6 +122,13 @@ public class UserController {
   public void cancelBook(@RequestParam int reservationIdx) {
     System.out.println("reservationIdx : " + reservationIdx);
     userService.cancelBook(reservationIdx);
+  }
+
+  //  예약 취소할 때 히스토리에 넣기
+  @PutMapping("/cancelBookHistory")
+  public void cancelBookHistory(@RequestParam int reservationIdx) {
+    System.out.println("reservationIdx : " + reservationIdx);
+    userService.cancelBookHistory(reservationIdx);
   }
 
   //  예약 번호 찾기
@@ -237,5 +245,18 @@ public class UserController {
     userService.saveHistory(reservationIdx, resIdx, reservationDate,
             rsvPeople, rsvMan, rsvWoman, rsvBaby,
             menuIdx, menuName, menuPrice, menuSCount, menuSTP);
+  }
+
+  @DeleteMapping("/deleteReservation")
+  public void deleteReservation(@RequestParam int userIdx, @RequestParam int reservationIdx) {
+    System.out.println("userIdx : " + userIdx);
+    System.out.println("reservationIdx : " + reservationIdx);
+    userService.deleteReservation(userIdx, reservationIdx);
+  }
+
+  @DeleteMapping("/deleteSeat")
+  public void deleteSeat(@RequestParam int reservationIdx) {
+    System.out.println("reservationIdx : " + reservationIdx);
+    userService.deleteSeat(reservationIdx);
   }
 }
