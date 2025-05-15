@@ -103,6 +103,7 @@ function ContentDetail() {
     if (!storeInfo.resReserveTime) return;
   }, [storeInfo.resReserveTime]);
 
+
   return (
     <div className="app-container">
 
@@ -325,7 +326,7 @@ function ContentDetail() {
         )}
 
 
-        {/* 예약 등록, 웨이팅 등록*/}
+        {/* 예약 등록 */}
         <div className="d-flex flex-column gap-2 mb-4">
           <div className="text-start"><h4 className="extra-bold">예약 가능 시간</h4></div>
           <div className={"d-flex align-items-center justify-content-center flex-wrap"}>

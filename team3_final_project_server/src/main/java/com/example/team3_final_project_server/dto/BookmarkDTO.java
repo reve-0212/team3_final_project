@@ -6,5 +6,5 @@ import lombok.Data;
 public class BookmarkDTO {
     private int bookmarkIdx;
     private int userIdx;
-    private int resturantIdx;
+    private int resIdx;
 }

@@ -1,3 +1,5 @@
+// ContentList.jsx
+
 import "./JksSheet.css";
 import {Link, useNavigate, useParams, useLocation } from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -15,17 +17,17 @@ function ContentList() {
   const { category } = useParams();
   const [restaurants, setRestaurants] = useState([]);
   const setResIdx = useRestaurantStore((state) => state.setRestaurantIdx)
-  const [sortOption, setSortOption] = useState("가까운 순");
 
   console.log("category : " + category)
 
 
-  // jks 작업
+  //
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const region = queryParams.get("region") || "중구";
-  const [selectedRegion, setSelectedRegion] = useState("중구");
+  const region = queryParams.get("region") || "";
+  const [selectedRegion, setSelectedRegion] = useState("");
+  const [sortOption, setSortOption] = useState("가까운 순");
 
   useEffect(() => {
     axios.get(`http://localhost:8080/contents/${category}`, {
@@ -38,17 +40,39 @@ function ContentList() {
   }, [category, region]);
 
   useEffect(() => {
+    axios.get(`http://localhost:8080/contents/${category}/filter`, {
+      params: {
+        region: selectedRegion,
+        sort: sortOption
+      }
+    })
+        .then(res => {
+          console.log("받아온 데이터:", res.data);
+          setRestaurants(res.data);
+        })
+        .catch(err => console.log('데이터 가져오기 오류:', err));
+  }, [category, selectedRegion, sortOption]);
+
+  useEffect(() => {
     console.log("restaurants")
     console.log(restaurants);
 
-    const sortedRestaurants = [...restaurants].sort((a, b) => {
-      switch (sortOption) {
-        case "별점 높은 순": return (b.avgRating || 0) - (a.avgRating || 0);
-        case "리뷰 많은 순": return (b.reviewCount || 0) - (a.reviewCount || 0);
-        default: return 0;
-      }
-    });
+    const filteredRestaurants = [...restaurants]
+        .filter(res => res.resAddress1?.includes(selectedRegion))
+        .sort((a, b) => {
+          switch (sortOption) {
+            case "별점 높은 순":
+              return (b.avgRating || 0) - (a.avgRating || 0);
+            case "리뷰 많은 순":
+              return (b.reviewCount || 0) - (a.reviewCount || 0);
+            default:
+              return 0; // 가까운 순은 거리 기준 처리 안 되어 있음
+          }
+        });
 
+
+
+    // 테스트
 
     if (restaurants.length > 0) {
       console.log("첫 번째 식당 평균 평점:", restaurants[0].avgRating);
@@ -56,28 +80,62 @@ function ContentList() {
   }, [restaurants])
 
 
-  const Nv = useNavigate();
+
+
+  // ------북마크(외부 수정 필요)------
+
+
+  const toggleBookmark = (resIdx) => {
+    const userIdx = 1; // 로그인된 사용자 ID
+
+    // 로그인 확인
+    if (!userIdx) {
+      alert("로그인 후 사용 가능합니다.");
+      return;
+    }
+
+    const isBookmarked = bookmarks[resIdx];
+
+    // 상태 토글
+    setBookmarks(prev => ({
+      ...prev,
+      [resIdx]: !prev[resIdx]
+    }));
+
+    const url = "http://localhost:8080/bookmark";
+    const data = { userIdx, resIdx };
+
+    // 북마크 등록 / 해제
+    if (isBookmarked) {
+      axios.delete(url, { data })
+          .then(() => console.log("북마크 해제"))
+          .catch(err => console.error("해제 실패", err));
+    } else {
+      axios.post(url, data)
+          .then(() => console.log("북마크 등록"))
+          .catch(err => console.error("등록 실패", err));
+    }
+  };
+
+  // --------------
+
+
+
+    const Nv = useNavigate();
   const [bookmarks, setBookmarks] = useState({
     store1: false,
     store2: false
   })
 
-  const toggleBookmark = (storeKey) => {
-    setBookmarks(prev => ({
-      ...prev,
-      [storeKey]: !prev[storeKey]
-    }))
-  }
-
   return (
     <div className="app-container">
 
-      {/* 상단 필터 버튼 - */}
+      {/* 상단 필터 버튼 - 초기화, 지역 선택, 2차 정렬 */}
       <div className="d-flex gap-2 mb-4">
         <button
             className="btn-jks btn-outline-secondary btn-sm"
             onClick={() => {
-              setSelectedRegion("중구"); // 기본 지역
+              setSelectedRegion(""); // 기본 지역
               setSortOption("가까운 순"); // 기본 정렬
             }}
         >
@@ -90,20 +148,20 @@ function ContentList() {
               className="btn-jks btn-sm button-seebox me-auto text-start"
               style={{width: 'auto', appearance: 'none'}}
               aria-label="지역 선택"
-              onChange={(e) => {setSelectedRegion(e.target.value);
-                Nv(`/contentList/${category}?region=${e.target.value}`);
-              }}
+              value={selectedRegion}
+              onChange={(e) => setSelectedRegion(e.target.value)}
           >
-            <option value="중구">중구</option>
-            <option value="서구">서구</option>
-            <option value="동구">동구</option>
-            <option value="영도구">영도구</option>
-            <option value="부산진구">부산진구</option>
-            <option value="동래구">동래구</option>
-            <option value="남구">남구</option>
-            <option value="수영구">수영구</option>
-            <option value="해운대구">해운대구</option>
+            <option value="">전체</option>
             <option value="금정구">금정구</option>
+            <option value="남구">남구</option>
+            <option value="동구">동구</option>
+            <option value="동래구">동래구</option>
+            <option value="부산진구">부산진구</option>
+            <option value="서구">서구</option>
+            <option value="수영구">수영구</option>
+            <option value="영도구">영도구</option>
+            <option value="중구">중구</option>
+            <option value="해운대구">해운대구</option>
 
           </select>
           <i
@@ -117,7 +175,8 @@ function ContentList() {
               className="btn-jks button-seebox btn-sm text-start"
               style={{ width: 'auto', appearance: 'none', paddingRight: '2rem' }}
               aria-label="정렬 기준 선택"
-              onChange={(e) => Nv(`/contentList/${category}?region=${e.target.value}`)} // 추가
+              value={sortOption}
+              onChange={(e) => setSortOption(e.target.value)}
           >
             <option>가까운 순</option>
             <option>별점 높은 순</option>
@@ -153,8 +212,6 @@ function ContentList() {
                   <FontAwesomeIcon icon={bookmarks[res.resIdx] ? faBookmark : faBookmarkRegular}/>
                 </button>
               </div>
-
-              {/*1. resDetail 로 가고 싶으지 아니면 contentDetail 로 가고싶은지?*/}
 
               <p className="card-text my-2" onClick={() => {
                 setResIdx(res.resIdx)

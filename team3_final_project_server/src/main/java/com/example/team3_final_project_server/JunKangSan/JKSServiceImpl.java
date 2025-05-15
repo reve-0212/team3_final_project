@@ -51,6 +51,10 @@ public class JKSServiceImpl implements JKSService {
     return jksMapper.getRstListByCategory(category);
   }
 
+  public List<RestaurantListDTO> getRstListByFilter(String category, String region, String sort) {
+    return jksMapper.getRstListByFilter(category, region, sort);
+  }
+
   @Override
   public RestaurantDTO getRstListByPath(int pathIdx) {
     return jksMapper.getRstListByPath(pathIdx);
@@ -58,4 +62,13 @@ public class JKSServiceImpl implements JKSService {
 
   @Override
   public List<ReviewDTO> getAllReviews(int resIdx) { return jksMapper.getAllReviews(resIdx); }
+
+  @Override
+  public void insertBookmark(int userIdx, int resIdx) {
+    jksMapper.insertBookmark(userIdx, resIdx);
+  }
+  @Override
+  public void deleteBookmark(int userIdx, int resIdx) {
+    jksMapper.deleteBookmark(userIdx, resIdx);
+  }
 }

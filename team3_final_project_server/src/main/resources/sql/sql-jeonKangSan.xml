@@ -11,7 +11,7 @@
     </select>
 
 
-<!--    리뷰 -->
+<!-- 리뷰 -->
     <select id="getAllReviews" parameterType="int" resultType="com.example.team3_final_project_server.dto.ReviewDTO">
         SELECT
         r.review_idx,
@@ -67,9 +67,7 @@
         WHERE category_addr LIKE CONCAT('%', #{categoryAddr}, '%')
     </select>
 
-
-<!--상세보기 -->
-
+<!-- 가게 상세보기 -->
     <select id="getRstListByPath" parameterType="int">
         SELECT
         r.res_idx,
@@ -91,10 +89,6 @@
         WHERE r.res_idx = #{resIdx}
     </select>
 
-
-
-
-
     <select id="getBestMenu" resultType="com.example.team3_final_project_server.dto.MenuDTO">
         select m.menu_name, m.menu_price, m.menu_explanation, m.menu_image
         from menu as m
@@ -103,14 +97,6 @@
         where r.res_idx = #{resIdx}
         order by m.menu_sort desc;
     </select>
-
-<!--    <select id="getRstListByCategory" parameterType="string"-->
-<!--            resultType="com.example.team3_final_project_server.dto.RestaurantDTO">-->
-<!--        SELECT *-->
-<!--        FROM restaurant r-->
-<!--        JOIN category c ON r.res_idx = c.res_idx-->
-<!--        WHERE c.category_name LIKE CONCAT('%', #{category}, '%');-->
-<!--    </select>-->
 
     <select id="getRstListByCategory" parameterType="string"
             resultType="com.example.team3_final_project_server.dto.RestaurantDTO">
@@ -123,5 +109,57 @@
         WHERE c.category_name LIKE CONCAT('%', #{category}, '%')
         GROUP BY r.res_idx
     </select>
+
+<!-- 가게 리스트 + 평점 -->
+    <select id="getRstListByFilter" resultType="com.example.team3_final_project_server.dto.RestaurantListDTO">
+        SELECT
+        r.res_idx AS resIdx,
+        r.user_idx AS userIdx,
+        r.res_image1 AS resImage1,
+        r.res_image2 AS resImage2,
+        r.res_image3 AS resImage3,
+        r.res_name AS resName,
+        r.res_call AS resCall,
+        r.res_address1 AS resAddress1,
+        r.res_address2 AS resAddress2,
+        r.res_introduce AS resIntroduce,
+        r.res_reserve_time AS resReserveTime,
+        r.res_lat AS resLat,
+        r.res_lng AS resLng,
+        r.res_price_range AS resPriceRange,
+        r.reserve_or_waiting AS reserveOrWaiting,
+        r.res_option_1 AS resOption1,
+        IFNULL(AVG(rv.review_rating), 0) AS avgRating,
+        COUNT(rv.review_idx) AS reviewCount
+        FROM restaurant r
+        JOIN category c ON r.res_idx = c.res_idx
+        LEFT JOIN review rv ON r.res_idx = rv.res_idx
+        WHERE c.category_name LIKE CONCAT('%', #{category}, '%')
+        <if test="region != null and region != ''">
+            AND r.res_address1 LIKE CONCAT('%', #{region}, '%')
+        </if>
+        GROUP BY r.res_idx
+        <choose>
+            <when test="sort == '별점 높은 순'">
+                ORDER BY avgRating DESC
+            </when>
+            <when test="sort == '리뷰 많은 순'">
+                ORDER BY reviewCount DESC
+            </when>
+            <otherwise>
+                ORDER BY r.res_idx DESC
+            </otherwise>
+        </choose>
+    </select>
+
+    <insert id="insertBookmark">
+        INSERT INTO bookmark (user_idx, res_idx)
+        VALUES (#{userIdx}, #{resIdx})
+    </insert>
+
+    <delete id="deleteBookmark">
+        DELETE FROM bookmark
+        WHERE user_idx = #{userIdx} AND res_idx = #{resIdx}
+    </delete>
 
 </mapper>

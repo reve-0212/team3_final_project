@@ -12,6 +12,8 @@ public interface JKSMapper {
 
     List<RestaurantListDTO> getRstListByCategory(String category);
 
+    List<RestaurantListDTO> getRstListByFilter(@Param("category") String category, @Param("region") String region, @Param("sort") String sort);
+
     List<RestaurantDTO> getAllRestaurants();
 
     List<ReviewDTO> getAllReviews(int resIdx);
@@ -27,4 +29,7 @@ public interface JKSMapper {
     RestaurantDTO getRstListByPath(int pathIdx);
 
     List<MenuDTO> getBestMenu(int resIdx);
+
+    void insertBookmark(@Param("userIdx") int userIdx, @Param("resIdx") int resIdx);
+    void deleteBookmark(@Param("userIdx") int userIdx, @Param("resIdx") int resIdx);
 }

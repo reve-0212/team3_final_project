@@ -22,7 +22,12 @@ public interface JKSService {
 
     List<RestaurantListDTO> getRstListByCategory(String category);
 
+    List<RestaurantListDTO> getRstListByFilter(@Param("category") String category, @Param("region") String region, @Param("sort") String sort);
+
     RestaurantDTO getRstListByPath(int pathIdx);
 
     List<MenuDTO> getBestMenu(int resIdx);
+
+    void insertBookmark(int userIdx, int resIdx);
+    void deleteBookmark(int userIdx, int resIdx);
 }
