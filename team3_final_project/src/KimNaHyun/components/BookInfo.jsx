@@ -47,6 +47,8 @@ function BookInfo() {
       axios.spread((res1, res2) => {
         setReservations(res1.data)
         setMenus(res2.data)
+        console.log(res1.data)
+        // console.log(res2.data)
       })).catch((err) => {
       console.log(err)
     })
@@ -111,7 +113,7 @@ function BookInfo() {
       </section>
 
       {type === 'book' && (
-        <Button btnName={"메인으로 가기"} onClick={() => Nv("/main")}/>
+        <Button btnName={"메인으로 가기"} onClick={() => Nv("/")}/>
       )}
 
       {type === 'cancel' && (
