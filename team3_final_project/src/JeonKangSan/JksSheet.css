@@ -20,13 +20,15 @@ html {
 
 /* 공통 버튼: 주황색 배경, 가운데 정렬 */
 .common-btn {
-    width: 50%;
-    background: #FFA31C;
+    width: 100%;
+    background:  #FFD700;
     padding: 15px 0;
-    color: #ffffff;
+    color: #5D4037;
     font-weight: bold;
     margin: 0 auto;
     border-radius: 10px;
+    text-align: center;
+    border: 0 solid black;
 }
 
 /* 공통 버튼(외곽선): 흰 배경, 주황 테두리 */

@@ -7,6 +7,7 @@ import useReservationIdxStore from "../../stores/useReservationIdxStore.jsx"
 import useResStoreSjh from "../../stores/useResStoreSjh.jsx";
 import usePeopleStore from "../../stores/usePeopleStore.jsx";
 import useRsvDateTimeStore from "../../stores/useRsvDateTimeStore.jsx";
+import useMenuIdxStore from "../../stores/useMenuIdxStore.jsx";
 
 const MenuSelector = () => {
   const Nv = useNavigate();
@@ -24,6 +25,8 @@ const MenuSelector = () => {
 
   // 좌석 세팅에서 선택한 reservationIdx 가지고 있기
   const reservationIdx = useReservationIdxStore((state) => state.reservationIdx)
+
+
 
   useEffect(() => {
     console.log("userIdx")

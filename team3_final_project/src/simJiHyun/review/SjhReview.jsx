@@ -7,9 +7,11 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import useUserStore from "../../stores/useUserStore.jsx";
 import Button from "../../KimNaHyun/components/Button.jsx";
+import useRestaurantStore from "../../stores/useRestaurantStore.jsx";
 
 function SjhReview() {
-    const userState = useUserStore((state) => state.user);
+    const user = useUserStore((state) => state.user)
+    const restaurantIdx = useRestaurantStore((state) => state.restaurantIdx);
 
     const [starScore, setStarScore] = useState(0);
     const [reviewContent, setReviewContent] = useState("");
@@ -25,12 +27,12 @@ function SjhReview() {
         for (let i = 0; i < 5; i++) {
             result.push(
                 <span key={i + 1} onClick={() => setStarScore(i + 1)}>
-          {i + 1 <= starScore ? (
-              <FontAwesomeIcon icon={faStar} />
-          ) : (
-              <FontAwesomeIcon icon={faStarRegular} />
-          )}
-        </span>
+                    {i + 1 <= starScore ? (
+                        <FontAwesomeIcon icon={faStar} />
+                    ) : (
+                        <FontAwesomeIcon icon={faStarRegular} />
+                    )}
+                </span>
             );
         }
         return result;
@@ -44,20 +46,17 @@ function SjhReview() {
         }
 
         const reviewData = {
-            userIdx: userState?.userIdx ?? 0,
-            resIdx: 2, // 예시 값
-            menuIdx: 1,       // 예시 값
-            isOnePick: "N",
+            user,
+            resIdx: restaurantIdx,
             reviewRating: starScore,
             reviewContent: reviewContent,
             reviewWriteDate: new Date().toLocaleDateString(),
-            reviewVisitedDate: new Date().toLocaleDateString(),
             reviewImage1: reviewImage1,
             reviewImage2: reviewImage2,
             reviewImage3: reviewImage3,
-            reviewType: "S", //
         };
 
+        // 서버로 리뷰 등록 요청
         axios
             .post("http://localhost:8080/api/review", reviewData, {
                 headers: {
@@ -66,8 +65,11 @@ function SjhReview() {
             })
             .then((response) => {
                 console.log("리뷰 등록 성공:", response);
+                const reviewIdx = response.data.reviewIdx; // 여기서 얻은 ID
                 alert("리뷰가 성공적으로 등록되었습니다.");
-                Nv("/user/reviewList");
+
+                // 다음 페이지로 이동하면서 reviewIdx 전달
+                Nv(`/user/reviewList?reviewIdx=${reviewIdx}`);
             })
             .catch((error) => {
                 console.error("리뷰 등록 실패:", error);
@@ -108,15 +110,8 @@ function SjhReview() {
                 </div>
             </div>
 
-                {/*<button*/}
-                {/*    type={"button"}*/}
-                {/*    className={"btn rounded-3 text-light fw-bold flex-fill py-3 mt-5"}*/}
-                {/*    style={{ backgroundColor: "#FFA31C" }}*/}
-                {/*    onClick={handleSubmitReview}*/}
-                {/*>*/}
-                {/*    등록하기*/}
-                {/*</button>*/}
-                <Button btnName="리뷰 등록하기" onClick={handleSubmitReview}/>
+            {/* 리뷰 등록 버튼 */}
+            <Button btnName="리뷰 등록하기" onClick={handleSubmitReview} />
         </div>
     );
 }

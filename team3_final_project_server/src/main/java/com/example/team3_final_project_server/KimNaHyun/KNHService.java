@@ -19,4 +19,7 @@ public interface KNHService {
     String getResReserveTime(int resIdx);
 
     void submitReview(ReviewDTO reviewDTO) throws Exception;
+
+
+    List<ReviewDTO> getReviews(int userIdx) throws Exception;
 }

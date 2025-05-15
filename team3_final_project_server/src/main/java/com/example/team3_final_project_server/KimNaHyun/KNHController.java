@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -93,13 +95,24 @@ public class KNHController {
     }
 
     @PostMapping("/review")
-    public String submitReview(@RequestBody ReviewDTO reviewDTO) throws Exception {
+    public Map<String, Object> submitReview(@RequestBody ReviewDTO reviewDTO) {
+        Map<String, Object> response = new HashMap<>();
         try {
             knhService.submitReview(reviewDTO);
-            return "리뷰 등록 성공";
+            int reviewIdx = reviewDTO.getReviewIdx(); // 등록된 리뷰 ID
+            response.put("success", true);
+            response.put("reviewIdx", reviewIdx); // 클라이언트에서 활용 가능
         } catch (Exception e) {
-            return "리뷰 등록 실패: " + e.getMessage();
+            response.put("success", false);
+            response.put("message", "리뷰 등록 실패: " + e.getMessage());
         }
+        return response;
+    }
+
+    //  게시판 목록 가져오기
+    @GetMapping("/review/{userIdx}")
+    public List<ReviewDTO> getReviews(@PathVariable("userIdx") int userIdx) throws Exception {
+        return knhService.getReviews(userIdx);
     }
 }
 

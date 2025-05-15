@@ -35,33 +35,44 @@
     WHERE res_idx = #{resIdx}
   </select>
 
-  <insert id="insertReview" parameterType="com.example.team3_final_project_server.dto.ReviewDTO">
+  <insert id="insertReview" parameterType="com.example.team3_final_project_server.dto.ReviewDTO"  useGeneratedKeys="true" keyProperty="reviewIdx">
     INSERT INTO review (
     user_idx,
     res_idx,
-    menu_idx,
-    is_one_pick,
     review_rating,
     review_content,
     review_write_date,
-    review_visited_date,
     review_image_1,
     review_image_2,
-    review_image_3,
-    review_type
+    review_image_3
     ) VALUES (
     #{userIdx},
     #{resIdx},
-    #{menuIdx},
-    #{isOnePick},
     #{reviewRating},
     #{reviewContent},
     #{reviewWriteDate},
-    #{reviewVisitedDate},
     #{reviewImage1},
     #{reviewImage2},
-    #{reviewImage3},
-    #{reviewType}
+    #{reviewImage3}
     );
   </insert>
+
+  <select id="getReviews" resultType="com.example.team3_final_project_server.dto.ReviewDTO" parameterType="int">
+    SELECT
+    r.review_idx,
+    r.review_rating,
+    r.review_content,
+    r.review_write_date,
+    r.review_image_1,
+    res.res_name
+    FROM
+    review r
+    JOIN
+    restaurant res ON r.res_idx = res.res_idx
+    WHERE
+    r.user_idx = #{userIdx}
+    ORDER BY
+    r.review_write_date DESC
+  </select>
+
 </mapper>

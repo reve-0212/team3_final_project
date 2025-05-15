@@ -23,4 +23,6 @@ public interface KNHMapper {
     String selectResReserveTime(@Param("resIdx") int resIdx);
 
     void insertReview(ReviewDTO reviewDTO);
+
+    List<ReviewDTO> getReviews(int userIdx) throws Exception;
 }
