@@ -42,7 +42,7 @@ public interface JDJMapper {
 //    Map<String, String> getResTime(int resIdx);
 
 //    가게 예약 가능 시간대 불러오기(메인페이지)
-    List<String> getResTime(@Param("resIdx") int resIdx);
+    List<String> getResTime(@Param("resIdx") String resIdx);
 
 //    ---- 메뉴 페이지
 //    메뉴 리스트

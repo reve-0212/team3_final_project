@@ -105,7 +105,7 @@
 <!--    </select>-->
 
 <!--    가게 예약 가능 시간 불러오기(메인페이지)-->
-    <select id="getResTime" resultType="string">
+    <select id="getResTime" resultType="String">
         SELECT res_reserve_time
         FROM restaurant
         WHERE res_idx = #{resIdx}

@@ -30,7 +30,7 @@ public interface JDJService {
 //    Map<String, String> getResTime(int resIdx);
 
 //    가게 예약 시간대 불러오기(메인페이지
-    List<String> getResTime(int resIdx);
+    List<String> getResTime(String resIdx);
 
 //    ---- 메뉴 페이지
 

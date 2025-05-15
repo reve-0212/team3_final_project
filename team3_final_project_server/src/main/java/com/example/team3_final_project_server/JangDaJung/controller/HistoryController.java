@@ -75,8 +75,9 @@ public class HistoryController {
 
 //    가게 예약 시간대 불러오기(메인)
     @GetMapping("/restaurant/{resIdx}/reservationTime")
-    public ResponseEntity<List<String>> getResTime(@PathVariable("resIdx") int resIdx) {
+    public ResponseEntity<List<String>> getResTime(@PathVariable("resIdx") String resIdx) {
         String csv = jdjService.getResTime(resIdx).toString();
+        System.out.println("가게예약시간대불러오기 컨트롤러 : " + csv);
         if (csv == null || csv.isEmpty()) {
             return ResponseEntity.ok(Collections.emptyList());
         }

@@ -70,7 +70,7 @@ public class JDJServiceImpl implements JDJService {
 
 //    가게 예약시간대 불러오기(메인페이지)
     @Override
-    public List<String> getResTime(int resIdx) {
+    public List<String> getResTime(String resIdx) {
         return jdjMapper.getResTime(resIdx);
     }
 

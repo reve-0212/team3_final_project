@@ -1,7 +1,7 @@
 import {Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import '../JangDaJung/css/CeoMain.css';
 import ReBanner from "./ReBanner.jsx";
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
 
@@ -62,41 +62,18 @@ const reviewData = [
 ];
 
 function PreMain() {
-    console.log(localStorage.getItem('ACCESS_TOKEN'));
+    // console.log(localStorage.getItem('ACCESS_TOKEN'));
+    const token = localStorage.getItem('ACCESS_TOKEN');
 
     const [timeSlots, setTimeSlots] = useState([]);
     const [reservationData, setReservationData] = useState([]);
     const [storeName, setStoreName] = useState('김또깡');
-    const [resIdx, setResIdx] = useState(null);
+    const {resIdx} = useParams();
     const navigate = useNavigate();
     // const [tokenChecked, setTokenChecked] = useState(false);
 
     const today = new Date().toISOString().split('T')[0];
 
-    useEffect(() => {
-        const token = localStorage.getItem('ACCESS_TOKEN');
-        axios.get(`http://localhost:8080/api/history/resIdxByUser`, {
-            withCredentials: true,
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-            },
-        }).then((res) => {
-            const resIdx = res.data;
-            if (resIdx) {
-                setResIdx(resIdx); // 성공적으로 resIdx 설정
-                navigate(`/pre/PreMain/${resIdx}`);
-            } else {
-                alert("등록된 레스토랑이 없습니다.");
-                navigate("/pre");
-            }
-        }).catch((err) => {
-            console.error("레스토랑 조회 실패", err);
-            alert("레스토랑 정보를 가져오는 데 실패했습니다.");
-        });
-    }, []);
-
-    // if (!tokenChecked) return null;
 
     useEffect(() => {
         if (resIdx !== null) {
@@ -112,7 +89,12 @@ function PreMain() {
 
     const fetchResTime = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/history/restaurant/${resIdx}/reservationTime`);
+            const response = await axios.get(`http://localhost:8080/api/history/restaurant/${resIdx}/reservationTime`,{
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            });
             let slots = response.data;
             if (typeof slots === 'string') slots = JSON.parse(slots);
             const cleanedSlots = slots.map(item => item.replace(/^\[|\]$/g, ''));
@@ -129,6 +111,10 @@ function PreMain() {
                     startDate: today,
                     endDate: today,
                     resIdx: resIdx
+                },
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
                 }
             });
             const fetched = response.data; // [{time: "11:00", count: 3}, ...]
@@ -162,7 +148,7 @@ function PreMain() {
                     <div className={'row g-4'}>
                         {/*  카드 1 - 예약 수 */}
                         <div className={'col-12 col-md-6'}>
-                            <Link to="/pre/PreCh" className={'text-decoration-none'}>
+                            <Link to={`/pre/PreCh/${resIdx}`} className={'text-decoration-none'}>
                                 <div className={'custom-card'}>
                                     <div className={'card-header-text'}>오늘 예약 수</div>
                                     <div className={'chart-wrapper'}>
@@ -187,7 +173,7 @@ function PreMain() {
                         {/* 카드 2-리뷰 */}
                         {/* 카드 2 - 리뷰 */}
                         <div className={'col-12 col-md-6'}>
-                            <Link to="/pre/PreRe" style={{textDecoration: 'none', color: 'black'}}>
+                            <Link to={`/pre/PreRe/${resIdx}`} style={{textDecoration: 'none', color: 'black'}}>
                                 <div className={'custom-card'}>
                                     <div className={'card-header-text'}>리뷰</div>
                                     <div className={'d-flex align-items-center mb-4'}>
