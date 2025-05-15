@@ -14,9 +14,12 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @CrossOrigin(origins = {"http://localhost:5173", "http://localhost:5174"})
 @RestController
@@ -113,7 +116,6 @@ public class UserController {
   public List<RrsmDTO> getMenu(@RequestParam int reservationIdx, @RequestParam int restaurantIdx) {
     System.out.println("reservationIdx : " + reservationIdx);
     System.out.println("restaurantIdx : " + restaurantIdx);
-
     return userService.getMenu(reservationIdx, restaurantIdx);
   }
 
@@ -283,5 +285,4 @@ public class UserController {
     System.out.println("rsvTime : " + rsvTime);
     userService.bookAllReg(userIdx, resIdx, rsvPeople, rsvMan, rsvWoman, rsvBaby, rsvDate, rsvTime);
   }
-
 }

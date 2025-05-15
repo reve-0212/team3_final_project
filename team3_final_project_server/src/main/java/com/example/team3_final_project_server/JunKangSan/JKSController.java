@@ -36,17 +36,12 @@ public class JKSController {
         return jksService.getBestMenu(resIdx);
     }
 
-
-
     //  리뷰
     @GetMapping("/reviews/{resIdx}")
     @ResponseBody
     public List<ReviewDTO> getAllReviews(@PathVariable int resIdx) {
         return jksService.getAllReviews(resIdx);
     }
-
-
-
 
     //  리뷰 평균
     @GetMapping("/reviews/average/{resIdx}")
@@ -61,7 +56,6 @@ public class JKSController {
     public Map<String, Double> getAvgByType(@PathVariable int resIdx) {
         return jksService.getAvgRatingByType(resIdx);
     }
-
 
     // 알림(가게공지)
   //  @GetMapping("/announce/{resIdx}")

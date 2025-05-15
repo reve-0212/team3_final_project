@@ -69,24 +69,9 @@
 
 <!-- 가게 상세보기 -->
     <select id="getRstListByPath" parameterType="int">
-        SELECT
-        r.res_idx,
-        r.res_name,
-        r.res_call,
-        r.res_address1,
-        r.res_address2,
-        r.res_introduce,
-        r.res_reserve_time,
-        r.res_lat,
-        r.res_lng,
-        r.res_price_range,
-        r.reserve_or_waiting,
-        r.res_option_1,
-        c.category_tag,
-        c.category_name
-        FROM restaurant r
-        LEFT JOIN category c ON r.res_idx = c.res_idx
-        WHERE r.res_idx = #{resIdx}
+      SELECT *
+      FROM restaurant
+      WHERE res_idx =#{pathIdx};
     </select>
 
     <select id="getBestMenu" resultType="com.example.team3_final_project_server.dto.MenuDTO">
