@@ -75,13 +75,28 @@
     </select>
 
     <select id="getBestMenu" resultType="com.example.team3_final_project_server.dto.MenuDTO">
-        select m.menu_name, m.menu_price, m.menu_explanation, m.menu_image
-        from menu as m
-        join restaurant as r
-        on m.res_idx = r.res_idx
-        where r.res_idx = #{resIdx}
-        order by m.menu_sort desc;
+        SELECT
+        m.menu_idx,
+        m.res_idx,
+        m.menu_name,
+        m.menu_price,
+        m.menu_explanation,
+        m.menu_image,
+        m.menu_hidden,
+        m.menu_sold_out,
+        m.menu_sort
+        FROM menu AS m
+        WHERE m.res_idx = #{resIdx}
+        ORDER BY m.menu_sort DESC
     </select>
+<!--    <select id="getBestMenu" resultType="com.example.team3_final_project_server.dto.MenuDTO">-->
+<!--        select m.menu_name, m.menu_price, m.menu_explanation, m.menu_image-->
+<!--        from menu as m-->
+<!--        join restaurant as r-->
+<!--        on m.res_idx = r.res_idx-->
+<!--        where r.res_idx = #{resIdx}-->
+<!--        order by m.menu_sort desc;-->
+<!--    </select>-->
 
     <select id="getRstListByCategory" parameterType="string"
             resultType="com.example.team3_final_project_server.dto.RestaurantDTO">
@@ -147,5 +162,33 @@
         DELETE FROM bookmark
         WHERE user_idx = #{userIdx} AND res_idx = #{resIdx}
     </delete>
+
+
+
+
+    <!-- 북마크된 가게 리스트 조회 -->
+    <select id="getBookmarkedRestaurants" parameterType="int" resultType="com.example.team3_final_project_server.dto.RestaurantListDTO">
+        SELECT
+        r.res_idx,
+        r.res_name,
+        r.res_image1,
+        r.res_image2,
+        r.res_image3,
+        r.res_address1,
+        r.reserve_or_waiting,
+        r.res_option_1,
+        c.category_name,
+        ROUND(AVG(rv.review_rating), 1) AS avgRating,
+        COUNT(rv.review_idx) AS reviewCount
+        FROM
+        bookmark b
+        JOIN restaurant r ON b.res_idx = r.res_idx
+        LEFT JOIN category c ON r.res_idx = c.res_idx
+        LEFT JOIN review rv ON r.res_idx = rv.res_idx
+        WHERE
+        b.user_idx = #{userIdx}
+        GROUP BY
+        r.res_idx
+    </select>
 
 </mapper>

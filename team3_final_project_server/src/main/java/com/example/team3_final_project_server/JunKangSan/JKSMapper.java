@@ -32,4 +32,7 @@ public interface JKSMapper {
 
     void insertBookmark(@Param("userIdx") int userIdx, @Param("resIdx") int resIdx);
     void deleteBookmark(@Param("userIdx") int userIdx, @Param("resIdx") int resIdx);
+
+//    mapper
+    List<RestaurantListDTO> getBookmarkedRestaurants(int userIdx);
 }

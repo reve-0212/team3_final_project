@@ -252,26 +252,39 @@ function ContentDetail() {
           </div>
         )}
 
+        {/* 메뉴 */}
         {/* 대표메뉴 */}
         {ActTab === "대표메뉴" && (
-          <div className="mb-5">
-            <h5 className="mb-3 fw-bold text-start">대표메뉴</h5>
-            {bestMenus.map((menu, idx) => (
-              <div key={idx}
-                   className="d-flex justify-content-between align-items-center border-bottom py-3">
-                <div className="text-start">
-                  <div className="fw-bold">{menu.menuName}</div>
-                  <div className="text-muted small">{menu.menuExplanation}</div>
-                  <div className="fw-bold mt-3">{menu.menuPrice} 원</div>
-                </div>
-                <div className="bg-light d-flex justify-content-center align-items-center"
-                     style={{width: "64px", height: "64px", borderRadius: "6px"}}>
-                  <span className="text-muted small">사진</span>
-                </div>
-              </div>
-            ))}
-          </div>
+            <div className="mb-5">
+              <h5 className="mb-3 fw-bold text-start">메뉴</h5>
+              {bestMenus
+                  .filter(menu => menu.menuHidden !== "1") // 숨김 처리된 메뉴 제외
+                  .map((menu, idx) => (
+                      <div
+                          key={idx}
+                          className="d-flex justify-content-between align-items-center border-bottom py-3"
+                      >
+                        <div className="text-start">
+                          <div className="fw-bold">
+                            {menu.menuSoldOut === "1" && (
+                                <span className="text-danger me-2">(품절)</span>
+                            )}
+                            {menu.menuName}
+                          </div>
+                          <div className="text-muted small">{menu.menuExplanation}</div>
+                          <div className="fw-bold mt-3">{menu.menuPrice} 원</div>
+                        </div>
+                        <div
+                            className="bg-light d-flex justify-content-center align-items-center"
+                            style={{ width: "64px", height: "64px", borderRadius: "6px" }}
+                        >
+                          <span className="text-muted small">사진</span>
+                        </div>
+                      </div>
+                  ))}
+            </div>
         )}
+
 
 
         {ActTab === "리뷰" && (

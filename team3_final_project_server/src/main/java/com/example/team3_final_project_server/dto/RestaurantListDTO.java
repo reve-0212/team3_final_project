@@ -38,4 +38,8 @@ public class RestaurantListDTO {
   private String restOption1;
 
 
+  // 북마크 조회 아이디
+  private int userIdx;
+
+
 }

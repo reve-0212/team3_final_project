@@ -33,6 +33,7 @@ public class JKSController {
     @GetMapping("/bestmenu/{resIdx}")
     @ResponseBody
     public List<MenuDTO> getBestMenu(@PathVariable int resIdx) {
+        System.out.println(resIdx);
         return jksService.getBestMenu(resIdx);
     }
 
@@ -109,6 +110,14 @@ public class JKSController {
     public String deleteBookmark(@RequestBody BookmarkDTO dto) {
         jksService.deleteBookmark(dto.getUserIdx(), dto.getResIdx());
         return "Bookmark deleted";
+    }
+
+//    controller
+    @GetMapping("/bookmark/{userIdx}")
+    @ResponseBody
+    public List<RestaurantListDTO> getBookmarkedRestaurants(@PathVariable int userIdx) {
+        System.out.println("userIdx = " + userIdx); // 로그 확인용
+        return jksService.getBookmarkedRestaurants(userIdx);
     }
 
 }

@@ -30,4 +30,7 @@ public interface JKSService {
 
     void insertBookmark(int userIdx, int resIdx);
     void deleteBookmark(int userIdx, int resIdx);
+
+//    service
+    List<RestaurantListDTO> getBookmarkedRestaurants(int userIdx);
 }
