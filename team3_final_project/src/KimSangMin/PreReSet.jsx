@@ -188,9 +188,6 @@ function PreReSet() {
   // 가게 정보 가져오기
   useEffect(() => {
     if (!token) return;
-
-
-
     axios.get("http://localhost:8080/pre/owner/getRestaurant", {
       headers: {Authorization: `Bearer ${token}`}
     })
@@ -341,14 +338,17 @@ function PreReSet() {
                    setResImage(files)
                  }}/>
 
-          {resImage.map((file, idx) => (
-            <img
-              key={idx}
-              src={URL.createObjectURL(file)}
-              alt={`preview=${idx}`}
-              style={{width: "100px", height: "100px", objectFit: "cover", borderRadius: "10px"}}
-            />
-          ))}
+          {resImage.map((file, idx) => {
+            const src = typeof file === "string" ? file : URL.createObjectURL(file);
+            return (
+                <img
+                    key={idx}
+                    src={src}
+                    alt={`preview=${idx}`}
+                    style={{width: "100px", height: "100px", objectFit: "cover", borderRadius: "10px"}}
+                />
+            )
+          })}
         </div>
 
         {/*<div className="mb-4">*/}
