@@ -132,6 +132,7 @@ public class SecurityConfig {
                     .requestMatchers("/pre/login").permitAll()  // 로그인은 모두 허용
                     .requestMatchers("/api/history/**","/api/history/restaurant/{resIdx}/**","/api/history/reservation/**").permitAll()
                     .requestMatchers("/menu/**", "/menu/unHidden/**","/menu/unSoldOut/**","/menu/delete/**","/menu/edit/**").permitAll()
+                    .requestMatchers("/pre/review/**").permitAll()
 
 //                    관리자 전용 페이지
                     .requestMatchers("/pre/admin/**").permitAll()

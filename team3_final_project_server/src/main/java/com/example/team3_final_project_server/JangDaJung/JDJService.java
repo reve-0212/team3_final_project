@@ -2,6 +2,8 @@ package com.example.team3_final_project_server.JangDaJung;
 
 import com.example.team3_final_project_server.dto.MenuDTO;
 import com.example.team3_final_project_server.dto.ReservationHistoryDTO;
+import com.example.team3_final_project_server.dto.ReviewDTO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -59,4 +61,16 @@ public interface JDJService {
 
 //    메뉴 삭제
     void deleteMenu(int menuIdx);
+
+    //    ----리뷰
+//    리뷰 불러오기
+    List<ReviewDTO> getReviewListByResIdx(int resIdx);
+
+    Map<String, Object> getReviewChByResIdx(@Param("resIdx") int resIdx);
+
+//    가게 이름
+    Map<String, Object> getStoreInfo(int resIdx);
+
+    //    답글 작성 수정
+//    int updatePreReply(ReviewDTO dto);
 }
