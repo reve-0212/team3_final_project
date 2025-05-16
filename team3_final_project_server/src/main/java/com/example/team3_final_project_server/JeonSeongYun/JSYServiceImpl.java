@@ -8,6 +8,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -105,6 +106,7 @@ public class JSYServiceImpl implements JSYService {
   }
 
   @Override
+  @Transactional
   public boolean updateReservationStatus(ReservationDTO dto) {
     String status = dto.getStatus();
     String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
@@ -119,9 +121,15 @@ public class JSYServiceImpl implements JSYService {
       dto.setRsvComeDatetime(null);
       dto.setRsvCancelDatetime(null);
     }
-    System.out.println("서비스에서 나온 cancel 값: " + dto.getRsvCancelDatetime());
-    System.out.println("서비스에서 나온 come 값: " + dto.getRsvComeDatetime());
-    return jsyMapper.updateReservationStatus(dto) > 0;
+
+    boolean updateResStatus = jsyMapper.updateReservationStatus(dto) > 0;
+    boolean updateResStatusHistory = jsyMapper.updateReservationStatusHistory(dto) > 0;
+
+    if (!updateResStatus || !updateResStatusHistory) {
+      throw new RuntimeException("예약 상태 또는 히스토리 업데이트 실패"); // 트랜잭션 롤백 유도
+    }
+
+    return true;
   }
 
   @Override
@@ -132,5 +140,10 @@ public class JSYServiceImpl implements JSYService {
   @Override
   public List<ReservationDTO> getPastReservations(String resIdx) {
     return jsyMapper.getPastReservations(resIdx);
+  }
+
+  @Override
+  public List<OwnerDTO> getuserListAndImg(int userIdx) {
+    return jsyMapper.getuserListAndImg(userIdx);
   }
 }

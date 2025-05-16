@@ -1,9 +1,6 @@
 package com.example.team3_final_project_server.JeonSeongYun;
 
-import com.example.team3_final_project_server.dto.ReservationDTO;
-import com.example.team3_final_project_server.dto.RestaurantListDTO;
-import com.example.team3_final_project_server.dto.SeatDTO;
-import com.example.team3_final_project_server.dto.UserDTO;
+import com.example.team3_final_project_server.dto.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -32,4 +29,8 @@ public interface JSYMapper {
     List<ReservationDTO> findAllByResIdx(String resIdx);
 
     List<ReservationDTO> getPastReservations(String resIdx);
+
+    int updateReservationStatusHistory(ReservationDTO dto);
+
+    List<OwnerDTO> getuserListAndImg(int userIdx);
 }

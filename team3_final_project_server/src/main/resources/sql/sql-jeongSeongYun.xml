@@ -101,11 +101,11 @@
     <!--    좌석 불러오기 -->
     <select id="TodayLoadSeat" parameterType="String" resultType="com.example.team3_final_project_server.dto.SeatDTO">
         SELECT
-        seat_id As seatId, res_idx AS resIdx, type, name, x, y, image, is_selected As isSelected
+            seat_id As seatId, res_idx AS resIdx, type, name, x, y, image, is_selected As isSelected, res_seat_id
         FROM
-        seat_table
+            seat_table
         WHERE
-        res_idx = #{resIdx}
+            res_idx = #{resIdx}
     </select>
 
 
@@ -135,6 +135,26 @@
         WHERE reservation_idx = #{reservationIdx}
     </update>
 
+    <update id="updateReservationStatusHistory" parameterType="com.example.team3_final_project_server.dto.ReservationDTO">
+        UPDATE reservation_history
+        <set>
+            <if test="rsvComeDatetime != null">
+                checkout_date = #{rsvComeDatetime},
+            </if>
+            <if test="rsvComeDatetime == null">
+                checkout_date = NULL,
+            </if>
+
+            <if test="rsvCancelDatetime != null">
+                cancel_date = #{rsvCancelDatetime},
+            </if>
+            <if test="rsvCancelDatetime == null">
+                cancel_date = NULL,
+            </if>
+        </set>
+            WHERE reservation_idx = #{reservationIdx} AND res_idx = #{resIdx}
+    </update>
+
     <select id="findAllByResIdx" parameterType="String" resultType="com.example.team3_final_project_server.dto.ReservationDTO">
         SELECT
         a.reservation_idx,
@@ -150,17 +170,14 @@
         AND r.res_idx = a.res_idx
         AND r.rsv_come_datetime IS NOT NULL
         ) AS visit_count
-        FROM
-        reservation a
-        JOIN
-        selected_seat ss ON a.reservation_idx = ss.reservation_idx
-        JOIN
-        user c ON a.user_idx = c.user_idx
+        FROM reservation a
+        JOIN selected_seat ss ON a.reservation_idx = ss.reservation_idx
+        JOIN user c ON a.user_idx = c.user_idx
         WHERE
-        a.rsv_come_datetime IS NULL
-        AND a.rsv_cancel_datetime IS NULL
-        AND a.res_idx = #{resIdx}
-        AND CURDATE() >= a.rsv_time
+            a.rsv_come_datetime IS NULL
+            AND a.rsv_cancel_datetime IS NULL
+            AND a.res_idx = #{resIdx}
+            AND CONCAT(CURDATE(), ' 23:59:59') >= CONCAT(a.rsv_date, ' ', a.rsv_time)
         GROUP BY
         a.reservation_idx, c.user_nick, a.rsv_people, c.user_call, a.rsv_date, a.rsv_time, a.user_idx, a.res_idx
         ORDER BY
@@ -209,5 +226,22 @@
         r.rsv_date DESC,
         r.rsv_time DESC;
     </select>
+
+    <select id="getuserListAndImg" parameterType="int" resultType="com.example.team3_final_project_server.dto.OwnerDTO">
+        SELECT
+            a.user_nick,
+            a.user_call,
+            a.user_email,
+            a.bs_name,
+            a.bs_number,
+            b.res_image1
+        FROM
+            user a
+        LEFT JOIN
+            restaurant b ON a.user_idx = b.user_idx
+        WHERE
+            a.user_idx = #{userIdx}
+    </select>
+
 
 </mapper>

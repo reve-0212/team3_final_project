@@ -137,7 +137,19 @@ function ReBanner() {
                         <span className="text-white" style={{ marginRight: '10px' }}>
                             남은 시간: {remainingTime}
                         </span>
-                        <button type={"button"} onClick={handleLogout} className={"flex-end"}>로그아웃</button>
+                        <button
+                            type="button"
+                            onClick={handleLogout}
+                            className="btn btn-outline-light btn-sm px-3 py-2 rounded-pill"
+                            style={{
+                                fontWeight: "bold",
+                                borderWidth: "2px",
+                                boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
+                                transition: "all 0.3s ease-in-out"
+                            }}
+                        >
+                            로그아웃
+                        </button>
                     </div>
                 </nav>
             </div>
@@ -162,7 +174,7 @@ function ReBanner() {
                     <br/>
 
                     <li className="nav-item">
-                        <a className="nav-link text-black" href="/pre/update">개인정보 수정</a>
+                        <a className="nav-link text-black" href="/pre/update">개인정보</a>
                     </li>
 
                     <li className="nav-item">

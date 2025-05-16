@@ -218,6 +218,7 @@ function PastDateReservation() {
           paddingTop: "8rem",
           paddingLeft: "1rem",
           width: "calc(100% - 200px)",
+          maxWidth: "165vh",
           minHeight: "100vh",
         }} className={'container'}>
           <div>
@@ -336,7 +337,7 @@ function PastDateReservation() {
                 <thead className={'thead-light'}>
                 <tr>
                   <th>상태</th>
-                  <th>이용일</th>
+                  <th>예약일</th>
                   <th>예약자</th>
                   <th>인원</th>
                   <th>전화번호</th>

@@ -121,10 +121,14 @@ public class JSYController {
 
   @PutMapping("/reservation/status")
   public ResponseEntity<String> updateStatus(@RequestBody ReservationDTO dto) {
-    System.out.println(dto);
-    boolean success = jsyService.updateReservationStatus(dto);
-    return success ? ResponseEntity.ok("상태 업데이트 완료") :
-            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 실패");
+    try{
+      boolean success = jsyService.updateReservationStatus(dto);
+      return success
+              ? ResponseEntity.ok("상태 업데이트 완료")
+              : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 실패");
+    }catch (Exception e){
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 실패");
+    }
   }
 
   // 전체 resIdx 기준으로 예약목록리스트 들고오기
@@ -139,6 +143,21 @@ public class JSYController {
   public ResponseEntity<List<ReservationDTO>> getPastReservations(@PathVariable String resIdx) {
     List<ReservationDTO> list = jsyService.getPastReservations(resIdx);
     return ResponseEntity.ok(list);
+  }
+
+  @GetMapping("/owner/Profile")
+  public ResponseEntity<?> getOwnerProfile(@RequestHeader("Authorization") String authorizationHeader) {
+    // Authorization 헤더에서 토큰 추출
+    String token = authorizationHeader.replace("Bearer ", "");
+
+    // 토큰에서 인증 정보 얻기
+    Authentication authentication = jwtTokenProvider.getAuthentication(token);
+
+    UserDTO userDTO = (UserDTO) authentication.getPrincipal();
+    int userIdx = userDTO.getUserIdx();
+
+    List<OwnerDTO> userList = jsyService.getuserListAndImg(userIdx);
+    return ResponseEntity.ok(userList);
   }
 
 }

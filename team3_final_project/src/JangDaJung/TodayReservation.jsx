@@ -3,6 +3,7 @@ import './css/TodayReservation.css'
 import ReBanner from "../KimSangMin/ReBanner.jsx";
 import {useParams} from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 function TodayReservation() {
     const {resIdx} = useParams();  // URL 파라미터에서 resIdx 값을 가져옵니다.
@@ -11,31 +12,71 @@ function TodayReservation() {
     const [reservationList, setReservationList] = useState([]);
     const [activeTab, setActiveTab] = useState('all');
 
+
+
+
+
     const handleStatusChange = (id, newStatus) => {
         const action = newStatus === '완료' ? '예약을 완료 처리' : '예약을 취소';
-        const confirmed = window.confirm(`정말 ${action}하시겠습니까?`);
 
-        if (!confirmed) return;
+        Swal.fire({
+            title: `${action}하시겠습니까?`,
+            text: "이 작업은 되돌릴 수 없습니다.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '예',
+            cancelButtonText: '아니오'
+        }).then((result) =>{
+            if (result.isConfirmed) {
+                axios.put(`http://localhost:8080/pre/reservation/status`, {
+                    reservationIdx: id,
+                    status: newStatus,
+                    resIdx : resIdx,
+                }, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`
+                    }
+                })
+                    .then((res) => {
+                        console.log("상태 업데이트 성공:", res.data);
 
-        axios.put(`http://localhost:8080/pre/reservation/status`, {
-            reservationIdx: id,
-            status: newStatus
-        }, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`
+                        if (seatSelect.length > 0) {
+                            hSeat(seatSelect[0]); // 현재 선택된 좌석 기준으로 예약목록 갱신
+                        }else if (activeTab === 'all') {
+                            axios.get(`http://localhost:8080/pre/reservations/all`, {
+                                params: { resIdx: resIdx },
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`
+                                }
+                            }).then(res => {
+                                setReservationList(res.data);
+                            }).catch(err => {
+                                console.error("전체 예약 불러오기 실패:", err);
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: '알림',
+                                    html: `<strong style="color:crimson;"><b>상태 처리 에러</b></strong><br/>
+                                    <span>관리자에게 문의 주세요.</span>`,
+                                    confirmButtonText: '확인'
+                                })
+                            });
+                        }
+                    })
+                    .catch(() => {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: '알림',
+                            html: `<strong style="color:crimson;"><b>상태 처리 에러</b></strong><br/>
+                                    <span>관리자에게 문의 주세요.</span>`,
+                            confirmButtonText: '확인'
+                        })
+                    });
             }
-        })
-            .then((res) => {
-                console.log("상태 업데이트 성공:", res.data);
-
-                if (seatSelect.length > 0) {
-                    hSeat(seatSelect[0]); // 현재 선택된 좌석 기준으로 예약목록 갱신
-                }
-            })
-            .catch((err) => {
-                console.error("상태 업데이트 실패:", err);
-            });
+        });
     };
 
 
@@ -81,9 +122,7 @@ function TodayReservation() {
                     console.log(response.data);
                     const { success, data } = response.data;
                     if (success && Array.isArray(data)) {
-                        let filteredSeats = data;
-
-                        setSeats(filteredSeats);
+                        setSeats(data);
                     }
                 })
                 .catch((error) => {
@@ -109,6 +148,107 @@ function TodayReservation() {
         }
     }, [resIdx]);
 
+
+    const [currentPage, setCurrentPage] = useState(1); // 페이지 네이션
+    const [itemsPerPage] = useState(5); // 페이지 보여지는 갯수
+
+    const totalPages = Math.ceil(reservationList.length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const paginatedData = reservationList.slice(startIndex, endIndex);
+
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, []);
+
+    const renderPagination = () => {
+        if (totalPages < 1) return null;
+
+        const buttons = [];
+
+        const goToFirst = () => setCurrentPage(1);
+        const goToLast = () => setCurrentPage(totalPages);
+        const goToPrev = () => setCurrentPage(prev => Math.max(prev - 1, 1));
+        const goToNext = () => setCurrentPage(prev => Math.min(prev + 1, totalPages));
+
+        // 첫 페이지 버튼
+        buttons.push(
+            <button
+                key="first"
+                onClick={goToFirst}
+                className="btn btn-sm btn-outline-secondary mx-1"
+                title="첫 페이지"
+            >
+                &laquo;
+            </button>
+        );
+
+        // 이전 버튼
+        buttons.push(
+            <button
+                key="prev"
+                onClick={goToPrev}
+                className="btn btn-sm btn-outline-secondary mx-1"
+                title="이전 페이지"
+            >
+                &lsaquo;
+            </button>
+        );
+
+        // 숫자 버튼 (최대 5개)
+        const maxButtons = 5;
+        let startPage = Math.max(currentPage - Math.floor(maxButtons / 2), 1);
+        let endPage = startPage + maxButtons - 1;
+        if (endPage > totalPages) {
+            endPage = totalPages;
+            startPage = Math.max(endPage - maxButtons + 1, 1);
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
+            buttons.push(
+                <button
+                    key={i}
+                    onClick={() => setCurrentPage(i)}
+                    className={`btn btn-sm mx-1 ${currentPage === i ? 'btn-primary' : 'btn-outline-primary'}`}
+                    style={{
+                        borderRadius: '20px',
+                        minWidth: '38px',
+                        fontWeight: currentPage === i ? 'bold' : 'normal',
+                    }}
+                >
+                    {i}
+                </button>
+            );
+        }
+
+        // 다음 버튼
+        buttons.push(
+            <button
+                key="next"
+                onClick={goToNext}
+                className="btn btn-sm btn-outline-secondary mx-1"
+                title="다음 페이지"
+            >
+                &rsaquo;
+            </button>
+        );
+
+        // 마지막 페이지 버튼
+        buttons.push(
+            <button
+                key="last"
+                onClick={goToLast}
+                className="btn btn-sm btn-outline-secondary mx-1"
+                title="마지막 페이지"
+            >
+                &raquo;
+            </button>
+        );
+
+        return buttons;
+    };
+
     return (
         <>
             <ReBanner />
@@ -117,7 +257,9 @@ function TodayReservation() {
                 paddingTop: "8rem",
                 paddingLeft: "1rem",
                 width: "calc(100% - 200px)",
-            }} className={'container'}>
+                maxWidth: "165vh",
+                minHeight: "100vh",
+                }} className={'container'}>
                 <div>
                     <h2 className={'today-waiting-title mb-4'}>오늘의 예약</h2>
                     <hr/>
@@ -146,7 +288,7 @@ function TodayReservation() {
                         </h2>
                     </div>
 
-
+                    {/* 좌석 div */}
                     <div className={'d-flex justify-content-center mb-4'}>
                         {Array.isArray(seats) && seats.length > 0 ? (
                             <div
@@ -157,7 +299,9 @@ function TodayReservation() {
                                     maxWidth: "900px",
                                     height: "400px",
                                     border: "1px solid #ddd",
-                                    backgroundColor: "lightgray",
+                                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.15)",
+                                    borderRadius: "10px",
+                                    // backgroundColor: "#fffbe6", // 연한 노란색 배경
                                 }}
                             >
                                 {seats.map((seat, index) => {
@@ -185,6 +329,9 @@ function TodayReservation() {
                                                 alignItems: "center",
                                                 justifyContent: "flex-start",
                                                 cursor: isUnavailable ? "not-allowed" : "pointer",
+                                                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.15)",
+                                                borderRadius: "10px",
+                                                padding: "6px",
                                             }}
                                             onClick={!isUnavailable ? () => hSeat(seat.seatId) : null}
                                         >
@@ -214,7 +361,7 @@ function TodayReservation() {
                                                         textAlign: "center",
                                                     }}
                                                 >
-                                                    {seat.seatId}
+                                                    {seat.resSeatId === 0 ? index + 1 : seat.resSeatId}
                                                 </div>
                                             )}
                                         </div>
@@ -273,7 +420,7 @@ function TodayReservation() {
                                     <td colSpan={8}>등록된 웨이팅이 없습니다.</td>
                                 </tr>
                             ) : (
-                                reservationList.map((item) => {
+                                paginatedData.map((item) => {
                                     // 날짜 비교를 위한 코드
                                     const reservationDateTime = new Date(item.rsvTime); // 문자열을 Date 객체로
                                     const today = new Date();
@@ -318,6 +465,11 @@ function TodayReservation() {
                             )}
                             </tbody>
                         </table>
+                        {/* 페이지네이션 */}
+                        <div className="d-flex justify-content-center my-4">
+                            {renderPagination()}
+                        </div>
+
                     </div>
                 </div>
             </div>

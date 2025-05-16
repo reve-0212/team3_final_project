@@ -5,10 +5,18 @@ import lombok.Data;
 
 @Data
 public class OwnerDTO {
-    private String ownerId;   // 사장님 아이디
-    private String ownerPass;  // 사장님 비밀번호
-    private String ownerName; // 대표자명
-    private String ownerNumber; // 대표자 번호
-    private String bsName; // 사업장 이름
-    private String bsNumber;  // 사업장 번호
+    private int userIdx;
+    private String userId;
+    private String userPass;
+    private String userNick;
+    private String userGender;
+    private int userAge;
+    private String userCall;
+    private String userEmail;
+    private String role;
+
+    //  사장전용
+    private String bsName;
+    private String bsNumber;
+    private String resImage1;
 }
