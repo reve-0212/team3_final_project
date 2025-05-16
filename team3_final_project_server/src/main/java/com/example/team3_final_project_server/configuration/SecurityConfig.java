@@ -128,6 +128,16 @@ public class SecurityConfig {
                     .requestMatchers(GET, "/pre/owner/getRestaurant").hasRole("OWNER")
                     .requestMatchers(PUT,"/pre/owner/seats/update").hasRole("OWNER")
                     .requestMatchers(DELETE,"/pre/owner/seats/delete").hasRole("OWNER")
+                    .requestMatchers(GET, "/pre/owner/getCate").hasRole("OWNER")
+                    .requestMatchers(PUT,"/pre/owner/updateCate").hasRole("OWNER")
+                    .requestMatchers("/pre/owner/saveTime").hasRole("OWNER")
+                    .requestMatchers(PUT,"/pre/owner/updateTime").hasRole("OWNER")
+                    .requestMatchers(GET,"/pre/owner/getTime").hasRole("OWNER")
+                    .requestMatchers(GET,"/pre/owner/seeTime").hasRole("OWNER")
+
+
+
+
 
                     .requestMatchers("/pre/login").permitAll()  // 로그인은 모두 허용
                     .requestMatchers("/api/history/**","/api/history/restaurant/{resIdx}/**","/api/history/reservation/**").permitAll()
