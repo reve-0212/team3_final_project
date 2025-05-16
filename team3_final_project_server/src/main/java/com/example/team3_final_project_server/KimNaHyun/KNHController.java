@@ -114,6 +114,33 @@ public class KNHController {
     public List<ReviewDTO> getReviews(@PathVariable("userIdx") int userIdx) throws Exception {
         return knhService.getReviews(userIdx);
     }
+
+
+    @GetMapping("/review/detail/{reviewIdx}")
+    public ReviewDTO getReviewDetail(@PathVariable("reviewIdx") int reviewIdx) throws Exception {
+        return knhService.getReviewDetail(reviewIdx);
+    }
+
+    @PutMapping("/review/{reviewIdx}")
+    public ResponseEntity<?> updateReview(@PathVariable int reviewIdx, @RequestBody ReviewDTO reviewDTO) {
+        try {
+            reviewDTO.setReviewIdx(reviewIdx);
+            knhService.updateReview(reviewDTO);
+            return ResponseEntity.ok().body("리뷰가 수정되었습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("수정 실패: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/review/{reviewIdx}")
+    public ResponseEntity<?> deleteReview(@PathVariable int reviewIdx) {
+        try {
+            knhService.deleteReview(reviewIdx);
+            return ResponseEntity.ok().body("리뷰가 삭제되었습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("삭제 실패: " + e.getMessage());
+        }
+    }
 }
 
 

@@ -25,4 +25,10 @@ public interface KNHMapper {
     void insertReview(ReviewDTO reviewDTO);
 
     List<ReviewDTO> getReviews(int userIdx) throws Exception;
+
+  ReviewDTO getReviewDetail(int reviewIdx);
+
+  void updateReview(ReviewDTO reviewDTO);
+
+  void deleteReview(int reviewIdx);
 }

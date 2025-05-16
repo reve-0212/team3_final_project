@@ -55,4 +55,21 @@ public class KNHServiceImpl implements KNHService {
   public List<ReviewDTO> getReviews(int userIdx) throws Exception {
     return knhMapper.getReviews(userIdx);
   }
+
+
+
+  @Override
+  public ReviewDTO getReviewDetail(int reviewIdx) {
+    return knhMapper.getReviewDetail(reviewIdx);
+  }
+
+  @Override
+  public void updateReview(ReviewDTO reviewDTO)  {
+    knhMapper.updateReview(reviewDTO);
+  }
+
+  @Override
+  public void deleteReview(int reviewIdx)  {
+    knhMapper.deleteReview(reviewIdx);
+  }
 }
