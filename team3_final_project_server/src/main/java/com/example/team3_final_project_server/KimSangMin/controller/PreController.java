@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
@@ -233,8 +234,7 @@ public class PreController {
       boolean success = preService.updateCate(category);
       if (success) {
         return ResponseEntity.ok(new PreResponse(true, "수정 성공", category));
-      }
-      else{
+      } else {
         return ResponseEntity.badRequest().body(new PreResponse(false, "수정 실패", null));
       }
     } catch (Exception e) {
@@ -245,7 +245,7 @@ public class PreController {
   }
 
 
-//  가게 카테고리 불러오기
+  //  가게 카테고리 불러오기
   @GetMapping("/pre/owner/getCate")
   public ResponseEntity<PreResponse> getCate(@RequestHeader("Authorization") String authorization) {
     try {
@@ -281,10 +281,8 @@ public class PreController {
   }
 
 
-
 //  가게 카테고리 수정하기
 //  @PutMapping("/pre/owner/update")
-
 
 
   // 가게 정보 불러오기
@@ -303,8 +301,7 @@ public class PreController {
         PreResponse response = new PreResponse(false, "가게 정보 조회 실패", null);
         return ResponseEntity.badRequest().body(response);
       }
-    }
-    catch (Exception e){
+    } catch (Exception e) {
       PreResponse response = new PreResponse(false, "토큰이 유효하지 않거나 인증 실패", null);
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
@@ -350,125 +347,214 @@ public class PreController {
 
   // 가게 시간 지정하기
   @PostMapping("/pre/owner/saveTime")
-  public ResponseEntity<PreResponse> setTime (@RequestBody List<TimeDTO> times,
-  @RequestHeader("Authorization") String authorization) {
-  try{
+  public ResponseEntity<PreResponse> setTime(@RequestBody List<TimeDTO> times,
+                                             @RequestHeader("Authorization") String authorization) {
+    try {
+      ResponseDTO jwtInfo = preService.tokenCheck(authorization);
+      int userIdx = jwtInfo.getUserIdx();
+
+      Integer resIdx = preService.findResIdx(userIdx);
+      if (resIdx == null) {
+        return ResponseEntity.badRequest().body(new PreResponse(false, "<저장된 정보가 없습니다.>", null));
+      }
+      boolean success = preService.setTime(resIdx, times);
+      if (success) {
+        PreResponse response = new PreResponse(true, "정보 저장 성공", times);
+        return ResponseEntity.ok(response);
+      } else {
+        PreResponse response = new PreResponse(false, "정보 저장 실패", null);
+        return ResponseEntity.badRequest().body(response);
+      }
+    } catch (Exception e) {
+      PreResponse response = new PreResponse(false, "토큰이 유효하지 않거나 인증 실패", null);
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
+  }
+
+  //  가게 운영시간 수정하기
+  @PutMapping("/pre/owner/updateTime")
+  public ResponseEntity<PreResponse> updateTime(@RequestBody List<TimeDTO> times,
+                                                @RequestHeader("Authorization") String authorization) {
+    try {
+      ResponseDTO jwtInfo = preService.tokenCheck(authorization);
+      int userIdx = jwtInfo.getUserIdx();
+
+      Integer resIdx = preService.findResIdx(userIdx);
+      if (resIdx == null) {
+        return ResponseEntity.badRequest().body(new PreResponse(false, "<저장된 정보가 없습니다.>", null));
+      }
+
+      boolean success = preService.updateTime(resIdx, times);
+
+      if (success) {
+        return ResponseEntity.ok(new PreResponse(true, "정보 수정 성공", times));
+      } else {
+        return ResponseEntity.badRequest().body(new PreResponse(false, "정보 수정 실패", null));
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+              .body(new PreResponse(false, "토큰이 유효하지 않거나 인증 실패", null));
+    }
+  }
+
+  // 가게 운영시간 불러오기
+  @GetMapping("/pre/owner/getTime")
+  public ResponseEntity<PreResponse> getTime(@RequestHeader("Authorization") String authorization) {
+    try {
+      ResponseDTO jwtInfo = preService.tokenCheck(authorization);
+      int userIdx = jwtInfo.getUserIdx();
+      Integer resIdx = preService.findResIdx(userIdx);
+      if (resIdx == null) {
+        return ResponseEntity.badRequest().body(new PreResponse(false, "<저장된 정보가 없습니다.>", null));
+      }
+
+      List<TimeDTO> time = preService.getTimeByResIdx(resIdx);
+
+      if (time != null) {
+        return ResponseEntity.ok(new PreResponse(true, "정보 불러오가 성공", time));
+      } else {
+        return ResponseEntity.badRequest().body(new PreResponse(false, "정보 불러오기 실패", null));
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+              .body(new PreResponse(false, "토큰이 유효하지 않거나 인증 실패", null));
+    }
+  }
+
+  //  가게 운영시간 볼 수 있도록하기.
+  @GetMapping("/pre/owner/seeTime")
+  public ResponseEntity<PreResponse> seeTime(@RequestHeader("Authorization") String authorization) {
+    try {
+      ResponseDTO jwtInfo = preService.tokenCheck(authorization);
+      int userIdx = jwtInfo.getUserIdx();
+      Integer resIdx = preService.findResIdx(userIdx);
+      if (resIdx == null) {
+        return ResponseEntity.badRequest().body(new PreResponse(false, "<저장된 정보가 없습니다.>", null));
+      }
+
+      List<TimeDTO> time = preService.getTimeByResIdx(resIdx);
+
+      if (time != null) {
+        return ResponseEntity.ok(new PreResponse(true, "정보 불러오가 성공", time));
+      } else {
+        return ResponseEntity.badRequest().body(new PreResponse(false, "정보 불러오기 실패", null));
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+              .body(new PreResponse(false, "토큰이 유효하지 않거나 인증 실패", null));
+    }
+  }
+
+  // 편의시설 목록 가져오기
+  @GetMapping("/pre/owner/funcOpt")
+  public ResponseEntity<PreResponse> funcOpt(@RequestHeader("Authorization") String authorization) {
+    try {
+      ResponseDTO jwtInfo = preService.tokenCheck(authorization);
+      int userIdx = jwtInfo.getUserIdx();
+
+      List<ConvenientDTO> func = preService.getFunc();
+      return ResponseEntity.ok(new PreResponse(true, "편의 시설 목록 조회 성공", func));
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+              .body(new PreResponse(false, "토큰이 유효하지 않거나 인증 실패", null));
+    }
+  }
+
+
+  //  사장 편의시설 저장하기
+  @PostMapping("/pre/owner/saveFunc")
+  public ResponseEntity<PreResponse> saveFunc(
+          @RequestHeader("Authorization") String authorization,
+          @RequestBody Map<String, List<Integer>> body) {
+    try {
+      ResponseDTO jwtInfo = preService.tokenCheck(authorization);
+      int userIdx = jwtInfo.getUserIdx();
+
+      Integer resIdx = preService.findResIdx(userIdx);
+      if (resIdx == null) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new PreResponse(false, "가게 정보가 존재하지 않습니다.", null));
+      }
+
+      // 이미 저장된 편의시설이 있으면 저장 불가 처리(수정은 별도 API에서)
+      int count = preService.haveFunc(resIdx);
+      if (count > 0) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new PreResponse(false, "이미 편의시설이 저장되어 있습니다. 수정 기능을 사용하세요.", null));
+      }
+
+      List<Integer> cvIds = body.get("function");
+      preService.saveFunc(resIdx, cvIds);
+
+      return ResponseEntity.ok(new PreResponse(true, "편의시설 저장 성공", null));
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body(new PreResponse(false, "편의시설 저장 실패", null));
+    }
+  }
+
+
+//  편의시설 정보 수정하기
+@PutMapping("/pre/owner/updateFunc")
+public ResponseEntity<PreResponse> updateFunc(
+        @RequestHeader("Authorization") String authorization,
+        @RequestBody Map<String, List<Integer>> body) {
+  try {
     ResponseDTO jwtInfo = preService.tokenCheck(authorization);
     int userIdx = jwtInfo.getUserIdx();
 
+    // userIdx로 resIdx (가게 id) 얻는 로직
     Integer resIdx = preService.findResIdx(userIdx);
     if (resIdx == null) {
-      return ResponseEntity.badRequest().body(new PreResponse(false, "<저장된 정보가 없습니다.>", null));
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+              .body(new PreResponse(false, "가게 정보가 존재하지 않습니다.", null));
     }
-boolean success = preService.setTime(resIdx,times);
-    if (success) {
-      PreResponse response = new PreResponse(true, "정보 저장 성공", times);
-      return ResponseEntity.ok(response);
-    } else {
-      PreResponse response = new PreResponse(false, "정보 저장 실패", null);
-      return ResponseEntity.badRequest().body(response);
-    }
-  } catch (Exception e) {
-    PreResponse response = new PreResponse(false, "토큰이 유효하지 않거나 인증 실패", null);
-    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
-  }
-  }
 
-//  가게 운영시간 수정하기
-@PutMapping("/pre/owner/updateTime")
-public ResponseEntity<PreResponse> updateTime(@RequestBody List<TimeDTO> times,
-                                              @RequestHeader("Authorization") String authorization) {
+    List<Integer> cvIds = body.get("function");
+
+    // 기존 편의시설 없으면 수정 불가 처리
+    int count = preService.haveFunc(resIdx);
+    if (count == 0) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+              .body(new PreResponse(false, "저장된 편의시설이 없어 수정할 수 없습니다.", null));
+    }
+
+    preService.updateFunc(resIdx, cvIds);
+
+    return ResponseEntity.ok(new PreResponse(true, "편의시설 수정 성공", null));
+  } catch (Exception e) {
+    e.printStackTrace();
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(new PreResponse(false, "편의시설 수정 실패", null));
+  }
+}
+
+// 사장이 저장한 편의시설정보 불러오기
+@GetMapping("/pre/owner/getFunc")
+public ResponseEntity<PreResponse> getFunc(@RequestHeader("Authorization") String authorization) {
   try {
     ResponseDTO jwtInfo = preService.tokenCheck(authorization);
     int userIdx = jwtInfo.getUserIdx();
 
     Integer resIdx = preService.findResIdx(userIdx);
     if (resIdx == null) {
-      return ResponseEntity.badRequest().body(new PreResponse(false, "<저장된 정보가 없습니다.>", null));
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+              .body(new PreResponse(false, "가게 정보가 존재하지 않습니다.", null));
     }
 
-    boolean success = preService.updateTime(resIdx, times);
+    List<ConvenientDTO> savedFunc = preService.getSaveFunc(resIdx);
 
-    if (success) {
-      return ResponseEntity.ok(new PreResponse(true, "정보 수정 성공", times));
-    } else {
-      return ResponseEntity.badRequest().body(new PreResponse(false, "정보 수정 실패", null));
-    }
+    return ResponseEntity.ok(new PreResponse(true, "저장된 편의시설 조회 성공", savedFunc));
   } catch (Exception e) {
     e.printStackTrace();
-    return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-            .body(new PreResponse(false, "토큰이 유효하지 않거나 인증 실패", null));
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(new PreResponse(false, "저장된 편의시설 조회 실패", null));
   }
 }
 
-// 가게 운영시간 불러오기
-  @GetMapping("/pre/owner/getTime")
-  public ResponseEntity<PreResponse> getTime(@RequestHeader("Authorization") String authorization) {
-    try{
-      ResponseDTO jwtInfo = preService.tokenCheck(authorization);
-      int userIdx = jwtInfo.getUserIdx();
-      Integer resIdx = preService.findResIdx(userIdx);
-      if (resIdx == null) {
-        return ResponseEntity.badRequest().body(new PreResponse(false, "<저장된 정보가 없습니다.>", null));
-      }
-
-      List<TimeDTO> time = preService.getTimeByResIdx(resIdx);
-
-      if (time != null) {
-        return ResponseEntity.ok(new PreResponse(true, "정보 불러오가 성공", time));
-      } else {
-        return ResponseEntity.badRequest().body(new PreResponse(false, "정보 불러오기 실패", null));
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-              .body(new PreResponse(false, "토큰이 유효하지 않거나 인증 실패", null));
-    }
-  }
-
-//  가게 운영시간 볼 수 있도록하기.
-  @GetMapping("/pre/owner/seeTime")
-  public ResponseEntity<PreResponse> seeTime(@RequestHeader("Authorization") String authorization) {
-    try{
-      ResponseDTO jwtInfo = preService.tokenCheck(authorization);
-      int userIdx = jwtInfo.getUserIdx();
-      Integer resIdx = preService.findResIdx(userIdx);
-      if (resIdx == null) {
-        return ResponseEntity.badRequest().body(new PreResponse(false, "<저장된 정보가 없습니다.>", null));
-      }
-
-      List<TimeDTO> time = preService.getTimeByResIdx(resIdx);
-
-      if (time != null) {
-        return ResponseEntity.ok(new PreResponse(true, "정보 불러오가 성공", time));
-      } else {
-        return ResponseEntity.badRequest().body(new PreResponse(false, "정보 불러오기 실패", null));
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-              .body(new PreResponse(false, "토큰이 유효하지 않거나 인증 실패", null));
-    }
-  }
-
-// 편의시설 목록 가져오기
-  @GetMapping("/pre/owner/funcOpt")
-  public ResponseEntity<PreResponse> funcOpt(@RequestHeader("Authorization") String authorization) {
-    try{
-      ResponseDTO jwtInfo = preService.tokenCheck(authorization);
-      int userIdx = jwtInfo.getUserIdx();
-
-      List<ConvenientDTO> func = preService.getFunc();
-      return ResponseEntity.ok(new PreResponse(true, "편의 시설 목록 조회 성공", func));
-    }
-    catch (Exception e) {
-      e.printStackTrace();
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-              .body(new PreResponse(false, "토큰이 유효하지 않거나 인증 실패", null));
-    }
-    }
-  }
-
-//  사장 편의시설 저장하기
-//@PostMapping("/pre/owner/saveFunc")
-//public ResponseEntity<PreResponse> saveFunc
+}

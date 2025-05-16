@@ -61,4 +61,12 @@ public interface PreService {
 
 //  db에 저장된 편의시설 가져오기.
   List<ConvenientDTO> getFunc();
+
+  void saveFunc(Integer resIdx, List<Integer> cvIds);
+  
+  int haveFunc(Integer resIdx);
+
+  void updateFunc(Integer resIdx, List<Integer> cvIds);
+
+  List<ConvenientDTO> getSaveFunc(Integer resIdx);
 }
