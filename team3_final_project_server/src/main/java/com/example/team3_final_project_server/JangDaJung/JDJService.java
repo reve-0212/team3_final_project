@@ -2,12 +2,17 @@ package com.example.team3_final_project_server.JangDaJung;
 
 import com.example.team3_final_project_server.dto.MenuDTO;
 import com.example.team3_final_project_server.dto.ReservationHistoryDTO;
+import com.example.team3_final_project_server.dto.ReviewDTO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public interface JDJService {
 
+//  resIdx 불러오기
+    Optional<Integer> findResIdxByUserIdx(int userIdx);
 //    ---- 통계 페이지
 
     void saveHistories(List<ReservationHistoryDTO> historyList);
@@ -23,6 +28,11 @@ public interface JDJService {
     //    시간대별 예약팀 수
     List<Map<String, Object>> getTeamCountByHour(String startDate, String endDate, int resIdx);
 
+    //    가게 영업시간 불러오기(통계페ㅐ이지에서 쓰려고 했던거)
+//    Map<String, String> getResTime(int resIdx);
+
+//    가게 예약 시간대 불러오기(메인페이지
+    List<String> getResTime(String resIdx);
 
 //    ---- 메뉴 페이지
 
@@ -51,4 +61,16 @@ public interface JDJService {
 
 //    메뉴 삭제
     void deleteMenu(int menuIdx);
+
+    //    ----리뷰
+//    리뷰 불러오기
+    List<ReviewDTO> getReviewListByResIdx(int resIdx);
+
+    Map<String, Object> getReviewChByResIdx(@Param("resIdx") int resIdx);
+
+//    가게 이름
+    Map<String, Object> getStoreInfo(int resIdx);
+
+    //    답글 작성 수정
+//    int updatePreReply(ReviewDTO dto);
 }

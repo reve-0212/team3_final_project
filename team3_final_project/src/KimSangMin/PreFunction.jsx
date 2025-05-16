@@ -5,45 +5,97 @@ import SeatManager from "./Seat/SeatManager.jsx";
 
 function PreFunction() {
 
-    const [input, setInput] = useState([""]);
+    const [funcOpt, setFuncOpt] = useState([]);
+    const [selectOpt, setSelectOpt] = useState([]);
+    const [isSave, setIsSave] = useState(false);
 
-
-    localStorage.getItem('jwtToken')
+    const storedToken = localStorage.getItem('ACCESS_TOKEN');
     useEffect(() => {
-        const storedToken = localStorage.getItem('jwtToken');
         console.log("📦 페이지 로드시 token:", storedToken);
     }, []);
 
 
-
-    const chInput = (e, index) => {
-        const updatedInput = [...input];
-        updatedInput[index] = e.target.value;
-        setInput(updatedInput);
-    };
-
-    // input 추가 삭제 기능
-    const addInput = () => setInput([...input, ""]);
-    const removeInput = () => setInput(input.slice(0, -1));
-
-
-    const hSubmit = (e) => {
-        e.preventDefault()
-
-        const Func = input.filter((val) => val.trim() !== "");
-
-        axios.post("http://localhost:8080/", {functoin: Func,})
-            .then((response) => {
-                if (response.status === 200) {
-                    alert("편의시설이 저장되었습니다.")
+    // 편의시설 목록 불러오기
+    useEffect(() => {
+        axios.get("http://localhost:8080/pre/owner/funcOpt",{
+            headers:{
+                Authorization: `Bearer ${storedToken}`,
+            },
+        })
+            .then((res) => {
+                console.log("funcOpt API 응답:", res.data);
+                if (Array.isArray(res.data.data)) {
+                    setFuncOpt(res.data.data);
                 } else {
-                    alert("편의시설 저장에 실패하였습니다.")
+                    console.warn("funcOpt 응답이 배열이 아닙니다:", res.data);
                 }
             })
-            .catch((error) => {
-                console.log("에러 메세지" + error)
-                alert("오류가 발생했습니다.")
-       });
+            .catch((err) => {
+                console.error("funcOpt API 에러:", err);
+            });
+
+    // 사용자가 저장한 편의시설 불러오기
+    axios.get("http://localhost:8080/pre/owner/getFunc",{
+        headers : {
+            Authorization : `Bearer ${storedToken}`
+        }
+    })
+        .then((res => {
+            if (res.data && res.data.length > 0) {
+                setSelectOpt(res.data);
+                setIsSave(true)
+            }
+        }))
+        .catch((err) => {
+            console.log(err)
+        })
+},[storedToken]);
+
+
+    // 편의시설 선택/해제
+    const checkBox = (cvId) => {
+        if (selectOpt.includes(cvId)) {
+            setSelectOpt(selectOpt.filter(id => id !== cvId));
+        } else {
+            setSelectOpt([...selectOpt, cvId]);
+        }
+    };
+
+
+    // 편의시설 저장하기
+    const hSubmit = (e) => {
+        e.preventDefault();
+
+        if (isSave) {
+            // 수정
+            axios.put("http://localhost:8080/pre/owner/updateFunc",
+                { function: selectOpt },
+                { headers: { Authorization: `Bearer ${storedToken}` } }
+            )
+                .then(res => {
+                    if (res.status === 200) alert("수정 되었습니다.");
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("수정 실패");
+                });
+        } else {
+            // 저장
+            axios.post("http://localhost:8080/pre/owner/saveFunc",
+                { function: selectOpt },
+                { headers: { Authorization: `Bearer ${storedToken}` } }
+            )
+                .then(res => {
+                    if (res.status === 200) {
+                        alert("저장 되었습니다.");
+                        setIsSave(true);
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("저장 실패");
+                });
+        }
     };
 
 
@@ -60,38 +112,30 @@ function PreFunction() {
         >
             <ReBanner/>
             <div>
-                {/* 나머지 코드 */}
             </div>
             <h4 className="text-start">
                 <strong>편의시설</strong>
                 <span style={{ color: "#FFD727", fontSize: "14px" }}> *필수</span>
             </h4>
             <form onSubmit={hSubmit}>
-            <div className="mb-4">
-                {input.map((val, index) => (
-                    <div key={index} style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
-                        <input
-                            type="text"
-                            value={val}
-                            onChange={(e) => chInput(e, index)}
-                            className="form-control"
-                            style={{ width: "300px", height: "50px" }}
-                        />
-                        {index === input.length - 1 && (
-                            <div style={{ marginLeft: "10px" }}>
-                                <button className="btn btn-sm" onClick={addInput} style={{ marginRight: "5px", border: "1px solid #FFD727" }}>
-                                    추가
-                                </button>
-                                <button className="btn btn-sm" style={{ border: "1px solid #FFD727" }}
-                                        onClick={removeInput}
-                                        disabled={input.length === 1}>
-                                    삭제
-                                </button>
-                            </div>
-                        )}
-                    </div>
-                ))}
-            </div>
+                <div className="mb-4">
+                    {Array.isArray(funcOpt) && funcOpt.map((facility) => (
+                        <div key={facility.cvId} style={{ marginBottom: "8px" }}>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    checked={selectOpt.includes(facility.cvId)}
+                                    onChange={() => checkBox(facility.cvId)}
+                                />
+                                {" "}{facility.cvName}
+                            </label>
+                        </div>
+                    ))}
+                </div>
+
+                <button type="submit" className="btn btn-warning">
+                    {isSave ? "수정하기" : "저장하기"}
+                </button>
             </form>
 
             <hr/>

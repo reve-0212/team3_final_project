@@ -3,6 +3,9 @@ import Draggable from "react-draggable";
 import axios from "axios";
 
 function SeatManager() {
+
+    const token = localStorage.getItem('ACCESS_TOKEN');
+
     // 좌석 요소들의 정보
     const [elements, setElements] = useState([]);
     // 수정이 되었는지 확인
@@ -52,7 +55,6 @@ function SeatManager() {
     // 좌석 수정하기
     const updateSeat = (id, x, y) => {
         if (!id) return;
-        const token = localStorage.getItem('jwtToken');
         if (!token) {
             alert("로그인이 필요합니다.");
             return;
@@ -119,8 +121,6 @@ function SeatManager() {
         // 요소중의 마지막에 생성된 요소를 기준으로 삭제
         const lastSeat = elements[elements.length - 1];
 
-        // 토큰 검사
-        const token = localStorage.getItem('jwtToken');
         if (!token) {
             alert("로그인이 필요합니다.");
             return;
@@ -178,6 +178,7 @@ function SeatManager() {
         const newSeat = {
             id: `${type}-${newPosition.x}-${newPosition.y}`, // 고유한 ID로 좌석 추가
             type: type,
+            resSeatId: null,
             name: `${type} 좌석`,
             x: newPosition.x,  // 새 위치 적용
             y: newPosition.y,  // 새 위치 적용
@@ -207,7 +208,6 @@ function SeatManager() {
         if (isSaving) return;
         setIsSaving(true);
 
-        const token = localStorage.getItem('jwtToken');
         if (!token) {
             alert("로그인이 필요합니다.");
             setIsSaving(false);
@@ -243,7 +243,6 @@ function SeatManager() {
 
 // 서버에 저장된 좌석 불러오기
     useEffect(() => {
-        const token = localStorage.getItem("jwtToken");
         if (!token) {
             alert("로그인이 필요합니다.");
             return;
@@ -276,6 +275,7 @@ function SeatManager() {
                         id: seat.seatId, // 서버에서 받은 seatId를 사용
                         type: seat.type,
                         name: seat.name,
+                        resSeatId: seat.resSeatId,
                         x: seat.x,
                         y: seat.y,
                         shape: seat.shape,
@@ -287,7 +287,7 @@ function SeatManager() {
                     // 기존 좌석과 새로운 좌석을 결합하여 반환
                     return [...prevElements, ...newElements];
                 });
-            }
+             }
             setIsModified(false);
         }).catch(() => {
             console.error("좌석 불러오기 실패");

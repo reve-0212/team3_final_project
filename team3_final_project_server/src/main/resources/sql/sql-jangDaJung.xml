@@ -3,24 +3,12 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.team3_final_project_server.JangDaJung.JDJMapper">
-    <!-- INSERT -->
-<!--    <insert id="insertHistory" parameterType="com.example.team3_final_project_server.dto.ReservationHistoryDTO">-->
-<!--        INSERT INTO reservation_history (-->
-<!--        res_idx, reservation_idx, reservation_date,-->
-<!--        male_count, female_count, gender_total_count,-->
-<!--        menu_idx, menu_name, menu_price,-->
-<!--        menu_sold_count, menu_sold_total_price,-->
-<!--        checkout_date, cancel_date, reservation_team_count-->
-<!--        )-->
-<!--        VALUES (-->
-<!--        #{resIdx}, #{reservationIdx}, #{reservationDate},-->
-<!--        #{maleCount}, #{femaleCount}, #{genderTotalCount},-->
-<!--        #{menuIdx}, #{menuName}, #{menuPrice},-->
-<!--        #{menuSoldCount}, #{menuSoldTotalPrice},-->
-<!--        #{checkoutDate}, #{cancelDate}, #{reservationTeamCount}-->
-<!--        )-->
-<!--    </insert>-->
-
+<!--    resIdx 불러오기-->
+    <select id="selectResIdxByUserIdx" parameterType="int" resultType="int">
+        SELECT res_idx
+        FROM restaurant
+        WHERE user_idx = #{userIdx}
+    </select>
 <!--    통계 페이지 -->
 
     <!-- 메뉴 여러개 선택해서 예약할 수  있도록 history 저장 -->
@@ -45,6 +33,7 @@
         SELECT *
         FROM reservation_history
         WHERE reservation_date BETWEEN #{startDate} AND #{endDate}
+            AND checkout_date IS NOT NULL
     </select>
 
     <!--  성별-->
@@ -57,6 +46,7 @@
         FROM reservation_history
         WHERE reservation_date BETWEEN #{startDate} AND #{endDate}
             AND res_idx = #{resIdx}
+            AND checkout_date IS NOT NULL
     </select>
 
 <!--    메뉴 불러와서 판매량 계산 -->
@@ -70,6 +60,7 @@
         LEFT JOIN reservation_history h
             ON m.menu_idx = h.menu_idx
             AND h.reservation_date BETWEEN #{startDate} AND #{endDate}
+            AND h.checkout_date IS NOT NULL
         WHERE m.res_idx = #{resIdx}
         GROUP BY m.menu_idx
     </select>
@@ -77,14 +68,28 @@
     <!--    시간대별 예약팀 수-->
     <select id="selectTeamCountByHour" resultType="map">
         SELECT
-        HOUR(reservation_date) as hour,
-        COUNT(DISTINCT reservation_idx) AS teamCount,
-        SUM(rsv_people) AS visitorCount
+            DATE_FORMAT(reservation_date, '%H:%i') as hour,
+            COUNT(DISTINCT reservation_idx) AS teamCount,
+            SUM(rsv_people) AS visitorCount
         FROM reservation_history
         WHERE reservation_date BETWEEN #{startDate} AND #{endDate}
-        AND res_idx = #{resIdx}
-        GROUP BY HOUR(reservation_date)
+            AND res_idx = #{resIdx}
+            AND checkout_date IS NOT NULL
+        GROUP BY DATE_FORMAT(reservation_date, '%H:%i')
         ORDER BY hour
+    </select>
+
+<!--    가게 예약 가능 시간 불러오기(메인페이지)-->
+    <select id="getResTime" resultType="String">
+        SELECT res_reserve_time
+        FROM restaurant
+        WHERE res_idx = #{resIdx}
+    </select>
+<!--    가게 이름 -->
+    <select id="getStoreInfo" resultType="map" parameterType="int">
+        SELECT res_name
+        FROM restaurant
+        WHERE res_idx = #{resIdx}
     </select>
 
 <!--    메뉴 페이지-->
@@ -167,4 +172,27 @@
         DELETE FROM menu
         WHERE menu_idx = #{menuIdx}
     </delete>
+
+<!--    리뷰 페이지 -->
+<!--    리뷰 불러오기-->
+    <select id="getReviewListByResIdx" resultType="com.example.team3_final_project_server.dto.ReviewDTO">
+        SELECT r.*, u.user_nick AS userNick
+        FROM review r
+        JOIN user u ON r.user_idx = u.user_idx
+        WHERE r.res_idx = #{resIdx}
+        ORDER BY r.review_write_date DESC
+    </select>
+
+    <select id="getReviewChByResIdx" parameterType="int" resultType="com.example.team3_final_project_server.dto.ReviewDTO">
+        SELECT *
+        FROM review
+        WHERE res_idx = #{resIdx}
+    </select>
+
+    <!-- 사장님 답글 등록/수정 -->
+<!--    <update id="updatePreReply">-->
+<!--        UPDATE review-->
+<!--        SET review_owner_contents = #{reviewOwnerContents}-->
+<!--        WHERE review_idx = #{reviewIdx}-->
+<!--    </update>-->
 </mapper>

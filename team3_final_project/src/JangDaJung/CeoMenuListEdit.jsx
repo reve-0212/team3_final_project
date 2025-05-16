@@ -1,4 +1,4 @@
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import WaBanner from "../KimSangMin/WaBanner.jsx";
 import {
@@ -95,9 +95,7 @@ function CeoMenuListEdit() {
     const [menuList, setMenuList] = useState([]);
     // 체크된 메뉴 ID들 (숨김/품절)
     const [selectedIds, setSelectedIds] = useState([]);
-
-    // const resIdx = useUserStore(state => state.user.resIdx); // 예시
-    const resIdx = 1; // 현재는 하드코딩된 테스트용 값
+    const { resIdx } = useParams();
 
     // 데이터 받아오기
     useEffect(() => {
@@ -170,20 +168,21 @@ function CeoMenuListEdit() {
 
     // 취소 버튼 -> 리스트 페이지로
     const handleCancel = () => {
-        navigate("/pre/MenuList");
+        navigate(`/pre/PreMenuList/${resIdx}`);
     };
 
     // 확인 버튼 -> 저장 후 리스트 페이지로(숨김, 품절, 순서 변경 된 값)
     const handleSave = () => {
         const updatedList = menuList.map((menu, index) => ({
             ...menu,
-            menuSort: index  // 드래그된 순서대로 인덱스를 menuSort로
+            menuSort: menuList.length - 1 - index  // index 내림차순으로 선언
         }));
 
+        console.log("보낼 메뉴 배열:", updatedList);
         axios.post('http://localhost:8080/menu/listEdit', updatedList)
             .then(() => {
                 alert("저장 완료!");
-                navigate("/pre/MenuList");
+                navigate(`/pre/PreMenuList/${resIdx}`);
             })
             .catch((err) => {
                 console.error("메뉴 저장 실패:", err);

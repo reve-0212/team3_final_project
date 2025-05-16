@@ -67,3 +67,18 @@
         width: 100%;
     }
 }
+
+.seat-wrapper {
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.seat-wrapper:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    transform: translateY(-4px);
+    cursor: pointer;
+}
+.seat-wrapper.not-allowed:hover {
+    cursor: not-allowed;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transform: none;
+}

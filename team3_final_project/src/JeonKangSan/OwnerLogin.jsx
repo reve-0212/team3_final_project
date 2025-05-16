@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
 import LoginSignText from "../simJiHyun/LoginSignText.jsx";
+import Swal from "sweetalert2";
 
 function OwnerLogin() {
     const nv = useNavigate();
@@ -18,39 +19,55 @@ function OwnerLogin() {
         const userData = { userId, userPass };
         console.log(userData);
 
-        axios.post("http://localhost:8080/pre/owner/login", userData, {
-            headers: {
+        axios.post("http://localhost:8080/pre/login", userData,{
+            headers : {
                 'Content-Type': 'application/json'
-            }
-        })
-            .then((response) => {
-                console.log("응답 데이터:", response.data);  // 응답 데이터 확인
-
-                const { success, message, data } = response.data;  // 서버에서 반환된 데이터 확인
-                const token = data;  // 응답 데이터에서 토큰을 추출
-
+            }})
+            .then((res) => {
+                const { success, message } = res.data;  // 서버에서 토큰을 반환받음
                 if (success) {
                     alert(message);
 
-                    // 토큰이 제대로 있는지 확인하고 로컬 스토리지에 저장
-                    if (token) {
-                        localStorage.setItem('jwtToken', token);  // 로컬 스토리지에 토큰 저장
-                        console.log("저장된 토큰:", localStorage.getItem('jwtToken')); // 저장된 토큰 확인
-                        nv("/pre/func");
-                    } else {
-                        alert("토큰이 없습니다.");
-                    }
+                    console.log(res.data);
+                    // JWT 토큰을 로컬 스토리지에 저장
+                    localStorage.setItem('ACCESS_TOKEN', res.data.data.accessToken);
+                    sessionStorage.setItem('REFRESH_TOKEN', res.data.data.refreshToken);
+
+                    const token = res.data.data.accessToken;
+                    axios.get(`http://localhost:8080/pre/resIdxByUser`, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }).then((res) => {
+                        const resIdx = res.data;
+                        if(resIdx){
+                            nv(`/pre/PreMain/${resIdx}`);
+                        }
+                    }).catch((err) => {
+                        if (err.response && err.response.status === 404) {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: '알림',
+                                html: `<strong style="color:crimson;">등록된 <b>가게</b> · <b>레스토랑</b></strong>이 없습니다.<br/>
+                                        <span>가게 · 레스토랑 정보를 등록해 주세요.</span>`,
+                                confirmButtonText: '확인'
+                            })
+                            nv(`/pre/PreReSet`);
+                        } else {
+                            console.error("등록된 가게 · 레스토랑 조회 실패:", err);
+                            alert("가게 · 레스토랑 정보를 가져오는 데 실패했습니다.");
+                        }
+                    })
+
                 } else {
                     alert("로그인 실패");
                 }
             })
-            .catch((error) => {
-                alert("서버 오류가 발생했습니다: " + error);
+            .catch((err) => {
+                alert(err);
             });
     };
-
-
-
 
     return (
         <div

@@ -28,4 +28,6 @@ public class ReservationDTO {
   private String userNick;
   private String userCall;
   private int visitCount;
+  private String status;
+  private String seatIds;
 }

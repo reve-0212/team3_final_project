@@ -8,6 +8,8 @@ public class SeatDTO {
     private Integer seatId;
     private int userIdx;
     private Integer resIdx;
+    private Integer  resSeatId;
+    private int floor;
     private String type;
     private String name;
     private int x;

@@ -47,7 +47,7 @@ public class OwnerController {
 
 
     //  사장님 로그인
-    @PostMapping("/pre/owner/login")
+    @PostMapping("/pre/login")
     public ResponseEntity<PreResponse> login(@RequestBody Map<String, String> userData) {
         String userId = userData.get("userId");
         String userPass = userData.get("userPass");
@@ -56,7 +56,7 @@ public class OwnerController {
             ResponseDTO jwtToken = ownerService.getJwtAuthentication(userId, userPass);
 
             // 로그인 성공 시 성공 메시지 및 JWT 토큰 반환
-            PreResponse response = new PreResponse(true, "로그인 성공", jwtToken.getAccessToken());
+            PreResponse response = new PreResponse(true, "로그인 성공", jwtToken);
             return ResponseEntity.ok().body(response);
         } catch (AuthenticationException e) {
             // 로그인 실패 시 오류 메시지 반환

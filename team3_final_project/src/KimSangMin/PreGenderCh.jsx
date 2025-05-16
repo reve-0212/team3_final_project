@@ -1,8 +1,8 @@
 import ReBanner from "./ReBanner.jsx";
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {DayPicker} from "react-day-picker";
 import {Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import axios from "axios";
 
 function PreGenderCh() {
@@ -15,14 +15,53 @@ function PreGenderCh() {
     const [seDay, setSeDay] = useState({ from: today, to: today });
     const [yetDay, setYetDay] = useState({ from: today, to: today });
     const [cal, setCal] = useState(false);
+    const calendarRef = useRef(null);
 
+    const { resIdx } = useParams();
     // 페이지 로딩
     const [loading, setLoading] = useState(false);
 
-    // 날짜 형식 변경
+    // 달력 외부 부분 클릭하면 달력 닫힘
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (calendarRef.current &&
+                !calendarRef.current.contains(e.target)
+            ) {
+                setCal(false);
+            }
+        };
+        if (cal) {
+            document.addEventListener("mousedown", handleClickOutside);
+        }
+        else {
+            document.removeEventListener("mousedown", handleClickOutside);
+        }
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    },[cal]);
+
+    // 날짜 포맷
     const formatDate = (date) => {
         if (!date) return '';
-        return date.toISOString().split('T')[0];
+        return date.toLocaleDateString('ko-KR').replace(/\./g, '').replace(/ /g, '.');
+    };
+
+    // 백엔드에 데이터 보낼때 날짜 문자열에 시간 포함 (시작은 00:00:00, 끝은 23:59:59)
+    const formatDateStart = (date) => {
+        if (!date) return '';
+        const year = date.getFullYear();
+        const month = ('0' + (date.getMonth() + 1)).slice(-2);
+        const day = ('0' + date.getDate()).slice(-2);
+        return `${year}-${month}-${day} 00:00:00`;
+    };
+
+    const formatDateEnd = (date) => {
+        if (!date) return '';
+        const year = date.getFullYear();
+        const month = ('0' + (date.getMonth() + 1)).slice(-2);
+        const day = ('0' + date.getDate()).slice(-2);
+        return `${year}-${month}-${day} 23:59:59`;
     };
 
     // 데이터 불러오기
@@ -33,9 +72,9 @@ function PreGenderCh() {
         try{
             const response = await axios.get("http://localhost:8080/api/history/visitors", {
                 params: {
-                    startDate: formatDate(seDay.from),
-                    endDate: formatDate(seDay.to),
-                    resIdx: 1
+                    startDate: formatDateStart(seDay.from),
+                    endDate: formatDateEnd(seDay.to),
+                    resIdx: resIdx
                 }
             });
             const data = response.data;
@@ -86,10 +125,11 @@ function PreGenderCh() {
                             }}
                         >
                             <p style={{margin: 0}}>
-                                {seDay.from && seDay.to ? `${formatDate(seDay.from)} ~ ${formatDate(seDay.to)}` : '날짜 선택'}
+                                {seDay.from && seDay.to ?
+                                    `${formatDate(seDay.from)} ~ ${formatDate(seDay.to)}` : '날짜 선택'}
                             </p>
                             {cal && (
-                                <div className={'calendar-popup'} onClick={(e) => e.stopPropagation()}>
+                                <div className={'calendar-popup'} ref={calendarRef} onClick={(e) => e.stopPropagation()}>
                                     <DayPicker
                                         mode="range"
                                         selected={yetDay}
@@ -110,7 +150,17 @@ function PreGenderCh() {
                                             className="btn btn-primary"
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                setSeDay(yetDay);
+                                                const { from, to } = yetDay || {};
+
+                                                if(!from && !to) {
+                                                    setSeDay({ from: undefined, to: undefined });
+                                                    setYetDay({ from: undefined, to: undefined });
+                                                } else if (from && !to) {
+                                                    setSeDay({ from, to: from });
+                                                    setYetDay({ from, to: from });
+                                                } else {
+                                                    setSeDay(yetDay);
+                                                }
                                                 setCal(false);
                                             }}
                                         >
@@ -128,6 +178,11 @@ function PreGenderCh() {
                     <div style={{ flex: 4, minWidth: '250px' }}>
                         {loading ? (
                             <p className={'text-center'}>로딩 중...<br/>잠시만 기다려 주세요</p>
+                        ) :(
+                            originData.totalPeople === 0 ? (
+                                <div className={'text-center text-muted'} style={{ marginTop: '3rem' }}>
+                                    선택된 날짜에 예약이 없습니다.
+                                </div>
                         ) : (
                             <ResponsiveContainer width="100%" height={300}>
                                 <PieChart>
@@ -146,7 +201,7 @@ function PreGenderCh() {
                                     <Tooltip />
                                 </PieChart>
                             </ResponsiveContainer>
-                        )}
+                            ))}
                     </div>
                     <div style={{ flex: 3, minWidth: '250px' }}>
                         <div className={'mb-3 p-3 bg-light rounded d-flex justify-content-between align-items-center'}>

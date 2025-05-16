@@ -1,13 +1,16 @@
 package com.example.team3_final_project_server.KimSangMin.service;
 
 import com.example.team3_final_project_server.KimSangMin.mapper.PreMapper;
+import com.example.team3_final_project_server.KimSangMin.response.TimeRequest;
 import com.example.team3_final_project_server.configuration.jwt.JwtTokenProvider;
 import com.example.team3_final_project_server.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.stream.DoubleStream.builder;
@@ -22,21 +25,44 @@ public class PreServiceImpl implements PreService {
 
   //    좌석 정보 저장
   @Override
+  @Transactional
   public boolean saveSeats(List<SeatDTO> seats) {
     try {
+      if (seats == null || seats.isEmpty()) return true;
+
+      int resIdx = seats.get(0).getResIdx();
+
+      Integer maxResSeatId = preMapper.getResSeatNum(resIdx);
+      int nextResSeatId = (maxResSeatId == null ? 0 : maxResSeatId) + 1;
+
+
+//      중복 좌석 체크
+      List<SeatDTO> uniqSeat = new ArrayList<>();
       for (SeatDTO seat : seats) {
-        // 중복된 좌석이 존재하는지 확인
         boolean exists = preMapper.checkSeatExists(seat);
-        if (!exists) {
-          preMapper.saveSeat(seat);  // 새 좌석만 추가
-        }
+        if (!exists) uniqSeat.add(seat);
       }
+       for (SeatDTO seat : uniqSeat) {
+         seat.setResIdx(resIdx);
+
+         String type = seat.getType();
+//         type을 가져와 type가 창문, 입구가 아닌 것들에 한해서 resSeatId++
+         if(!"창문".equalsIgnoreCase(type) && !"입구".equalsIgnoreCase(type)) {
+           seat.setResSeatId(nextResSeatId++);
+         } else{
+//           type이 창문, 입구라면 res_seat_id는 null 값
+           seat.setResSeatId(null);
+         }
+         preMapper.saveSeat(seat);
+       }
       return true;
     } catch (Exception e) {
       e.printStackTrace();
       return false;
     }
   }
+
+
   // userIdx로 resIdx 찾기
   @Override
   public Integer findResIdx(int userIdx) {
@@ -101,26 +127,74 @@ public class PreServiceImpl implements PreService {
     return result > 0;
   }
 
-
-  // 가게 정보 수정하기
+//  카테고리 생성
   @Override
-  public boolean updateRest(int resIdx, RestaurantDTO rest) {
-    int result = preMapper.updateRest(resIdx,rest);
+  public boolean cateSave(CategoryDTO category) {
+    int result = preMapper.cateSave(category);
     return result > 0;
   }
 
-  //    가게 운영시간 저장
+
   @Override
-  public boolean insertTime(List<TimeDTO> timeList) {
-    try {
-      for (TimeDTO time : timeList) {
-        preMapper.insertTime(time);
-      }
-      return true;
-    } catch (Exception e) {
-      e.printStackTrace();
-      return false;
-    }
+  public CategoryDTO getResIdxByCate(Integer resIdx) {
+    return preMapper.getResIdxByCate(resIdx);
+  }
+
+  //  가게에 저장된 카테고리가 있는지 확인
+  @Override
+  public boolean existsCate(Integer resIdx) {
+    return preMapper.existsCate(resIdx);
+  }
+
+//  가게에 저장된 카테고리 수정하기
+  @Override
+  public boolean updateCate(CategoryDTO category) {
+    int result = preMapper.updateCate(category);
+    return result > 0;
+  }
+
+  @Override
+  public List<ConvenientDTO> getFunc() {
+    return preMapper.getFunc();
+  }
+
+  @Override
+  public void saveFunc(Integer resIdx, List<Integer> cvIds) {
+if (cvIds == null || cvIds.isEmpty()) return;
+for (Integer cvId : cvIds) {
+  preMapper.saveFunc(resIdx,cvId);
+}
+  }
+
+  @Override
+  public int haveFunc(Integer resIdx) {
+    return preMapper.haveFunc(resIdx);
+  }
+
+  @Override
+  @Transactional
+  public void updateFunc(Integer resIdx, List<Integer> cvIds) {
+preMapper.deleteFunc(resIdx);
+
+if (cvIds == null || cvIds.isEmpty()) {
+  for (Integer cvId : cvIds) {
+    preMapper.saveFunc(resIdx,cvId);
+  }
+}
+
+  }
+
+  @Override
+  public List<ConvenientDTO> getSaveFunc(Integer resIdx) {
+    return preMapper.getSaveFunc(resIdx);
+  }
+
+
+  // 가게 정보 수정하기
+  @Override
+  public boolean updateRest(int resIdx, RestaurantDTO storeData) {
+    int result = preMapper.updateRest(resIdx,storeData);
+    return result > 0;
   }
 
   //    가게 정보 조회
@@ -128,4 +202,42 @@ public class PreServiceImpl implements PreService {
   public RestaurantDTO getRest(int userIdx) {
     return preMapper.getRest(userIdx);
   }
+
+
+  //  가게 시간 저장하기
+  @Override
+  public boolean setTime(Integer resIdx, List<TimeDTO> times) {
+    int result = 0;
+
+    for (TimeDTO time : times) {
+      time.setResIdx(resIdx);
+      result += preMapper.setTime(time);
+    }
+    return result == times.size();
+  }
+
+  //  가게 시간 수정하기
+  @Override
+  public boolean updateTime(Integer resIdx, List<TimeDTO> times) {
+    int updatedCount = 0;
+
+    for (TimeDTO time : times) {
+      time.setResIdx(resIdx);
+      int result = preMapper.updateTime(time); // Mapper에 updateTime 메서드가 있어야 합니다.
+      if (result == 1) {
+        updatedCount++;
+      }
+    }
+
+    return updatedCount == times.size();
+  }
+
+//  가게 idx로 운영 시간 찾기
+  @Override
+  public List<TimeDTO> getTimeByResIdx(Integer resIdx) {
+    return preMapper.getTimeByResIdx(resIdx);
+  }
+
+
+
 }

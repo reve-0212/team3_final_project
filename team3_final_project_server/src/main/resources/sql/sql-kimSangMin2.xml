@@ -6,14 +6,53 @@
 
     <!--    좌석 저장 -->
     <insert id="saveSeat">
-        INSERT INTO seat_table (res_idx, type, name, x, y, image, is_selected)
-        VALUES (#{resIdx}, #{type}, #{name}, #{x}, #{y}, #{image}, #{isSelected})
+        INSERT INTO seat_table (res_idx, res_seat_id, type, name, x, y, image, is_selected)
+        VALUES (#{resIdx}, #{resSeatId},  #{type}, #{name}, #{x}, #{y}, #{image}, #{isSelected})
     </insert>
 
+<!--    가게 좌석 고유 번호 -->
+    <select id="getResSeatNum" parameterType="int" resultType="java.lang.Integer">
+        SELECT MAX(res_seat_id)
+        FROM seat_table
+        WHERE res_idx = #{resIdx}
+    </select>
+
+<!--    카테고리 저장하기 -->
+    <insert id="cateSave">
+        INSERT INTO category (res_idx, category_addr, category_name, category_tag )
+        VALUES (#{resIdx}, #{categoryAddr} , #{categoryName}, #{categoryTag} )
+    </insert>
+
+<!--    res_idx에 가테고리 있는지 확인하기 -->
+    <select id="existsCate" parameterType="int" resultType="boolean">
+        SELECT * FROM category
+        where res_idx = #{resIdx}
+    </select>
+
+<!--    가게에 저장된 카테고리 내용 수정하기 -->
+    <update id="updateCate" parameterType="com.example.team3_final_project_server.dto.CategoryDTO">
+        UPDATE category
+        SET
+        category_name = #{categoryName},
+        category_addr = #{categoryAddr},
+        category_tag = #{categoryTag}
+        WHERE res_idx = #{resIdx}
+    </update>
+
+<!--    가게 저장된 카테고리 불러오기 -->
+    <select id="getResIdxByCate" parameterType="int" resultType="com.example.team3_final_project_server.dto.CategoryDTO">
+        SELECT category_name AS categoryName,
+        category_addr AS categoryAddr,
+        category_tag AS categoryTag
+        FROM category
+        WHERE res_idx = #{resIdx}
+    </select>
+
+<!--    좌석 중복 방지 -->
     <select id="checkSeatExists" resultType="boolean">
         SELECT COUNT(*) > 0
         FROM seat_table
-        WHERE res_idx = #{resIdx} AND type = #{type} AND name = #{name}
+        WHERE res_idx = #{resIdx} AND x = #{x} AND y = #{y}
     </select>
 
     <select id="findResIdx" resultType="int" parameterType="int">
@@ -31,25 +70,45 @@
     </insert>
 
 <!--    가게 정보 수정 -->
-    <update id="updateRest" parameterType="com.example.team3_final_project_server.dto.RestaurantDTO">
+    <update id="updateRest">
         UPDATE restaurant SET
-        res_image1 = #{resImage1},
-        res_image2 = #{resImage2},
-        res_image3 = #{resImage3},
-        res_name = #{resName},
-        res_call = #{resCall},
-        res_address1 = #{resAddress1},
-        res_address2 = #{resAddress2},
-        res_introduce = #{resIntroduce},
-        res_reserve_time = #{resReserveTime}
+            res_image1 = #{storeData.resImage1},
+            res_image2 = #{storeData.resImage2},
+            res_image3 = #{storeData.resImage3},
+            res_name = #{storeData.resName},
+            res_call = #{storeData.resCall},
+            res_address1 = #{storeData.resAddress1},
+            res_address2 = #{storeData.resAddress2},
+            res_introduce = #{storeData.resIntroduce},
+            res_reserve_time = #{storeData.resReserveTime}
         WHERE res_idx = #{resIdx}
     </update>
 
-<!--    가게 시간 정보 저장 -->
-    <insert id="insertTime" parameterType="com.example.team3_final_project_server.dto.TimeDTO">
-        INSERT INTO restaurant_time (  day, start_time, end_time )
-        VALUES (  #{day}, #{startTime} ,#{endTime} )
+<!-- 가게 운영 시간 정보 저장 -->
+    <insert id="setTime" parameterType="com.example.team3_final_project_server.dto.TimeDTO">
+        INSERT INTO restaurant_time (res_idx, day, start_time, end_time)
+        VALUES (#{resIdx}, #{day}, #{startTime}, #{endTime} )
     </insert>
+
+<!--    가게 운영시간 수정 -->
+<update id="updateTime" parameterType="com.example.team3_final_project_server.dto.TimeDTO">
+    update restaurant_time
+    set start_time = #{startTime},
+    end_time = #{endTime}
+    where res_idx = #{resIdx}
+    and day = #{day}
+</update>
+
+<!--    가게 운영시간 불러오기 -->
+    <select id="getTimeByResIdx" resultType="com.example.team3_final_project_server.dto.TimeDTO">
+        SELECT
+        day,
+        start_time AS startTime,
+        end_time AS endTime
+        FROM restaurant_time
+        WHERE res_idx = #{resIdx}
+    </select>
+
 
 <!--    가게 정보 조회 -->
     <select id="getRestByUserIdx" parameterType="int" resultType="com.example.team3_final_project_server.dto.RestaurantDTO">
@@ -89,5 +148,41 @@
         DELETE FROM seat_table
         WHERE seat_id = #{seatId} AND res_idx = #{resIdx}
     </delete>
+
+
+<!--    db에서 편의시설 가져오기 -->
+    <select id="getFunc" resultType="com.example.team3_final_project_server.dto.ConvenientDTO">
+        SELECT
+        cv_id AS cvId,
+        cv_name AS cvName,
+        cv_intro AS cvIntro,
+        cv_image AS cvImage
+        FROM convenient
+    </select>
+
+<!--    편의시설 저장하기 -->
+    <insert id="saveFunc">
+        INSERT INTO rest_convenient (res_idx, cv_id)
+        VALUES (#{resIdx}, #{cvId})
+    </insert>
+
+<!--    편의시설 삭제하기 / 저장하기-->
+    <delete id="deleteFunc" parameterType="int">
+        DELETE FROM rest_convenient WHERE res_idx = #{resIdx}
+    </delete>
+
+
+    <select id="haveFunc" parameterType="int" resultType="int">
+        SELECT COUNT(*) FROM rest_convenient WHERE res_idx = #{resIdx}
+    </select>
+
+<!--    저장된 편의시설 불러오기 -->
+    <select id="getSaveFunc" parameterType="int" resultType="com.example.team3_final_project_server.dto.ConvenientDTO">
+        SELECT c.cv_id, c.cv_name, c.cv_intro, c.cv_image
+        FROM convenient c
+        JOIN rest_convenient rc ON c.cv_id = rc.cv_id
+        WHERE rc.res_idx = #{resIdx}
+    </select>
+
 
 </mapper>
