@@ -75,4 +75,38 @@
     r.review_write_date DESC
   </select>
 
+  <select id="getReviewDetail" resultType="com.example.team3_final_project_server.dto.ReviewDTO" parameterType="int">
+    SELECT
+    r.review_idx,
+    r.review_rating,
+    r.review_content,
+    r.review_write_date,
+    r.review_image_1,
+    r.review_image_2,
+    r.review_image_3,
+    r.res_idx
+    FROM
+    review r
+    WHERE
+    r.review_idx = #{reviewIdx}
+  </select>
+
+  <update id="updateReview" parameterType="com.example.team3_final_project_server.dto.ReviewDTO">
+    UPDATE review
+    SET
+    review_rating = #{reviewRating},
+    review_content = #{reviewContent},
+    review_write_date = #{reviewWriteDate},
+    review_image_1 = #{reviewImage1},
+    review_image_2 = #{reviewImage2},
+    review_image_3 = #{reviewImage3}
+    WHERE
+    review_idx = #{reviewIdx}
+  </update>
+
+  <delete id="deleteReview" parameterType="int">
+    DELETE FROM review WHERE review_idx = #{reviewIdx}
+  </delete>
+
+
 </mapper>

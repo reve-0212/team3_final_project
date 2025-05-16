@@ -153,6 +153,7 @@ function main() {
               <Route path={"/location"} element={<SjhLocation/>}/>
 
               <Route path={"/review"} element={<SjhReview/>}/>
+              <Route path="/user/reviewWrite" element={<SjhReview />} />
 
               {/*모바일 전용 사장 로그인*/}
               {/*<Route path={"/pre/web/login"} element={<OwnerLoginSjh/>}/>*/}
