@@ -1,22 +1,18 @@
-// ContentDetail.jsx
-
 import {useEffect, useState} from "react";
 import "./JksSheet.css";
 import "../simJiHyun/SjhCss.css"
 import axios from "axios";
 import {useNavigate, useParams} from "react-router-dom";
-// import useUserStore from "../stores/useUserStore.jsx";
 import useUserStore from "../stores/useUserStore.jsx";
 import {Map, MapMarker, useKakaoLoader} from "react-kakao-maps-sdk";
 import useResStoreSjh from "../stores/useResStoreSjh.jsx";
-import useRestaurantStore from "../stores/useRestaurantStore.jsx";
 
 function ContentDetail() {
   const userStore = useUserStore((state) => state.user)
   const setRes = useResStoreSjh((state) => state.setRes)
-  const resIdxDetail = useRestaurantStore((state) => state.restaurantIdx)
-  console.log("-----residx-----")
-  console.log(resIdxDetail)
+  const param = useParams()
+  console.log(param.resIdx)
+
 
   useKakaoLoader({appkey: import.meta.env.VITE_REACT_APP_KAKAO_MAP_API_KEY})
   const userIdx = userStore && userStore.userIdx !== null ? userStore.userIdx : ""
@@ -29,11 +25,9 @@ function ContentDetail() {
   const [timeSlots, setTimeSlots] = useState([]);
   const [reviews, setReviews] = useState([]);
 
-  const {resIdx} = useParams();
+  // const {resIdx} = useParams();
 
   const [parsedTags, setParsedTags] = useState([]);
-
-  const [RevTab, setRevTab] = useState("rev"); // 'rev'
 
   // 지도 초기 중심좌표
   const [center, setCenter] = useState({
@@ -53,9 +47,9 @@ function ContentDetail() {
   useEffect(() => {
     axios.all([
         // res1 : 가게 상세 정보 가져오기
-        axios.get(`http://localhost:8080/detail/${resIdxDetail}`),
+        axios.get(`http://localhost:8080/detail/${param.resIdx}`),
         // res2 : 가게 메뉴 가져오기
-        axios.get(`http://localhost:8080/bestmenu/${resIdx}`),
+        axios.get(`http://localhost:8080/bestmenu/${param.resIdx}`),
       ]
     ).then(
       axios.spread((res1, res2) => {
@@ -81,12 +75,12 @@ function ContentDetail() {
 
   // 리뷰 불러오기
   useEffect(() => {
-    axios.get(`http://localhost:8080/reviews/${resIdx}`)
-        .then(res => {
-          setReviews(res.data);
-        })
-        .catch(err => console.log("리뷰 불러오기 오류:", err));
-  }, [resIdx]);
+    axios.get(`http://localhost:8080/reviews/${param.resIdx}`)
+      .then(res => {
+        setReviews(res.data);
+      })
+      .catch(err => console.log("리뷰 불러오기 오류:", err));
+  }, [param.resIdx]);
 
   // 해시태그
   useEffect(() => {
@@ -104,9 +98,7 @@ function ContentDetail() {
 
   return (
     <div className="app-container">
-
       <div className="container py-2 content-container">
-
         {/* 가게 대표 이미지 */}
         <div
           className="d-flex justify-content-center align-items-center bg-light w-100 mb-3"
@@ -137,45 +129,45 @@ function ContentDetail() {
 
         {/* 별점 및 영업정보 */}
         <div className="text-start mb-4">
-            <div className="d-flex gap-2 mb-2">
-              {/* 평균 평점 */}
-              <span style={{
-                backgroundColor: "#F5F5F5",
-                padding: "4px 12px",
-                borderRadius: "8px",
-                fontWeight: "600",
-                color: "#212529",
-                fontSize: "0.9rem",
-                display: "inline-block"
-              }}>⭐ {reviews.length > 0
-                  ? (reviews.reduce((acc, cur) => acc + cur.reviewRating, 0) / reviews.length).toFixed(1)
-                  : "0.0"}</span>
+          <div className="d-flex gap-2 mb-2">
+            {/* 평균 평점 */}
+            <span style={{
+              backgroundColor: "#F5F5F5",
+              padding: "4px 12px",
+              borderRadius: "8px",
+              fontWeight: "600",
+              color: "#212529",
+              fontSize: "0.9rem",
+              display: "inline-block"
+            }}>⭐ {reviews.length > 0
+              ? (reviews.reduce((acc, cur) => acc + cur.reviewRating, 0) / reviews.length).toFixed(1)
+              : "0.0"}</span>
 
-              {/* 리뷰 개수 */}
-              <span style={{
-                backgroundColor: "#F5F5F5",
-                padding: "4px 12px",
-                borderRadius: "8px",
-                fontWeight: "600",
-                color: "#212529",
-                fontSize: "0.9rem",
-                display: "inline-block"
-              }}>리뷰 {reviews.length}개</span>
-            </div>
+            {/* 리뷰 개수 */}
+            <span style={{
+              backgroundColor: "#F5F5F5",
+              padding: "4px 12px",
+              borderRadius: "8px",
+              fontWeight: "600",
+              color: "#212529",
+              fontSize: "0.9rem",
+              display: "inline-block"
+            }}>리뷰 {reviews.length}개</span>
+          </div>
           <hr/>
           <div className="d-flex flex-column gap-2 mb-3">
             <div className="d-flex align-items-center gap-2 flex-wrap">
               <i className="fa-regular fa-clock text-secondary"></i>
               <span className="fw-semibold text-dark">영업시간:</span>
               <div
-                  className="d-flex flex-wrap gap-3"
-                  style={{ maxWidth: "240px" }} // 너비 기준 설정
+                className="d-flex flex-wrap gap-3"
+                style={{maxWidth: "240px"}} // 너비 기준 설정
               >
                 {(storeInfo?.resReserveTime || "-")
-                    .split(',')
-                    .map((time, idx) => (
-                        <span key={idx}>{time}</span>
-                    ))}
+                  .split(',')
+                  .map((time, idx) => (
+                    <span key={idx}>{time}</span>
+                  ))}
               </div>
             </div>
 
@@ -204,10 +196,10 @@ function ContentDetail() {
               메뉴
             </button>
             <button
-                className={`tab-btn ${ActTab === "리뷰" ? "active" : ""}`}
-                onClick={() => setActTab("리뷰")}
+              className={`tab-btn ${ActTab === "리뷰" ? "active" : ""}`}
+              onClick={() => setActTab("리뷰")}
             >
-                리뷰
+              리뷰
             </button>
           </div>
         </div>
@@ -283,54 +275,54 @@ function ContentDetail() {
 
 
         {ActTab === "리뷰" && (
-            <div className="mb-5 text-start">
-              <h5 className="mt-5 text-start fw-bold">리뷰</h5>
+          <div className="mb-5 text-start">
+            <h5 className="mt-5 text-start fw-bold">리뷰</h5>
 
-              {(reviews.length > 0 ? reviews : [
-                {
-                  userName: "사용자",
-                  reviewRating: "5.0",
-                  reviewWriteDate: "2025-05-01",
-                  reviewContent: "기본 리뷰 내용입니다. 첫 리뷰를 작성해보세요.",
-                  reviewImage1: "",
-                  reviewImage2: "",
-                  reviewImage3: ""
-                }
-              ]).map((review, idx) => (
-                  <div key={idx} className="card mb-3 shadow-sm p-3">
-                    {/* 사용자명 + 평점 */}
-                    <div className="d-flex justify-content-between mb-1">
-                      <strong>{review.userName || "사용자"}</strong>
-                      <span className="text-warning">★ {review.reviewRating}</span>
-                    </div>
+            {(reviews.length > 0 ? reviews : [
+              {
+                userName: "사용자",
+                reviewRating: "5.0",
+                reviewWriteDate: "2025-05-01",
+                reviewContent: "기본 리뷰 내용입니다. 첫 리뷰를 작성해보세요.",
+                reviewImage1: "",
+                reviewImage2: "",
+                reviewImage3: ""
+              }
+            ]).map((review, idx) => (
+              <div key={idx} className="card mb-3 shadow-sm p-3">
+                {/* 사용자명 + 평점 */}
+                <div className="d-flex justify-content-between mb-1">
+                  <strong>{review.userName || "사용자"}</strong>
+                  <span className="text-warning">★ {review.reviewRating}</span>
+                </div>
 
-                    {/* 작성일 */}
-                    <div className="text-muted small mb-2">{review.reviewWriteDate}</div>
+                {/* 작성일 */}
+                <div className="text-muted small mb-2">{review.reviewWriteDate}</div>
 
-                    {/* 리뷰 내용 */}
-                    <div className="mb-2">{review.reviewContent}</div>
+                {/* 리뷰 내용 */}
+                <div className="mb-2">{review.reviewContent}</div>
 
-                    {/* 이미지 */}
-                    <div className="d-flex gap-2 flex-wrap">
-                      {[review.reviewImage1, review.reviewImage2, review.reviewImage3]
-                          .filter(Boolean)
-                          .map((img, i) => (
-                              <div
-                                  key={i}
-                                  className="bg-light rounded"
-                                  style={{ width: "100px", height: "100px", overflow: "hidden" }}
-                              >
-                                <img
-                                    src={img}
-                                    alt={`리뷰 이미지 ${i}`}
-                                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                                />
-                              </div>
-                          ))}
-                    </div>
-                  </div>
-              ))}
-            </div>
+                {/* 이미지 */}
+                <div className="d-flex gap-2 flex-wrap">
+                  {[review.reviewImage1, review.reviewImage2, review.reviewImage3]
+                    .filter(Boolean)
+                    .map((img, i) => (
+                      <div
+                        key={i}
+                        className="bg-light rounded"
+                        style={{width: "100px", height: "100px", overflow: "hidden"}}
+                      >
+                        <img
+                          src={img}
+                          alt={`리뷰 이미지 ${i}`}
+                          style={{width: "100%", height: "100%", objectFit: "cover"}}
+                        />
+                      </div>
+                    ))}
+                </div>
+              </div>
+            ))}
+          </div>
         )}
 
 
@@ -356,7 +348,7 @@ function ContentDetail() {
             <button
               className="common-btn w-100"
               onClick={() => {
-                Nv(`/book/visit/${userIdx}/${resIdx}`)
+                Nv(`/book/visit/${userIdx}/${param.resIdx}`)
               }}>예약하기
             </button>
           ) : (

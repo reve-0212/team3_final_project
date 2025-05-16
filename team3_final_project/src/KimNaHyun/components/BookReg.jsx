@@ -1,4 +1,3 @@
-import React, {useEffect, useState} from "react";
 import Button from "./Button.jsx";
 import {useNavigate} from "react-router-dom";
 import useUserStore from "../../stores/useUserStore.jsx";
@@ -122,6 +121,7 @@ function BookReg() {
               }
             });
 
+            // 5. 히스토리 저장
             await axios.put("http://localhost:8080/saveHistory", null, {
               params: {
                 reservationIdx: searchRes.data,

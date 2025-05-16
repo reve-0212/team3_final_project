@@ -51,7 +51,6 @@ import PreInfoPage from "./layout/PreInfoPage.jsx";
 import PreReSetTabs from "./Owner/PreReSetTabs.jsx";
 import PreChTabs from "./Owner/PreChTabs.jsx";
 import ContentDetail from "../JeonKangSan/ContentDetail.jsx";
-
 import SeatLayout from "../KimSangMin/Seat/SeatLayout.jsx";
 import SjhLocation from "../simJiHyun/location/SjhLocation.jsx";
 import ErrorPage from "../simJiHyun/error/ErrorPage.jsx";

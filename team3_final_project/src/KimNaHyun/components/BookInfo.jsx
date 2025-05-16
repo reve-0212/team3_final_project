@@ -8,18 +8,19 @@ import useReservationIdxStore from "../../stores/useReservationIdxStore.jsx";
 import axios from "axios";
 import useRestaurantStore from "../../stores/useRestaurantStore.jsx";
 import {useNavigate, useSearchParams} from "react-router-dom";
+import useResStoreSjh from "../../stores/useResStoreSjh.jsx";
 
 function BookInfo() {
   // 모달을 열지 말지 결정한다
   const [openModal, setOpenModal] = useState(false);
   const reservationIdx = useReservationIdxStore(state => state.reservationIdx)
   const restaurantIdx = useRestaurantStore(state => state.restaurantIdx)
+  const setRes = useResStoreSjh((state) => state.setRes)
   const [reservations, setReservations] = useState({})
   const [menus, setMenus] = useState([])
   const Nv = useNavigate();
   const [searchParams] = useSearchParams();
   const type = searchParams.get("type")
-
 
   useEffect(() => {
     axios.all([
@@ -113,7 +114,10 @@ function BookInfo() {
       </section>
 
       {type === 'book' && (
-        <Button btnName={"메인으로 가기"} onClick={() => Nv("/")}/>
+        <Button btnName={"메인으로 가기"} onClick={() => {
+          setRes(null)
+          Nv("/")
+        }}/>
       )}
 
       {type === 'cancel' && (
