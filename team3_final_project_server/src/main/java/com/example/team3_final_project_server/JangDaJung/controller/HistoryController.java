@@ -84,6 +84,12 @@ public class HistoryController {
         List<String> timeList = Arrays.asList(csv.split(","));
         return ResponseEntity.ok(timeList);
     }
+//    가게 이름
+    @GetMapping("/storeInfo")
+    public ResponseEntity<?> getStoreInfo(@RequestParam int resIdx) {
+        Map<String, Object> result = jdjService.getStoreInfo(resIdx);
+        return ResponseEntity.ok(result);
+    }
 
     // 기간별 조회 API
     @GetMapping("/date")

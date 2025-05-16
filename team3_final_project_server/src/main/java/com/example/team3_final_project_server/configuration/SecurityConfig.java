@@ -144,6 +144,7 @@ public class SecurityConfig {
                     .requestMatchers("/menu/**", "/menu/unHidden/**","/menu/unSoldOut/**","/menu/delete/**","/menu/edit/**").permitAll()
                     .requestMatchers("/pre/owner/Profile").hasRole("OWNER")
 
+                    .requestMatchers("/pre/review/**").permitAll()
 
 //                    관리자 전용 페이지
                     .requestMatchers("/pre/admin/**").permitAll()

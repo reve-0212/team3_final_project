@@ -2,13 +2,12 @@ package com.example.team3_final_project_server.JangDaJung;
 
 import com.example.team3_final_project_server.dto.MenuDTO;
 import com.example.team3_final_project_server.dto.ReservationHistoryDTO;
+import com.example.team3_final_project_server.dto.ReviewDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -52,6 +51,8 @@ public class JDJServiceImpl implements JDJService {
         return jdjMapper.selectTeamCountByHour(startDate, endDate, resIdx);
     }
 
+
+
 //    가게 영업시간 불러오기(통계페이지)
 //    @Override
 //    public Map<String, String> getResTime(int resIdx) {
@@ -73,6 +74,10 @@ public class JDJServiceImpl implements JDJService {
     public List<String> getResTime(String resIdx) {
         return jdjMapper.getResTime(resIdx);
     }
+//    @Override
+//    public Map<String, Object> getResTimeWithResName(String resIdx) {
+//        return jdjMapper.getResTimeWithResName(resIdx);
+//    }
 
 
 
@@ -139,4 +144,55 @@ public class JDJServiceImpl implements JDJService {
     public void deleteMenu(int menuIdx) {
         jdjMapper.deleteMenu(menuIdx);
     }
+
+//    ----- 리뷰
+//    메인페이지에서 리뷰 통계
+    @Override
+    public Map<String, Object> getReviewChByResIdx(int resIdx) {
+        List<ReviewDTO> reviewList = jdjMapper.getReviewChByResIdx(resIdx);
+
+        double averageScore = 0.0;
+        if (!reviewList.isEmpty()) {
+            double total = reviewList.stream().mapToDouble(ReviewDTO::getReviewRating).sum();
+            averageScore = (double) total / reviewList.size();
+        }
+
+        List<Map<String, Object>> reviewScoreData = new ArrayList<>();
+        for (int i = 5; i >= 1; i--) {
+            final double ratingValue = i;
+            int count = (int) reviewList.stream()
+                .filter(r -> r.getReviewRating() == ratingValue)
+                .count();
+
+            Map<String, Object> scoreMap = new HashMap<>();
+            scoreMap.put("score", i);
+            scoreMap.put("count", count);
+            reviewScoreData.add(scoreMap);
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("averageScore", averageScore);
+        result.put("reviewScoreData", reviewScoreData);
+        result.put("reviewList", reviewList); // 원본 리뷰도 같이 전달
+
+        return result;
+    }
+
+//    가게 이름
+    @Override
+    public Map<String, Object> getStoreInfo(int resIdx) {
+        return jdjMapper.getStoreInfo(resIdx);
+    }
+
+    //    리뷰 불러오기
+    @Override
+    public List<ReviewDTO> getReviewListByResIdx(int resIdx) {
+        return jdjMapper.getReviewListByResIdx(resIdx);
+    }
+
+//    답글 작성, 수정
+//    @Override
+//    public int updatePreReply(ReviewDTO dto) {
+//        return jdjMapper.updatePreReply(dto);
+//    }
 }

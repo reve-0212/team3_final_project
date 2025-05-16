@@ -4,17 +4,16 @@ import lombok.Data;
 
 @Data
 public class ReviewDTO {
-  private int ReviewIdx;
+  private int reviewIdx;
   private int userIdx;
-  private int restaurantIdx;
-  private int menuIdx;
-  private String isOnePick;
+  private int resIdx;
   private double reviewRating;
   private String reviewContent;
   private String reviewWriteDate;
-  private String reviewVisitedDate;
   private String reviewImage1;
   private String reviewImage2;
   private String reviewImage3;
-  private String reviewType;
+  private String reviewOwnerContents;
+
+  private String userNick; // 사장페이지에서 리뷰 작성자 불러오기 위해서
 }

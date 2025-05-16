@@ -85,6 +85,12 @@
         FROM restaurant
         WHERE res_idx = #{resIdx}
     </select>
+<!--    가게 이름 -->
+    <select id="getStoreInfo" resultType="map" parameterType="int">
+        SELECT res_name
+        FROM restaurant
+        WHERE res_idx = #{resIdx}
+    </select>
 
 <!--    메뉴 페이지-->
 
@@ -166,4 +172,27 @@
         DELETE FROM menu
         WHERE menu_idx = #{menuIdx}
     </delete>
+
+<!--    리뷰 페이지 -->
+<!--    리뷰 불러오기-->
+    <select id="getReviewListByResIdx" resultType="com.example.team3_final_project_server.dto.ReviewDTO">
+        SELECT r.*, u.user_nick AS userNick
+        FROM review r
+        JOIN user u ON r.user_idx = u.user_idx
+        WHERE r.res_idx = #{resIdx}
+        ORDER BY r.review_write_date DESC
+    </select>
+
+    <select id="getReviewChByResIdx" parameterType="int" resultType="com.example.team3_final_project_server.dto.ReviewDTO">
+        SELECT *
+        FROM review
+        WHERE res_idx = #{resIdx}
+    </select>
+
+    <!-- 사장님 답글 등록/수정 -->
+<!--    <update id="updatePreReply">-->
+<!--        UPDATE review-->
+<!--        SET review_owner_contents = #{reviewOwnerContents}-->
+<!--        WHERE review_idx = #{reviewIdx}-->
+<!--    </update>-->
 </mapper>
