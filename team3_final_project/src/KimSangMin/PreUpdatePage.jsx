@@ -73,7 +73,7 @@ function PreInfoPage() {
                         </div>
 
                         <img
-                             src={OwnerList[0]?.resImge1 && OwnerList[0].resImge1.trim() !== "" ? OwnerList[0].resImge1 : "/images/user.jpg"}
+                             src={OwnerList[0]?.resImage1 && OwnerList[0].resImage1.trim() !== "" ? OwnerList[0].resImage1 : "/images/user.jpg"}
                              alt="프로필"
                              className="profile-image"
                         />
