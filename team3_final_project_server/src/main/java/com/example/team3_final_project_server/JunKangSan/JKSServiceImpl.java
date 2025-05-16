@@ -71,4 +71,9 @@ public class JKSServiceImpl implements JKSService {
   public void deleteBookmark(int userIdx, int resIdx) {
     jksMapper.deleteBookmark(userIdx, resIdx);
   }
+
+//  serviceimpl
+  @Override
+  public List<RestaurantListDTO> getBookmarkedRestaurants(int userIdx) { return jksMapper.getBookmarkedRestaurants(userIdx); }
+
 }

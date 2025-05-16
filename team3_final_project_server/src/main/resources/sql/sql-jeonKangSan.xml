@@ -148,4 +148,32 @@
         WHERE user_idx = #{userIdx} AND res_idx = #{resIdx}
     </delete>
 
+
+
+
+    <!-- 북마크된 가게 리스트 조회 -->
+    <select id="getBookmarkedRestaurants" parameterType="int" resultType="com.example.team3_final_project_server.dto.RestaurantListDTO">
+        SELECT
+        r.res_idx,
+        r.res_name,
+        r.res_image1,
+        r.res_image2,
+        r.res_image3,
+        r.res_address1,
+        r.reserve_or_waiting,
+        r.res_option_1,
+        c.category_name,
+        ROUND(AVG(rv.review_rating), 1) AS avgRating,
+        COUNT(rv.review_idx) AS reviewCount
+        FROM
+        bookmark b
+        JOIN restaurant r ON b.res_idx = r.res_idx
+        LEFT JOIN category c ON r.res_idx = c.res_idx
+        LEFT JOIN review rv ON r.res_idx = rv.res_idx
+        WHERE
+        b.user_idx = #{userIdx}
+        GROUP BY
+        r.res_idx
+    </select>
+
 </mapper>

@@ -9,7 +9,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import noImage from '../JeongSeongYun/img/noimage.jpg';
 import useRestaurantStore from "../stores/useRestaurantStore.jsx";
-
+import useUserStore from "/src/stores/useUserStore.jsx";
 
 // jsy 작업
 
@@ -22,6 +22,8 @@ function ContentList() {
 
 
   //
+  const userStore = useUserStore((state) => state.user)
+
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -81,7 +83,7 @@ function ContentList() {
 
 
   const toggleBookmark = (resIdx) => {
-    const userIdx = 1; // 로그인된 사용자 ID
+  const userIdx = userStore && userStore.userIdx !== null ? userStore.userIdx : ""
 
     // 로그인 확인
     if (!userIdx) {

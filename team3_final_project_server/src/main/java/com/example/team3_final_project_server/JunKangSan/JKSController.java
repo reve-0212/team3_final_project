@@ -111,4 +111,12 @@ public class JKSController {
         return "Bookmark deleted";
     }
 
+//    controller
+    @GetMapping("/bookmark/{userIdx}")
+    @ResponseBody
+    public List<RestaurantListDTO> getBookmarkedRestaurants(@PathVariable int userIdx) {
+        System.out.println("userIdx = " + userIdx); // 로그 확인용
+        return jksService.getBookmarkedRestaurants(userIdx);
+    }
+
 }
