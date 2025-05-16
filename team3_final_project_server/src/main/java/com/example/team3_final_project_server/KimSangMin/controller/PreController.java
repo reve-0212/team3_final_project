@@ -450,4 +450,24 @@ public ResponseEntity<PreResponse> updateTime(@RequestBody List<TimeDTO> times,
     }
   }
 
-}
+// 편의시설 목록 가져오기
+  @GetMapping("/pre/owner/funcOpt")
+  public ResponseEntity<PreResponse> funcOpt(@RequestHeader("Authorization") String authorization) {
+    try{
+      ResponseDTO jwtInfo = preService.tokenCheck(authorization);
+      int userIdx = jwtInfo.getUserIdx();
+
+      List<ConvenientDTO> func = preService.getFunc();
+      return ResponseEntity.ok(new PreResponse(true, "편의 시설 목록 조회 성공", func));
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+              .body(new PreResponse(false, "토큰이 유효하지 않거나 인증 실패", null));
+    }
+    }
+  }
+
+//  사장 편의시설 저장하기
+//@PostMapping("/pre/owner/saveFunc")
+//public ResponseEntity<PreResponse> saveFunc

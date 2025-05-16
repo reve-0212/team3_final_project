@@ -153,6 +153,12 @@ public class PreServiceImpl implements PreService {
     return result > 0;
   }
 
+  @Override
+  public List<ConvenientDTO> getFunc() {
+    return preMapper.getFunc();
+  }
+
+
   // 가게 정보 수정하기
   @Override
   public boolean updateRest(int resIdx, RestaurantDTO storeData) {

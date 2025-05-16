@@ -58,4 +58,7 @@ public interface PreService {
 
 //  가게에 저장된 카테고리 수정하기
   boolean updateCate(CategoryDTO category);
+
+//  db에 저장된 편의시설 가져오기.
+  List<ConvenientDTO> getFunc();
 }

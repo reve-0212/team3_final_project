@@ -1,10 +1,7 @@
 package com.example.team3_final_project_server.KimSangMin.mapper;
 
 import com.example.team3_final_project_server.KimSangMin.response.TimeRequest;
-import com.example.team3_final_project_server.dto.CategoryDTO;
-import com.example.team3_final_project_server.dto.RestaurantDTO;
-import com.example.team3_final_project_server.dto.SeatDTO;
-import com.example.team3_final_project_server.dto.TimeDTO;
+import com.example.team3_final_project_server.dto.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -51,4 +48,6 @@ public interface PreMapper {
     boolean existsCate(Integer resIdx);
 
     int updateCate(CategoryDTO category);
+
+    List<ConvenientDTO> getFunc();
 }

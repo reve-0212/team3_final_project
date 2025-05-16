@@ -149,4 +149,8 @@
         WHERE seat_id = #{seatId} AND res_idx = #{resIdx}
     </delete>
 
+
+<!--    db에서 편의시설 가져오기 -->
+    <select id="getFunc"></select>
+
 </mapper>
