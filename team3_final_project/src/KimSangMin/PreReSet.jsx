@@ -1,7 +1,9 @@
-import {useEffect, useState} from "react";
-import { Link } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {Link} from "react-router-dom";
 import ReBanner from "./ReBanner.jsx";
 import axios from "axios";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faCamera} from "@fortawesome/free-solid-svg-icons";
 
 function PreReSet() {
   // restData : 가게에 입력하고자하는 기본정보 저장객체
@@ -63,16 +65,19 @@ function PreReSet() {
 
 
   //  이미지 업로드
-  const [img, setImg] = useState(["", "", ""]);
+  // const [img, setImg] = useState(["", "", ""]);
   // 미리보기 활성화 여부
-  const [isPreview, setIsPreview] = useState([]);
+  // const [isPreview, setIsPreview] = useState([]);
 
   const [address, setAddress] = useState("");
   // const [searchResults, setSearchResults] = useState([]);
   const [resTime, setResTime] = useState([""]);
   const [dongOption, setDongOption] = useState(""); // 기본 옵션 설정
-  const [isSave,setIsSave] = useState(true);
+  const [isSave, setIsSave] = useState(true);
   const [resIdx, setResIdx] = useState("");
+
+  // 이미지 저장용 배열
+  const [resImage, setResImage] = useState([])
 
 
   //-----------------------------  주소 검색 api로 요청받아오기------------------------
@@ -92,29 +97,28 @@ function PreReSet() {
 // ------------------------------------------------------------------------------------------------
 
   // 이미지 업로드
-  const chImage = (e, index) => {
-    const newImg = [...img]; // ..img 는 현재이미지 배열을 복사, newImg에 저장
-    newImg[index] = e.target.value; // 주어진 index에 해당하는 이미지를 업데이트한다.
-    setImg(newImg); // 새로운 이미지를 기존에 이미지 상태에 저장
-  }
-  const hPreview = () => {
-    // 입력된 URL을 미리보기 배열에 추가
-    setIsPreview(img.filter(url => url !== ""));
-  };
+  // const chImage = (e, index) => {
+  //   const newImg = [...img]; // ..img 는 현재이미지 배열을 복사, newImg에 저장
+  //   newImg[index] = e.target.value; // 주어진 index에 해당하는 이미지를 업데이트한다.
+  //   setImg(newImg); // 새로운 이미지를 기존에 이미지 상태에 저장
+  // }
+  // const hPreview = () => {
+  //   // 입력된 URL을 미리보기 배열에 추가
+  //   setIsPreview(img.filter(url => url !== ""));
+  // };
 
   // 이미지 미리보기
-  const imagePreviews = isPreview.map((url, index) => (
-      url && (
-          <div key={index} style={{display: 'inline-block', marginRight: '10px'}}>
-            <img
-                src={url}
-                alt={`가게 이미지 ${index + 1}`}
-                style={{width: '100px', height: '100px', objectFit: 'cover'}}
-            />
-          </div>
-      )
-  ));
-
+  // const imagePreviews = isPreview.map((url, index) => (
+  //     url && (
+  //         <div key={index} style={{display: 'inline-block', marginRight: '10px'}}>
+  //           <img
+  //               src={url}
+  //               alt={`가게 이미지 ${index + 1}`}
+  //               style={{width: '100px', height: '100px', objectFit: 'cover'}}
+  //           />
+  //         </div>
+  //     )
+  // ));
 
   // 예약시간 input 추가 / 삭제 기능
   const addTime = () => setResTime([...resTime, ""]);
@@ -135,57 +139,101 @@ function PreReSet() {
   // 데이터 불러오기
   const token = localStorage.getItem('jwtToken');
 
+  // 가게 이미지 저장용
+  const uploadToCloudinary = async (file) => {
+    console.log("업로드할 파일:", file);
+    console.log("name:", file.name);
+    console.log("type:", file.type);
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "waitable");
+
+    for (let pair of formData.entries()) {
+      if (pair[0] === "file") {
+        const f = pair[1];
+        console.log(`file name: ${f.name}`);
+        console.log(`file size: ${f.size}`);
+        console.log(`file type: ${f.type}`);
+      } else {
+        console.log(`${pair[0]}: ${pair[1]}`);
+      }
+    }
+
+    try {
+      const response = await fetch("https://api.cloudinary.com/v1_1/dot2phme3/image/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+      console.log("Cloudinary 응답:", data);
+      return data.secure_url;
+    } catch (err) {
+      console.error(err);
+      return null;
+    }
+  };
+
+  const uploadImagesToCloudinary = async (files) => {
+    const urls = []
+
+    for (const file of files) {
+      const url = await uploadToCloudinary(file)
+      if (url) urls.push(url)
+    }
+    return urls;
+  }
+
+  // 가게 정보 가져오기
   useEffect(() => {
     if (!token) return;
 
     axios.get("http://localhost:8080/pre/owner/getRestaurant", {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: {Authorization: `Bearer ${token}`}
     })
-        .then(response => {
-          const storeData = response.data.data;
-          console.log(storeData)
-          if (storeData && storeData.resName) {
-            setIsSave(false);
-            setResIdx(storeData.resIdx);
-            setRestData({
-              Name: storeData.resName,
-              Call: storeData.resCall,
-              Address1: storeData.resAddress1,
-              Introduce: storeData.resIntroduce,
-            });
-            setDongOption(storeData.resAddress2);
-            setResTime(storeData.resReserveTime ? storeData.resReserveTime.split(",") : []);
-            setImg([
-              storeData.resImage1 || "",
-              storeData.resImage2 || "",
-              storeData.resImage3 || ""
-            ]);
-          } else {
+      .then(response => {
+        const storeData = response.data.data;
+        console.log(storeData)
+        if (storeData && storeData.resName) {
+          setIsSave(false);
+          setResIdx(storeData.resIdx);
+          setRestData({
+            Name: storeData.resName,
+            Call: storeData.resCall,
+            Address1: storeData.resAddress1,
+            Introduce: storeData.resIntroduce,
+          });
+          setDongOption(storeData.resAddress2);
+          setResTime(storeData.resReserveTime ? storeData.resReserveTime.split(",") : []);
+          setResImage([
+            storeData.resImage1 || "",
+            storeData.resImage2 || "",
+            storeData.resImage3 || ""
+          ]);
+        } else {
+          setIsSave(true);
+        }
+      })
+      .catch(error => {
+        console.log("사용자 정보 가져오기 실패", error);
+        if (error.response) {
+          if (error.response.status === 401) {
+            alert("토큰이 만료되었습니다. 다시 로그인 해주세요.");
+          } else if (error.response.status === 404) {
+            console.log("가게 정보 없음, 신규 등록 상태로 이동");
             setIsSave(true);
-          }
-        })
-        .catch(error => {
-          console.log("사용자 정보 가져오기 실패", error);
-          if (error.response) {
-            if (error.response.status === 401) {
-              alert("토큰이 만료되었습니다. 다시 로그인 해주세요.");
-            } else if (error.response.status === 404) {
-              console.log("가게 정보 없음, 신규 등록 상태로 이동");
-              setIsSave(true);
-            } else {
-              console.error("기타 오류:", error.response.data);
-            }
           } else {
-            console.error("네트워크 오류:", error.message);
+            console.error("기타 오류:", error.response.data);
           }
-        });
+        } else {
+          console.error("네트워크 오류:", error.message);
+        }
+      });
   }, [token]);
 
-
-
-
 // 데이터 저장 폼
-  const hSubmit = (e) => {
+  const hSubmit = async (e) => {
     e.preventDefault();
 
     const token = localStorage.getItem('jwtToken');
@@ -195,6 +243,8 @@ function PreReSet() {
       return;
     }
 
+    const imageUrls = await uploadImagesToCloudinary(resImage);
+
     const storeData = {
       resName: restData.Name,
       resCall: restData.Call,
@@ -202,9 +252,9 @@ function PreReSet() {
       resAddress2: dongOption,
       resIntroduce: restData.Introduce,
       resReserveTime: resTime.filter(Boolean).join(","),
-      resImage1: img[0],
-      resImage2: img[1],
-      resImage3: img[2],
+      resImage1: imageUrls[0],
+      resImage2: imageUrls[1],
+      resImage3: imageUrls[2],
     };
 
     console.log("저장할 데이터: ", storeData);
@@ -216,14 +266,14 @@ function PreReSet() {
           Authorization: `Bearer ${token}`
         }
       })
-          .then(response => {
-            console.log("수정 성공", response.data);
-            alert("가게 정보가 수정되었습니다.");
-          })
-          .catch(error => {
-            console.log("오류 발생", error);
-            alert("수정 중 오류가 발생했습니다.");
-          });
+        .then(response => {
+          console.log("수정 성공", response.data);
+          alert("가게 정보가 수정되었습니다.");
+        })
+        .catch(error => {
+          console.log("오류 발생", error);
+          alert("수정 중 오류가 발생했습니다.");
+        });
     }
 
     // 처음 저장할 때
@@ -234,222 +284,252 @@ function PreReSet() {
           Authorization: `Bearer ${token}`
         }
       })
-          .then((response) => {
-            console.log("저장 성공", response.data);
-            alert("가게 정보가 저장되었습니다.");
-            setIsSave(false);
-            setResIdx(response.data.resIdx || "");
-          })
-          .catch((error) => {
-            console.log("오류 발생", error);
-            if (error.response && error.response.status === 401) {
-              alert("토큰이 만료되었습니다. 다시 로그인 해주세요.");
-            } else {
-              alert("오류가 발생했습니다.");
-            }
-          });
+        .then((response) => {
+          console.log("저장 성공", response.data);
+          alert("가게 정보가 저장되었습니다.");
+          setIsSave(false);
+          setResIdx(response.data.resIdx || "");
+        })
+        .catch((error) => {
+          console.log("오류 발생", error);
+          if (error.response && error.response.status === 401) {
+            alert("토큰이 만료되었습니다. 다시 로그인 해주세요.");
+          } else {
+            alert("오류가 발생했습니다.");
+          }
+        });
     }
   };
 
 
-
   return (
-      <div
-          // style={{
-          //   marginLeft: "300px",
-          //   paddingTop: "8rem",
-          //   paddingLeft: "1rem",
-          //   width: "calc(100% - 200px)",
-          //   maxWidth: "1000px",
-          // }}
-      >
-        <ReBanner/>
-        <form onSubmit={hSubmit}>
-          {/* 가게 이미지 설정 */}
-          <h4 className="text-start">
-            <strong>가게 대표 이미지</strong>
-          </h4>
-          <div className="mb-4">
-            {img.map((url, index) => (
-                <input
-                    key={index}
-                    type="text"
-                    className="form-control"
-                    style={{width: '300px', height: '35px', marginBottom: '10px'}}
-                    placeholder={`이미지 ${index + 1} URL을 입력하세요`}
-                    value={url}
-                    onChange={(e) => chImage(e, index)}
-                />
-            ))}
-          </div>
+    <div
+      // style={{
+      //   marginLeft: "300px",
+      //   paddingTop: "8rem",
+      //   paddingLeft: "1rem",
+      //   width: "calc(100% - 200px)",
+      //   maxWidth: "1000px",
+      // }}
+    >
+      <ReBanner/>
+      <form onSubmit={hSubmit}>
+        {/* 가게 이미지 설정 */}
+        <h4 className="text-start">
+          <strong>가게 대표 이미지</strong>
+        </h4>
 
-          {/* 확인 버튼 */}
-          <button type="button" className="btn btn-primary" onClick={hPreview}>
-            확인
+        <div className={"mt-3 mb-5 d-flex justify-content-between me-5"}>
+          <label
+            htmlFor={"resImageUpload"}
+            style={{
+              width: "100px", height: "100px",
+              backgroundColor: "white", border: "1px solid #A9A9A9",
+            }}
+            className={"rounded-3 d-flex flex-column justify-content-center align-items-center"}>
+            <FontAwesomeIcon icon={faCamera} className={"fs-3"}/>
+            <p className={"fs-6 mb-0"}>사진 0/3</p>
+          </label>
+          <input id={"resImageUpload"}
+                 type={"file"}
+                 multiple accept={"image/*"}
+                 style={{display: "none"}}
+                 onChange={(e) => {
+                   const files = Array.from(e.target.files).slice(0, 3)
+                   setResImage(files)
+                 }}/>
+
+          {resImage.map((file, idx) => (
+            <img
+              key={idx}
+              src={URL.createObjectURL(file)}
+              alt={`preview=${idx}`}
+              style={{width: "100px", height: "100px", objectFit: "cover", borderRadius: "10px"}}
+            />
+          ))}
+        </div>
+
+        {/*<div className="mb-4">*/}
+        {/*  {img.map((url, index) => (*/}
+        {/*      <input*/}
+        {/*          key={index}*/}
+        {/*          type="text"*/}
+        {/*          className="form-control"*/}
+        {/*          style={{width: '300px', height: '35px', marginBottom: '10px'}}*/}
+        {/*          placeholder={`이미지 ${index + 1} URL을 입력하세요`}*/}
+        {/*          value={url}*/}
+        {/*          onChange={(e) => chImage(e, index)}*/}
+        {/*      />*/}
+        {/*  ))}*/}
+        {/*</div>*/}
+
+        {/* 확인 버튼 */}
+        {/*<button type="button" className="btn btn-primary" onClick={hPreview}>*/}
+        {/*  확인*/}
+        {/*</button>*/}
+
+        {/* 미리보기 활성화 */}
+        {/*<div style={{marginTop: '20px'}}>*/}
+        {/*  <h5>미리보기:</h5>*/}
+        {/*  <div>{imagePreviews}</div>*/}
+        {/*</div>*/}
+
+
+        <hr/>
+        <br/>
+
+
+        {/* 가게 이름 설정 */}
+        <h4 className="text-start">
+          <strong>가게 이름</strong>
+          <span style={{color: "#FFD727", fontSize: "14px"}}> *필수</span>
+        </h4>
+        <div className="mb-4">
+          <input
+            type="text"
+            id="Name"
+            className="form-control"
+            style={{width: "300px", height: "50px"}}
+            value={restData.Name}
+            onChange={(e) => hfChange(e, "Name")}
+          />
+        </div>
+
+
+        <hr/>
+        <br/>
+
+
+        <h4 className="text-start">
+          <strong>가게 번호</strong>
+          <span style={{color: "#FFD727", fontSize: "14px"}}> *필수</span>
+        </h4>
+        <div className="mb-4">
+          <input
+            type="text"
+            id="Call"
+            className="form-control"
+            style={{width: "300px", height: "50px"}}
+            value={restData.Call}
+            onChange={(e) => hfChange(e, "Call")}
+          />
+        </div>
+        <hr/>
+        <br/>
+
+
+        {/* --------------------- 주소 입력 창 / 검색 , 동 선택 ----------------  */}
+        <h4 className="text-start">
+          <strong>주소 검색 </strong>
+          <span style={{color: "#FFD727", fontSize: "14px"}}> *필수</span>
+        </h4>
+        <div className="mb-4">
+          <input
+            type="text"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            placeholder="주소를 입력하세요"
+            className="form-control"
+            style={{width: "300px", height: "50px", display: "inline-block", marginRight: "10px"}}
+          />
+          <button type="button" onClick={openDaumPostcode} className="btn btn-outline-warning btn-sm">
+            검색
           </button>
+        </div>
 
-          {/* 미리보기 활성화 */}
-          <div style={{marginTop: '20px'}}>
-            <h5>미리보기:</h5>
-            <div>{imagePreviews}</div>
-          </div>
+        <hr/>
+        <br/>
 
 
-          <hr/>
-          <br/>
-
-
-          {/* 가게 이름 설정 */}
-          <h4 className="text-start">
-            <strong>가게 이름</strong>
-            <span style={{color: "#FFD727", fontSize: "14px"}}> *필수</span>
-          </h4>
-          <div className="mb-4">
-            <input
-                type="text"
-                id="Name"
-                className="form-control"
-                style={{width: "300px", height: "50px"}}
-                value={restData.Name}
-                onChange={(e) => hfChange(e, "Name")}
-            />
-          </div>
-
-
-          <hr/>
-          <br/>
-
-
-          <h4 className="text-start">
-            <strong>가게 번호</strong>
-            <span style={{color: "#FFD727", fontSize: "14px"}}> *필수</span>
-          </h4>
-          <div className="mb-4">
-            <input
-                type="text"
-                id="Call"
-                className="form-control"
-                style={{width: "300px", height: "50px"}}
-                value={restData.Call}
-                onChange={(e) => hfChange(e, "Call")}
-            />
-          </div>
-          <hr/>
-          <br/>
-
-
-          {/* --------------------- 주소 입력 창 / 검색 , 동 선택 ----------------  */}
-          <h4 className="text-start">
-            <strong>주소 검색 </strong>
-            <span style={{color: "#FFD727", fontSize: "14px"}}> *필수</span>
-          </h4>
-          <div className="mb-4">
-            <input
-                type="text"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                placeholder="주소를 입력하세요"
-                className="form-control"
-                style={{width: "300px", height: "50px", display: "inline-block", marginRight: "10px"}}
-            />
-            <button type="button" onClick={openDaumPostcode} className="btn btn-outline-warning btn-sm">
-              검색
-            </button>
-          </div>
-
-          <hr/>
-          <br/>
-
-
-          {/* option에 동 설정 후 select 으로 원하는 동 선택 */}
-          <h4 className="text-start">
-            <strong>동 선택</strong>
-            <span style={{color: "#FFD727", fontSize: "14px"}}> *필수</span>
-          </h4>
-          <div className="mb-4" style={{display: "flex", alignItems: "center"}}>
-            <input
-                type="text"
-                id="Address"
-                disabled={true}
-                className="form-control"
-                style={{width: "300px", height: "50px"}}
-                value={restData.Address1}
-                onChange={(e) => hfChange(e, "Address")}
-            />
-            <select
-                value={dongOption}
-                onChange={(e) => setDongOption(e.target.value)}
-                className="form-control"
-                style={{width: "150px", height: "50px", marginLeft: "10px"}}
-            >
-              <option value="" disabled>동을 선택하세요</option>
-              {options.map((opt, i) => (
-                  <option key={i} value={opt.value}>{opt.label}</option>
-              ))}
-            </select>
-          </div>
-
-
-          <hr/>
-          <br/>
-          <h4 className="text-start">
-            <strong>가게 소개</strong>
-            <span style={{color: "#FFD727", fontSize: "14px"}}> *필수</span>
-          </h4>
-          <div className="mb-4">
-            <textarea
-                id="Introduce"
-                className="form-control"
-                style={{width: "800px", height: "100px"}}
-                value={restData.Introduce}
-                onChange={(e) => hfChange(e, "Introduce")}
-            />
-          </div>
-
-          <hr/>
-          <br/>
-
-
-          <h4 className="text-start">
-            <strong>예약 가능한 시간</strong>
-            <span style={{color: "#FFD727", fontSize: "14px"}}> *필수</span>
-          </h4>
-          <div className="mb-4">
-            {resTime.map((time, index) => (
-                <div key={index} style={{display: "flex", alignItems: "center", marginBottom: "10px"}}>
-                  <input
-                      type="time"
-                      value={time}
-                      onChange={(e) => chTime(index, e.target.value)}
-                      className="form-control"
-                      style={{width: "300px", height: "50px"}}
-                  />
-                  {index === resTime.length - 1 && (
-                      <div style={{marginLeft: "10px"}}>
-                        <button className="btn btn-sm" onClick={addTime}
-                                style={{marginRight: "5px", border: "1px solid #FFD727"}}>
-                          추가
-                        </button>
-                        <button className="btn btn-sm" style={{border: "1pxsolid #FFD727"}} onClick={removeTime}>
-                          삭제
-                        </button>
-                      </div>
-                  )}
-                </div>
+        {/* option에 동 설정 후 select 으로 원하는 동 선택 */}
+        <h4 className="text-start">
+          <strong>동 선택</strong>
+          <span style={{color: "#FFD727", fontSize: "14px"}}> *필수</span>
+        </h4>
+        <div className="mb-4" style={{display: "flex", alignItems: "center"}}>
+          <input
+            type="text"
+            id="Address"
+            disabled={true}
+            className="form-control"
+            style={{width: "300px", height: "50px"}}
+            value={restData.Address1}
+            onChange={(e) => hfChange(e, "Address")}
+          />
+          <select
+            value={dongOption}
+            onChange={(e) => setDongOption(e.target.value)}
+            className="form-control"
+            style={{width: "150px", height: "50px", marginLeft: "10px"}}
+          >
+            <option value="" disabled>동을 선택하세요</option>
+            {options.map((opt, i) => (
+              <option key={i} value={opt.value}>{opt.label}</option>
             ))}
-          </div>
+          </select>
+        </div>
 
 
-          <hr/>
-          <br/>
+        <hr/>
+        <br/>
+        <h4 className="text-start">
+          <strong>가게 소개</strong>
+          <span style={{color: "#FFD727", fontSize: "14px"}}> *필수</span>
+        </h4>
+        <div className="mb-4">
+            <textarea
+              id="Introduce"
+              className="form-control"
+              style={{width: "800px", height: "100px"}}
+              value={restData.Introduce}
+              onChange={(e) => hfChange(e, "Introduce")}
+            />
+        </div>
 
-          <div style={{display: "flex", justifyContent: "flex-end"}}>
-            <button type="submit" className="btn btn-warning btn-lg mb-3">
-              {!isSave ? "수정" : "저장"}
-            </button>
-          </div>
-        </form>
-      </div>
+        <hr/>
+        <br/>
+
+
+        <h4 className="text-start">
+          <strong>예약 가능한 시간</strong>
+          <span style={{color: "#FFD727", fontSize: "14px"}}> *필수</span>
+        </h4>
+        <div className="mb-4">
+          {resTime.map((time, index) => (
+            <div key={index} style={{display: "flex", alignItems: "center", marginBottom: "10px"}}>
+              <input
+                type="time"
+                value={time}
+                onChange={(e) => chTime(index, e.target.value)}
+                className="form-control"
+                style={{width: "300px", height: "50px"}}
+              />
+              {index === resTime.length - 1 && (
+                <div style={{marginLeft: "10px"}}>
+                  <button className="btn btn-sm" onClick={addTime}
+                          style={{marginRight: "5px", border: "1px solid #FFD727"}}>
+                    추가
+                  </button>
+                  <button className="btn btn-sm" style={{border: "1pxsolid #FFD727"}} onClick={removeTime}>
+                    삭제
+                  </button>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+
+        <hr/>
+        <br/>
+
+        <div style={{display: "flex", justifyContent: "flex-end"}}>
+          <button type="submit" className="btn btn-warning btn-lg mb-3">
+            {!isSave ? "수정" : "저장"}
+          </button>
+        </div>
+      </form>
+    </div>
   );
 }
 
