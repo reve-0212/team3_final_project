@@ -1,7 +1,7 @@
 // ContentList.jsx
 
 import "./JksSheet.css";
-import {Link, useNavigate, useParams, useLocation } from "react-router-dom";
+import {Link, useNavigate, useParams, useLocation} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBookmark as faBookmarkRegular} from "@fortawesome/free-regular-svg-icons";
 import {faBookmark} from "@fortawesome/free-solid-svg-icons";
@@ -14,16 +14,10 @@ import useUserStore from "/src/stores/useUserStore.jsx";
 // jsy 작업
 
 function ContentList() {
-  const { category } = useParams();
+  const {category} = useParams();
   const [restaurants, setRestaurants] = useState([]);
   const setResIdx = useRestaurantStore((state) => state.setRestaurantIdx)
-
-  console.log("category : " + category)
-
-
-  //
   const userStore = useUserStore((state) => state.user)
-
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -33,10 +27,9 @@ function ContentList() {
 
   useEffect(() => {
     axios.get(`http://localhost:8080/contents/${category}`, {
-      params: { region: region }
+      params: {region: region}
     })
       .then(res => {
-        console.log("받아온 데이터:", res.data); // 여기서 avgRating 확인
         setRestaurants(res.data);
       }).catch(err => console.log('데이터 가져오기 오류 :', err));
   }, [category, region]);
@@ -48,42 +41,35 @@ function ContentList() {
         sort: sortOption
       }
     })
-        .then(res => {
-          console.log("받아온 데이터:", res.data);
-          setRestaurants(res.data);
-        })
-        .catch(err => console.log('데이터 가져오기 오류:', err));
+      .then(res => {
+        setRestaurants(res.data);
+      })
+      .catch(err => console.log('데이터 가져오기 오류:', err));
   }, [category, selectedRegion, sortOption]);
 
-  useEffect(() => {
-    console.log("restaurants")
-    console.log(restaurants);
-
-    const filteredRestaurants = [...restaurants]
-        .filter(res => res.resAddress1?.includes(selectedRegion))
-        .sort((a, b) => {
-          switch (sortOption) {
-            case "별점 높은 순":
-              return (b.avgRating || 0) - (a.avgRating || 0);
-            case "리뷰 많은 순":
-              return (b.reviewCount || 0) - (a.reviewCount || 0);
-            default:
-              return 0; // 가까운 순은 거리 기준 처리 안 되어 있음
-          }
-        });
-
-
-
-  }, [restaurants])
-
-
-
+  // useEffect(() => {
+  //   console.log("restaurants")
+  //   console.log(restaurants);
+  //
+  //   const filteredRestaurants = [...restaurants]
+  //       .filter(res => res.resAddress1?.includes(selectedRegion))
+  //       .sort((a, b) => {
+  //         switch (sortOption) {
+  //           case "별점 높은 순":
+  //             return (b.avgRating || 0) - (a.avgRating || 0);
+  //           case "리뷰 많은 순":
+  //             return (b.reviewCount || 0) - (a.reviewCount || 0);
+  //           default:
+  //             return 0; // 가까운 순은 거리 기준 처리 안 되어 있음
+  //         }
+  //       });
+  // }, [restaurants])
 
   // ------북마크(외부 수정 필요)------
 
 
   const toggleBookmark = (resIdx) => {
-  const userIdx = userStore && userStore.userIdx !== null ? userStore.userIdx : ""
+    const userIdx = userStore && userStore.userIdx !== null ? userStore.userIdx : ""
 
     // 로그인 확인
     if (!userIdx) {
@@ -100,25 +86,22 @@ function ContentList() {
     }));
 
     const url = "http://localhost:8080/bookmark";
-    const data = { userIdx, resIdx };
+    const data = {userIdx, resIdx};
 
     // 북마크 등록 / 해제
     if (isBookmarked) {
-      axios.delete(url, { data })
-          .then(() => console.log("북마크 해제"))
-          .catch(err => console.error("해제 실패", err));
+      axios.delete(url, {data})
+        .then(() => console.log("북마크 해제"))
+        .catch(err => console.error("해제 실패", err));
     } else {
       axios.post(url, data)
-          .then(() => console.log("북마크 등록"))
-          .catch(err => console.error("등록 실패", err));
+        .then(() => console.log("북마크 등록"))
+        .catch(err => console.error("등록 실패", err));
     }
   };
 
   // --------------
-
-
-
-    const Nv = useNavigate();
+  const Nv = useNavigate();
   const [bookmarks, setBookmarks] = useState({
     store1: false,
     store2: false
@@ -130,11 +113,11 @@ function ContentList() {
       {/* 상단 필터 버튼 - 초기화, 지역 선택, 2차 정렬 */}
       <div className="d-flex gap-2 mb-4">
         <button
-            className="btn-jks btn-outline-secondary btn-sm"
-            onClick={() => {
-              setSelectedRegion(""); // 기본 지역
-              setSortOption("가까운 순"); // 기본 정렬
-            }}
+          className="btn-jks btn-outline-secondary btn-sm"
+          onClick={() => {
+            setSelectedRegion(""); // 기본 지역
+            setSortOption("가까운 순"); // 기본 정렬
+          }}
         >
           <i className="fa-solid fa-rotate-right"></i> 초기화
         </button>
@@ -142,11 +125,11 @@ function ContentList() {
         {/* 지역 선택 콤보박스 */}
         <div className="position-relative">
           <select
-              className="btn-jks btn-sm button-seebox me-auto text-start"
-              style={{width: 'auto', appearance: 'none'}}
-              aria-label="지역 선택"
-              value={selectedRegion}
-              onChange={(e) => setSelectedRegion(e.target.value)}
+            className="btn-jks btn-sm button-seebox me-auto text-start"
+            style={{width: 'auto', appearance: 'none'}}
+            aria-label="지역 선택"
+            value={selectedRegion}
+            onChange={(e) => setSelectedRegion(e.target.value)}
           >
             <option value="">전체</option>
             <option value="금정구">금정구</option>
@@ -169,17 +152,16 @@ function ContentList() {
         {/* 정렬 기준 선택 콤보박스 */}
         <div className="position-relative d-inline-block">
           <select
-              className="btn-jks button-seebox btn-sm text-start"
-              style={{ width: 'auto', appearance: 'none', paddingRight: '2rem' }}
-              aria-label="정렬 기준 선택"
-              value={sortOption}
-              onChange={(e) => setSortOption(e.target.value)}
+            className="btn-jks button-seebox btn-sm text-start"
+            style={{width: 'auto', appearance: 'none', paddingRight: '2rem'}}
+            aria-label="정렬 기준 선택"
+            value={sortOption}
+            onChange={(e) => setSortOption(e.target.value)}
           >
             <option>가까운 순</option>
             <option>별점 높은 순</option>
             <option>리뷰 많은 순</option>
           </select>
-
 
           <i
             className="fa-solid fa-chevron-down position-absolute top-50 translate-middle-y me-1 text-white"
