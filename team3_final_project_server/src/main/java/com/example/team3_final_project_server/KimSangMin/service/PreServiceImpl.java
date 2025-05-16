@@ -1,6 +1,7 @@
 package com.example.team3_final_project_server.KimSangMin.service;
 
 import com.example.team3_final_project_server.KimSangMin.mapper.PreMapper;
+import com.example.team3_final_project_server.KimSangMin.response.TimeRequest;
 import com.example.team3_final_project_server.configuration.jwt.JwtTokenProvider;
 import com.example.team3_final_project_server.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,6 +135,24 @@ public class PreServiceImpl implements PreService {
   }
 
 
+  @Override
+  public CategoryDTO getResIdxByCate(Integer resIdx) {
+    return preMapper.getResIdxByCate(resIdx);
+  }
+
+  //  가게에 저장된 카테고리가 있는지 확인
+  @Override
+  public boolean existsCate(Integer resIdx) {
+    return preMapper.existsCate(resIdx);
+  }
+
+//  가게에 저장된 카테고리 수정하기
+  @Override
+  public boolean updateCate(CategoryDTO category) {
+    int result = preMapper.updateCate(category);
+    return result > 0;
+  }
+
   // 가게 정보 수정하기
   @Override
   public boolean updateRest(int resIdx, RestaurantDTO storeData) {
@@ -141,23 +160,47 @@ public class PreServiceImpl implements PreService {
     return result > 0;
   }
 
-  //    가게 운영시간 저장
-  @Override
-  public boolean insertTime(List<TimeDTO> timeList) {
-    try {
-      for (TimeDTO time : timeList) {
-        preMapper.insertTime(time);
-      }
-      return true;
-    } catch (Exception e) {
-      e.printStackTrace();
-      return false;
-    }
-  }
-
   //    가게 정보 조회
   @Override
   public RestaurantDTO getRest(int userIdx) {
     return preMapper.getRest(userIdx);
   }
+
+
+  //  가게 시간 저장하기
+  @Override
+  public boolean setTime(Integer resIdx, List<TimeDTO> times) {
+    int result = 0;
+
+    for (TimeDTO time : times) {
+      time.setResIdx(resIdx);
+      result += preMapper.setTime(time);
+    }
+    return result == times.size();
+  }
+
+  //  가게 시간 수정하기
+  @Override
+  public boolean updateTime(Integer resIdx, List<TimeDTO> times) {
+    int updatedCount = 0;
+
+    for (TimeDTO time : times) {
+      time.setResIdx(resIdx);
+      int result = preMapper.updateTime(time); // Mapper에 updateTime 메서드가 있어야 합니다.
+      if (result == 1) {
+        updatedCount++;
+      }
+    }
+
+    return updatedCount == times.size();
+  }
+
+//  가게 idx로 운영 시간 찾기
+  @Override
+  public List<TimeDTO> getTimeByResIdx(Integer resIdx) {
+    return preMapper.getTimeByResIdx(resIdx);
+  }
+
+
+
 }

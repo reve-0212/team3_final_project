@@ -31,7 +31,7 @@ function PreFunction() {
 
         const Func = input.filter((val) => val.trim() !== "");
 
-        axios.post("http://localhost:8080/", {functoin: Func,})
+        axios.post("http://localhost:8080/", {function: Func,})
             .then((response) => {
                 if (response.status === 200) {
                     alert("편의시설이 저장되었습니다.")

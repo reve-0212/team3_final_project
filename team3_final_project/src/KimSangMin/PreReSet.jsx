@@ -133,10 +133,12 @@ function PreReSet() {
 
 
   // 데이터 불러오기
-  const token = localStorage.getItem('jwtToken');
+  const token = localStorage.getItem('ACCESS_TOKEN');
 
   useEffect(() => {
     if (!token) return;
+
+
 
     axios.get("http://localhost:8080/pre/owner/getRestaurant", {
       headers: { Authorization: `Bearer ${token}` }
@@ -188,7 +190,7 @@ function PreReSet() {
   const hSubmit = (e) => {
     e.preventDefault();
 
-    const token = localStorage.getItem('jwtToken');
+    const token = localStorage.getItem('ACCESS_TOKEN');
     console.log("로컬 스토리지에서 가져온 토큰: ", token);
     if (!token) {
       alert("로그인이 필요합니다.");

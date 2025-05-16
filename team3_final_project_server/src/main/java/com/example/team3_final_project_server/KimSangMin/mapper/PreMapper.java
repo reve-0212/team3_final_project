@@ -1,5 +1,6 @@
 package com.example.team3_final_project_server.KimSangMin.mapper;
 
+import com.example.team3_final_project_server.KimSangMin.response.TimeRequest;
 import com.example.team3_final_project_server.dto.CategoryDTO;
 import com.example.team3_final_project_server.dto.RestaurantDTO;
 import com.example.team3_final_project_server.dto.SeatDTO;
@@ -14,7 +15,6 @@ public interface PreMapper {
 //    void saveSeats(List<SeatDTO> seats);
 
 
-    void insertTime(TimeDTO time);
 
     int updateRest(int resIdx, RestaurantDTO storeData);
 
@@ -38,5 +38,17 @@ public interface PreMapper {
 
     int cateSave(CategoryDTO category);
 
-    int getResSeatNum(int resSeatId);
+    Integer getResSeatNum(int resSeatId);
+
+    CategoryDTO getResIdxByCate(Integer resIdx);
+
+    int setTime(TimeDTO time);
+
+    int updateTime(TimeDTO time);
+
+    List<TimeDTO> getTimeByResIdx(Integer resIdx);
+
+    boolean existsCate(Integer resIdx);
+
+    int updateCate(CategoryDTO category);
 }

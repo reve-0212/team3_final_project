@@ -34,7 +34,7 @@ function PreTime({onClose}) {
 
     // 저장된 시간 불러오기
     useEffect(() => {
-        const token = localStorage.getItem("jwtToken");
+        const token = localStorage.getItem("ACCESS_TOKEN");
         if (!token) {
             alert("로그인이 필요합니다.");
             return;
