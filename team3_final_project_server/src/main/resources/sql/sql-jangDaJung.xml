@@ -3,24 +3,6 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.team3_final_project_server.JangDaJung.JDJMapper">
-    <!-- INSERT -->
-<!--    <insert id="insertHistory" parameterType="com.example.team3_final_project_server.dto.ReservationHistoryDTO">-->
-<!--        INSERT INTO reservation_history (-->
-<!--        res_idx, reservation_idx, reservation_date,-->
-<!--        male_count, female_count, gender_total_count,-->
-<!--        menu_idx, menu_name, menu_price,-->
-<!--        menu_sold_count, menu_sold_total_price,-->
-<!--        checkout_date, cancel_date, reservation_team_count-->
-<!--        )-->
-<!--        VALUES (-->
-<!--        #{resIdx}, #{reservationIdx}, #{reservationDate},-->
-<!--        #{maleCount}, #{femaleCount}, #{genderTotalCount},-->
-<!--        #{menuIdx}, #{menuName}, #{menuPrice},-->
-<!--        #{menuSoldCount}, #{menuSoldTotalPrice},-->
-<!--        #{checkoutDate}, #{cancelDate}, #{reservationTeamCount}-->
-<!--        )-->
-<!--    </insert>-->
-
 <!--    resIdx 불러오기-->
     <select id="selectResIdxByUserIdx" parameterType="int" resultType="int">
         SELECT res_idx
@@ -97,21 +79,12 @@
         ORDER BY hour
     </select>
 
-<!--    가게 영업시간 불러오기 통계 페이지에서 쓰려고 했던거-->
-<!--    <select id="getResTime" resultType="map">-->
-<!--        SELECT res_reserve_time-->
-<!--        FROM restaurant-->
-<!--        WHERE res_idx = #{resIdx}-->
-<!--    </select>-->
-
 <!--    가게 예약 가능 시간 불러오기(메인페이지)-->
     <select id="getResTime" resultType="String">
         SELECT res_reserve_time
         FROM restaurant
         WHERE res_idx = #{resIdx}
     </select>
-
-<!--    -->
 
 <!--    메뉴 페이지-->
 

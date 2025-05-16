@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import { DayPicker } from "react-day-picker";
 import './css/PreDay.css';
 import {
@@ -11,7 +11,7 @@ import {
     YAxis
 } from "recharts";
 import ReBanner from "../KimSangMin/ReBanner.jsx";
-import { Link } from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import axios from "axios";
 
 function PreCh() {
@@ -24,23 +24,54 @@ function PreCh() {
     const [yetDay, setYetDay] = useState({ from: today, to: today });
     // 캘린더
     const [cal, setCal] = useState(false);
+    const calendarRef = useRef(null);
+
     // 로딩중
     const [loading, setLoading] = useState(false);
+    const { resIdx } =useParams();
 
-    // 날짜 문자열에 시간 포함 (시작은 00:00:00, 끝은 23:59:59)
-    const formatDateStart = (date) => {
+    // 달력 외부 부분 클릭하면 달력 닫힘
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (calendarRef.current &&
+                !calendarRef.current.contains(e.target)
+            ) {
+                setCal(false);
+            }
+        };
+        if (cal) {
+            document.addEventListener("mousedown", handleClickOutside);
+        }
+        else {
+            document.removeEventListener("mousedown", handleClickOutside);
+        }
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    },[cal]);
+
+    // 날짜 포맷
+    const formatDate = (date) => {
         if (!date) return '';
-        // 날짜 -1 되는것 고침
-        const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-        return `${localDate.toISOString().split('T')[0]} 00:00:00`;
+        return date.toLocaleDateString('ko-KR').replace(/\./g, '').replace(/ /g, '.');
     };
 
-    const formatDateEnd = (date) => {
-        if (!date) return '';
-        // 날짜 -1 되는것 고침
-        const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-        return `${localDate.toISOString().split('T')[0]} 23:59:59`;
-    }
+    // 백엔드에 데이터 보낼때 날짜 문자열에 시간 포함 (시작은 00:00:00, 끝은 23:59:59)
+        const formatDateStart = (date) => {
+            if (!date) return '';
+            const year = date.getFullYear();
+            const month = ('0' + (date.getMonth() + 1)).slice(-2);
+            const day = ('0' + date.getDate()).slice(-2);
+            return `${year}-${month}-${day} 00:00:00`;
+        };
+
+        const formatDateEnd = (date) => {
+            if (!date) return '';
+            const year = date.getFullYear();
+            const month = ('0' + (date.getMonth() + 1)).slice(-2);
+            const day = ('0' + date.getDate()).slice(-2);
+            return `${year}-${month}-${day} 23:59:59`;
+        };
 
     // api 호출 (판매 메뉴 데이터)
     const fetchData = async () => {
@@ -51,7 +82,7 @@ function PreCh() {
                 params: {
                     startDate: formatDateStart(seDay.from),
                     endDate: formatDateEnd(seDay.to),
-                    resIdx: 1
+                    resIdx: resIdx
                 }
             });
             //   응답받은 데이터 상태ㅐ에 저장
@@ -94,10 +125,10 @@ function PreCh() {
               >
                 <p style={{margin: 0}}>
                   {seDay.from && seDay.to ?
-                      `${formatDateStart(seDay.from).split(' ')[0]} ~ ${formatDateEnd(seDay.to).split(' ')[0]}` : '날짜 선택'}
+                      `${formatDate(seDay.from)} ~ ${formatDate(seDay.to)}` : '날짜 선택'}
                 </p>
                 {cal && (
-                    <div className={'calendar-popup'} onClick={(e) => e.stopPropagation()}>
+                    <div className={'calendar-popup'} ref={calendarRef} onClick={(e) => e.stopPropagation()}>
                       <DayPicker
                           mode="range"
                           selected={yetDay}
@@ -118,8 +149,18 @@ function PreCh() {
                             className="btn btn-primary"
                             onClick={(e) => {
                               e.stopPropagation();
-                              setSeDay(yetDay);
-                              setCal(false);
+                                const { from, to } = yetDay || {};
+
+                                if(!from && !to) {
+                                    setSeDay({ from: undefined, to: undefined });
+                                    setYetDay({ from: undefined, to: undefined });
+                                } else if (from && !to) {
+                                    setSeDay({ from, to: from });
+                                    setYetDay({ from, to: from });
+                                } else {
+                                    setSeDay(yetDay);
+                                }
+                                setCal(false);
                             }}
                         >
                           확인

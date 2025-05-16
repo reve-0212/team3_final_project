@@ -88,9 +88,9 @@ function main() {
 
             <Route path="/pre/PreMenuList/:resIdx" element={<CeoMenuList/>}/> {/* 메뉴 리스트 */}
 
-            <Route path="/pre/MenuListEdit" element={<CeoMenuListEdit/>}/> {/* 메뉴판 수정 */}
-            <Route path="/pre/MenuEdit/:menuId" element={<CeoMenuEdit/>}/> {/* 메뉴 슈정 */}
-            <Route path="/pre/NewMenu" element={<CeoNewMenu/>}/> {/* 메뉴 등록 */}
+            <Route path="/pre/MenuListEdit/:resIdx" element={<CeoMenuListEdit/>}/> {/* 메뉴판 수정 */}
+            <Route path="/pre/MenuEdit/:resIdx/:menuIdx" element={<CeoMenuEdit/>}/> {/* 메뉴 슈정 */}
+            <Route path="/pre/NewMenu/:resIdx" element={<CeoNewMenu/>}/> {/* 메뉴 등록 */}
             <Route path="/pre/PreRe/:resIdx" element={<PreRe/>}/> {/* 예약가게 리뷰 보기*/}
 
             <Route path="/pre/PreWaSet" element={<PreWaSet/>}/> {/* 웨이팅 가게 셋팅 */}

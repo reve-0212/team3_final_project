@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.team3_final_project_server.JeonSeongYun.JSYMapper">
 
     <select id="getRstListByCategory" resultType="com.example.team3_final_project_server.dto.RestaurantListDTO">
         SELECT
-            b.category_name,
-            ROUND(AVG(rv.review_rating), 1) AS avg_rating,
-            COUNT(rv.review_idx) AS rv_count,
-            a.res_option_1,
-            a.res_idx,
-            a.res_address2,
-            a.res_introduce,
-            a.res_price_range,
-            a.reserve_or_waiting,
-            a.res_image1,
-            a.res_image2,
-            a.res_image3,
-            a.res_name
+        b.category_name,
+        ROUND(AVG(rv.review_rating), 1) AS avg_rating,
+        COUNT(rv.review_idx) AS rv_count,
+        a.res_option_1,
+        a.res_idx,
+        a.res_address2,
+        a.res_introduce,
+        a.res_price_range,
+        a.reserve_or_waiting,
+        a.res_image1,
+        a.res_image2,
+        a.res_image3,
+        a.res_name
         FROM
-            category b
+        category b
         JOIN
-            restaurant a
+        restaurant a
         ON
-            b.res_idx = a.res_idx
+        b.res_idx = a.res_idx
         LEFT JOIN
-            review rv
+        review rv
         ON
-            a.res_idx = rv.res_idx
+        a.res_idx = rv.res_idx
         WHERE
-            b.category_name = #{category}
+        b.category_name = #{category}
         GROUP BY
         b.category_name,
         a.res_option_1,
@@ -66,46 +66,46 @@
 
     <select id="getResList" parameterType="string" resultType="com.example.team3_final_project_server.dto.ReservationDTO">
         SELECT
-            a.reservation_idx,
-            c.user_nick,
-            a.rsv_people,
-            c.user_call,
-            CONCAT(a.rsv_date, ' ', TIME_FORMAT(a.rsv_time, '%H:%i')) AS rsv_time,
-            (
-                SELECT GROUP_CONCAT(ss2.seat_id ORDER BY ss2.seat_id SEPARATOR ', ')
-                FROM selected_seat ss2
-                WHERE ss2.reservation_idx = a.reservation_idx
-            ) AS seat_ids,
-            (
-                SELECT COUNT(*)
-                FROM reservation r
-                WHERE r.user_idx = a.user_idx
-                AND r.res_idx = a.res_idx
-                AND r.rsv_come_datetime IS NOT NULL
-            ) AS visit_count
+        a.reservation_idx,
+        c.user_nick,
+        a.rsv_people,
+        c.user_call,
+        CONCAT(a.rsv_date, ' ', TIME_FORMAT(a.rsv_time, '%H:%i')) AS rsv_time,
+        (
+        SELECT GROUP_CONCAT(ss2.seat_id ORDER BY ss2.seat_id SEPARATOR ', ')
+        FROM selected_seat ss2
+        WHERE ss2.reservation_idx = a.reservation_idx
+        ) AS seat_ids,
+        (
+        SELECT COUNT(*)
+        FROM reservation r
+        WHERE r.user_idx = a.user_idx
+        AND r.res_idx = a.res_idx
+        AND r.rsv_come_datetime IS NOT NULL
+        ) AS visit_count
         FROM
-            reservation a
+        reservation a
         JOIN
-            selected_seat b ON a.reservation_idx = b.reservation_idx
+        selected_seat b ON a.reservation_idx = b.reservation_idx
         JOIN
-            user c ON a.user_idx = c.user_idx
+        user c ON a.user_idx = c.user_idx
         WHERE
-            b.seat_id = #{seatId}
-            AND a.rsv_date = CURDATE()
-            AND a.rsv_come_datetime IS NULL
-            AND a.rsv_cancel_datetime IS NULL
+        b.seat_id = #{seatId}
+        AND a.rsv_date = CURDATE()
+        AND a.rsv_come_datetime IS NULL
+        AND a.rsv_cancel_datetime IS NULL
         ORDER BY
-            a.reservation_idx
+        a.reservation_idx
     </select>
 
-<!--    좌석 불러오기 -->
+    <!--    좌석 불러오기 -->
     <select id="TodayLoadSeat" parameterType="String" resultType="com.example.team3_final_project_server.dto.SeatDTO">
         SELECT
-            seat_id As seatId, res_idx AS resIdx, type, name, x, y, image, is_selected As isSelected
+        seat_id As seatId, res_idx AS resIdx, type, name, x, y, image, is_selected As isSelected
         FROM
-            seat_table
+        seat_table
         WHERE
-            res_idx = #{resIdx}
+        res_idx = #{resIdx}
     </select>
 
 
@@ -117,88 +117,97 @@
 
     <update id="updateReservationStatus" parameterType="com.example.team3_final_project_server.dto.ReservationDTO">
         UPDATE reservation
-            <set>
-                <if test="rsvComeDatetime != null">
-                    rsv_come_datetime = #{rsvComeDatetime},
-                </if>
-                <if test="rsvComeDatetime == null">
-                    rsv_come_datetime = NULL,
-                </if>
+        <set>
+            <if test="rsvComeDatetime != null">
+                rsv_come_datetime = #{rsvComeDatetime},
+            </if>
+            <if test="rsvComeDatetime == null">
+                rsv_come_datetime = NULL,
+            </if>
 
-                <if test="rsvCancelDatetime != null">
-                    rsv_cancel_datetime = #{rsvCancelDatetime},
-                </if>
-                <if test="rsvCancelDatetime == null">
-                    rsv_cancel_datetime = NULL,
-                </if>
-            </set>
+            <if test="rsvCancelDatetime != null">
+                rsv_cancel_datetime = #{rsvCancelDatetime},
+            </if>
+            <if test="rsvCancelDatetime == null">
+                rsv_cancel_datetime = NULL,
+            </if>
+        </set>
         WHERE reservation_idx = #{reservationIdx}
     </update>
 
     <select id="findAllByResIdx" parameterType="String" resultType="com.example.team3_final_project_server.dto.ReservationDTO">
         SELECT
-            a.reservation_idx,
-            c.user_nick,
-            a.rsv_people,
-            c.user_call,
-            CONCAT(a.rsv_date, ' ', TIME_FORMAT(a.rsv_time, '%H:%i')) AS rsv_time,
-            GROUP_CONCAT(DISTINCT ss.seat_id ORDER BY ss.seat_id SEPARATOR ', ') AS seat_ids,
-            (
-                SELECT COUNT(*)
-                FROM reservation r
-                WHERE r.user_idx = a.user_idx
-                AND r.res_idx = a.res_idx
-                AND r.rsv_come_datetime IS NOT NULL
-            ) AS visit_count
+        a.reservation_idx,
+        c.user_nick,
+        a.rsv_people,
+        c.user_call,
+        CONCAT(a.rsv_date, ' ', TIME_FORMAT(a.rsv_time, '%H:%i')) AS rsv_time,
+        GROUP_CONCAT(DISTINCT ss.seat_id ORDER BY ss.seat_id SEPARATOR ', ') AS seat_ids,
+        (
+        SELECT COUNT(*)
+        FROM reservation r
+        WHERE r.user_idx = a.user_idx
+        AND r.res_idx = a.res_idx
+        AND r.rsv_come_datetime IS NOT NULL
+        ) AS visit_count
         FROM
-            reservation a
+        reservation a
         JOIN
-            selected_seat ss ON a.reservation_idx = ss.reservation_idx
+        selected_seat ss ON a.reservation_idx = ss.reservation_idx
         JOIN
-            user c ON a.user_idx = c.user_idx
+        user c ON a.user_idx = c.user_idx
         WHERE
-            a.rsv_come_datetime IS NULL
-            AND a.rsv_cancel_datetime IS NULL
-            AND a.res_idx = #{resIdx}
+        a.rsv_come_datetime IS NULL
+        AND a.rsv_cancel_datetime IS NULL
+        AND a.res_idx = #{resIdx}
+        AND CURDATE() >= a.rsv_time
         GROUP BY
-            a.reservation_idx, c.user_nick, a.rsv_people, c.user_call, a.rsv_date, a.rsv_time, a.user_idx, a.res_idx
+        a.reservation_idx, c.user_nick, a.rsv_people, c.user_call, a.rsv_date, a.rsv_time, a.user_idx, a.res_idx
         ORDER BY
-            a.reservation_idx;
+        a.reservation_idx;
     </select>
 
 
     <select id="getPastReservations" parameterType="String" resultType="com.example.team3_final_project_server.dto.ReservationDTO">
         SELECT
-            r.reservation_idx AS reservationIdx,
-            r.user_idx AS userIdx,
-            r.res_idx AS resIdx,
-            r.rsv_people AS rsvPeople,
-            r.rsv_man AS rsvMan,
-            r.rsv_woman AS rsvWoman,
-            r.rsv_baby AS rsvBaby,
-            r.rsv_date AS rsvDate,
-            r.rsv_time AS rsvTime,
-            r.rsv_come_datetime AS rsvComeDatetime,
-            r.rsv_cancel_datetime AS rsvCancelDatetime,
+        r.reservation_idx AS reservationIdx,
+        r.user_idx AS userIdx,
+        r.res_idx AS resIdx,
+        r.rsv_people AS rsvPeople,
+        r.rsv_man AS rsvMan,
+        r.rsv_woman AS rsvWoman,
+        r.rsv_baby AS rsvBaby,
+        r.rsv_date AS rsvDate,
+        r.rsv_time AS rsvTime,
+        r.rsv_come_datetime AS rsvComeDatetime,
+        r.rsv_cancel_datetime AS rsvCancelDatetime,
 
-            u.user_nick AS userNick,
-            u.user_call AS userCall,
+        u.user_nick AS userNick,
+        u.user_call AS userCall,
 
-            CASE
-                WHEN r.rsv_cancel_datetime IS NOT NULL THEN '취소'
-                WHEN r.rsv_come_datetime IS NOT NULL THEN '완료'
-                ELSE '신청'
-            END
-                AS status
+        GROUP_CONCAT(ss.seat_id ORDER BY ss.seat_id SEPARATOR ', ') AS seatIds,
+
+        CASE
+        WHEN r.rsv_cancel_datetime IS NOT NULL THEN '취소'
+        WHEN r.rsv_come_datetime IS NOT NULL THEN '완료'
+        ELSE '신청'
+        END AS status
 
         FROM
-            reservation r
+        reservation r
         JOIN
-            user u ON r.user_idx = u.user_idx
+        user u ON r.user_idx = u.user_idx
+        JOIN
+        selected_seat ss ON r.reservation_idx = ss.reservation_idx
         WHERE
-            r.res_idx = #{resIdx}
-            AND CURDATE() > r.rsv_date
-            ORDER BY r.rsv_date DESC, r.rsv_time DESC
+        r.res_idx = #{resIdx}
+        GROUP BY
+        r.reservation_idx, r.user_idx, r.res_idx, r.rsv_people, r.rsv_man, r.rsv_woman,
+        r.rsv_baby, r.rsv_date, r.rsv_time, r.rsv_come_datetime, r.rsv_cancel_datetime,
+        u.user_nick, u.user_call
+        ORDER BY
+        r.rsv_date DESC,
+        r.rsv_time DESC;
     </select>
 
 </mapper>
