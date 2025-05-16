@@ -65,7 +65,7 @@ function PreReSet() {
 
 
   //  이미지 업로드
-  // const [img, setImg] = useState(["", "", ""]);
+  const [img, setImg] = useState(["", "", ""]);
   // 미리보기 활성화 여부
   // const [isPreview, setIsPreview] = useState([]);
 
@@ -137,7 +137,7 @@ function PreReSet() {
 
 
   // 데이터 불러오기
-  const token = localStorage.getItem('jwtToken');
+  const token = localStorage.getItem('ACCESS_TOKEN');
 
   // 가게 이미지 저장용
   const uploadToCloudinary = async (file) => {
@@ -206,7 +206,7 @@ function PreReSet() {
           });
           setDongOption(storeData.resAddress2);
           setResTime(storeData.resReserveTime ? storeData.resReserveTime.split(",") : []);
-          setResImage([
+          setImg([
             storeData.resImage1 || "",
             storeData.resImage2 || "",
             storeData.resImage3 || ""
@@ -236,7 +236,7 @@ function PreReSet() {
   const hSubmit = async (e) => {
     e.preventDefault();
 
-    const token = localStorage.getItem('jwtToken');
+    const token = localStorage.getItem('ACCESS_TOKEN');
     console.log("로컬 스토리지에서 가져온 토큰: ", token);
     if (!token) {
       alert("로그인이 필요합니다.");
@@ -252,9 +252,9 @@ function PreReSet() {
       resAddress2: dongOption,
       resIntroduce: restData.Introduce,
       resReserveTime: resTime.filter(Boolean).join(","),
-      resImage1: imageUrls[0],
-      resImage2: imageUrls[1],
-      resImage3: imageUrls[2],
+      resImage1: imageUrls[0] || "",
+      resImage2: imageUrls[1] || "",
+      resImage3: imageUrls[2] || "",
     };
 
     console.log("저장할 데이터: ", storeData);

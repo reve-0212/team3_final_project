@@ -245,6 +245,7 @@ public class PreController {
           @PathVariable int resIdx,
           @RequestHeader("Authorization") String authorization,
           @RequestBody RestaurantDTO storeData) {
+    System.out.println("------------updateRest--------------");
 
     try {
       ResponseDTO jwtInfo = preService.tokenCheck(authorization);
