@@ -49,17 +49,17 @@ function CeoMenuList() {
 
     // 메뉴 등록 버튼
     const handleAdd = () => {
-        navigate("/pre/NewMenu");
+        navigate(`/pre/NewMenu/${resIdx}`);
     };
 
     // 메뉴판 수정 버튼
     const handleListEdit = () => {
-        navigate("/pre/MenuListEdit")
+        navigate(`/pre/MenuListEdit/${resIdx}`)
     }
 
     // 리스트 클릭시 해당 메뉴 수정 페이지로 이동
     const handleEdit = (menuIdx) => {
-        navigate(`/pre/MenuEdit/${menuIdx}`);
+        navigate(`/pre/MenuEdit/${resIdx}/${menuIdx}`);
     };
 
     // 숨기기 취소

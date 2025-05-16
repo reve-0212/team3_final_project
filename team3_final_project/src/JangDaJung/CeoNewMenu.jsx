@@ -41,7 +41,7 @@ function CeoNewMenu() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const uploadData = {
-            resIdx: resIdx, // 실제 resIdx로 바꿔야 함
+            resIdx: resIdx,
             menuName: menuName,
             menuPrice: parseInt(menuPrice),
             menuExplanation: menuExplanation,
@@ -65,12 +65,12 @@ function CeoNewMenu() {
 
     const confirmCancel = () => {
         setShowCancelModal(false);
-        navigate('/pre/MenuList');  // 리스트 페이지로 이동
+        navigate(`/pre/PreMenuList/${resIdx}`);  // 리스트 페이지로 이동
     };
 
     const goToList = () => {
         setShowSuccessModal(false);
-        navigate('/pre/MenuList');  // 리스트 페이지로 이동
+        navigate(`/pre/PreMenuList/${resIdx}`);  // 리스트 페이지로 이동
     };
 
     const previewMenu = {

@@ -7,8 +7,7 @@ import axios from "axios";
 
 function CeoMenuEdit() {
   const navigate = useNavigate()
-  const { resIdx } = useParams();
-  const { menuIdx } = useParams();  // URL 파라미터로 menuId 받음
+  const { resIdx, menuIdx } = useParams();
 
   // 메뉴 정보 상태
   const [menuName, setMenuName] = useState("");
@@ -18,6 +17,8 @@ function CeoMenuEdit() {
 
   // 페이지 진입 시 기존 메뉴 데이터 로딩
   useEffect(() => {
+    console.log(resIdx);
+    console.log(menuIdx);
     const fetchMenu = async () => {
       try {
         const response = await axios.get(`http://localhost:8080/menu/${menuIdx}`, {
@@ -77,14 +78,14 @@ function CeoMenuEdit() {
 
   const confirmCancel = () => {
     setShowCancelModal(false);
-    navigate('/pre/MenuList');  // 리스트 페이지로 이동
+    navigate(`/pre/PreMenuList/${resIdx}`);  // 리스트 페이지로 이동
   };
 
   const confirmDelete = async () => {
     try {
       await axios.delete(`http://localhost:8080/menu/delete/${menuIdx}`);
       alert("메뉴가 삭제되었습니다.");
-      navigate('/pre/MenuList');
+      navigate(`/pre/PreMenuList/${resIdx}`);
     } catch (err) {
       console.error("메뉴 삭제 실패:", err);
       alert("삭제에 실패했습니다.");
@@ -94,7 +95,7 @@ function CeoMenuEdit() {
 
   const goToList = () => {
     setShowSuccessModal(false);
-    navigate('/pre/MenuList');  // 리스트 페이지로 이동
+    navigate(`/pre/PreMenuList/${resIdx}`);  // 리스트 페이지로 이동
   };
 
   const previewMenu = [
