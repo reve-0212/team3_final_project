@@ -89,6 +89,7 @@
         WHERE m.res_idx = #{resIdx}
         ORDER BY m.menu_sort DESC
     </select>
+
 <!--    <select id="getBestMenu" resultType="com.example.team3_final_project_server.dto.MenuDTO">-->
 <!--        select m.menu_name, m.menu_price, m.menu_explanation, m.menu_image-->
 <!--        from menu as m-->
@@ -152,7 +153,6 @@
             </otherwise>
         </choose>
     </select>
-
     <insert id="insertBookmark">
         INSERT INTO bookmark (user_idx, res_idx)
         VALUES (#{userIdx}, #{resIdx})
@@ -162,7 +162,6 @@
         DELETE FROM bookmark
         WHERE user_idx = #{userIdx} AND res_idx = #{resIdx}
     </delete>
-
 
 
 
