@@ -49,7 +49,7 @@ function SjhLocation() {
     })
   }, []);
 
-  const EventMarkerContainer = ({markerId, position, content, address, selectedMarkerId}) => {
+  const EventMarkerContainer = ({markerId, position, content, address, img, selectedMarkerId}) => {
     const map = useMap()
     const isOpen = selectedMarkerId === markerId
 
@@ -71,14 +71,10 @@ function SjhLocation() {
           }
         }}
       >{isOpen &&
-        <div
-          style={{
-            whiteSpace: "nowrap",
-            margin: "10px",
-            borderRadius:"10px"
-          }} onClick={() => {
-          Nv(`/resdetail/${markerId}`)
-        }}>
+        <div style={{whiteSpace: "nowrap", margin: "10px"}}
+             onClick={() => {
+               Nv(`/resdetail/${markerId}`)
+             }}>
           <p className={"mb-0 fw-bold"}>{content}</p>
           <p className={"mb-0"}>{address}</p>
         </div>
@@ -106,6 +102,7 @@ function SjhLocation() {
           position={{lat: value.resLat, lng: value.resLng}}
           content={value.resName}
           address={value.resAddress1}
+          img={value.resImage1}
           selectedMarkerId={selectedMarkerId}
           setSelectedMarkerId={setSelectedMarkerId}/>
       ))}
