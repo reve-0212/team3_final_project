@@ -33,6 +33,7 @@ public class JKSController {
     @GetMapping("/bestmenu/{resIdx}")
     @ResponseBody
     public List<MenuDTO> getBestMenu(@PathVariable int resIdx) {
+        System.out.println(resIdx);
         return jksService.getBestMenu(resIdx);
     }
 
