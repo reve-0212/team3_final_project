@@ -1,9 +1,7 @@
 package com.example.team3_final_project_server.KimSangMin.service;
 
 import com.example.team3_final_project_server.KimSangMin.mapper.OwnerMapper;
-import com.example.team3_final_project_server.SimJiHyun.mapper.UserMapper;
 import com.example.team3_final_project_server.configuration.jwt.JwtTokenProvider;
-import com.example.team3_final_project_server.dto.OwnerDTO;
 import com.example.team3_final_project_server.dto.ResponseDTO;
 import com.example.team3_final_project_server.dto.UserDTO;
 import lombok.RequiredArgsConstructor;

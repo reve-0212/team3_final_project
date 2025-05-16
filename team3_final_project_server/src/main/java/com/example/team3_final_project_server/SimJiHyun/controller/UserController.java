@@ -285,4 +285,11 @@ public class UserController {
     System.out.println("rsvTime : " + rsvTime);
     userService.bookAllReg(userIdx, resIdx, rsvPeople, rsvMan, rsvWoman, rsvBaby, rsvDate, rsvTime);
   }
+
+  @GetMapping("/isSeatReserved")
+  public List<Integer> isSeatReserved(@RequestParam String rsvDate, @RequestParam String rsvTime) {
+    System.out.println("rsvDate : " + rsvDate);
+    System.out.println("rsvTime : " + rsvTime);
+    return userService.isSeatReserved(rsvDate, rsvTime);
+  }
 }

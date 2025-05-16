@@ -3,16 +3,13 @@ package com.example.team3_final_project_server.KimSangMin.controller;
 import com.example.team3_final_project_server.KimSangMin.mapper.OwnerMapper;
 import com.example.team3_final_project_server.KimSangMin.service.OwnerService;
 import com.example.team3_final_project_server.KimSangMin.response.PreResponse;
-import com.example.team3_final_project_server.dto.OwnerDTO;
 import com.example.team3_final_project_server.dto.ResponseDTO;
 import com.example.team3_final_project_server.dto.UserDTO;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 

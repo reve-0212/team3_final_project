@@ -94,6 +94,9 @@ function BookReg() {
               }, headers: {
                 Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
               }
+            }).catch(() => {
+              alert("이미 같은 시간에 예약하셨습니다")
+              Nv("/latestDetails")
             });
           console.log("searchRes : " + searchRes.data)
 

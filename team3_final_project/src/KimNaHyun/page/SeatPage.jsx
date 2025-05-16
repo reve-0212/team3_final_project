@@ -30,7 +30,6 @@ function SeatPage() {
       </div>
 
       <Button btnName={'다음'} onClick={() => {
-        // reserveSeat()
         setRsvDateTimeStore(rsvDateTime)
         Nv(`/book/menu/${userIdx}/${resIdx}`)
       }}/>

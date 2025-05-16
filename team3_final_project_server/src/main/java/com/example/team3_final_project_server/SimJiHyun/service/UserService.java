@@ -180,4 +180,8 @@ public class UserService {
   public void bookAllReg(int userIdx, int resIdx, int rsvPeople, int rsvMan, int rsvWoman, int rsvBaby, String rsvDate, String rsvTime) {
     userMapper.bookAllReg(userIdx, resIdx, rsvPeople, rsvMan, rsvWoman, rsvBaby, rsvDate, rsvTime);
   }
+
+  public List<Integer> isSeatReserved(String rsvDate, String rsvTime) {
+    return userMapper.isSeatReserved(rsvDate, rsvTime);
+  }
 }

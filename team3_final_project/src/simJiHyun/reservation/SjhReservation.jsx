@@ -68,28 +68,25 @@ function SjhReservation() {
           <div>
             {filteredReservations.length > 0 ? (
               filteredReservations.map(r => (
-                  <SjhReservationCard
-                    key={r.index}
-                    filterType={r.filterType}
-                    reservationIdx={r.reservationDTO.reservationIdx}
-                    restaurantIdx={r.restaurantDTO.resIdx}
-                    isUse={r.reservationDTO.rsvComeDatetime}
-                    isCancel={r.reservationDTO.rsvCancelDatetime}
-                    restName={r.restaurantDTO.resName}
-                    date={r.reservationDTO.rsvDate}
-                    time={r.reservationDTO.rsvTime}
-                    people={r.reservationDTO.rsvPeople}/>
-                )
-              )
-            ) : (
+                <SjhReservationCard
+                  key={r.index}
+                  filterType={r.filterType}
+                  reservationIdx={r.reservationDTO.reservationIdx}
+                  restaurantIdx={r.restaurantDTO.resIdx}
+                  isUse={r.reservationDTO.rsvComeDatetime}
+                  isCancel={r.reservationDTO.rsvCancelDatetime}
+                  restName={r.restaurantDTO.resName}
+                  date={r.reservationDTO.rsvDate}
+                  time={r.reservationDTO.rsvTime}
+                  people={r.reservationDTO.rsvPeople}/>
+              ))) : (
               <div className={"d-flex justify-content-center align-items-center"}>
                 <p>내역이 없습니다</p>
               </div>
-            )
-            }
+            )}
           </div>
         ) : (
-          <div>
+          <div className={"d-flex justify-content-center align-items-center vh-100"}>
             <p>로그인 후 사용해주세요</p>
           </div>
 
