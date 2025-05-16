@@ -244,14 +244,13 @@ function CeoMenuEdit() {
                              }
                            }}/>
 
-                    {/*{menuImage.map((file, idx) => (*/}
-                    {/*  <img*/}
-                    {/*    key={idx}*/}
-                    {/*    src={URL.createObjectURL(file)}*/}
-                    {/*    alt={`preview=${idx}`}*/}
-                    {/*    style={{width: "100px", height: "100px", objectFit: "cover", borderRadius: "10px"}}*/}
-                    {/*  />*/}
-                    {/*))}*/}
+                    {imageUrl && (
+                      <img src={imageUrl} alt={""}
+                           style={{
+                             width: "100px", height: "100px",
+                             objectFit: "cover", borderRadius: "10px"
+                           }}/>
+                    )}
                   </div>
                 </div>
 
