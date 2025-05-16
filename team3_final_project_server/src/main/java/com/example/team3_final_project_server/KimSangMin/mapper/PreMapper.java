@@ -50,4 +50,12 @@ public interface PreMapper {
     int updateCate(CategoryDTO category);
 
     List<ConvenientDTO> getFunc();
+
+    void saveFunc(Integer resIdx, Integer cvId);
+
+    int haveFunc(Integer resIdx);
+
+    void deleteFunc(Integer resIdx);
+
+    List<ConvenientDTO> getSaveFunc(Integer resIdx);
 }

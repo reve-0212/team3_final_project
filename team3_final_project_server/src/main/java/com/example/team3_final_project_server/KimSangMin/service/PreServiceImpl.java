@@ -158,6 +158,37 @@ public class PreServiceImpl implements PreService {
     return preMapper.getFunc();
   }
 
+  @Override
+  public void saveFunc(Integer resIdx, List<Integer> cvIds) {
+if (cvIds == null || cvIds.isEmpty()) return;
+for (Integer cvId : cvIds) {
+  preMapper.saveFunc(resIdx,cvId);
+}
+  }
+
+  @Override
+  public int haveFunc(Integer resIdx) {
+    return preMapper.haveFunc(resIdx);
+  }
+
+  @Override
+  @Transactional
+  public void updateFunc(Integer resIdx, List<Integer> cvIds) {
+preMapper.deleteFunc(resIdx);
+
+if (cvIds == null || cvIds.isEmpty()) {
+  for (Integer cvId : cvIds) {
+    preMapper.saveFunc(resIdx,cvId);
+  }
+}
+
+  }
+
+  @Override
+  public List<ConvenientDTO> getSaveFunc(Integer resIdx) {
+    return preMapper.getSaveFunc(resIdx);
+  }
+
 
   // 가게 정보 수정하기
   @Override

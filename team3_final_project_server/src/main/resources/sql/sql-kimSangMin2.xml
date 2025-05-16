@@ -151,6 +151,38 @@
 
 
 <!--    db에서 편의시설 가져오기 -->
-    <select id="getFunc"></select>
+    <select id="getFunc" resultType="com.example.team3_final_project_server.dto.ConvenientDTO">
+        SELECT
+        cv_id AS cvId,
+        cv_name AS cvName,
+        cv_intro AS cvIntro,
+        cv_image AS cvImage
+        FROM convenient
+    </select>
+
+<!--    편의시설 저장하기 -->
+    <insert id="saveFunc">
+        INSERT INTO rest_convenient (res_idx, cv_id)
+        VALUES (#{resIdx}, #{cvId})
+    </insert>
+
+<!--    편의시설 삭제하기 / 저장하기-->
+    <delete id="deleteFunc" parameterType="int">
+        DELETE FROM rest_convenient WHERE res_idx = #{resIdx}
+    </delete>
+
+
+    <select id="haveFunc" parameterType="int" resultType="int">
+        SELECT COUNT(*) FROM rest_convenient WHERE res_idx = #{resIdx}
+    </select>
+
+<!--    저장된 편의시설 불러오기 -->
+    <select id="getSaveFunc" parameterType="int" resultType="com.example.team3_final_project_server.dto.ConvenientDTO">
+        SELECT c.cv_id, c.cv_name, c.cv_intro, c.cv_image
+        FROM convenient c
+        JOIN rest_convenient rc ON c.cv_id = rc.cv_id
+        WHERE rc.res_idx = #{resIdx}
+    </select>
+
 
 </mapper>

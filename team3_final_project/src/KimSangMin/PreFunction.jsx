@@ -23,11 +23,16 @@ function PreFunction() {
             },
         })
             .then((res) => {
-                setFuncOpt(res.data);
+                console.log("funcOpt API 응답:", res.data);
+                if (Array.isArray(res.data.data)) {
+                    setFuncOpt(res.data.data);
+                } else {
+                    console.warn("funcOpt 응답이 배열이 아닙니다:", res.data);
+                }
             })
             .catch((err) => {
-                console.log(err)
-            })
+                console.error("funcOpt API 에러:", err);
+            });
 
     // 사용자가 저장한 편의시설 불러오기
     axios.get("http://localhost:8080/pre/owner/getFunc",{
@@ -114,7 +119,7 @@ function PreFunction() {
             </h4>
             <form onSubmit={hSubmit}>
                 <div className="mb-4">
-                    {funcOpt.map((facility) => (
+                    {Array.isArray(funcOpt) && funcOpt.map((facility) => (
                         <div key={facility.cvId} style={{ marginBottom: "8px" }}>
                             <label>
                                 <input

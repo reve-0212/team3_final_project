@@ -129,6 +129,12 @@ public class SecurityConfig {
                     .requestMatchers(PUT,"/pre/owner/seats/update").hasRole("OWNER")
                     .requestMatchers(DELETE,"/pre/owner/seats/delete").hasRole("OWNER")
                     .requestMatchers(GET, "/pre/owner/getCate").hasRole("OWNER")
+
+                    .requestMatchers(GET, "/pre/owner/funcOpt").hasRole("OWNER")
+                    .requestMatchers(GET, "/pre/owner/getFunc").hasRole("OWNER")
+                    .requestMatchers(PUT, "/pre/owner/updateFunc").hasRole("OWNER")
+                    .requestMatchers( "/pre/owner/saveFunc").hasRole("OWNER")
+
                     .requestMatchers(PUT,"/pre/owner/updateCate").hasRole("OWNER")
                     .requestMatchers("/pre/owner/saveTime").hasRole("OWNER")
                     .requestMatchers(PUT,"/pre/owner/updateTime").hasRole("OWNER")
