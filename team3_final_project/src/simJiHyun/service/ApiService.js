@@ -15,7 +15,7 @@ const apiSignup = (memberDTO) => {
     .then(res => {
       alert('회원 가입 완료');
       console.log(res);
-      window.location.href = '/auth/login';
+      window.location.href = '/user/login';
     })
     .catch(err => {
       alert(`회원 가입 중 오류가 발생했습니다.\n${err}`);

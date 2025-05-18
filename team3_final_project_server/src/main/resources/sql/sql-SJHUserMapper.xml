@@ -252,4 +252,9 @@
     where r.reservation_idx = s.reservation_idx
     and rsv_date = #{rsvDate} and rsv_time = #{rsvTime};
   </select>
+
+  <insert id="saveUser">
+    insert into user (user_id, user_pass, user_nick, user_gender, user_age, user_call, user_email, role)
+    values (#{userId},#{userPass},#{userNick},#{userGender},#{userAge},#{userCall},#{userEmail},#{role});
+  </insert>
 </mapper>

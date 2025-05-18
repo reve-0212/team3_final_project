@@ -142,8 +142,8 @@ public class JSYServiceImpl implements JSYService {
     return jsyMapper.getPastReservations(resIdx);
   }
 
-  @Override
-  public List<OwnerDTO> getuserListAndImg(int userIdx) {
-    return jsyMapper.getuserListAndImg(userIdx);
-  }
+//  @Override
+//  public List<OwnerDTO> getuserListAndImg(int userIdx) {
+//    return jsyMapper.getuserListAndImg(userIdx);
+//  }
 }

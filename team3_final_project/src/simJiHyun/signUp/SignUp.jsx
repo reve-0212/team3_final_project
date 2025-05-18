@@ -11,8 +11,6 @@ function SignUp() {
   const [age, setAge] = useState(10)
   const [btnActive, setBtnActive] = useState("male");
 
-  const Nv = useNavigate();
-
   const handleSubmit = e => {
     e.preventDefault();
     const formData = new FormData(e.target);

@@ -32,5 +32,5 @@ public interface JSYMapper {
 
     int updateReservationStatusHistory(ReservationDTO dto);
 
-    List<OwnerDTO> getuserListAndImg(int userIdx);
+//    List<OwnerDTO> getuserListAndImg(int userIdx);
 }

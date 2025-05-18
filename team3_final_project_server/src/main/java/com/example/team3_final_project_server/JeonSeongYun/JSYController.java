@@ -33,38 +33,39 @@ public class JSYController {
 
 //  @GetMapping("/contents/{category}")
 //  public List<RestaurantListDTO> getRstListByCategory(@PathVariable("category") String category) throws Exception {
-  ////    System.out.println(" /contents/{category} 받아온 값 : " + category);
+
+  /// /    System.out.println(" /contents/{category} 받아온 값 : " + category);
 //    return jsyService.getRstListByCategory(category);
 //  }
   @GetMapping("/admin/login")
-  public ResponseEntity<?> getAdminLoginCheck(@RequestParam String adminId, @RequestParam String adminPw){
-    try{
+  public ResponseEntity<?> getAdminLoginCheck(@RequestParam String adminId, @RequestParam String adminPw) {
+    try {
       ResponseDTO jwtToken = jsyService.getJwtAdminLoginCheck(adminId, adminPw);
       System.out.println("어드민 로그인");
       return ResponseEntity.ok().body(jwtToken);
-    }catch (AuthenticationException e) {
+    } catch (AuthenticationException e) {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패");
     }
   }
 
   @PostMapping("/admin/SaveOwnerInfo")
-  public ResponseEntity<?> SaveOwnerInfo(@RequestBody UserDTO user){
-    try{
+  public ResponseEntity<?> SaveOwnerInfo(@RequestBody UserDTO user) {
+    try {
       String resData = jsyService.SaveOwnerInfo(user);
 
       return ResponseEntity.ok().body(resData);
 
-    }catch (IllegalArgumentException e){
+    } catch (IllegalArgumentException e) {
       String resData = "사장 정보 기입 실패 \n" + e.getMessage();
       return ResponseEntity.badRequest().body(resData);
     }
   }
 
   @GetMapping("/reservations")
-  public ResponseEntity<?> getReservations(@RequestParam String seatId, Authentication authentication){
+  public ResponseEntity<?> getReservations(@RequestParam String seatId, Authentication authentication) {
 
     System.out.println("controller에서 나온값 : " + authentication);
-    try{
+    try {
 
       String role = authentication.getAuthorities().iterator().next().getAuthority();
       System.out.println("요청한 사용자 역할: " + role);
@@ -72,7 +73,7 @@ public class JSYController {
 
       List<ReservationDTO> resData = jsyService.getResList(seatId);
       return ResponseEntity.ok().body(resData);
-    }catch (Exception e){
+    } catch (Exception e) {
       String resData = e.getMessage();
       return ResponseEntity.badRequest().body(resData);
     }
@@ -81,15 +82,14 @@ public class JSYController {
 
   //    좌석 정보 불러오기
   @GetMapping("/TodayLoadSeat/{resIdx}")
-  public ResponseEntity<PreResponse> TodayLoadSeat (@PathVariable String resIdx) {
+  public ResponseEntity<PreResponse> TodayLoadSeat(@PathVariable String resIdx) {
     List<SeatDTO> seats = jsyService.TodayLoadSeat(resIdx);
     System.out.println("API 요청: " + resIdx);
     if (seats != null && !seats.isEmpty()) {
-      PreResponse response = new PreResponse(true,"좌석 불러오기 성공",seats);
+      PreResponse response = new PreResponse(true, "좌석 불러오기 성공", seats);
       return ResponseEntity.ok(response);
-    }
-    else{
-      PreResponse response = new PreResponse(false,"좌석 불러오기 실패",null);
+    } else {
+      PreResponse response = new PreResponse(false, "좌석 불러오기 실패", null);
       return ResponseEntity.badRequest().body(response);
     }
   }
@@ -121,12 +121,12 @@ public class JSYController {
 
   @PutMapping("/reservation/status")
   public ResponseEntity<String> updateStatus(@RequestBody ReservationDTO dto) {
-    try{
+    try {
       boolean success = jsyService.updateReservationStatus(dto);
       return success
               ? ResponseEntity.ok("상태 업데이트 완료")
               : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 실패");
-    }catch (Exception e){
+    } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 실패");
     }
   }
@@ -145,19 +145,20 @@ public class JSYController {
     return ResponseEntity.ok(list);
   }
 
-  @GetMapping("/owner/Profile")
-  public ResponseEntity<?> getOwnerProfile(@RequestHeader("Authorization") String authorizationHeader) {
-    // Authorization 헤더에서 토큰 추출
-    String token = authorizationHeader.replace("Bearer ", "");
-
-    // 토큰에서 인증 정보 얻기
-    Authentication authentication = jwtTokenProvider.getAuthentication(token);
-
-    UserDTO userDTO = (UserDTO) authentication.getPrincipal();
-    int userIdx = userDTO.getUserIdx();
-
-    List<OwnerDTO> userList = jsyService.getuserListAndImg(userIdx);
-    return ResponseEntity.ok(userList);
-  }
+//  @GetMapping("/owner/Profile")
+//  public ResponseEntity<?> getOwnerProfile(@RequestHeader("Authorization") String authorizationHeader) {
+//    // Authorization 헤더에서 토큰 추출
+//    String token = authorizationHeader.replace("Bearer ", "");
+//
+//    // 토큰에서 인증 정보 얻기
+//    Authentication authentication = jwtTokenProvider.getAuthentication(token);
+//
+//    UserDTO userDTO = (UserDTO) authentication.getPrincipal();
+//    int userIdx = userDTO.getUserIdx();
+//
+////    List<OwnerDTO> userList = jsyService.getuserListAndImg(userIdx);
+////    return ResponseEntity.ok(userList);
+//    return null;
+//  }
 
 }

@@ -24,5 +24,5 @@ public interface JSYService {
 
     List<ReservationDTO> getPastReservations(String resIdx);
 
-    List<OwnerDTO> getuserListAndImg(int userIdx);
+//    List<OwnerDTO> getuserListAndImg(int userIdx);
 }
