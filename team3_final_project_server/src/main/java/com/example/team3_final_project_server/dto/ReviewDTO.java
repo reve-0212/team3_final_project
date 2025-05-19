@@ -14,4 +14,5 @@ public class ReviewDTO {
   private String reviewImage2;
   private String reviewImage3;
   private String reviewOwnerContents;
+  private String userNick;  // 사장님 리뷰 페이지에서 작성자 정보 불러오기 용
 }
