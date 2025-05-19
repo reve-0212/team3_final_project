@@ -20,7 +20,7 @@ function CancelPopup(props) {
                     </button>
                     <button type="button"
                             className="btn rounded-3 flex-fill text-white"
-                            style={{backgroundColor: "#FFA31C", maxWidth: "180px"}}
+                            style={{backgroundColor: "#FFD727", maxWidth: "180px"}}
                             onClick={props.onCancelConfirm}>
                         네, 취소할게요
                     </button>

@@ -13,7 +13,7 @@ function TabContentUi({title, engTitle, description, storeName}) {
                 </div>
                 <small className="text-muted" onClick={() => {
                     nv(`/contentList/${engTitle}`)
-                }}>전체보기</small>
+                }}>전체보기 ></small>
             </div>
 
             <div className="mb-4">

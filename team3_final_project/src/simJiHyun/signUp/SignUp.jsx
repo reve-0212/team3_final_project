@@ -129,7 +129,7 @@ function SignUp() {
       <div className={"mt-5 mb-5 d-flex justify-content-center"}>
         <button type={"submit"}
                 className={"btn py-3 fw-bold text-light fs-4 input-box rounded-3"}
-                style={{backgroundColor: "#FFB74D"}}>회원 등록
+                style={{backgroundColor: "#FFD727"}}>회원 등록
         </button>
       </div>
 

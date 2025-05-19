@@ -137,7 +137,7 @@ const SeatLayout = () => {
                   width: seatWidth,
                   height: seatHeight,
                   borderRadius: seat.shape === "square" ? "50%" : "0%",
-                  backgroundColor: isReserved ? "#727272" : isSelected ? "#32d139" : "transparent",
+                  backgroundColor: isReserved ? "#727272" : isSelected ? "#FFD727" : "transparent",
                   backgroundImage: `url(${seat.image})`,
                   backgroundSize: "contain",  // 이미지 크기를 부모 영역에 맞게 설정
                   backgroundPosition: "center",

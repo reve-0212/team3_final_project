@@ -6,7 +6,7 @@ function UseOrNoShow(props) {
       }}
          className={"fw-bold fs-6"}
          style={{
-           color: props.filterType === "expected" ? "#FFA31C" : "#9E9E9E",
+           color: props.filterType === "expected" ? "#FFD727" : "#9E9E9E",
            cursor: "pointer",
            borderBottom: props.filterType === "expected" ? "2px solid #FFA31C" : ""
          }}>이용 예정</p>
@@ -16,7 +16,7 @@ function UseOrNoShow(props) {
       }}
          className={"fw-bold fs-6"}
          style={{
-           color: props.filterType === "completed" ? "#FFA31C" : "#9E9E9E",
+           color: props.filterType === "completed" ? "#FFD727" : "#9E9E9E",
            cursor: "pointer",
            borderBottom: props.filterType === "completed" ? "2px solid #FFA31C" : ""
          }}>이용 완료</p>
@@ -26,7 +26,7 @@ function UseOrNoShow(props) {
       }}
          className={"fw-bold fs-6"}
          style={{
-           color: props.filterType === "cancelled" ? "#FFA31C" : "#9E9E9E",
+           color: props.filterType === "cancelled" ? "#FFD727" : "#9E9E9E",
            cursor: "pointer",
            borderBottom: props.filterType === "cancelled" ? "2px solid #FFA31C" : ""
          }}>취소</p>
