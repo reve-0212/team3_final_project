@@ -16,6 +16,7 @@ function SeatManager() {
     const [selectedSeat, setSelectedSeat] = useState(null); // 수정할 좌석을 선택하기 위한 상태 추가
 
 
+
     // 좌석마다 사진
     const elementImages = {
         "입구": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTESmRSGmfn9fst6CzAeCwniu3Wm4qVKZPlxw&s",
@@ -107,7 +108,6 @@ function SeatManager() {
             el.id === id ? { ...el, x: newX, y: newY } : el
         ));
         // 좌석의 id와 새로운 x,y 좌표 서버에 전송
-        updateSeat(id, newX, newY);
         setIsModified(true);
     };
 
@@ -214,18 +214,27 @@ function SeatManager() {
             return;
         }
 
-        const uniqueSeats = [];
-        const seatIds = new Set();  // 중복된 ID를 체크할 Set 생성
+        const newSeats = elements.filter(seat => !seat.id || String(seat.id).startsWith("new"));
 
-        // 좌석들 중에서 중복된 좌석을 제외하고 새로운 좌석만 배열에 추가
-        elements.forEach(seat => {
-            if (!seatIds.has(seat.id)) {
-                uniqueSeats.push(seat); // 중복되지 않는 좌석만 추가
-                seatIds.add(seat.id);    // 해당 ID는 Set에 추가
-            }
-        });
 
-        axios.post("http://localhost:8080/pre/owner/seats/save", uniqueSeats, {
+        // const uniqueSeats = [];
+        // const seatIds = new Set();  // 중복된 ID를 체크할 Set 생성
+        //
+        // // 좌석들 중에서 중복된 좌석을 제외하고 새로운 좌석만 배열에 추가
+        // elements.forEach(seat => {
+        //     if (!seatIds.has(seat.id)) {
+        //         uniqueSeats.push(seat); // 중복되지 않는 좌석만 추가
+        //         seatIds.add(seat.id);    // 해당 ID는 Set에 추가
+        //     }
+        // });
+
+        if (newSeats.length === 0) {
+            alert("저장할 새 좌석이 없습니다.");
+            setIsSaving(false);
+            return;
+        }
+
+        axios.post("http://localhost:8080/pre/owner/seats/save", newSeats, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
