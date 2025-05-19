@@ -8,11 +8,12 @@ import useUserStore from "../../stores/useUserStore.jsx";
 function TabContentUi({title, engTitle, description}) {
   const nv = useNavigate();
   const user = useUserStore(state => state.user)
-  const userIdx = user.userIdx
+  const userIdx = user?.userIdx
   const [customStores, setCustomStores] = useState([])
   const [bookmarkStores, setBookmarkStores] = useState([])
   const [reviewStores, setReviewStores] = useState([])
   const [recentStores, setRecentStores] = useState([])
+  const [needLogin, setNeedLogin] = useState(false)
 
   // console.log(user)
   // console.log(userIdx)
@@ -22,9 +23,16 @@ function TabContentUi({title, engTitle, description}) {
     setBookmarkStores([])
     setCustomStores([])
     setReviewStores([])
+    setNeedLogin(false)
 
     const fetchData = async () => {
       try {
+        if (!userIdx && (engTitle === "bookmarkRes")) {
+          console.log("로그인 필요")
+          setNeedLogin(true)
+          return;
+        }
+
         switch (engTitle) {
           case "customRec" : {
             console.log("customRec")
@@ -70,7 +78,7 @@ function TabContentUi({title, engTitle, description}) {
       }
     }
     fetchData()
-  }, [engTitle]);
+  }, [engTitle, userIdx]);
 
   // 최신 맛집
   const renderStoreList = (storeList) => {
@@ -217,25 +225,38 @@ function TabContentUi({title, engTitle, description}) {
           <p className="text-muted small fs-7">{description}</p>
         </div>
 
-        {recentStores.length > 0 ? (
-          <div/>
-        ) : (
-          <small className="text-muted" onClick={() => {
-            nv(`/contentList/${engTitle}`)
-          }}>전체보기</small>
-        )}
+        {/*{recentStores.length > 0 ? (*/}
+        {/*  <div/>*/}
+        {/*) : (*/}
+        {/*  <small className="text-muted" onClick={() => {*/}
+        {/*    nv(`/contentList/${engTitle}`)*/}
+        {/*  }}>전체보기</small>*/}
+        {/*)}*/}
       </div>
 
       <div className="mb-4">
-        <div className="d-flex justify-content-between align-items-center mb-2 flex-column">
-          {engTitle === "recentlyRes" && renderStoreList(recentStores)}
-          {engTitle === "reviewPick" && renderReviewList(reviewStores)}
-          {engTitle === "bookmarkRes" && renderBookmarkList(bookmarkStores)}
-          {engTitle === "customRec" && renderCustomList(customStores)}
-          {/*<small className="text-muted" onClick={() => {*/}
-          {/*    nv(`/contentList/${engTitle}`)*/}
-          {/*}}>전체보기</small>*/}
-        </div>
+        {needLogin ?
+          (
+            <div className={"d-flex justify-content-center align-items-center"}>
+              <button
+                type={"button"}
+                className={"btn fw-bold p-3 mt-5"}
+                style={{backgroundColor: "#FFD727"}}
+              onClick={()=>{nv("/user/login")}}>로그인이 필요합니다
+              </button>
+            </div>
+          ) : (
+            <div className="d-flex justify-content-between align-items-center mb-2 flex-column">
+              {engTitle === "recentlyRes" && renderStoreList(recentStores)}
+              {engTitle === "reviewPick" && renderReviewList(reviewStores)}
+              {engTitle === "bookmarkRes" && renderBookmarkList(bookmarkStores)}
+              {engTitle === "customRec" && renderCustomList(customStores)}
+              {/*<small className="text-muted" onClick={() => {*/}
+              {/*    nv(`/contentList/${engTitle}`)*/}
+              {/*}}>전체보기</small>*/}
+            </div>
+          )}
+
       </div>
     </div>
   );
