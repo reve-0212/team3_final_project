@@ -89,3 +89,69 @@
     background-color: #ccc;
     cursor: not-allowed;
 }
+
+.custom-select-arrow {
+    background: url("data:image/svg+xml;utf8,<svg fill='black' height='10' viewBox='0 0 24 24' width='10' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 10px center;
+    background-size: 10px;
+    cursor: pointer;
+}
+
+
+
+
+.ChkBox {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #FFD727;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s;
+}
+
+.ChkBox:checked {
+    background-color: #FFD727;
+    border-color: #FFD727;
+}
+
+.ChkBox:checked::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 6px;
+    width: 4px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+
+.mag-btn {
+    background-color: #FFD727;
+    border: 2px solid #FFD727;
+    color: #333;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, box-shadow 0.2s, transform 0.1s;
+}
+
+.mag-btn:hover {
+    background-color: #ffcd1a;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.mag-btn:active {
+    transform: scale(0.97);
+}
+
+.mag-btn:disabled {
+    background-color: #e0e0e0;
+    border-color: #ccc;
+    color: #999;
+    cursor: not-allowed;
+}

@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import ReBanner from "./ReBanner.jsx";
 import axios from "axios";
+import Swal from "sweetalert2";
 // import PreTimeSet from "./PreTimeSet.jsx";
 // import {Link} from "react-router-dom";
 
@@ -93,14 +94,29 @@ function PreTime({onClose}) {
                 })
                 .then((res) => {
                     if (res.data.success) {
-                        alert("저장 성공");
+                        Swal.fire({
+                            icon: 'success',
+                            title: '저장 완료!',
+                            text: '운영시간 정보가 저장되었습니다.',
+                            confirmButtonColor: '#FFD727'
+                        });
                     } else {
-                        alert("저장 실패: " + res.data.message);
+                        Swal.fire({
+                            icon: 'error',
+                            title: '오류',
+                            text: '운영시간 정보 저장이 실패하였습니다.',
+                            confirmButtonColor: '#FF3B30'
+                        });
                     }
                 })
                 .catch((error) => {
                     console.error("서버 오류:", error);
-                    alert("오류 발생: " + error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: '오류',
+                        text: '저장 중 오류가 발생하였습니다.',
+                        confirmButtonColor: '#FF3B30'
+                    });
                 });
         }
         else{
@@ -112,14 +128,30 @@ function PreTime({onClose}) {
             })
                 .then((res) => {
                     if(res.data.success) {
-                        alert("수정 성공");
+                        Swal.fire({
+                            icon: 'success',
+                            title: '수정 완료!',
+                            text: '수정 된 운영시간 정보가 저장되었습니다.',
+                            confirmButtonColor: '#FFD727'
+                        });
                     }else{
-                        alert("수정 실패");
+                        Swal.fire({
+                            icon: 'error',
+                            title: '오류',
+                            text: '운영시간 정보 수정이 실패하였습니다.',
+                            confirmButtonColor: '#FF3B30'
+                        });
                         console.log(res.data.message);
                     }
                 })
                 .catch((error) => {
                     console.log("에러 발생 : "+error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: '오류',
+                        text: '수정 중 오류가 발생하였습니다.',
+                        confirmButtonColor: '#FF3B30'
+                    });
                 })
         }
     }

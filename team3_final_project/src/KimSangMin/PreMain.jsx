@@ -1,7 +1,7 @@
 import {Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import '../JangDaJung/css/CeoMain.css';
 import ReBanner from "./ReBanner.jsx";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
 

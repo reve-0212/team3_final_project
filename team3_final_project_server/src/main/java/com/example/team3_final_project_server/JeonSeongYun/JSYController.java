@@ -145,20 +145,19 @@ public class JSYController {
     return ResponseEntity.ok(list);
   }
 
-//  @GetMapping("/owner/Profile")
-//  public ResponseEntity<?> getOwnerProfile(@RequestHeader("Authorization") String authorizationHeader) {
-//    // Authorization 헤더에서 토큰 추출
-//    String token = authorizationHeader.replace("Bearer ", "");
-//
-//    // 토큰에서 인증 정보 얻기
-//    Authentication authentication = jwtTokenProvider.getAuthentication(token);
-//
-//    UserDTO userDTO = (UserDTO) authentication.getPrincipal();
-//    int userIdx = userDTO.getUserIdx();
-//
-////    List<OwnerDTO> userList = jsyService.getuserListAndImg(userIdx);
-////    return ResponseEntity.ok(userList);
-//    return null;
-//  }
+  @GetMapping("/owner/Profile")
+  public ResponseEntity<?> getOwnerProfile(@RequestHeader("Authorization") String authorizationHeader) {
+    // Authorization 헤더에서 토큰 추출
+    String token = authorizationHeader.replace("Bearer ", "");
+
+    // 토큰에서 인증 정보 얻기
+    Authentication authentication = jwtTokenProvider.getAuthentication(token);
+
+    UserDTO userDTO = (UserDTO) authentication.getPrincipal();
+    int userIdx = userDTO.getUserIdx();
+
+    List<OwnerDTO> userList = jsyService.getuserListAndImg(userIdx);
+    return ResponseEntity.ok(userList);
+  }
 
 }

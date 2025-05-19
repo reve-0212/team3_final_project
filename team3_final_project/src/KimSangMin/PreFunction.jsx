@@ -2,6 +2,7 @@ import ReBanner from "./ReBanner.jsx";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import SeatManager from "./Seat/SeatManager.jsx";
+import Swal from "sweetalert2";
 
 function PreFunction() {
 
@@ -63,40 +64,52 @@ function PreFunction() {
 
 
     // 편의시설 저장하기
-    const hSubmit = (e) => {
+    const hSubmit = async (e) => {
         e.preventDefault();
 
-        if (isSave) {
-            // 수정
-            axios.put("http://localhost:8080/pre/owner/updateFunc",
-                { function: selectOpt },
-                { headers: { Authorization: `Bearer ${storedToken}` } }
-            )
-                .then(res => {
-                    if (res.status === 200) alert("수정 되었습니다.");
-                })
-                .catch(err => {
-                    console.error(err);
-                    alert("수정 실패");
+        const confirmResult = await Swal.fire({
+            title: isSave ? "정말 수정하시겠습니까?" : "정말 저장하시겠습니까?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonText: "예",
+            cancelButtonText: "아니요",
+            confirmButtonColor: "#FFD727",
+            cancelButtonColor: "#ccc"
+        });
+
+        if (!confirmResult.isConfirmed) return;
+
+        const url = isSave
+            ? "http://localhost:8080/pre/owner/updateFunc"
+            : "http://localhost:8080/pre/owner/saveFunc";
+
+        const method = isSave ? axios.put : axios.post;
+
+        try {
+            const res = await method(url, { function: selectOpt }, {
+                headers: { Authorization: `Bearer ${storedToken}` }
+            });
+
+            if (res.status === 200) {
+                Swal.fire({
+                    icon: "success",
+                    title: isSave ? "수정 완료!" : "저장 완료!",
+                    text: isSave ? "기능이 수정되었습니다." : "기능이 저장되었습니다.",
+                    confirmButtonColor: "#FFD727"
                 });
-        } else {
-            // 저장
-            axios.post("http://localhost:8080/pre/owner/saveFunc",
-                { function: selectOpt },
-                { headers: { Authorization: `Bearer ${storedToken}` } }
-            )
-                .then(res => {
-                    if (res.status === 200) {
-                        alert("저장 되었습니다.");
-                        setIsSave(true);
-                    }
-                })
-                .catch(err => {
-                    console.error(err);
-                    alert("저장 실패");
-                });
+                if (!isSave) setIsSave(true);  // 저장 이후에는 수정모드로 전환
+            }
+        } catch (err) {
+            console.error(err);
+            Swal.fire({
+                icon: "error",
+                title: "오류",
+                text: isSave ? "수정 중 오류가 발생했습니다." : "저장 중 오류가 발생했습니다.",
+                confirmButtonColor: "#FF3B30"
+            });
         }
     };
+
 
 
 
@@ -118,20 +131,35 @@ function PreFunction() {
                 <span style={{ color: "#FFD727", fontSize: "14px" }}> *필수</span>
             </h4>
             <form onSubmit={hSubmit}>
-                <div className="mb-4">
-                    {Array.isArray(funcOpt) && funcOpt.map((facility) => (
-                        <div key={facility.cvId} style={{ marginBottom: "8px" }}>
-                            <label>
+                <div className="mb-4" style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+                    {Array.isArray(funcOpt) &&
+                        funcOpt.map((facility) => (
+                            <label
+                                key={facility.cvId}
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    width: "calc(20% - 10px)", // 5개씩 한 줄에 나오도록
+                                    minWidth: "120px" // 너무 작아지지 않도록 최소 너비 설정
+                                }}
+                            >
                                 <input
                                     type="checkbox"
+                                    className="ChkBox"
                                     checked={selectOpt.includes(facility.cvId)}
                                     onChange={() => checkBox(facility.cvId)}
+                                    style={{
+                                        marginRight: "6px",
+                                        width: "18px",
+                                        height: "18px",
+                                        verticalAlign: "middle" // 텍스트와 높이 맞추기
+                                    }}
                                 />
-                                {" "}{facility.cvName}
+                                <span style={{ fontSize: "15px", verticalAlign: "middle" }}>{facility.cvName}</span>
                             </label>
-                        </div>
-                    ))}
+                        ))}
                 </div>
+
 
                 <button type="submit" className="btn btn-warning">
                     {isSave ? "수정하기" : "저장하기"}
@@ -139,7 +167,6 @@ function PreFunction() {
             </form>
 
             <hr/>
-            <br/>
 
             <h4 className="text-start">
                 <strong>좌석배치도</strong>
