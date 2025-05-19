@@ -24,9 +24,9 @@ function ContentDetail() {
   const [bestMenus, setBestMenus] = useState([]);
   const [timeSlots, setTimeSlots] = useState([]);
   const [reviews, setReviews] = useState([]);
-
-  // const {resIdx} = useParams();
-
+  const [convenient, setConvenient] = useState([])
+  const [storeTime, setStoreTime] = useState([])
+  const [hashTag, setHashTag] = useState([])
   const [parsedTags, setParsedTags] = useState([]);
 
   // 지도 초기 중심좌표
@@ -50,16 +50,22 @@ function ContentDetail() {
         axios.get(`http://localhost:8080/detail/${param.resIdx}`),
         // res2 : 가게 메뉴 가져오기
         axios.get(`http://localhost:8080/bestmenu/${param.resIdx}`),
+        // res3 : 편의시설 가져오기
+        axios.get(`http://localhost:8080/convenient/${param.resIdx}`),
+        // res4 : 시간 가져오기
+        axios.get(`http://localhost:8080/time/${param.resIdx}`),
+        // res5 : 태그 가져오기
+        axios.get(`http://localhost:8080/hashTag/${param.resIdx}`)
       ]
     ).then(
-      axios.spread((res1, res2) => {
+      axios.spread((res1, res2, res3, res4, res5) => {
         const data1 = res1.data
         const data2 = res2.data
+        const data3 = res3.data
+        const data4 = res4.data
+        const data5 = res5.data
 
-        console.log(data1)
-        console.log(data2)
-
-        console.log(data1.resReserveTime.split(",")[0])
+        console.log(data5)
 
         setStoreInfo(data1);
         setRes(data1)
@@ -67,6 +73,9 @@ function ContentDetail() {
         setPosition({lat: data1.resLat, lng: data1.resLng})
         setTimeSlots(data1.resReserveTime.split(","))
         setBestMenus(data2);
+        setConvenient(data3)
+        setStoreTime(data4)
+        setHashTag(data5)
       })
     ).catch((err) => {
       console.log(err)
@@ -82,19 +91,21 @@ function ContentDetail() {
       .catch(err => console.log("리뷰 불러오기 오류:", err));
   }, [param.resIdx]);
 
-  // 해시태그
-  useEffect(() => {
-    if (storeInfo && storeInfo.categoryTag) {
-      const tags = storeInfo.categoryTag.trim().split(/\s+/).map(tag => tag.replace(/^#/, ""));
-      setParsedTags(tags);
-    }
-  }, [storeInfo.categoryTag]);
-
   // 시간 데이터 집어넣기
   useEffect(() => {
     if (!storeInfo.resReserveTime) return;
   }, [storeInfo.resReserveTime]);
 
+  useEffect(() => {
+    if (hashTag.length > 0) {
+      const allTags =
+        hashTag.flatMap(tagObj => tagObj?.categoryDTO?.categoryTag.split(","))
+          .filter(Boolean)
+      setParsedTags(allTags)
+    }
+  }, [hashTag]);
+
+  console.log(parsedTags)
 
   return (
     <div className="app-container">
@@ -156,19 +167,27 @@ function ContentDetail() {
           </div>
           <hr/>
           <div className="d-flex flex-column gap-2 mb-3">
-            <div className="d-flex align-items-center gap-2 flex-wrap">
-              <i className="fa-regular fa-clock text-secondary"></i>
-              <span className="fw-semibold text-dark">영업시간:</span>
-              <div
-                className="d-flex flex-wrap gap-3"
-                style={{maxWidth: "240px"}} // 너비 기준 설정
-              >
-                {(storeInfo?.resReserveTime || "-")
-                  .split(',')
-                  .map((time, idx) => (
-                    <span key={idx}>{time}</span>
+            <div>
+              <p className={"fw-semibold text-dark"}>
+                <i className="fa-regular fa-clock text-secondary"></i>
+                &nbsp; 영업시간
+              </p>
+
+              {storeTime.length === 0 ? (
+                <p>정보가 없습니다</p>
+              ) : (
+                <div className={"d-grid"} style={{gridTemplateColumns: "repeat(2,1fr)"}}>
+                  {storeTime.map((time) => (
+                    <p>
+                      <span className={"fw-bold"}>{time.restaurantTimeDTO?.day} : </span>
+                      <span>{time.restaurantTimeDTO?.startTime.split(":")[0]}:</span>
+                      <span>{time.restaurantTimeDTO?.startTime.split(":")[1]} ~ </span>
+                      <span>{time.restaurantTimeDTO?.endTime.split(":")[0]}:</span>
+                      <span>{time.restaurantTimeDTO?.endTime.split(":")[1]}</span>
+                    </p>
                   ))}
-              </div>
+                </div>
+              )}
             </div>
 
             <div className="d-flex align-items-center gap-2">
@@ -235,19 +254,43 @@ function ContentDetail() {
 
             <br/>
             <div className="mb-3 text-start">
-              <h4 className="extra-bold">해시 태그</h4>
+              <h4 className="extra-bold">해시태그</h4>
 
-              {parsedTags.length > 0 ? (
+              {parsedTags.length === 0 ? (
+                <p className={"text-center"}>해시태그가 없습니다</p>
+              ) : (
                 <div className="d-flex flex-wrap gap-2 ps-2 pt-2">
-                  {parsedTags.map((tag, idx) => (
-                    <div key={idx}>
-                      <span className="badge">#{tag}</span>
-                    </div>
+                  {parsedTags.map((tag) => (
+                    <button type={"button"} className={"btn"} style={{backgroundColor: "#FFD727"}}>{tag}</button>
                   ))}
                 </div>
-              ) : (
-                <div className="ps-2 pt-2 text-muted small"></div>
               )}
+            </div>
+
+            <br/>
+            <div className="mb-3 text-start">
+              <h4 className="extra-bold">편의시설</h4>
+              <div className={"d-flex justify-content-center align-items-center flex-row"}>
+                {/*<img src={convenient[0].convenientDTO.cvImg} alt={}/>*/}
+                {convenient.length === 0 ? (
+                  <p>제공하는 편의시설이 없습니다</p>
+                ) : (
+                  <div className={"d-flex justify-content-center align-items-center"}>
+                    {convenient.map((item, index) => (
+                      <div className={"mx-3"}>
+                        <p className={"fw-bold"}>{item.convenientDTO?.cvName}</p>
+                        {/*<p>{item.convenientDTO?.cvIntro}</p>*/}
+                        <img
+                          key={index}
+                          src={item.convenientDTO?.cvImg}
+                          style={{width: "100px", height: "100px"}}
+                        />
+                      </div>
+                    ))}
+                  </div>
+
+                )}
+              </div>
             </div>
           </div>
         )}
@@ -255,36 +298,35 @@ function ContentDetail() {
         {/* 메뉴 */}
         {/* 대표메뉴 */}
         {ActTab === "대표메뉴" && (
-            <div className="mb-5">
-              <h5 className="mb-3 fw-bold text-start">메뉴</h5>
-              {bestMenus
-                  .filter(menu => menu.menuHidden !== "1") // 숨김 처리된 메뉴 제외
-                  .map((menu, idx) => (
-                      <div
-                          key={idx}
-                          className="d-flex justify-content-between align-items-center border-bottom py-3"
-                      >
-                        <div className="text-start">
-                          <div className="fw-bold">
-                            {menu.menuSoldOut === "1" && (
-                                <span className="text-danger me-2">(품절)</span>
-                            )}
-                            {menu.menuName}
-                          </div>
-                          <div className="text-muted small">{menu.menuExplanation}</div>
-                          <div className="fw-bold mt-3">{menu.menuPrice} 원</div>
-                        </div>
-                        <div
-                            className="bg-light d-flex justify-content-center align-items-center"
-                            style={{ width: "64px", height: "64px", borderRadius: "6px" }}
-                        >
-                          <span className="text-muted small">사진</span>
-                        </div>
-                      </div>
-                  ))}
-            </div>
+          <div className="mb-5">
+            <h5 className="mb-3 fw-bold text-start">메뉴</h5>
+            {bestMenus
+              .filter(menu => menu.menuHidden !== "1") // 숨김 처리된 메뉴 제외
+              .map((menu, idx) => (
+                <div
+                  key={idx}
+                  className="d-flex justify-content-between align-items-center border-bottom py-3"
+                >
+                  <div className="text-start">
+                    <div className="fw-bold">
+                      {menu.menuSoldOut === "1" && (
+                        <span className="text-danger me-2">(품절)</span>
+                      )}
+                      {menu.menuName}
+                    </div>
+                    <div className="text-muted small">{menu.menuExplanation}</div>
+                    <div className="fw-bold mt-3">{menu.menuPrice} 원</div>
+                  </div>
+                  <div
+                    className="bg-light d-flex justify-content-center align-items-center"
+                    style={{width: "64px", height: "64px", borderRadius: "6px"}}
+                  >
+                    <span className="text-muted small">사진</span>
+                  </div>
+                </div>
+              ))}
+          </div>
         )}
-
 
 
         {ActTab === "리뷰" && (

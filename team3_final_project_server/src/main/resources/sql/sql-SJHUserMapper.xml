@@ -257,4 +257,52 @@
     insert into user (user_id, user_pass, user_nick, user_gender, user_age, user_call, user_email, role)
     values (#{userId},#{userPass},#{userNick},#{userGender},#{userAge},#{userCall},#{userEmail},#{role});
   </insert>
+
+  <!--  조인용 map-->
+  <resultMap id="rcMap"
+             type="com.example.team3_final_project_server.dto.join.RcDTO">
+    <association property="convenientDTO" javaType="com.example.team3_final_project_server.dto.ConvenientDTO">
+      <result column="cv_name" property="cvName"/>
+      <result column="cv_intro" property="cvIntro"/>
+      <result column="cv_image" property="cvImg"/>
+    </association>
+  </resultMap>
+
+  <select id="convenient" resultMap="rcMap">
+    select c.cv_name, c.cv_intro, c.cv_image
+    from rest_convenient as rc
+    join convenient as c
+    on rc.cv_id = c.cv_id
+    where rc.res_idx = #{resIdx};
+  </select>
+
+  <resultMap id="rtMap" type="com.example.team3_final_project_server.dto.join.RtDTO">
+    <association property="restaurantTimeDTO" javaType="com.example.team3_final_project_server.dto.RestaurantTimeDTO">
+      <result column="day" property="day"/>
+      <result column="start_time" property="startTime"/>
+      <result column="end_time" property="endTime"/>
+    </association>
+  </resultMap>
+
+  <select id="time" resultMap="rtMap">
+    select rt.day, rt.start_time, rt.end_time
+    from restaurant as r
+    join restaurant_time as rt
+    on r.res_idx = rt.res_idx
+    where r.res_idx = #{resIdx};
+  </select>
+
+  <resultMap id="rcaMap" type="com.example.team3_final_project_server.dto.join.RcaDTO">
+    <association property="categoryDTO" javaType="com.example.team3_final_project_server.dto.CategoryDTO">
+      <result column="category_tag" property="categoryTag"/>
+    </association>
+  </resultMap>
+
+  <select id="hashTag" resultMap="rcaMap">
+    select c.category_tag
+    from restaurant as r
+    join category as c
+    on r.res_idx = c.res_idx
+    where r.res_idx = #{resIdx};
+  </select>
 </mapper>

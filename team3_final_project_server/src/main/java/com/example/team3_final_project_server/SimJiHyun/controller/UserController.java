@@ -232,4 +232,19 @@ public class UserController {
   public List<Integer> isSeatReserved(@RequestParam String rsvDate, @RequestParam String rsvTime) {
     return userService.isSeatReserved(rsvDate, rsvTime);
   }
+
+  @GetMapping("/convenient/{resIdx}")
+  public List<RcDTO> convenient(@PathVariable("resIdx") int resIdx) {
+    return userService.convenient(resIdx);
+  }
+
+  @GetMapping("/time/{resIdx}")
+  public List<RtDTO> time(@PathVariable("resIdx") int resIdx) {
+    return userService.time(resIdx);
+  }
+
+  @GetMapping("/hashTag/{resIdx}")
+  public List<RcaDTO> hashTag(@PathVariable("resIdx") int resIdx) {
+    return userService.hashTag(resIdx);
+  }
 }

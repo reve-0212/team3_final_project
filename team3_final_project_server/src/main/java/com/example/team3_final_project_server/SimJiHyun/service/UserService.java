@@ -184,4 +184,16 @@ public class UserService {
   public List<Integer> isSeatReserved(String rsvDate, String rsvTime) {
     return userMapper.isSeatReserved(rsvDate, rsvTime);
   }
+
+  public List<RcDTO> convenient(int resIdx) {
+    return userMapper.convenient(resIdx);
+  }
+
+  public List<RtDTO> time(int resIdx){
+    return userMapper.time(resIdx);
+  }
+
+  public List<RcaDTO> hashTag(int resIdx) {
+    return userMapper.hashTag(resIdx);
+  }
 }

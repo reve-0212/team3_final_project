@@ -101,7 +101,7 @@ public class SecurityConfig {
                     // 사장 전용
 //                    .requestMatchers("/pre/**").hasRole("OWNER")
                     .requestMatchers("/pre/login").permitAll()  // 로그인은 모두 허용
-                    .requestMatchers("/pre/resave","/pre/pastDateRes","/pre/owner/getRestaurant").hasRole("OWNER") // 이건 인증된 사장만 가능
+                    .requestMatchers("/pre/resave", "/pre/pastDateRes", "/pre/owner/getRestaurant").hasRole("OWNER") // 이건 인증된 사장만 가능
 
                     //로그인한 사용자용
                     .requestMatchers("/waiting/**", "/book/**", "/latestDetails", "/book/info").hasRole("USER")
@@ -112,7 +112,7 @@ public class SecurityConfig {
 //                    모든 사용자용
                     .requestMatchers("/user/**", "/latestDetails", "/bookmark", "/contentDetail", "/review", "/", "/api/visitors", "/bookmark/**").permitAll()
                     .requestMatchers("/jsy/contents/**", "/jsy/ownerLogin", "/contents/**", "/detail/**", "/reviews/**", "/bestmenu/**", "/reservedSeat/**", "/isSeatAvailable/**", "/getStoreLocation").permitAll()
-                    .requestMatchers("/api/**", "/auth/**", "/api/auth/signup").permitAll()
+                    .requestMatchers("/api/**", "/auth/**", "/api/auth/signup", "/convenient/**", "/time/**","/hashTag/**").permitAll()
                     .requestMatchers("/api/visitors", "/api/visitors/**", "/reserveMenu/**").permitAll()
 
 //                    사장 전용
@@ -122,24 +122,24 @@ public class SecurityConfig {
                     .requestMatchers("/pre/owner/func").hasRole("OWNER")
                     .requestMatchers(PUT, "/pre/owner/updateRest/**").hasRole("OWNER")
                     .requestMatchers(GET, "/pre/owner/getRestaurant").hasRole("OWNER")
-                    .requestMatchers(PUT,"/pre/owner/seats/update").hasRole("OWNER")
-                    .requestMatchers(DELETE,"/pre/owner/seats/delete").hasRole("OWNER")
+                    .requestMatchers(PUT, "/pre/owner/seats/update").hasRole("OWNER")
+                    .requestMatchers(DELETE, "/pre/owner/seats/delete").hasRole("OWNER")
                     .requestMatchers(GET, "/pre/owner/getCate").hasRole("OWNER")
 
                     .requestMatchers(GET, "/pre/owner/funcOpt").hasRole("OWNER")
                     .requestMatchers(GET, "/pre/owner/getFunc").hasRole("OWNER")
                     .requestMatchers(PUT, "/pre/owner/updateFunc").hasRole("OWNER")
-                    .requestMatchers( "/pre/owner/saveFunc").hasRole("OWNER")
+                    .requestMatchers("/pre/owner/saveFunc").hasRole("OWNER")
 
-                    .requestMatchers(PUT,"/pre/owner/updateCate").hasRole("OWNER")
+                    .requestMatchers(PUT, "/pre/owner/updateCate").hasRole("OWNER")
                     .requestMatchers("/pre/owner/saveTime").hasRole("OWNER")
-                    .requestMatchers(PUT,"/pre/owner/updateTime").hasRole("OWNER")
-                    .requestMatchers(GET,"/pre/owner/getTime").hasRole("OWNER")
-                    .requestMatchers(GET,"/pre/owner/seeTime").hasRole("OWNER")
+                    .requestMatchers(PUT, "/pre/owner/updateTime").hasRole("OWNER")
+                    .requestMatchers(GET, "/pre/owner/getTime").hasRole("OWNER")
+                    .requestMatchers(GET, "/pre/owner/seeTime").hasRole("OWNER")
 
                     .requestMatchers("/pre/login").permitAll()  // 로그인은 모두 허용
-                    .requestMatchers("/api/history/**","/api/history/restaurant/{resIdx}/**","/api/history/reservation/**").permitAll()
-                    .requestMatchers("/menu/**", "/menu/unHidden/**","/menu/unSoldOut/**","/menu/delete/**","/menu/edit/**").permitAll()
+                    .requestMatchers("/api/history/**", "/api/history/restaurant/{resIdx}/**", "/api/history/reservation/**").permitAll()
+                    .requestMatchers("/menu/**", "/menu/unHidden/**", "/menu/unSoldOut/**", "/menu/delete/**", "/menu/edit/**").permitAll()
                     .requestMatchers("/pre/owner/Profile").hasRole("OWNER")
 
                     .requestMatchers("/pre/review/**").permitAll()
