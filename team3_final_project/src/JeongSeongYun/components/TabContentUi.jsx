@@ -190,6 +190,20 @@ function TabContentUi({title, engTitle, description}) {
       const imageList = [index.resImage1, index.resImage2, index.resImage3]
 
       return (
+
+      //   나현씨 css 수정 ( 나중에 다시 합칠것!)
+      // return (
+      //   <div className="mb-5">
+      //     <div className={"d-flex flex-row align-items-center justify-content-between"}>
+      //       <div>
+      //         <h5 className="fw-bold mb-1 fs-5 fs-sm-4">{title}</h5>
+      //         <p className="text-muted small fs-7">{description}</p>
+      //       </div>
+      //       <small className="text-muted" onClick={() => {
+      //         nv(`/contentList/${engTitle}`)
+      //       }}>전체보기 ></small>
+      //     </div>
+
         <div key={index.resIdx} className={"mb-3"}>
           <p className={"fw-bold"}>{index.resName}</p>
           <div className={"d-flex justify-content-center align-items-center gap-3"}>
@@ -224,14 +238,6 @@ function TabContentUi({title, engTitle, description}) {
           <h5 className="fw-bold mb-1 fs-5 fs-sm-4">{title}</h5>
           <p className="text-muted small fs-7">{description}</p>
         </div>
-
-        {/*{recentStores.length > 0 ? (*/}
-        {/*  <div/>*/}
-        {/*) : (*/}
-        {/*  <small className="text-muted" onClick={() => {*/}
-        {/*    nv(`/contentList/${engTitle}`)*/}
-        {/*  }}>전체보기</small>*/}
-        {/*)}*/}
       </div>
 
       <div className="mb-4">
@@ -242,7 +248,9 @@ function TabContentUi({title, engTitle, description}) {
                 type={"button"}
                 className={"btn fw-bold p-3 mt-5"}
                 style={{backgroundColor: "#FFD727"}}
-              onClick={()=>{nv("/user/login")}}>로그인이 필요합니다
+                onClick={() => {
+                  nv("/user/login")
+                }}>로그인이 필요합니다
               </button>
             </div>
           ) : (

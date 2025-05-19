@@ -23,7 +23,7 @@ function MainCategory() {
           Nv(`/contentList/${category.eng}`)
         }}>
           <div className="rounded p-3 d-flex flex-column align-items-center">
-            <div className={'mb-1'} style={{width: '48px', height: '48px', cursor: 'pointer'}}>
+            <div  className={'mb-1'} style={{width: '48px', height: '48px', cursor: 'pointer'}}>
               <img
                 style={{width: '48px', height: '48px'}}
                 src={category.img}

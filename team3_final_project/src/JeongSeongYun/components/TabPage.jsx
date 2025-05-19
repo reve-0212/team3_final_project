@@ -18,8 +18,8 @@ function TabPage() {
                                 fontSize: '0.65rem',
                                 background: 'none',
                                 border: 'none',
-                                borderBottom: activeTab === tab ? '2px solid #0d6efd' : '2px solid transparent',
-                                color: activeTab === tab ? '#0d6efd' : '#6c757d',
+                                borderBottom: activeTab === tab ? '2px solid #FFD700' : '2px solid transparent',
+                                color: activeTab === tab ? '#FFD700' : '#6c757d',
                             }}
                             onClick={() => setActiveTab(tab)}
                         >

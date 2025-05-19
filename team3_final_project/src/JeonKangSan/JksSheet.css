@@ -14,8 +14,10 @@ html {
 
 /* 기본 버튼 스타일 (둥근 형태, 여백 포함) */
 .btn-jks {
-    border-radius: 50px;
+    border-radius: 10px;
     padding: 8px 20px;
+    background-color: #FFFFFF;
+    border: #5a3a2e;
 }
 
 /* 공통 버튼: 주황색 배경, 가운데 정렬 */
@@ -34,27 +36,27 @@ html {
 /* 공통 버튼(외곽선): 흰 배경, 주황 테두리 */
 .common-btn-outline {
     background: #ffffff;
-    color: #FFA31C;
+    color: #FFD727;
     padding: 15px 0;
     font-weight: bold;
     width: 50%;
     margin: 0 auto;
-    border: 2px solid #FFA31C;
+    border: 2px solid #FFD727;
     border-radius: 10px;
 }
 
 /* 공통 버튼(외곽선) 호버 효과 */
 .common-btn-outline:hover {
-    background: #FFA31C;
-    color: #ffffff;
+    background: #FFD727;
+    color: #5D4037;
 }
 
 
 /* 공통 버튼(작은 크기) */
 .common-btn-sm {
-    background: #FFA31C;
+    background: #FFD727;
     padding: 12px 0;
-    color: #ffffff;
+    color: #5D4037;
     font-weight: bold;
     border-radius: 10px;
     font-size: 0.95rem;
@@ -69,19 +71,25 @@ html {
 
 /* 아이콘 고려 버튼 스타일 */
 .button-seebox {
-    background: #FFA31C;
-    color: #ffffff;
-    border: 1px solid #ced4da;
+    background: #FFD727;
+    color: #5D4037;
+    border: 1px solid #FFD700;
     padding-right: 3rem; /* 아이콘과 겹치지 않게 */
+}
+select:focus {
+    outline: none;
 }
 .button-seebox:hover {
     background: #FFFFFF;
     color: #000000;
 }
+.button-seebox > option {
+    background: #ffffff;
+}
 
 /* 강조 텍스트 스타일 */
 .notice-text {
-    color: #FFA31C;
+    color: #FFD727;
     font-weight: 600; /* 살짝 굵게 (semi-bold) */
 }
 
@@ -175,7 +183,7 @@ html {
     -webkit-appearance: none;
     background: transparent;
     border: none;
-    color: #FFA31C;
+    color: #FFD727;
     font-weight: bold;
     font-size: 0.9rem;
     padding: 0;
@@ -200,11 +208,11 @@ html {
 /* 탭 버튼 기본 스타일 */
 .tab-btn {
     flex: 1 1 35%; /* grow:1, shrink:1, 기본 폭 35% */
-    padding: 14px 0; /* 패딩 위아래 여유롭게 */
-    border: 1px solid #FFA31C;
+    padding: 10px 0; /* 패딩 위아래 여유롭게 */
+    border: 1px solid #FFD727;
     border-radius: 12px;
     background: #FFF8E1;
-    color: black;
+    color: #5D4037;
     font-weight: normal;
     font-size: 1.05rem;
     text-align: center;
@@ -215,9 +223,9 @@ html {
 
 /* 탭 버튼 활성화 상태 */
 .tab-btn.active {
-    background: #FFA31C;
-    color: white;
-    border: 1px solid #FFA31C;
+    background: #FFD727;
+    color: #5a3a2e;
+    border: 1px solid #FFD727;
 }
 
 
@@ -244,8 +252,8 @@ html {
 
 /* 탭 항목 활성화 스타일 */
 .tab-menu-text.active {
-    color: #FFA31C;
-    border-bottom: 3px solid #FFA31C;
+    color: #FFD727;
+    border-bottom: 3px solid #FFD727;
 }
 
 
@@ -254,10 +262,10 @@ html {
 .small-tab-btn {
     flex: 1 1 30%;
     padding: 10px 0;
-    border: 1px solid #FFA31C;
+    border: 1px solid #FFD727;
     border-radius: 10px;
     background: white;
-    color: #FFA31C;
+    color: #5D4037;
     font-weight: bold;
     font-size: 0.9rem;
     text-align: center;
@@ -268,8 +276,8 @@ html {
 
 /* 리뷰용 탭 버튼 활성화 */
 .small-tab-btn.active {
-    background: #FFA31C;
-    color: white;
-    border: 1px solid #FFA31C;
+    background: #FFD727;
+    color: #5D4037;
+    border: 1px solid #FFD727;
 }
 

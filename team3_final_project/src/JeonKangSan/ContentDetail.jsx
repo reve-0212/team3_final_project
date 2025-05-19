@@ -177,7 +177,7 @@ function ContentDetail() {
           <div className="d-flex gap-2 mb-2">
             {/* 평균 평점 */}
             <span style={{
-              backgroundColor: "#F5F5F5",
+              backgroundColor: "#FFF8E1",
               padding: "4px 12px",
               borderRadius: "8px",
               fontWeight: "600",
@@ -190,7 +190,7 @@ function ContentDetail() {
 
             {/* 리뷰 개수 */}
             <span style={{
-              backgroundColor: "#F5F5F5",
+              backgroundColor: "#FFF8E1",
               padding: "4px 12px",
               borderRadius: "8px",
               fontWeight: "600",
@@ -422,7 +422,7 @@ function ContentDetail() {
             {timeSlots.map((time, idx) => (
               <button key={idx}
                       className={"btn m-1"}
-                      style={{backgroundColor: "#FFD700"}}>
+                      style={{backgroundColor: "#FFF8E1"}}>
                 {/*<button*/}
                 {/*    key={idx}*/}
                 {/*    className={`btn ${selectedTime === time ? "btn-primary" : "btn-outline-primary"}`}*/}
