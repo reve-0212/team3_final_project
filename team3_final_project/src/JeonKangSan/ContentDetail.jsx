@@ -100,27 +100,56 @@ function ContentDetail() {
     <div className="app-container">
       <div className="container py-2 content-container">
         {/* 가게 대표 이미지 */}
-        <div
-          className="d-flex justify-content-center align-items-center bg-light w-100 mb-3"
-          style={{height: '250px', maxHeight: '250px', overflow: 'hidden'}}
-        >
-          {storeInfo.resImage1 ? (
-            <a href={storeInfo.resImage1} target="_blank" rel="noopener noreferrer">
-              <img
-                src={storeInfo.resImage1}
-                alt="대표 이미지"
-                style={{
-                  height: '100%',
-                  maxHeight: '250px',
-                  width: 'auto',
-                  objectFit: 'cover'
-                }}
-              />
-            </a>
-          ) : (
-            <span className="text-muted">사진</span>
-          )}
+
+        <div className="d-flex overflow-auto gap-2 mb-3" style={{ whiteSpace: "nowrap" }}>
+          {[storeInfo.resImage1, storeInfo.resImage2, storeInfo.resImage3]
+              .filter(Boolean)
+              .map((img, idx) => (
+                  <div
+                      key={idx}
+                      className="bg-light rounded overflow-hidden"
+                      style={{
+                        minWidth: "200px",
+                        height: "180px",
+                        flex: "0 0 auto"
+                      }}
+                  >
+                    <img
+                        src={img}
+                        alt={`대표 이미지 ${idx + 1}`}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover"
+                        }}
+                    />
+                  </div>
+              ))}
         </div>
+
+        {/*<div*/}
+        {/*  className="d-flex justify-content-center align-items-center bg-light w-100 mb-3"*/}
+        {/*  style={{height: '250px', maxHeight: '250px', overflow: 'hidden'}}*/}
+        {/*>*/}
+        {/*  {storeInfo.resImage1 ? (*/}
+        {/*    <a href={storeInfo.resImage1} target="_blank" rel="noopener noreferrer">*/}
+        {/*      <img*/}
+        {/*        src={storeInfo.resImage1}*/}
+        {/*        alt="대표 이미지"*/}
+        {/*        style={{*/}
+        {/*          height: '100%',*/}
+        {/*          maxHeight: '250px',*/}
+        {/*          width: 'auto',*/}
+        {/*          objectFit: 'cover'*/}
+        {/*        }}*/}
+        {/*      />*/}
+        {/*    </a>*/}
+        {/*  ) : (*/}
+        {/*    <span className="text-muted">사진</span>*/}
+        {/*  )}*/}
+        {/*</div>*/}
+
+
         {/* 가게 이름 */}
         <div className="d-flex justify-content-start text mb-2">
           <h5 className="fw-bold">
