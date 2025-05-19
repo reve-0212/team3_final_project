@@ -75,8 +75,6 @@ public class UserController {
   public ResponseEntity<?> updatePassword(@RequestBody Map<String, String> body, Authentication auth) {
     String userId = auth.getName();
     String newPass = body.get("newPass");
-    System.out.println("userId : " + userId);
-    System.out.println("new Pass : " + newPass);
 
     String hashed = passwordEncoder.encode(newPass);
     userMapper.updatePassword(userId, hashed);
@@ -89,9 +87,6 @@ public class UserController {
     String userId = auth.getName();
     String field = body.get("field");
     String value = body.get("value");
-    System.out.println("userId : " + userId);
-    System.out.println("field : " + field);
-    System.out.println("value : " + value);
 
     userMapper.updateField(userId, field, value);
     return ResponseEntity.ok("회원 정보 수정 완료");
@@ -106,40 +101,30 @@ public class UserController {
   //  예약 상세 정보 가져오기(메뉴 제외)
   @GetMapping("/getBook")
   public ReservationRestaurantJoinDTO getBook(@RequestParam int reservationIdx, @RequestParam int restaurantIdx) {
-    System.out.println("reservationIdx : " + reservationIdx);
-    System.out.println("restaurantIdx : " + restaurantIdx);
     return userService.getBook(reservationIdx, restaurantIdx);
   }
 
   //  예약 메뉴 정보 가져오기
   @GetMapping("/getMenu")
   public List<RrsmDTO> getMenu(@RequestParam int reservationIdx, @RequestParam int restaurantIdx) {
-    System.out.println("reservationIdx : " + reservationIdx);
-    System.out.println("restaurantIdx : " + restaurantIdx);
     return userService.getMenu(reservationIdx, restaurantIdx);
   }
 
   //  예약 취소하기
   @PutMapping("/cancelBook")
   public void cancelBook(@RequestParam int reservationIdx) {
-    System.out.println("reservationIdx : " + reservationIdx);
     userService.cancelBook(reservationIdx);
   }
 
   //  예약 취소할 때 히스토리에 넣기
   @PutMapping("/cancelBookHistory")
   public void cancelBookHistory(@RequestParam int reservationIdx) {
-    System.out.println("reservationIdx : " + reservationIdx);
     userService.cancelBookHistory(reservationIdx);
   }
 
   //  예약 번호 찾기
   @GetMapping("/searchResIdx")
   public int searchResIdx(@RequestParam int userIdx, @RequestParam int resIdx, @RequestParam String rsvDate, @RequestParam String rsvTime) {
-    System.out.println("userIdx : " + userIdx);
-    System.out.println("resIdx : " + resIdx);
-    System.out.println("rsvDate : " + rsvDate);
-    System.out.println("rsvTime : " + rsvTime);
     return userService.searchResIdx(userIdx, resIdx, rsvDate, rsvTime);
   }
 
@@ -147,7 +132,6 @@ public class UserController {
   @GetMapping("/userLoadSeat/{useResIdx}")
   public ResponseEntity<PreResponse> loadSeat(@PathVariable int useResIdx) {
     List<SeatDTO> seats = userService.loadSeat(useResIdx);
-//        System.out.println("API 요청: " + resIdx);
 
     if (seats != null && !seats.isEmpty()) {
       PreResponse response = new PreResponse(true, "좌석 불러오기 성공", seats);
@@ -158,18 +142,9 @@ public class UserController {
     }
   }
 
-  @PutMapping("/resSeat")
-  public void resSeat(@RequestBody ReservationDTO reservationDTO) {
-    System.out.println("userIdx : " + reservationDTO.getUserIdx());
-    System.out.println("resIdx : " + reservationDTO.getResIdx());
-  }
-
   //  좌석 예약하기
   @PutMapping("/reserveSeat")
   public void reserveSeat(@RequestParam int reservationIdx, @RequestParam int seatId) {
-    System.out.println("reserveSeat");
-    System.out.println("reservationIdx : " + reservationIdx);
-    System.out.println("seatId : " + seatId);
     userService.reserveSeat(reservationIdx, seatId);
   }
 
@@ -177,23 +152,16 @@ public class UserController {
   public void reserveMenu(@RequestParam int reservationIdx,
                           @RequestParam int menuIdx,
                           @RequestParam int menuQuantity) {
-    System.out.println("reserveMenu");
-
-    System.out.println("reservationIdx : " + reservationIdx);
-    System.out.println("menuIdx : " + menuIdx);
-    System.out.println("menuQuantity : " + menuQuantity);
     userService.reserveMenu(reservationIdx, menuIdx, menuQuantity);
   }
 
   @GetMapping("/isSeatAvailable/{shortPathIdx}")
   public int isSeatAvailable(@PathVariable int shortPathIdx) {
-    System.out.println("shortPathIdx : " + shortPathIdx);
     return userService.isSeatAvailable(shortPathIdx);
   }
 
   @GetMapping("/reservedSeat/{shortPathIdx}")
   public int reservedSeat(@PathVariable int shortPathIdx) {
-    System.out.println("shortPathIdx : " + shortPathIdx);
     return userService.reservedSeat(shortPathIdx);
   }
 
@@ -232,21 +200,6 @@ public class UserController {
           @RequestParam int menuSCount,
           @RequestParam int menuSTP
   ) {
-    System.out.print("reservationIdx : " + reservationIdx);
-    System.out.print(" resIdx : " + resIdx);
-    System.out.println(" reservationDate : " + reservationDate);
-
-    System.out.print("rsvPeople : " + rsvPeople);
-    System.out.print(" rsvMan : " + rsvMan);
-    System.out.print(" rsvWoman : " + rsvWoman);
-    System.out.println(" rsvBaby : " + rsvBaby);
-
-    System.out.print("menuIdx : " + menuIdx);
-    System.out.print(" menuName : " + menuName);
-    System.out.print(" menuPrice : " + menuPrice);
-    System.out.print(" menuSCount : " + menuSCount);
-    System.out.print(" menuSTP : " + menuSTP);
-
     userService.saveHistory(reservationIdx, resIdx, reservationDate,
             rsvPeople, rsvMan, rsvWoman, rsvBaby,
             menuIdx, menuName, menuPrice, menuSCount, menuSTP);
@@ -254,14 +207,11 @@ public class UserController {
 
   @DeleteMapping("/deleteReservation")
   public void deleteReservation(@RequestParam int userIdx, @RequestParam int reservationIdx) {
-    System.out.println("userIdx : " + userIdx);
-    System.out.println("reservationIdx : " + reservationIdx);
     userService.deleteReservation(userIdx, reservationIdx);
   }
 
   @DeleteMapping("/deleteSeat")
   public void deleteSeat(@RequestParam int reservationIdx) {
-    System.out.println("reservationIdx : " + reservationIdx);
     userService.deleteSeat(reservationIdx);
   }
 
@@ -275,21 +225,11 @@ public class UserController {
           @RequestParam int rsvBaby,
           @RequestParam String rsvDate,
           @RequestParam String rsvTime) {
-    System.out.println("userIdx : " + userIdx);
-    System.out.println("resIdx : " + resIdx);
-    System.out.println("rsvPeople : " + rsvPeople);
-    System.out.println("rsvMan : " + rsvMan);
-    System.out.println("rsvWoman : " + rsvWoman);
-    System.out.println("rsvBaby : " + rsvBaby);
-    System.out.println("rsvDate : " + rsvDate);
-    System.out.println("rsvTime : " + rsvTime);
     userService.bookAllReg(userIdx, resIdx, rsvPeople, rsvMan, rsvWoman, rsvBaby, rsvDate, rsvTime);
   }
 
   @GetMapping("/isSeatReserved")
   public List<Integer> isSeatReserved(@RequestParam String rsvDate, @RequestParam String rsvTime) {
-    System.out.println("rsvDate : " + rsvDate);
-    System.out.println("rsvTime : " + rsvTime);
     return userService.isSeatReserved(rsvDate, rsvTime);
   }
 }
