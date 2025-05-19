@@ -255,7 +255,7 @@ function PreReSet() {
             storeData.resImage1 || "",
             storeData.resImage2 || "",
             storeData.resImage3 || ""
-          ]);
+          ].filter(url => url !== "")); // 빈 문자열 제거
         } else {
           setIsSave(true);
         }
@@ -304,72 +304,113 @@ function PreReSet() {
 
     console.log("저장할 데이터: ", storeData);
 
-    // 가게 저장 시 수정 기능으로 체인지
+    // 수정인 경우
     if (!isSave && resIdx) {
-      axios.put(`http://localhost:8080/pre/owner/updateRest/${resIdx}`, storeData, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-        .then(response => {
-          console.log("수정 성공", response.data);
-          Swal.fire({
-            icon: 'success',
-            title: '수정 완료!',
-            text: '가게 정보가 수정되었습니다.',
-            confirmButtonColor: '#FFD727'
-          });
+      const result = await Swal.fire({
+        title: '수정하시겠습니까?',
+        text: '기존 가게 정보가 변경됩니다.',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: '예',
+        cancelButtonText: '아니요',
+        confirmButtonColor: '#FFD727',
+        cancelButtonColor: '#d33'
+      });
+
+      if (result.isConfirmed) {
+        axios.put(`http://localhost:8080/pre/owner/updateRest/${resIdx}`, storeData, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         })
-        .catch(error => {
-          console.log("오류 발생", error);
-          Swal.fire({
-            icon: 'error',
-            title: '오류',
-            text: '수정 중 오류가 발생했습니다.',
-            confirmButtonColor: '#FF3B30'
-          });
+            .then(response => {
+              console.log("수정 성공", response.data);
+              Swal.fire({
+                icon: 'success',
+                title: '수정 완료!',
+                text: '가게 정보가 수정되었습니다.',
+                confirmButtonColor: '#FFD727'
+              });
+            })
+            .catch(error => {
+              console.log("오류 발생", error);
+              Swal.fire({
+                icon: 'error',
+                title: '오류',
+                text: '수정 중 오류가 발생했습니다.',
+                confirmButtonColor: '#FF3B30'
+              });
+            });
+      } else {
+        Swal.fire({
+          title: '취소됨',
+          text: '수정이 취소되었습니다.',
+          icon: 'info',
+          confirmButtonColor: '#A9A9A9'
         });
+      }
     }
 
-    // 처음 저장할 때
+    // 저장인 경우
     else {
-      axios.post("http://localhost:8080/pre/owner/resave", storeData, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        }
-      })
-        .then((response) => {
-          console.log("저장 성공", response.data);
-          Swal.fire({
-            icon: 'success',
-            title: '저장 완료!',
-            text: '가게 정보가 저장되었습니다.',
-            confirmButtonColor: '#FFD727'
-          });
-          setIsSave(false);
-          setResIdx(response.data.resIdx || "");
-        })
-        .catch((error) => {
-          console.log("오류 발생", error);
-          if (error.response && error.response.status === 401) {
-            Swal.fire({
-              icon: 'error',
-              title: '오류',
-              text: '토큰이 만료되었습니다. 다시 로그인 해주세요.',
-              confirmButtonColor: '#FF3B30'
-            });
-          } else {
-            Swal.fire({
-              icon: 'error',
-              title: '오류',
-              text: '저장 중 오류가 발생하였습니다.',
-              confirmButtonColor: '#FF3B30'
-            });
+      const result = await Swal.fire({
+        title: '저장하시겠습니까?',
+        text: '입력한 가게 정보가 저장됩니다.',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: '예',
+        cancelButtonText: '아니요',
+        confirmButtonColor: '#FFD727',
+        cancelButtonColor: '#d33'
+      });
+
+      if (result.isConfirmed) {
+        axios.post("http://localhost:8080/pre/owner/resave", storeData, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
           }
+        })
+            .then((response) => {
+              console.log("저장 성공", response.data);
+              Swal.fire({
+                icon: 'success',
+                title: '저장 완료!',
+                text: '가게 정보가 저장되었습니다.',
+                confirmButtonColor: '#FFD727'
+              });
+              setIsSave(false);
+              setResIdx(response.data.resIdx || "");
+            })
+            .catch((error) => {
+              console.log("오류 발생", error);
+              if (error.response && error.response.status === 401) {
+                Swal.fire({
+                  icon: 'error',
+                  title: '오류',
+                  text: '토큰이 만료되었습니다. 다시 로그인 해주세요.',
+                  confirmButtonColor: '#FF3B30'
+                });
+              } else {
+                Swal.fire({
+                  icon: 'error',
+                  title: '오류',
+                  text: '저장 중 오류가 발생하였습니다.',
+                  confirmButtonColor: '#FF3B30'
+                });
+              }
+            });
+      } else {
+        Swal.fire({
+          title: '취소됨',
+          text: '저장이 취소되었습니다.',
+          icon: 'info',
+          confirmButtonColor: '#A9A9A9'
         });
+      }
     }
   };
+
 
 
   return (
@@ -389,51 +430,129 @@ function PreReSet() {
           <strong>가게 대표 이미지</strong>
         </h4>
 
-        <div className={"mt-3 mb-4 d-flex justify-content-between me-5"}>
-          <label
-            htmlFor={"resImageUpload"}
-            style={{
-              width: "100px", height: "100px",
-              backgroundColor: "white", border: "1px solid #A9A9A9",
-            }}
-            className={"rounded-3 d-flex flex-column justify-content-center align-items-center"}>
-            <FontAwesomeIcon icon={faCamera} className={"fs-3"}/>
-            <p className={"fs-6 mb-0"}>
-              사진 {resImage.filter(file => {
-              if (typeof file === "string") {
-                return file.trim() !== "";  // 공백이나 빈 문자열 제외
-              }
-              return true;  // File 객체는 포함
-            }).length}/3
-            </p>
-          </label>
-          <input id={"resImageUpload"}
-                 type={"file"}
-                 multiple accept={"image/*"}
-                 style={{display: "none"}}
-                 onChange={(e) => {
-                   const files = Array.from(e.target.files).slice(0, 3)
-                   setResImage(files)
-                 }}/>
-          <div
-              className="d-flex flex-row-reverse"
-              style={{ gap: "100px", flexGrow: 1 }}
-          >
+        {/*<div className={"mt-3 mb-4 d-flex justify-content-between me-5"}>*/}
+        {/*  <label*/}
+        {/*    htmlFor={"resImageUpload"}*/}
+        {/*    style={{*/}
+        {/*      width: "100px", height: "100px",*/}
+        {/*      backgroundColor: "white", border: "1px solid #A9A9A9",*/}
+        {/*    }}*/}
+        {/*    className={"rounded-3 d-flex flex-column justify-content-center align-items-center"}>*/}
+        {/*    <FontAwesomeIcon icon={faCamera} className={"fs-3"}/>*/}
+        {/*    <p className={"fs-6 mb-0"}>*/}
+        {/*      사진 {resImage.filter(file => {*/}
+        {/*      if (typeof file === "string") {*/}
+        {/*        return file.trim() !== "";  // 공백이나 빈 문자열 제외*/}
+        {/*      }*/}
+        {/*      return true;  // File 객체는 포함*/}
+        {/*    }).length}/3*/}
+        {/*    </p>*/}
+        {/*  </label>*/}
+        {/*  <input id={"resImageUpload"}*/}
+        {/*         type={"file"}*/}
+        {/*         multiple accept={"image/*"}*/}
+        {/*         style={{display: "none"}}*/}
+        {/*         onChange={(e) => {*/}
+        {/*           const files = Array.from(e.target.files).slice(0, 3)*/}
+        {/*           setResImage(files)*/}
+        {/*         }}/>*/}
+        {/*  <div*/}
+        {/*      className="d-flex flex-row-reverse"*/}
+        {/*      style={{ gap: "100px", flexGrow: 1 }}*/}
+        {/*  >*/}
+        {/*    {resImage.map((file, idx) => {*/}
+        {/*      const src = typeof file === "string" ? file : URL.createObjectURL(file);*/}
+        {/*      if (typeof src === "string" && src.trim() === "") return null;*/}
+        {/*      return (*/}
+        {/*          <img*/}
+        {/*              key={idx}*/}
+        {/*              src={src}*/}
+        {/*              alt={`preview=${idx}`}*/}
+        {/*              style={{width: "100px", height: "100px", objectFit: "cover", borderRadius: "50px"}}*/}
+        {/*              className={'border border-1'}*/}
+        {/*          />*/}
+        {/*      )*/}
+        {/*    })}*/}
+        {/*  </div>*/}
+        {/*</div>*/}
+
+        <div className={"mt-3 mb-4 me-5"}>
+          <div className="d-flex align-items-center gap-4 flex-wrap">
+
+            {/* 이미지 업로드 버튼 (사진 3개 미만일 때만) */}
+            {resImage.length < 3 && (
+                <label
+                    htmlFor={"resImageUpload"}
+                    style={{
+                      width: "100px", height: "100px",
+                      backgroundColor: "white", border: "1px solid #A9A9A9",
+                    }}
+                    className={"rounded-3 d-flex flex-column justify-content-center align-items-center"}>
+                  <FontAwesomeIcon icon={faCamera} className={"fs-3"}/>
+                  <p className={"fs-6 mb-0"}>사진 {resImage.length}/3</p>
+                </label>
+            )}
+
+            <input
+                id={"resImageUpload"}
+                type={"file"}
+                multiple accept={"image/*"}
+                style={{display: "none"}}
+                onChange={(e) => {
+                  const files = Array.from(e.target.files);
+                  const newImages = [...resImage, ...files].slice(0, 3);
+                  setResImage(newImages);
+                }}
+            />
+
+            {/* 업로드된 이미지 미리보기 */}
             {resImage.map((file, idx) => {
               const src = typeof file === "string" ? file : URL.createObjectURL(file);
-              if (typeof src === "string" && src.trim() === "") return null;
               return (
-                  <img
+                  <div
                       key={idx}
-                      src={src}
-                      alt={`preview=${idx}`}
-                      style={{width: "100px", height: "100px", objectFit: "cover", borderRadius: "50px"}}
-                      className={'border border-1'}
-                  />
-              )
+                      style={{ position: "relative", width: "100px", height: "100px" }}
+                  >
+                    {/* 삭제 버튼 */}
+                    <button type={'button'}
+                            onClick={() => {
+                              setResImage((prev) => prev.filter((_, i) => i !== idx));
+                            }}
+                            style={{
+                              position: "absolute",
+                              top: "2px",
+                              right: "2px",
+                              background: "rgba(0,0,0,0.5)",
+                              border: "none",
+                              color: "white",
+                              borderRadius: "50%",
+                              width: "20px",
+                              height: "20px",
+                              cursor: "pointer",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              padding: 0,
+                              zIndex: 10,
+                            }}
+                            aria-label={`Delete image ${idx + 1}`}>
+                      &times;
+                    </button>
+                    <img
+                        src={src}
+                        alt={`preview=${idx}`}
+                        style={{
+                          width: "100px",
+                          height: "100px",
+                          objectFit: "cover",
+                          borderRadius: "50px"
+                        }}
+                        className={'border border-1'}
+                    />
+                  </div>
+              );
             })}
           </div>
-
         </div>
 
 
