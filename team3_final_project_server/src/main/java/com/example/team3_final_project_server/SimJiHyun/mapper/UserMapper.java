@@ -89,4 +89,10 @@ public interface UserMapper {
   List<RtDTO> time(int resIdx);
 
   List<RcaDTO> hashTag(int resIdx);
+
+  List<RvRsDTO> reviewPick();
+
+  List<RbDTO> bookmarkRes(int userIdx);
+
+  List<RestaurantDTO> customRec();
 }

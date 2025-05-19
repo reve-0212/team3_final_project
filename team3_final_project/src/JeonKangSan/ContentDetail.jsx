@@ -10,9 +10,7 @@ import useResStoreSjh from "../stores/useResStoreSjh.jsx";
 function ContentDetail() {
   const userStore = useUserStore((state) => state.user)
   const setRes = useResStoreSjh((state) => state.setRes)
-  const param = useParams()
-  console.log(param.resIdx)
-
+  const restaurant = useParams()
 
   useKakaoLoader({appkey: import.meta.env.VITE_REACT_APP_KAKAO_MAP_API_KEY})
   const userIdx = userStore && userStore.userIdx !== null ? userStore.userIdx : ""
@@ -41,21 +39,19 @@ function ContentDetail() {
     lng: 126.570667
   })
 
-  // console.log(timeSlots)
-
   // 여러가지 불러오기
   useEffect(() => {
     axios.all([
         // res1 : 가게 상세 정보 가져오기
-        axios.get(`http://localhost:8080/detail/${param.resIdx}`),
+        axios.get(`http://localhost:8080/detail/${restaurant.resIdx}`),
         // res2 : 가게 메뉴 가져오기
-        axios.get(`http://localhost:8080/bestmenu/${param.resIdx}`),
+        axios.get(`http://localhost:8080/bestmenu/${restaurant.resIdx}`),
         // res3 : 편의시설 가져오기
-        axios.get(`http://localhost:8080/convenient/${param.resIdx}`),
+        axios.get(`http://localhost:8080/convenient/${restaurant.resIdx}`),
         // res4 : 시간 가져오기
-        axios.get(`http://localhost:8080/time/${param.resIdx}`),
+        axios.get(`http://localhost:8080/time/${restaurant.resIdx}`),
         // res5 : 태그 가져오기
-        axios.get(`http://localhost:8080/hashTag/${param.resIdx}`)
+        axios.get(`http://localhost:8080/hashTag/${restaurant.resIdx}`)
       ]
     ).then(
       axios.spread((res1, res2, res3, res4, res5) => {
@@ -64,8 +60,6 @@ function ContentDetail() {
         const data3 = res3.data
         const data4 = res4.data
         const data5 = res5.data
-
-        console.log(data5)
 
         setStoreInfo(data1);
         setRes(data1)
@@ -84,18 +78,19 @@ function ContentDetail() {
 
   // 리뷰 불러오기
   useEffect(() => {
-    axios.get(`http://localhost:8080/reviews/${param.resIdx}`)
+    axios.get(`http://localhost:8080/reviews/${restaurant.resIdx}`)
       .then(res => {
         setReviews(res.data);
       })
       .catch(err => console.log("리뷰 불러오기 오류:", err));
-  }, [param.resIdx]);
+  }, [restaurant.resIdx]);
 
   // 시간 데이터 집어넣기
   useEffect(() => {
     if (!storeInfo.resReserveTime) return;
   }, [storeInfo.resReserveTime]);
 
+  // 해시태그 나누기
   useEffect(() => {
     if (hashTag.length > 0) {
       const allTags =
@@ -105,7 +100,17 @@ function ContentDetail() {
     }
   }, [hashTag]);
 
-  console.log(parsedTags)
+  // 내가 전에 갔던 페이지 기억하기
+  // 중복된 페이지면 기억안함
+  // 길이는 최대 3
+  useEffect(() => {
+    const recent = JSON.parse(localStorage.getItem("recentStores") || "[]");
+    const updated = [restaurant.resIdx, ...recent.filter(id => id !== restaurant.resIdx)]
+    if (updated.length > 3) updated.length = 3;
+    localStorage.setItem("recentStores", JSON.stringify(updated))
+  }, [restaurant.resIdx]);
+
+  console.log(localStorage.getItem("recentStores"))
 
   return (
     <div className="app-container">
@@ -403,7 +408,7 @@ function ContentDetail() {
             <button
               className="common-btn w-100"
               onClick={() => {
-                Nv(`/book/visit/${userIdx}/${param.resIdx}`)
+                Nv(`/book/visit/${userIdx}/${restaurant.resIdx}`)
               }}>예약하기
             </button>
           ) : (

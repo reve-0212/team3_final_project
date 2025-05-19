@@ -247,4 +247,19 @@ public class UserController {
   public List<RcaDTO> hashTag(@PathVariable("resIdx") int resIdx) {
     return userService.hashTag(resIdx);
   }
+
+  @GetMapping("/reviewPick")
+  public List<RvRsDTO> reviewPick() {
+    return userService.reviewPick();
+  }
+
+  @GetMapping("/bookmarkRes")
+  public List<RbDTO> bookmarkRes(@RequestParam int userIdx) {
+    return userService.bookmarkRes(userIdx);
+  }
+
+  @GetMapping("/customRec")
+  public List<RestaurantDTO> customRec() {
+    return userService.customRec();
+  }
 }

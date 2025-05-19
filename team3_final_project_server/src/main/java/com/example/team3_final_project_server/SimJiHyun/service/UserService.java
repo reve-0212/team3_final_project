@@ -196,4 +196,16 @@ public class UserService {
   public List<RcaDTO> hashTag(int resIdx) {
     return userMapper.hashTag(resIdx);
   }
+
+  public List<RvRsDTO> reviewPick() {
+    return userMapper.reviewPick();
+  }
+
+  public List<RbDTO> bookmarkRes(int userIdx) {
+    return userMapper.bookmarkRes(userIdx);
+  }
+
+  public List<RestaurantDTO> customRec() {
+    return userMapper.customRec();
+  }
 }

@@ -305,4 +305,53 @@
     on r.res_idx = c.res_idx
     where r.res_idx = #{resIdx};
   </select>
+
+  <resultMap id="rvrsMap" type="com.example.team3_final_project_server.dto.join.RvRsDTO">
+    <association property="reviewDTO" javaType="com.example.team3_final_project_server.dto.ReviewDTO">
+      <result column="res_idx" property="resIdx"/>
+      <result column="review_rating" property="reviewRating"/>
+    </association>
+    <association property="restaurantDTO" javaType="com.example.team3_final_project_server.dto.RestaurantDTO">
+      <result column="res_name" property="resName"/>
+      <result column="res_image1" property="resImage1"/>
+      <result column="res_image2" property="resImage2"/>
+      <result column="res_image3" property="resImage3"/>
+    </association>
+  </resultMap>
+
+  <select id="reviewPick" resultMap="rvrsMap">
+    select rv.res_idx, round(avg(rv.review_rating),1) as review_rating,
+    rs.res_name, rs.res_image1, rs.res_image2, rs.res_image3
+    from review as rv
+    join restaurant as rs
+    on rv.res_idx = rs.res_idx
+    group by rv.res_idx
+    order by avg(rv.review_rating) desc
+    limit 3;
+  </select>
+
+  <resultMap id="rbMap" type="com.example.team3_final_project_server.dto.join.RbDTO">
+    <association property="restaurantDTO" javaType="com.example.team3_final_project_server.dto.RestaurantDTO">
+      <result column="res_idx" property="resIdx"/>
+      <result column="res_name" property="resName"/>
+      <result column="res_image1" property="resImage1"/>
+      <result column="res_image2" property="resImage2"/>
+      <result column="res_image3" property="resImage3"/>
+    </association>
+  </resultMap>
+
+  <select id="bookmarkRes" resultMap="rbMap">
+    select r.res_idx, r.res_name, r.res_image1, r.res_image2, r.res_image3
+    from bookmark as b join restaurant as r
+    on b.res_idx = r.res_idx
+    where b.user_idx = #{userIdx}
+    limit 3;
+  </select>
+
+  <select id="customRec">
+    select res_idx, res_name, res_image1, res_image2, res_image3
+    from restaurant
+    order by rand()
+    limit 3;
+  </select>
 </mapper>

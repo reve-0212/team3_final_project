@@ -112,7 +112,7 @@ public class SecurityConfig {
 //                    모든 사용자용
                     .requestMatchers("/user/**", "/latestDetails", "/bookmark", "/contentDetail", "/review", "/", "/api/visitors", "/bookmark/**").permitAll()
                     .requestMatchers("/jsy/contents/**", "/jsy/ownerLogin", "/contents/**", "/detail/**", "/reviews/**", "/bestmenu/**", "/reservedSeat/**", "/isSeatAvailable/**", "/getStoreLocation").permitAll()
-                    .requestMatchers("/api/**", "/auth/**", "/api/auth/signup", "/convenient/**", "/time/**","/hashTag/**").permitAll()
+                    .requestMatchers("/api/**", "/auth/**", "/api/auth/signup", "/convenient/**", "/time/**", "/hashTag/**", "/reviewPick", "/bookmarkRes", "/customRec").permitAll()
                     .requestMatchers("/api/visitors", "/api/visitors/**", "/reserveMenu/**").permitAll()
 
 //                    사장 전용
