@@ -207,7 +207,8 @@ function PreGenderCh() {
                                                     dominantBaseline="central"
                                                     fontSize={12}
                                                 >
-                                                    {`${name} ${(percent * 100).toFixed(0)}%`}
+                                                    <tspan x={x} dy="-0.4em">{name}</tspan>
+                                                    <tspan x={x} dy="1.2em">{`${(percent * 100).toFixed(0)}%`}</tspan>
                                                 </text>
                                             );
                                         }}
