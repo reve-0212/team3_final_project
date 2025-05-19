@@ -1,5 +1,4 @@
 import SjhReservationCard from "./SjhReservationCard.jsx";
-import ReservationOrWaiting from "./ReservationOrWaiting.jsx";
 import UseOrNoShow from "./UseOrNoShow.jsx";
 import {useEffect, useState} from "react";
 import useUserStore from "../../stores/useUserStore.jsx";
