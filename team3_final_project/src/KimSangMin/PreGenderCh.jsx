@@ -106,7 +106,7 @@ function PreGenderCh() {
         fetchData();  // 컴포넌트가 처음 렌더링 될 때 호출
     }, [seDay]);  // 날짜 선택 될때마다 다시 렌더링
 
-    const COLORS = ['#2a89dc', '#ff4b4b', '#09af5b'];
+    const COLORS = ['#4dabf7', '#f783ac', '#ffe066'];
 
     return (
         <>
@@ -190,15 +190,45 @@ function PreGenderCh() {
                                         data={genderData}
                                         cx="50%"
                                         cy="50%"
+                                        innerRadius={60} // 도넛 차트
                                         outerRadius={100}
                                         dataKey="value"
-                                        label
-                                    >
+                                        label={({ cx, cy, midAngle, innerRadius, outerRadius, percent, name }) => {
+                                            const RADIAN = Math.PI / 180;
+                                            const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+                                            const x = cx + radius * Math.cos(-midAngle * RADIAN);
+                                            const y = cy + radius * Math.sin(-midAngle * RADIAN);
+                                            return (
+                                                <text
+                                                    x={x}
+                                                    y={y}
+                                                    fill="white"
+                                                    textAnchor="middle"
+                                                    dominantBaseline="central"
+                                                    fontSize={12}
+                                                >
+                                                    {`${name} ${(percent * 100).toFixed(0)}%`}
+                                                </text>
+                                            );
+                                        }}
+                                        >
                                         {genderData.map((entry, index) => (
-                                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                            <Cell
+                                                key={`cell-${index}`}
+                                                fill={COLORS[index % COLORS.length]}
+                                            />
                                         ))}
+                                        <Tooltip
+                                            contentStyle={{
+                                                backgroundColor: '#fff',
+                                                borderRadius: '10px',
+                                                boxShadow: '0 0 10px rgba(0,0,0,0.1)',
+                                                border: 'none',
+                                            }}
+                                            itemStyle={{ color: '#333', fontSize: '13px' }}
+                                            formatter={(value, name) => [`${value}명`, name]}
+                                        />
                                     </Pie>
-                                    <Tooltip />
                                 </PieChart>
                             </ResponsiveContainer>
                             ))}
