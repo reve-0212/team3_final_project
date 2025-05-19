@@ -210,6 +210,13 @@ function PreReSet() {
             storeData.resImage2 || "",
             storeData.resImage3 || ""
           ]);
+
+          // 여기에 resImage 세팅 추가!
+          setResImage([
+            storeData.resImage1 || "",
+            storeData.resImage2 || "",
+            storeData.resImage3 || ""
+          ].filter(url => url !== "")); // 빈 문자열 제거
         } else {
           setIsSave(true);
         }
@@ -318,37 +325,77 @@ function PreReSet() {
           <strong>가게 대표 이미지</strong>
         </h4>
 
-        <div className={"mt-3 mb-5 d-flex justify-content-between me-5"}>
-          <label
-            htmlFor={"resImageUpload"}
-            style={{
-              width: "100px", height: "100px",
-              backgroundColor: "white", border: "1px solid #A9A9A9",
-            }}
-            className={"rounded-3 d-flex flex-column justify-content-center align-items-center"}>
-            <FontAwesomeIcon icon={faCamera} className={"fs-3"}/>
-            <p className={"fs-6 mb-0"}>사진 0/3</p>
-          </label>
-          <input id={"resImageUpload"}
-                 type={"file"}
-                 multiple accept={"image/*"}
-                 style={{display: "none"}}
-                 onChange={(e) => {
-                   const files = Array.from(e.target.files).slice(0, 3)
-                   setResImage(files)
-                 }}/>
+        <div className={"mt-3 mb-5 me-5"}>
 
-          {resImage.map((file, idx) => {
-            const src = typeof file === "string" ? file : URL.createObjectURL(file);
-            return (
-                <img
-                    key={idx}
-                    src={src}
-                    alt={`preview=${idx}`}
-                    style={{width: "100px", height: "100px", objectFit: "cover", borderRadius: "10px"}}
-                />
-            )
-          })}
+          {/*이미지 업로드 버튼 사진 3개 미만일때 보여지기 */}
+            {resImage.length < 3 && (
+                <label
+                    htmlFor={"resImageUpload"}
+                    style={{
+                      width: "100px", height: "100px",
+                      backgroundColor: "white", border: "1px solid #A9A9A9",
+                    }}
+                    className={"rounded-3 d-flex flex-column justify-content-center align-items-center"}>
+                  <FontAwesomeIcon icon={faCamera} className={"fs-3"}/>
+                  <p className={"fs-6 mb-0"}>사진 {resImage.length}/3</p>
+                </label>
+            )}
+
+            <input id={"resImageUpload"}
+                   type={"file"}
+                   multiple accept={"image/*"}
+                   style={{display: "none"}}
+                   onChange={(e) => {
+                     const files = Array.from(e.target.files);
+                     // 기존 배열 + 새 파일 합치기
+                     const newImages = [...resImage, ...files].slice(0, 3); // 최대 3개 제한
+                     setResImage(newImages)
+                   }}/>
+
+          <div className="d-flex mt-2" style={{ gap: "30px" }}>
+            {resImage.map((file, idx) => {
+              const src = typeof file === "string" ? file : URL.createObjectURL(file);
+              return (
+                  <div
+                      key={idx}
+                      style={{ position: "relative", width: "100px", height: "100px" }}
+                  >
+                    {/* 삭제 아이콘 */}
+                    <button
+                        onClick={() => {
+                          // 클릭하면 해당 이미지 삭제
+                          setResImage((prev) => prev.filter((_, i) => i !== idx));
+                        }}
+                        style={{
+                          position: "absolute",
+                          top: "2px",
+                          right: "2px",
+                          background: "rgba(0,0,0,0.5)",
+                          border: "none",
+                          color: "white",
+                          borderRadius: "50%",
+                          width: "20px",
+                          height: "20px",
+                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          padding: 0,
+                          zIndex: 10,
+                        }}
+                        aria-label={`Delete image ${idx + 1}`}
+                    >
+                      &times;
+                    </button>
+                  <img
+                      src={src}
+                      alt={`preview=${idx}`}
+                      style={{width: "100px", height: "100px", objectFit: "cover", borderRadius: "10px"}}
+                  />
+                  </div>
+              );
+            })}
+          </div>
         </div>
 
         {/*<div className="mb-4">*/}
