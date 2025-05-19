@@ -139,7 +139,6 @@ function PreReSet() {
     if (!token) return;
 
 
-
     axios.get("http://localhost:8080/pre/owner/getRestaurant", {
       headers: { Authorization: `Bearer ${token}` }
     })

@@ -9,7 +9,6 @@ import java.util.List;
 @Mapper
 public interface PreMapper {
 
-//    void saveSeats(List<SeatDTO> seats);
 
 
 

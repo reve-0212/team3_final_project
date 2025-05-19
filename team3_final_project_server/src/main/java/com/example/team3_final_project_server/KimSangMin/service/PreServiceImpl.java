@@ -134,7 +134,6 @@ public class PreServiceImpl implements PreService {
     return result > 0;
   }
 
-
   @Override
   public CategoryDTO getResIdxByCate(Integer resIdx) {
     return preMapper.getResIdxByCate(resIdx);

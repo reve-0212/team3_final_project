@@ -146,7 +146,7 @@ function SeatManager() {
         }
     };
 
-    // 좌석끼리 겹쳐지지 않기 위해
+
     // 좌석끼리 겹쳐지지 않기 위해
     const findAvailablePosition = (width, height) => {
         let x = 0; // 초기 위치
