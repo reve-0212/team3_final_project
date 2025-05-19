@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Draggable from "react-draggable";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 function SeatManager() {
 
@@ -63,27 +64,53 @@ function SeatManager() {
         const updatedSeat = elements.find(el => el.id === id);
         if (!updatedSeat) return;
 
-        const cleanSeat = {
-            seatId: updatedSeat.id,
-            x: x,
-            y: y,
-        };
-        console.log("업데이트 요청 seat:", cleanSeat);
-        axios.put("http://localhost:8080/pre/owner/seats/update", cleanSeat, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+        Swal.fire({
+            title: '좌석 위치를 수정하시겠습니까?',
+            text: "변경된 위치로 좌석이 저장됩니다.",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#FFD727',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '예',
+            cancelButtonText: '아니요'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const cleanSeat = {
+                    seatId: updatedSeat.id,
+                    x: x,
+                    y: y,
+                };
+
+                console.log("업데이트 요청 seat:", cleanSeat);
+                axios.put("http://localhost:8080/pre/owner/seats/update", cleanSeat, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                }).then(() => {
+                    console.log("좌석 위치 업데이트 완료");
+                    Swal.fire({
+                        icon: 'success',
+                        title: '수정 완료!',
+                        text: '좌석 위치 업데이트가 완료되었습니다.',
+                        confirmButtonColor: '#FFD727'
+                    });
+                    setElements(prev => prev.map(el =>
+                        el.id === id ? { ...el, x, y } : el
+                    ));
+                }).catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '오류',
+                        text: '좌석 위치 업데이트 실패하였습니다.',
+                        confirmButtonColor: '#FF3B30'
+                    });
+                    console.error("좌석 위치 업데이트 실패:", error.response ? error.response.data : error.message);
+                });
             }
-        }).then(() => {
-            console.log("좌석 위치 업데이트 완료");
-            // 기존 좌석의 x,y값만 변경
-            setElements(prev => prev.map(el =>
-                el.id === id ? { ...el, x, y } : el
-            ));
-        }).catch(error => {
-            // console.error("좌석 위치 업데이트 실패:", error.response ? error.response.data : error.message);
         });
     };
+
 
     // 좌석을 드래그로 이동처리하는 함수
     // id: 이동중인 좌석id, e : 이벤트 , data : 새 위치 좌표 x,y
@@ -107,44 +134,67 @@ function SeatManager() {
             el.id === id ? { ...el, x: newX, y: newY } : el
         ));
         // 좌석의 id와 새로운 x,y 좌표 서버에 전송
-        updateSeat(id, newX, newY);
         setIsModified(true);
     };
 
     // 좌석 삭제하기
     const deleteEl = () => {
-        // 좌석이 없으면 리턴
         if (elements.length === 0) return;
 
-        const confirmDelete = window.confirm("마지막으로 추가한 좌석을 삭제하시겠습니까?");
-        if (!confirmDelete) return;
-        // 요소중의 마지막에 생성된 요소를 기준으로 삭제
-        const lastSeat = elements[elements.length - 1];
+        Swal.fire({
+            title: '좌석을 삭제하시겠습니까?',
+            text: '마지막으로 추가된 좌석이 삭제됩니다.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#FFD727',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '예',
+            cancelButtonText: '아니요'
+        }).then((result) => {
+            if (!result.isConfirmed) return;
 
-        if (!token) {
-            alert("로그인이 필요합니다.");
-            return;
-        }
+            const lastSeat = elements[elements.length - 1];
 
-        const updatedElements = elements.filter(el => el.id !== lastSeat.id);
-        // lastSeat.id 와 같은 id를 제외한 좌석을 남긴다.
-        setElements(updatedElements);
-        // lastSeat.id 좌석을 제외한 상태로 렌더링
-        setIsModified(true);
+            if (!token) {
+                Swal.fire({
+                    icon: 'error',
+                    title: '로그인이 필요합니다.',
+                    confirmButtonColor: '#FF3B30'
+                });
+                return;
+            }
 
-        if (lastSeat.id) {
-            axios.delete(`http://localhost:8080/pre/owner/seats/delete/${lastSeat.id}`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            }).then(() => {
-                console.log("좌석 삭제 완료");
-            }).catch(error => {
-                console.error("좌석 삭제 실패:", error.response ? error.response.data : error.message);
-            });
-        }
+            const updatedElements = elements.filter(el => el.id !== lastSeat.id);
+            setElements(updatedElements);
+            setIsModified(true);
+
+            if (lastSeat.id) {
+                axios.delete(`http://localhost:8080/pre/owner/seats/delete/${lastSeat.id}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                }).then(() => {
+                    console.log("좌석 삭제 완료");
+                    Swal.fire({
+                        icon: 'success',
+                        title: '삭제 완료!',
+                        text: '좌석이 성공적으로 삭제되었습니다.',
+                        confirmButtonColor: '#FFD727'
+                    });
+                }).catch(error => {
+                    console.error("좌석 삭제 실패:", error.response ? error.response.data : error.message);
+                    Swal.fire({
+                        icon: 'error',
+                        title: '삭제 실패',
+                        text: '좌석 삭제에 실패했습니다.',
+                        confirmButtonColor: '#FF3B30'
+                    });
+                });
+            }
+        });
     };
+
 
     // 좌석끼리 겹쳐지지 않기 위해
     // 좌석끼리 겹쳐지지 않기 위해
@@ -160,7 +210,12 @@ function SeatManager() {
                 y += 100; // y좌표를 일정 간격으로 증가시킴
             }
             if (y + height > 400) { // y좌표가 범위를 넘으면 더 이상 추가하지 않음
-                alert("더 이상 공간을 추가할 수 없습니다.");
+                Swal.fire({
+                    icon: 'error',
+                    title: '오류',
+                    text: '더 이상 공간을 추가할 수 없습니다.',
+                    confirmButtonColor: '#FF3B30'
+                });
                 return null;
             }
         }
@@ -190,7 +245,12 @@ function SeatManager() {
         // 중복되는 좌석 체크
         const isDuplicate = elements.some(el => el.type === type && el.x === newSeat.x && el.y === newSeat.y);
         if (isDuplicate) {
-            alert("이미 같은 위치에 좌석이 있습니다.");
+            Swal.fire({
+                icon: 'error',
+                title: '오류',
+                text: '이미 같은 위치에 좌석이 있습니다.',
+                confirmButtonColor: '#FF3B30'
+            });
             return;  // 중복되면 상태 변경 없이 그대로 반환
         }
 
@@ -206,40 +266,68 @@ function SeatManager() {
 // 좌석 서버에 저장하기
     const saveToServer = () => {
         if (isSaving) return;
-        setIsSaving(true);
 
-        if (!token) {
-            alert("로그인이 필요합니다.");
-            setIsSaving(false);
-            return;
-        }
+        Swal.fire({
+            title: '좌석을 저장하시겠습니까?',
+            text: '현재까지 추가한 좌석 정보가 저장됩니다.',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#FFD727',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '예',
+            cancelButtonText: '아니요'
+        }).then((result) => {
+            if (!result.isConfirmed) return;
 
-        const uniqueSeats = [];
-        const seatIds = new Set();  // 중복된 ID를 체크할 Set 생성
+            setIsSaving(true);
 
-        // 좌석들 중에서 중복된 좌석을 제외하고 새로운 좌석만 배열에 추가
-        elements.forEach(seat => {
-            if (!seatIds.has(seat.id)) {
-                uniqueSeats.push(seat); // 중복되지 않는 좌석만 추가
-                seatIds.add(seat.id);    // 해당 ID는 Set에 추가
+            if (!token) {
+                Swal.fire({
+                    icon: 'error',
+                    title: '로그인이 필요합니다.',
+                    confirmButtonColor: '#FF3B30'
+                });
+                setIsSaving(false);
+                return;
             }
-        });
 
-        axios.post("http://localhost:8080/pre/owner/seats/save", uniqueSeats, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        }).then(() => {
-            alert("저장에 성공하였습니다.");
-            setIsModified(false);
-            setIsSaving(false);
-        }).catch(error => {
-            alert("저장에 실패하였습니다.");
-            console.error(error);
-            setIsSaving(false);
+            const uniqueSeats = [];
+            const seatIds = new Set();
+
+            elements.forEach(seat => {
+                if (!seatIds.has(seat.id)) {
+                    uniqueSeats.push(seat);
+                    seatIds.add(seat.id);
+                }
+            });
+
+            axios.post("http://localhost:8080/pre/owner/seats/save", uniqueSeats, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }).then(() => {
+                Swal.fire({
+                    icon: 'success',
+                    title: '저장 완료!',
+                    text: '저장에 성공하였습니다.',
+                    confirmButtonColor: '#FFD727'
+                });
+                setIsModified(false);
+                setIsSaving(false);
+            }).catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: '오류',
+                    text: '저장 중 오류가 발생하였습니다.',
+                    confirmButtonColor: '#FF3B30'
+                });
+                console.error(error);
+                setIsSaving(false);
+            });
         });
     };
+
 
 // 서버에 저장된 좌석 불러오기
     useEffect(() => {
@@ -302,21 +390,28 @@ function SeatManager() {
 
 
     return (
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "600px", padding: "2rem" }}>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center"}}
+            className={'pt-4'}
+        >
             <div style={{ maxWidth: "900px", width: "100%" }}>
-                <div style={{ marginBottom: "10px", textAlign: "center" }}>
-                    <button onClick={() => addEl("입구")}>+ 입구 추가</button>
-                    <button onClick={() => addEl("창문")}>+ 창문 추가</button>
-                    <button onClick={() => addEl("2인석")}>+ 2인석 추가</button>
-                    <button onClick={() => addEl("4인석")}>+ 4인석 추가</button>
-                    <button onClick={() => addEl("6인석")}>+ 6인석 추가</button>
-                    <button onClick={deleteEl} disabled={elements.length === 0}>⎌ 좌석 삭제</button>
-                    <button onClick={saveToServer} disabled={!isModified || isSaving}>저장</button>
-                    <button onClick={() => updateSeat(selectedSeat?.id, selectedSeat?.x, selectedSeat?.y)} disabled={!selectedSeat}>수정</button> {/* 수정버튼 활성화 조건 추가 */}
+                <div style={{ marginBottom: "10px"}} className={'d-flex justify-content-between'}>
+                    <button type={'button'} className={'mag-btn'} onClick={() => addEl("입구")}>+ 입구 추가</button>
+                    <button type={'button'} className={'mag-btn'} onClick={() => addEl("창문")}>+ 창문 추가</button>
+                    <button type={'button'} className={'mag-btn'} onClick={() => addEl("2인석")}>+ 2인석 추가</button>
+                    <button type={'button'} className={'mag-btn'} onClick={() => addEl("4인석")}>+ 4인석 추가</button>
+                    <button type={'button'} className={'mag-btn'} onClick={() => addEl("6인석")}>+ 6인석 추가</button>
+                    <button type={'button'} className={'mag-btn'} onClick={deleteEl} disabled={elements.length === 0}>⎌ 좌석 삭제</button>
+                    <button type={'button'} className={'mag-btn'} onClick={saveToServer} disabled={!isModified || isSaving}>저장</button>
+                    <button type={'button'} className={'mag-btn'} onClick={() => updateSeat(selectedSeat?.id, selectedSeat?.x, selectedSeat?.y)} disabled={!selectedSeat}>수정</button> {/* 수정버튼 활성화 조건 추가 */}
                 </div>
                 <div style={{
-                    width: "100%", height: "400px", backgroundColor: "#FFFFFF", border: "1px solid black", position: "relative",
-                    borderRadius: "5px", overflow: "hidden"
+                    width: "100%",
+                    height: "400px",
+                    backgroundColor: "#FFFFFF",
+                    border: "1px solid black",
+                    position: "relative",
+                    borderRadius: "5px",
+                    overflow: "hidden"
                 }}>
                     {elements.map((seat, index) => (
                         <Draggable
@@ -324,21 +419,69 @@ function SeatManager() {
                             position={{ x: seat.x, y: seat.y }}
                             onStop={(e, data) => hDr(seat.id, e, data)}
                         >
-                            <div style={{
-                                position: "absolute", width: `${getSize(seat.type)}px`, height: `${getSize(seat.type)}px`,
-                                backgroundColor: "#FFFFFF", border: "1px solid black", borderRadius: "5px", display: "flex", justifyContent: "center",
-                                alignItems: "center", padding: "5px", cursor: "move", boxShadow: "0 4px 8px rgba(0,0,0,0.2)"
-                            }} onClick={() => handleSelectSeat(seat)}>
-                                <img
-                                    src={seat.image}
-                                    alt={seat.type}
-                                    style={{ width: "50px", height: "50px" }}
-                                />
-                                <div>{seat.name}</div>
+                            <div
+                                className="seat-wrapper"
+                                style={{
+                                    position: "absolute",
+                                    width: `${getSize(seat.type)}px`,
+                                    height: `${getSize(seat.type) + 16}px`,
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    alignItems: "center",
+                                    justifyContent: "flex-start",
+                                    cursor: "move",
+                                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.15)",
+                                    borderRadius: "10px",
+                                    padding: "6px",
+                                    backgroundColor: "#fff",
+                                    border: "1px solid #ccc",
+                                }}
+                                onClick={() => handleSelectSeat(seat)}
+                            >
+                                <div style={{
+                                    position: "absolute",
+                                    top: 0,
+                                    left: 0,
+                                    color: "red",
+                                    padding: "2px 4px",
+                                    fontSize: "12px",
+                                    borderBottomRightRadius: "4px",
+                                    zIndex: 10
+                                }}>
+                                    {seat.resSeatId ?? index + 1}
+                                </div>
+                                {/* 이미지 */}
+                                <div
+                                    style={{
+                                        width: `${getSize(seat.type)}px`,
+                                        height: `${getSize(seat.type)}px`,
+                                        borderRadius: seat.shape === "square" ? "50%" : "0%",
+                                        backgroundColor: "transparent",
+                                        backgroundImage: `url(${seat.image})`,
+                                        backgroundSize: "contain",
+                                        backgroundPosition: "center",
+                                        backgroundRepeat: "no-repeat",
+                                    }}
+                                ></div>
+
+                                {/* 텍스트 */}
+                                <div
+                                    style={{
+                                        height: "24px",
+                                        fontSize: "12px",
+                                        color: selectedSeat?.id === seat.id ? "red" : "#333",
+                                        fontWeight: "600",
+                                        lineHeight: "24px",
+                                        textAlign: "center",
+                                    }}
+                                >
+                                    {seat.type}
+                                </div>
                             </div>
                         </Draggable>
                     ))}
                 </div>
+
             </div>
         </div>
     );

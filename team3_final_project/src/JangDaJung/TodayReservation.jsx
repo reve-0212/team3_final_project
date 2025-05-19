@@ -309,7 +309,7 @@ function TodayReservation() {
                                     const isSelected = seatSelect.includes(seat.seatId);
 
                                     const seatSize =
-                                        seat.type === "4인석" ? 80 : seat.type === "6인석" ? 100 : 50;
+                                        seat.type === "4인석" ? 80 : seat.type === "6인석" ? 100 : seat.type === "입구" ? 70 : seat.type === "창문" ? 70 : 60;
 
                                     const textHeight = 16;
                                     const totalHeight = seatSize + textHeight;
@@ -353,11 +353,11 @@ function TodayReservation() {
                                             {!isUnavailable && (
                                                 <div
                                                     style={{
-                                                        height: `${textHeight}px`,
+                                                        height: `24px`,
                                                         fontSize: "12px",
                                                         color: isSelected ? "red" : "black",
                                                         fontWeight: "600",
-                                                        lineHeight: `${textHeight}px`,
+                                                        lineHeight: `24px`,
                                                         textAlign: "center",
                                                     }}
                                                 >

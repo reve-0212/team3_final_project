@@ -118,20 +118,35 @@ function PreFunction() {
                 <span style={{ color: "#FFD727", fontSize: "14px" }}> *필수</span>
             </h4>
             <form onSubmit={hSubmit}>
-                <div className="mb-4">
-                    {Array.isArray(funcOpt) && funcOpt.map((facility) => (
-                        <div key={facility.cvId} style={{ marginBottom: "8px" }}>
-                            <label>
+                <div className="mb-4" style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+                    {Array.isArray(funcOpt) &&
+                        funcOpt.map((facility) => (
+                            <label
+                                key={facility.cvId}
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    width: "calc(20% - 10px)", // 5개씩 한 줄에 나오도록
+                                    minWidth: "120px" // 너무 작아지지 않도록 최소 너비 설정
+                                }}
+                            >
                                 <input
                                     type="checkbox"
+                                    className="ChkBox"
                                     checked={selectOpt.includes(facility.cvId)}
                                     onChange={() => checkBox(facility.cvId)}
+                                    style={{
+                                        marginRight: "6px",
+                                        width: "18px",
+                                        height: "18px",
+                                        verticalAlign: "middle" // 텍스트와 높이 맞추기
+                                    }}
                                 />
-                                {" "}{facility.cvName}
+                                <span style={{ fontSize: "15px", verticalAlign: "middle" }}>{facility.cvName}</span>
                             </label>
-                        </div>
-                    ))}
+                        ))}
                 </div>
+
 
                 <button type="submit" className="btn btn-warning">
                     {isSave ? "수정하기" : "저장하기"}
@@ -139,7 +154,6 @@ function PreFunction() {
             </form>
 
             <hr/>
-            <br/>
 
             <h4 className="text-start">
                 <strong>좌석배치도</strong>

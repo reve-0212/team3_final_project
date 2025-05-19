@@ -131,9 +131,9 @@ function ReBanner() {
                 <nav className="navbar navbar-expand-lg navbar-dark"
                      style={{height: '10vh', backgroundColor: '#FFD700'}}>
                     <div className="container-fluid d-flex justify-content-between align-items-center">
-                        <Link className="navbar-brand text-white fs-1 text-align-center" to="/pre/PreMain">
-                            Logo
-                        </Link>
+                        <a onClick={()=> handleNaviClick("PreMain")} className="navbar-brand text-white fs-1 text-align-center" style={{ cursor: "pointer" }}>
+                            LOGO
+                        </a>
                         <span className="text-white" style={{ marginRight: '10px' }}>
                             남은 시간: {remainingTime}
                         </span>
