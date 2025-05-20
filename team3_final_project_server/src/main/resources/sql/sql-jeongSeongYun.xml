@@ -77,6 +77,12 @@
         WHERE ss2.reservation_idx = a.reservation_idx
         ) AS seat_ids,
         (
+        SELECT GROUP_CONCAT(DISTINCT st2.res_seat_id ORDER BY st2.res_seat_id SEPARATOR ', ')
+        FROM selected_seat ss2
+        JOIN seat_table st2 ON ss2.seat_id = st2.seat_id
+        WHERE ss2.reservation_idx = a.reservation_idx
+        ) AS res_seat_id,
+        (
         SELECT COUNT(*)
         FROM reservation r
         WHERE r.user_idx = a.user_idx
@@ -85,17 +91,16 @@
         ) AS visit_count
         FROM
         reservation a
-        JOIN
-        selected_seat b ON a.reservation_idx = b.reservation_idx
-        JOIN
-        user c ON a.user_idx = c.user_idx
+        JOIN selected_seat b ON a.reservation_idx = b.reservation_idx
+        JOIN seat_table st ON b.seat_id = st.seat_id
+        JOIN user c ON a.user_idx = c.user_idx
         WHERE
         b.seat_id = #{seatId}
         AND a.rsv_date = CURDATE()
         AND a.rsv_come_datetime IS NULL
         AND a.rsv_cancel_datetime IS NULL
         ORDER BY
-        a.reservation_idx
+        a.reservation_idx;
     </select>
 
     <!--    좌석 불러오기 -->
@@ -163,6 +168,7 @@
         c.user_call,
         CONCAT(a.rsv_date, ' ', TIME_FORMAT(a.rsv_time, '%H:%i')) AS rsv_time,
         GROUP_CONCAT(DISTINCT ss.seat_id ORDER BY ss.seat_id SEPARATOR ', ') AS seat_ids,
+        GROUP_CONCAT(DISTINCT st.res_seat_id ORDER BY st.res_seat_id SEPARATOR ', ') AS res_seat_id,
         (
         SELECT COUNT(*)
         FROM reservation r
@@ -172,12 +178,13 @@
         ) AS visit_count
         FROM reservation a
         JOIN selected_seat ss ON a.reservation_idx = ss.reservation_idx
+        JOIN seat_table st ON ss.seat_id = st.seat_id
         JOIN user c ON a.user_idx = c.user_idx
         WHERE
-            a.rsv_come_datetime IS NULL
-            AND a.rsv_cancel_datetime IS NULL
-            AND a.res_idx = #{resIdx}
-            AND CONCAT(CURDATE(), ' 23:59:59') >= CONCAT(a.rsv_date, ' ', a.rsv_time)
+        a.rsv_come_datetime IS NULL
+        AND a.rsv_cancel_datetime IS NULL
+        AND a.res_idx = #{resIdx}
+        AND CONCAT(CURDATE(), ' 23:59:59') >= CONCAT(a.rsv_date, ' ', a.rsv_time)
         GROUP BY
         a.reservation_idx, c.user_nick, a.rsv_people, c.user_call, a.rsv_date, a.rsv_time, a.user_idx, a.res_idx
         ORDER BY

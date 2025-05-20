@@ -30,4 +30,5 @@ public class ReservationDTO {
   private int visitCount;
   private String status;
   private String seatIds;
+  private String resSeatId;
 }

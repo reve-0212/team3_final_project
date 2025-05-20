@@ -65,14 +65,16 @@ public class MenuController {
 
 //    리스트 페이지에서 숨기기 해제
     @PutMapping("/unHidden/{menuIdx}")
-    public ResponseEntity<Void> unhiddenMenu(@PathVariable int menuIdx) {
+    public ResponseEntity<Void> unhiddenMenu(@PathVariable int menuIdx, @RequestHeader("Authorization") String authorizationHeader) {
+        System.out.println("컨트롤러에서 보낸 헤더 : " + authorizationHeader);
         jdjService.updateUnhidden(menuIdx, false);
         return ResponseEntity.ok().build();
     }
 
 //    리스트 페이지에서 품절 해제
     @PutMapping("/unSoldOut/{menuIdx}")
-    public ResponseEntity<Void> unsoldoutMenu(@PathVariable int menuIdx) {
+    public ResponseEntity<Void> unsoldoutMenu(@PathVariable int menuIdx, @RequestHeader("Authorization") String authorizationHeader) {
+        System.out.println("컨트롤러에서 보낸 헤더 : " + authorizationHeader);
         jdjService.updateUnSoldOut(menuIdx, false);
         return ResponseEntity.ok().build();
     }
