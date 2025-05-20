@@ -1,11 +1,10 @@
-import WaBanner from "../KimSangMin/WaBanner.jsx";
 import "./css/CeoNewMenu.css";
 import React, {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import ReBanner from "../KimSangMin/ReBanner.jsx";
-import axios from "axios";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCamera} from "@fortawesome/free-solid-svg-icons";
+import api from "../api/axios.js";
 
 function CeoMenuEdit() {
   const navigate = useNavigate()
@@ -22,11 +21,11 @@ function CeoMenuEdit() {
 
   // 페이지 진입 시 기존 메뉴 데이터 로딩
   useEffect(() => {
-    console.log(resIdx);
-    console.log(menuIdx);
+    // console.log(resIdx);
+    // console.log(menuIdx);
     const fetchMenu = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/menu/${menuIdx}`, {
+        const response = await api.get(`/menu/${menuIdx}`, {
           params: {
             resIdx: resIdx
           }
@@ -52,24 +51,24 @@ function CeoMenuEdit() {
 
   // 이미지를 cloudinary 로 가져감
   const uploadToCloudinary = async (file) => {
-    console.log("업로드할 파일:", file);
-    console.log("name:", file.name);
-    console.log("type:", file.type);
+    // console.log("업로드할 파일:", file);
+    // console.log("name:", file.name);
+    // console.log("type:", file.type);
 
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", "waitable");
 
-    for (let pair of formData.entries()) {
-      if (pair[0] === "file") {
-        const f = pair[1];
-        console.log(`file name: ${f.name}`);
-        console.log(`file size: ${f.size}`);
-        console.log(`file type: ${f.type}`);
-      } else {
-        console.log(`${pair[0]}: ${pair[1]}`);
-      }
-    }
+    // for (let pair of formData.entries()) {
+    //   if (pair[0] === "file") {
+    //     const f = pair[1];
+    //     console.log(`file name: ${f.name}`);
+    //     console.log(`file size: ${f.size}`);
+    //     console.log(`file type: ${f.type}`);
+    //   } else {
+    //     console.log(`${pair[0]}: ${pair[1]}`);
+    //   }
+    // }
 
     try {
       const response = await fetch("https://api.cloudinary.com/v1_1/dot2phme3/image/upload", {
@@ -78,7 +77,7 @@ function CeoMenuEdit() {
       });
 
       const data = await response.json();
-      console.log("Cloudinary 응답:", data);
+      // console.log("Cloudinary 응답:", data);
       return data.secure_url;
     } catch (err) {
       console.error(err);
@@ -99,9 +98,9 @@ function CeoMenuEdit() {
     const imageUrl = await uploadImageToCloudinary(menuImage);
 
     // 입력한 값 콘솔에 출력
-    console.log("수정할 메뉴명:", menuName);
-    console.log("수정할 설명:", menuExplanation);
-    console.log("수정할 이미지:", imageUrl);
+    // console.log("수정할 메뉴명:", menuName);
+    // console.log("수정할 설명:", menuExplanation);
+    // console.log("수정할 이미지:", imageUrl);
 
     const formData = new FormData();
     formData.append("menuName", menuName);
@@ -110,8 +109,8 @@ function CeoMenuEdit() {
     formData.append("menuImage", imageUrl);
 
     try {
-      const response = await axios.put(`http://localhost:8080/menu/edit/${menuIdx}`, formData);
-      console.log("수정 성공:", response.data);
+      const response = await api.put(`/menu/edit/${menuIdx}`, formData);
+      // console.log("수정 성공:", response.data);
       setShowSuccessModal(true);
     } catch (err) {
       console.error("수정 실패:", err);
@@ -133,7 +132,7 @@ function CeoMenuEdit() {
 
   const confirmDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8080/menu/delete/${menuIdx}`);
+      await api.delete(`/menu/delete/${menuIdx}`);
       alert("메뉴가 삭제되었습니다.");
       navigate(`/pre/PreMenuList/${resIdx}`);
     } catch (err) {

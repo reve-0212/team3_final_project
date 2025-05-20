@@ -12,7 +12,7 @@ import {
 } from "recharts";
 import ReBanner from "../KimSangMin/ReBanner.jsx";
 import {Link, useParams} from "react-router-dom";
-import axios from "axios";
+import api from "../api/axios.js";
 
 function PreCh() {
 
@@ -78,7 +78,7 @@ function PreCh() {
         setLoading(true);
         try {
             //   서버에서 데이터 받아옴
-            const response = await axios.get('http://localhost:8080/api/history/sales', {
+            const response = await api.get('/api/history/sales', {
                 params: {
                     startDate: formatDateStart(seDay.from),
                     endDate: formatDateEnd(seDay.to),

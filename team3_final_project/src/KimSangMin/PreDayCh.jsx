@@ -12,7 +12,7 @@ import {
 } from "recharts";
 import ReBanner from "../KimSangMin/ReBanner.jsx";
 import {Link, useParams} from "react-router-dom";
-import axios from "axios";
+import api from "../api/axios.js";
 
 function PreDayCh() {
 
@@ -91,8 +91,8 @@ function PreDayCh() {
     // 가게 영업시간 정보 받아오기
     const fetchResTime = async () => {
         try {
-            const res = await axios.get(`http://localhost:8080/api/history/restaurant/${resIdx}/reservationTime`);
-            console.log('API 응답 데이터:', res.data);
+            const res = await api.get(`/api/history/restaurant/${resIdx}/reservationTime`);
+            // console.log('API 응답 데이터:', res.data);
             let slots = res.data;
 
             if (typeof slots === 'string') {
@@ -112,7 +112,7 @@ function PreDayCh() {
 
         setLoading(true);
         try {
-            const response = await axios.get('http://localhost:8080/api/history/reservation/hour', {
+            const response = await api.get('/api/history/reservation/hour', {
                 params: {
                     startDate: formatDateStart(seDay.from),
                     endDate: formatDateEnd(seDay.to),
@@ -134,7 +134,7 @@ function PreDayCh() {
             });
             //   응답받은 데이터 상태ㅐ에 저장
             setChartData(formatted);
-            console.log("Fetched data:", raw);
+            // console.log("Fetched data:", raw);
         }
         catch (error) {
             console.error("시간대별 예약 가져오기 실패", error);
