@@ -85,6 +85,7 @@ function PreReSet() {
   const openDaumPostcode = () => {
     new window.daum.Postcode({
       oncomplete: function (data) {
+        console.log(data)
         const fullAddress = data.address;
         setRestData((prevData) => ({
           ...prevData,

@@ -296,7 +296,7 @@ function TodayReservation() {
                                 style={{
                                     position: "relative",
                                     width: "71%",
-                                    maxWidth: "900px",
+                                    minWidth: "900px",
                                     height: "400px",
                                     border: "1px solid #ddd",
                                     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.15)",
