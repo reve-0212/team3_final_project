@@ -81,14 +81,14 @@ function TabContentUi({title, engTitle, description}) {
                 <img
                   key={idx}
                   src={image}
-                  style={{width: "128px", height: "128px", flex: "0 0 auto"}}
+                  style={{width: "6rem", height: "6rem", flex: "0 0 auto"}}
                   className={"rounded-5"}
                   onClick={() => nv(`/resdetail/${index.resIdx}`)}
                 />
               ) : (
                 <div
                   key={idx}
-                  style={{width: "128px", height: "128px", flex: "0 0 auto", backgroundColor: "#D9D9D9"}}
+                  style={{width: "6rem", height: "6rem", flex: "0 0 auto", backgroundColor: "#D9D9D9"}}
                   className={"rounded-5"}
                   onClick={() => nv(`/resdetail/${index.resIdx}`)}
                 ></div>
@@ -119,14 +119,14 @@ function TabContentUi({title, engTitle, description}) {
                 <img
                   key={idx}
                   src={image}
-                  style={{width: "128px", height: "128px", flex: "0 0 auto"}}
+                  style={{width: "6rem", height: "6rem", flex: "0 0 auto"}}
                   className={"rounded-5"}
                   onClick={() => nv(`/resdetail/${index.reviewDTO?.resIdx}`)}
                 />
               ) : (
                 <div
                   key={idx}
-                  style={{width: "128px", height: "128px", flex: "0 0 auto", backgroundColor: "#D9D9D9"}}
+                  style={{width: "6rem", height: "6rem", flex: "0 0 auto", backgroundColor: "#D9D9D9"}}
                   className={"rounded-5"}
                   onClick={() => nv(`/resdetail/${index.reviewDTO?.resIdx}`)}
                 ></div>
@@ -152,14 +152,14 @@ function TabContentUi({title, engTitle, description}) {
                 <img
                   key={idx}
                   src={image}
-                  style={{width: "128px", height: "128px", flex: "0 0 auto"}}
+                  style={{width: "6rem", height: "6rem", flex: "0 0 auto"}}
                   className={"rounded-5"}
                   onClick={() => nv(`/resdetail/${index.restaurantDTO?.resIdx}`)}
                 />
               ) : (
                 <div
                   key={idx}
-                  style={{width: "128px", height: "128px", flex: "0 0 auto", backgroundColor: "#D9D9D9"}}
+                  style={{width: "6rem", height: "6rem", flex: "0 0 auto", backgroundColor: "#D9D9D9"}}
                   className={"rounded-5"}
                   onClick={() => nv(`/resdetail/${index.restaurantDTO?.resIdx}`)}
                 ></div>
@@ -199,14 +199,14 @@ function TabContentUi({title, engTitle, description}) {
                 <img
                   key={idx}
                   src={image}
-                  style={{width: "128px", height: "128px", flex: "0 0 auto"}}
+                  style={{width: "6rem", height: "6rem", flex: "0 0 auto"}}
                   className={"rounded-5"}
                   onClick={() => nv(`/resdetail/${index.resIdx}`)}
                 />
               ) : (
                 <div
                   key={idx}
-                  style={{width: "128px", height: "128px", flex: "0 0 auto", backgroundColor: "#D9D9D9"}}
+                  style={{width: "6rem", height: "6rem", flex: "0 0 auto", backgroundColor: "#D9D9D9"}}
                   className={"rounded-5"}
                   onClick={() => nv(`/resdetail/${index.resIdx}`)}
                 ></div>
