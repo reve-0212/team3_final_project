@@ -28,7 +28,6 @@ public class KNHController {
   // 예약 페이지
   @PutMapping("/date")
   public void updateRsvDate(@RequestBody ReservationDTO reservationDTO) throws Exception {
-    System.out.println("/visitors/{userIdx}/{resIdx} 받아온 값 : " + reservationDTO.getRsvPeople());
     knhService.updateRsvDate(
             reservationDTO.getUserIdx(),
             reservationDTO.getResIdx(),
@@ -57,8 +56,6 @@ public class KNHController {
           @PathVariable("resIdx") int resIdx,
           @RequestBody ReservationDTO reservationDTO)
           throws Exception {
-    System.out.println("userIdx : " + userIdx);
-    System.out.println("resIdx : " + resIdx);
     knhService.updateRsvMenu(userIdx, resIdx);
   }
 

@@ -69,15 +69,13 @@ section {
 
 /* 컨테이너 정렬 */
 .datepicker-container {
+    width:70% !important;
     display: flex;
     flex-direction: column;
     align-items: center;
     font-size: 20px !important;
 }
-.react-datepicker__month-container {
-    /*width: 500px !important;*/
-    /*height: 500px !important;*/
-}
+
 .react-datepicker {
     color: #ffffff !important;
 }
@@ -105,7 +103,7 @@ section {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.05);
     font-size: 1.1rem !important;
-
+    
 }
 .react-datepicker button {
     background-color:  #FFD700 !important;
