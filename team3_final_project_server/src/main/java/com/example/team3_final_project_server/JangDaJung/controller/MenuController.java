@@ -36,8 +36,10 @@ public class MenuController {
 
     @GetMapping("/resIdxByUser")
     public ResponseEntity<?> getResIdxByUser(@RequestHeader("Authorization") String authorizationHeader) {
+        System.out.println("getResIdxByUser() called!");
         // Authorization 헤더에서 토큰 추출
         String token = authorizationHeader.replace("Bearer ", "");
+        System.out.println("Token: " + token);
 
         // 토큰에서 인증 정보 얻기
         Authentication authentication = jwtTokenProvider.getAuthentication(token);
@@ -48,6 +50,9 @@ public class MenuController {
 
         // userIdx를 통해 예약 정보를 조회
         Optional<Integer> resIdx = jdjService.findResIdxByUserIdx(userIdx);
+
+
+        System.out.println("User info from token: " + userDTO.toString());
 
         if (resIdx.isPresent()) {
             return ResponseEntity.ok().body(resIdx.get());

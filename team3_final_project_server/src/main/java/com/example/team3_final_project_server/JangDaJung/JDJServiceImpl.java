@@ -21,6 +21,7 @@ public class JDJServiceImpl implements JDJService {
         return jdjMapper.selectResIdxByUserIdx(userIdx);
     }
 
+
 //  ----- 통계 페이지
 
     @Override
