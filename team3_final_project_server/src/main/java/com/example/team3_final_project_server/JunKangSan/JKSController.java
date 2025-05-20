@@ -19,9 +19,6 @@ public class JKSController {
     private JKSService jksService;
 
 
-//  http://localhost:5173/resdetail/1 과 같은 형식으로 접속
-
-
     // 식당 단일 상세보기
     @GetMapping("/resdetail/{resIdx}")
     @ResponseBody
@@ -58,20 +55,6 @@ public class JKSController {
         return jksService.getAvgRatingByType(resIdx);
     }
 
-    // 알림(가게공지)
-  //  @GetMapping("/announce/{resIdx}")
-  //  @ResponseBody
-  //  public AnnounceDTO getAnnounce() {
-    //    return jksService.getLatestAnnounce(); // List가 아닌 단일 DTO 반환
-  //  }
-
-//
-//    @GetMapping("/contents/{category}")
-//    @ResponseBody
-//    public List<RestaurantListDTO> getRstListByCategory(@PathVariable("category") String category) throws Exception {
-////    System.out.println(" /contents/{category} 받아온 값 : " + category);
-//        return jksService.getRstListByCategory(category);
-//    }
 
     // 가게 리스트
     @GetMapping("/contents/{category}")

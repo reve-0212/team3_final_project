@@ -89,14 +89,6 @@
         WHERE m.res_idx = #{resIdx}
         ORDER BY m.menu_sort DESC
     </select>
-<!--    <select id="getBestMenu" resultType="com.example.team3_final_project_server.dto.MenuDTO">-->
-<!--        select m.menu_name, m.menu_price, m.menu_explanation, m.menu_image-->
-<!--        from menu as m-->
-<!--        join restaurant as r-->
-<!--        on m.res_idx = r.res_idx-->
-<!--        where r.res_idx = #{resIdx}-->
-<!--        order by m.menu_sort desc;-->
-<!--    </select>-->
 
     <select id="getRstListByCategory" parameterType="string"
             resultType="com.example.team3_final_project_server.dto.RestaurantDTO">

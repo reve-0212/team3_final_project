@@ -4,10 +4,10 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBookmark as faBookmarkRegular} from "@fortawesome/free-regular-svg-icons";
 import {faBookmark} from "@fortawesome/free-solid-svg-icons";
 import {useEffect, useState} from "react";
-import axios from "axios";
 import noImage from '../JeongSeongYun/img/noimage.jpg';
 import useRestaurantStore from "../stores/useRestaurantStore.jsx";
 import useUserStore from "/src/stores/useUserStore.jsx";
+import api from "../api/axios.js";
 
 // jsy 작업
 
@@ -24,16 +24,16 @@ function ContentList() {
   const [sortOption, setSortOption] = useState("가까운 순");
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/contents/${category}`, {
+    api.get(`/contents/${category}`, {
       params: {region: region}
     })
       .then(res => {
         setRestaurants(res.data);
-      }).catch(err => console.log('데이터 가져오기 오류 :', err));
+      }).catch();
   }, [category, region]);
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/contents/${category}/filter`, {
+    api.get(`/contents/${category}/filter`, {
       params: {
         region: selectedRegion,
         sort: sortOption
@@ -42,29 +42,8 @@ function ContentList() {
       .then(res => {
         setRestaurants(res.data);
       })
-      .catch(err => console.log('데이터 가져오기 오류:', err));
+      .catch();
   }, [category, selectedRegion, sortOption]);
-
-  // useEffect(() => {
-  //   console.log("restaurants")
-  //   console.log(restaurants);
-  //
-  //   const filteredRestaurants = [...restaurants]
-  //       .filter(res => res.resAddress1?.includes(selectedRegion))
-  //       .sort((a, b) => {
-  //         switch (sortOption) {
-  //           case "별점 높은 순":
-  //             return (b.avgRating || 0) - (a.avgRating || 0);
-  //           case "리뷰 많은 순":
-  //             return (b.reviewCount || 0) - (a.reviewCount || 0);
-  //           default:
-  //             return 0; // 가까운 순은 거리 기준 처리 안 되어 있음
-  //         }
-  //       });
-  // }, [restaurants])
-
-  // ------북마크(외부 수정 필요)------
-
 
   const toggleBookmark = (resIdx) => {
     const userIdx = userStore && userStore.userIdx !== null ? userStore.userIdx : ""
@@ -83,18 +62,14 @@ function ContentList() {
       [resIdx]: !prev[resIdx]
     }));
 
-    const url = "http://localhost:8080/bookmark";
-    const data = {userIdx, resIdx};
+    const data = { userIdx, resIdx };
+    const url = "/bookmark";
 
     // 북마크 등록 / 해제
     if (isBookmarked) {
-      axios.delete(url, {data})
-        .then(() => console.log("북마크 해제"))
-        .catch(err => console.error("해제 실패", err));
+      api.delete(url, {data}).catch();
     } else {
-      axios.post(url, data)
-        .then(() => console.log("북마크 등록"))
-        .catch(err => console.error("등록 실패", err));
+      api.post(url, data).catch(() => {});
     }
   };
 
