@@ -64,7 +64,12 @@ function CeoMenuList() {
 
     // 숨기기 취소
     const handleUnhidden = (menuIdx) => {
-        axios.put(`http://localhost:8080/menu/unHidden/${menuIdx}`)
+        axios.put(`http://localhost:8080/menu/unHidden/${menuIdx}`, {}, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`
+            }
+        })
             .then(() => {
                 setMenuList((prev) =>
                     prev.map((menu) =>
