@@ -82,14 +82,14 @@ function TabContentUi({title, engTitle, description}) {
                   key={idx}
                   src={image}
                   style={{width: "6rem", height: "6rem", flex: "0 0 auto"}}
-                  className={"rounded-5"}
+                  className={"rounded-4"}
                   onClick={() => nv(`/resdetail/${index.resIdx}`)}
                 />
               ) : (
                 <div
                   key={idx}
                   style={{width: "6rem", height: "6rem", flex: "0 0 auto", backgroundColor: "#D9D9D9"}}
-                  className={"rounded-5"}
+                  className={"rounded-4"}
                   onClick={() => nv(`/resdetail/${index.resIdx}`)}
                 ></div>
               )
@@ -107,10 +107,10 @@ function TabContentUi({title, engTitle, description}) {
 
       return (
         <div key={index.restaurantDTO?.resIdx} className={"mb-3"}>
-          <div className={"d-flex justify-content-between align-items-center "}>
+          <div className={"d-flex justify-content-between align-items-center"}>
             <p className={"fw-bold"}>{index.restaurantDTO?.resName}</p>
             <p className={"fw-bold"}><FontAwesomeIcon icon={faStar}
-                                                      style={{color: "#FFD727"}}/> : {index.reviewDTO?.reviewRating}</p>
+                                                      style={{color: "#FFD727"}}/> {index.reviewDTO?.reviewRating}</p>
           </div>
 
           <div className={"d-flex justify-content-center align-items-center gap-3"}>
@@ -120,14 +120,14 @@ function TabContentUi({title, engTitle, description}) {
                   key={idx}
                   src={image}
                   style={{width: "6rem", height: "6rem", flex: "0 0 auto"}}
-                  className={"rounded-5"}
+                  className={"rounded-4"}
                   onClick={() => nv(`/resdetail/${index.reviewDTO?.resIdx}`)}
                 />
               ) : (
                 <div
                   key={idx}
                   style={{width: "6rem", height: "6rem", flex: "0 0 auto", backgroundColor: "#D9D9D9"}}
-                  className={"rounded-5"}
+                  className={"rounded-4"}
                   onClick={() => nv(`/resdetail/${index.reviewDTO?.resIdx}`)}
                 ></div>
               )
@@ -153,14 +153,14 @@ function TabContentUi({title, engTitle, description}) {
                   key={idx}
                   src={image}
                   style={{width: "6rem", height: "6rem", flex: "0 0 auto"}}
-                  className={"rounded-5"}
+                  className={"rounded-4"}
                   onClick={() => nv(`/resdetail/${index.restaurantDTO?.resIdx}`)}
                 />
               ) : (
                 <div
                   key={idx}
                   style={{width: "6rem", height: "6rem", flex: "0 0 auto", backgroundColor: "#D9D9D9"}}
-                  className={"rounded-5"}
+                  className={"rounded-4"}
                   onClick={() => nv(`/resdetail/${index.restaurantDTO?.resIdx}`)}
                 ></div>
               )
@@ -177,37 +177,23 @@ function TabContentUi({title, engTitle, description}) {
       const imageList = [index.resImage1, index.resImage2, index.resImage3]
 
       return (
-
-        //   나현씨 css 수정 ( 나중에 다시 합칠것!)
-        // return (
-        //   <div className="mb-5">
-        //     <div className={"d-flex flex-row align-items-center justify-content-between"}>
-        //       <div>
-        //         <h5 className="fw-bold mb-1 fs-5 fs-sm-4">{title}</h5>
-        //         <p className="text-muted small fs-7">{description}</p>
-        //       </div>
-        //       <small className="text-muted" onClick={() => {
-        //         nv(`/contentList/${engTitle}`)
-        //       }}>전체보기 ></small>
-        //     </div>
-
         <div key={index.resIdx} className={"mb-3"}>
-          <p className={"fw-bold"}>{index.resName}</p>
-          <div className={"d-flex justify-content-center align-items-center gap-3"}>
+          <p className={"fw-bold "}>{index.resName}</p>
+          <div className={"d-flex justify-content-evenly align-items-center gap-3"}>
             {imageList.map((image, idx) => (
               image ? (
                 <img
                   key={idx}
                   src={image}
                   style={{width: "6rem", height: "6rem", flex: "0 0 auto"}}
-                  className={"rounded-5"}
+                  className={"rounded-4"}
                   onClick={() => nv(`/resdetail/${index.resIdx}`)}
                 />
               ) : (
                 <div
                   key={idx}
                   style={{width: "6rem", height: "6rem", flex: "0 0 auto", backgroundColor: "#D9D9D9"}}
-                  className={"rounded-5"}
+                  className={"rounded-4"}
                   onClick={() => nv(`/resdetail/${index.resIdx}`)}
                 ></div>
               )
@@ -219,10 +205,10 @@ function TabContentUi({title, engTitle, description}) {
   }
 
   return (
-    <div className="mb-5">
+    <div className="d-flex justify-content-center mb-5 flex-column align-items-center">
       <div className={"d-flex flex-row align-items-center justify-content-between"}>
         <div>
-          <h5 className="fw-bold mb-1 fs-5 fs-sm-4">{title}</h5>
+          <h5 className="fw-bold mb-1 fs-5 fs-sm-4 text-center">{title}</h5>
           <p className="text-muted small fs-7">{description}</p>
         </div>
       </div>
@@ -246,9 +232,6 @@ function TabContentUi({title, engTitle, description}) {
               {engTitle === "reviewPick" && renderReviewList(reviewStores)}
               {engTitle === "bookmarkRes" && renderBookmarkList(bookmarkStores)}
               {engTitle === "customRec" && renderCustomList(customStores)}
-              {/*<small className="text-muted" onClick={() => {*/}
-              {/*    nv(`/contentList/${engTitle}`)*/}
-              {/*}}>전체보기</small>*/}
             </div>
           )}
 

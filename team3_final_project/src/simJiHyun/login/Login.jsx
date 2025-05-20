@@ -63,13 +63,13 @@ function Login() {
         <div className={"d-flex flex-column gap-4"}>
           <input type={"text"}
                  className={"form-control py-3"}
-                 style={{width: '25rem'}}
+                 style={{width: '20rem'}}
                  id={"user-id"}
                  name={"userId"}
                  placeholder={"아이디 입력"}/>
           <input type={"text"}
                  className={"form-control py-3"}
-                 style={{width: '25rem'}}
+                 style={{width: '20rem'}}
                  id={"user-pass"}
                  name={"userPass"}
                  placeholder={"비밀번호 입력"}/>
@@ -78,17 +78,18 @@ function Login() {
 
       <div className={"mt-4 d-flex justify-content-center"}>
         <button type={"submit"}
-                className={"btn py-3 fw-bold text-light fs-5 rounded-3"}
-                style={{backgroundColor: "#FFD727", width: "400px"}}>로그인
+                className={"btn py-3 fw-bold text-light fs-5 rounded-3 mx-1"}
+                style={{backgroundColor: "#FFD727", width: "20rem"}}>로그인
         </button>
       </div>
 
       <div className={"mt-4 d-flex justify-content-center"}>
-        <div className={"col d-flex justify-content-between fs-6"}
-             style={{maxWidth: "400px"}}>
-          <p>아직 아이디가 없으시다면 ? </p>
+        <div className={"fs-6 text-center d-flex justify-content-between w-100"} style={{maxWidth: "20rem"}}>
+          <p>아직 아이디가 없으시다면 ?</p>
           <p><FontAwesomeIcon icon={faArrowRight}/></p>
-          <Link to={"/user/signUp"} style={{color: "#FFD727", textDecorationLine: 'none'}}>가입하기</Link>
+          <Link to={"/user/signUp"} style={{color: "#FFD727", textDecorationLine: 'none'}}>
+            가입하기
+          </Link>
         </div>
       </div>
     </form>

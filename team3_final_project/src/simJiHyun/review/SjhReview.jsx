@@ -117,7 +117,7 @@ function SjhReview() {
         Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
       },
     })
-        .then((response) => {
+        .then(() => {
           alert(isEditMode ? "리뷰가 수정되었습니다." : "리뷰가 성공적으로 등록되었습니다.");
           Nv("/user/reviewList");
         })
@@ -164,7 +164,7 @@ function SjhReview() {
           />
         </div>
 
-        <div className="mt-3 mb-5 d-flex flex-wrap gap-2">
+        <div className="mt-3 mb-3 d-flex flex-wrap gap-2">
           <label
               htmlFor="reviewImageUpload"
               style={{
@@ -202,16 +202,16 @@ function SjhReview() {
         </div>
 
         {isEditMode ? (
-            <div className="d-flex gap-3 mt-5">
+            <div className="d-flex gap-3">
               <button
-                  className="btn text-light fw-bold py-3 flex-fill"
+                  className="btn text-light fw-bold py-3 flex-fill w-100"
                   style={{ backgroundColor: "#FFD700"}}
                   onClick={handleSubmitReview}
               >
                 수정하기
               </button>
               <button
-                  className="btn text-light fw-bold py-3 flex-fill"
+                  className="btn text-light fw-bold py-3 flex-fill w-100"
                   style={{ backgroundColor: "#bbbbbb" }}
                   onClick={handleDeleteReview}
               >
@@ -220,7 +220,7 @@ function SjhReview() {
             </div>
         ) : (
             <button
-                className="btn text-light fw-bold py-3 flex-fill mt-5"
+                className="btn text-light fw-bold py-3 flex-fill w-100"
                 style={{ backgroundColor: "#FFD700"}}
                 onClick={handleSubmitReview}
             >

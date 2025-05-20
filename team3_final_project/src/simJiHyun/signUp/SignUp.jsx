@@ -57,7 +57,6 @@ function SignUp() {
     setAge(e.target.value)
   }
 
-
   return (
     <form className={"container py-2"} onSubmit={handleSubmit}>
       <LoginSignText text={"회원가입"}/>
@@ -67,26 +66,26 @@ function SignUp() {
           <label htmlFor={"userId"} className={"form-label fs-4"}>아이디</label>
           <input type={"text"} className={"form-control py-3 input-box"}
                  id={"userId"} placeholder={"아이디를 입력해주세요"}
-                 name={"userId"}/>
+                 name={"userId"} style={{width: "20rem"}}/>
         </div>
 
         <div className={"mt-4"}>
           <label htmlFor={"userPass"} className={"form-label fs-4"}>비밀번호</label>
           <input type={"text"} className={"form-control py-3 input-box"}
                  id={"userPass"} placeholder={"비밀번호를 입력해주세요"}
-                 name={"userPass"}/>
+                 name={"userPass"} style={{width: "20rem"}}/>
         </div>
 
         <div className={"mt-4"}>
           <label htmlFor={"userNick"} className={"form-label fs-4"}>이름</label>
           <input type={"text"} className={"form-control py-3 input-box"}
                  id={"userNick"} placeholder={"이름을 입력해주세요"}
-                 name={"userNick"}/>
+                 name={"userNick"} style={{width: "20rem"}}/>
         </div>
 
         <div className={"mt-4"}>
           <label htmlFor={"userGender"} className={"form-label fs-4"}>성별</label>
-          <div className={"d-flex gap-3 input-box"}>
+          <div className={"d-flex gap-3 input-box"} style={{width: "20rem"}}>
             <button type={"button"}
                     className={`btn rounded-3 flex-fill py-3 genderBtn 
                                 ${btnActive === "male" ? "active" : ""}`}
@@ -104,7 +103,7 @@ function SignUp() {
           <label htmlFor="userAge" className="form-label fs-4 text-start">나이대</label>
           <select value={age}
                   className="form-select py-3 input-box text-center"
-                  style={{maxWidth: "400px"}}
+                  style={{width: "20rem"}}
                   onChange={handleChangeAge}>
             <option value={10}>10대</option>
             <option value={20}>20대</option>
@@ -119,20 +118,20 @@ function SignUp() {
           <label htmlFor={"userCall"} className={"form-label fs-4"}>연락처</label>
           <input type={"text"} className={"form-control py-3 input-box"}
                  id={"userCall"} placeholder={"010-1234-5678"}
-                 name={"userCall"}/>
+                 name={"userCall"} style={{width: "20rem"}}/>
         </div>
 
         <div className={"mt-4"}>
           <label htmlFor={"userEmail"} className={"form-label fs-4"}>이메일</label>
           <input type={"text"} className={"form-control py-3 input-box"}
                  id={"userEmail"} placeholder={"이메일을 입력해주세요"}
-                 name={"userEmail"}/>
+                 name={"userEmail"} style={{width: "20rem"}}/>
         </div>
       </div>
 
       <div className={"mt-5 mb-5 d-flex justify-content-center"}>
         <button type={"submit"}
-                className={"btn py-3 fw-bold text-light fs-4 input-box rounded-3"}
+                className={"btn py-3 fw-bold text-light fs-4 input-box rounded-3 mx-1"}
                 style={{backgroundColor: "#FFD727"}}>회원 등록
         </button>
       </div>
