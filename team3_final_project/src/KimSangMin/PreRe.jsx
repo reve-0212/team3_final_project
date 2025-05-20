@@ -134,7 +134,7 @@ function PreRe() {
                 {/* 오른쪽 - 사진 + 버튼 */}
                 <div className="d-flex flex-column align-items-end ms-3" style={{minWidth: '120px'}}>
                   <img
-                      src={review.ImageUrl}
+                      src={review.reviewImage1}
                       alt="리뷰 이미지"
                       style={{width: '100px', height: '100px', objectFit: 'cover', borderRadius: '8px' }}
                   />
