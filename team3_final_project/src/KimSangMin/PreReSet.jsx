@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import ReBanner from "./ReBanner.jsx";
-import axios from "axios";
+import api from "../../api/axios.js";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCamera} from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
@@ -213,10 +213,8 @@ function PreReSet() {
       });
 
       const data = await response.json();
-      console.log("Cloudinary 응답:", data);
       return data.secure_url;
     } catch (err) {
-      console.error(err);
       return null;
     }
   };
@@ -234,7 +232,7 @@ function PreReSet() {
   // 가게 정보 가져오기
   useEffect(() => {
     if (!token) return;
-    axios.get("http://localhost:8080/pre/owner/getRestaurant", {
+      api.get("/pre/owner/getRestaurant", {
       headers: {Authorization: `Bearer ${token}`}
     })
       .then(response => {
@@ -261,18 +259,14 @@ function PreReSet() {
         }
       })
       .catch(error => {
-        console.log("사용자 정보 가져오기 실패", error);
         if (error.response) {
           if (error.response.status === 401) {
             alert("토큰이 만료되었습니다. 다시 로그인 해주세요.");
           } else if (error.response.status === 404) {
-            console.log("가게 정보 없음, 신규 등록 상태로 이동");
             setIsSave(true);
           } else {
-            console.error("기타 오류:", error.response.data);
           }
         } else {
-          console.error("네트워크 오류:", error.message);
         }
       });
   }, [token]);
@@ -282,7 +276,6 @@ function PreReSet() {
     e.preventDefault();
 
     const token = localStorage.getItem('ACCESS_TOKEN');
-    console.log("로컬 스토리지에서 가져온 토큰: ", token);
     if (!token) {
       alert("로그인이 필요합니다.");
       return;
@@ -318,13 +311,12 @@ function PreReSet() {
       });
 
       if (result.isConfirmed) {
-        axios.put(`http://localhost:8080/pre/owner/updateRest/${resIdx}`, storeData, {
+          api.put(`/pre/owner/updateRest/${resIdx}`, storeData, {
           headers: {
             Authorization: `Bearer ${token}`
           }
         })
             .then(response => {
-              console.log("수정 성공", response.data);
               Swal.fire({
                 icon: 'success',
                 title: '수정 완료!',
@@ -333,7 +325,6 @@ function PreReSet() {
               });
             })
             .catch(error => {
-              console.log("오류 발생", error);
               Swal.fire({
                 icon: 'error',
                 title: '오류',
@@ -365,14 +356,13 @@ function PreReSet() {
       });
 
       if (result.isConfirmed) {
-        axios.post("http://localhost:8080/pre/owner/resave", storeData, {
+          api.post("/pre/owner/resave", storeData, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`
           }
         })
             .then((response) => {
-              console.log("저장 성공", response.data);
               Swal.fire({
                 icon: 'success',
                 title: '저장 완료!',
@@ -383,7 +373,6 @@ function PreReSet() {
               setResIdx(response.data.resIdx || "");
             })
             .catch((error) => {
-              console.log("오류 발생", error);
               if (error.response && error.response.status === 401) {
                 Swal.fire({
                   icon: 'error',
@@ -430,51 +419,7 @@ function PreReSet() {
           <strong>가게 대표 이미지</strong>
         </h4>
 
-        {/*<div className={"mt-3 mb-4 d-flex justify-content-between me-5"}>*/}
-        {/*  <label*/}
-        {/*    htmlFor={"resImageUpload"}*/}
-        {/*    style={{*/}
-        {/*      width: "100px", height: "100px",*/}
-        {/*      backgroundColor: "white", border: "1px solid #A9A9A9",*/}
-        {/*    }}*/}
-        {/*    className={"rounded-3 d-flex flex-column justify-content-center align-items-center"}>*/}
-        {/*    <FontAwesomeIcon icon={faCamera} className={"fs-3"}/>*/}
-        {/*    <p className={"fs-6 mb-0"}>*/}
-        {/*      사진 {resImage.filter(file => {*/}
-        {/*      if (typeof file === "string") {*/}
-        {/*        return file.trim() !== "";  // 공백이나 빈 문자열 제외*/}
-        {/*      }*/}
-        {/*      return true;  // File 객체는 포함*/}
-        {/*    }).length}/3*/}
-        {/*    </p>*/}
-        {/*  </label>*/}
-        {/*  <input id={"resImageUpload"}*/}
-        {/*         type={"file"}*/}
-        {/*         multiple accept={"image/*"}*/}
-        {/*         style={{display: "none"}}*/}
-        {/*         onChange={(e) => {*/}
-        {/*           const files = Array.from(e.target.files).slice(0, 3)*/}
-        {/*           setResImage(files)*/}
-        {/*         }}/>*/}
-        {/*  <div*/}
-        {/*      className="d-flex flex-row-reverse"*/}
-        {/*      style={{ gap: "100px", flexGrow: 1 }}*/}
-        {/*  >*/}
-        {/*    {resImage.map((file, idx) => {*/}
-        {/*      const src = typeof file === "string" ? file : URL.createObjectURL(file);*/}
-        {/*      if (typeof src === "string" && src.trim() === "") return null;*/}
-        {/*      return (*/}
-        {/*          <img*/}
-        {/*              key={idx}*/}
-        {/*              src={src}*/}
-        {/*              alt={`preview=${idx}`}*/}
-        {/*              style={{width: "100px", height: "100px", objectFit: "cover", borderRadius: "50px"}}*/}
-        {/*              className={'border border-1'}*/}
-        {/*          />*/}
-        {/*      )*/}
-        {/*    })}*/}
-        {/*  </div>*/}
-        {/*</div>*/}
+
 
         <div className={"mt-3 mb-4 me-5"}>
           <div className="d-flex align-items-center gap-4 flex-wrap">

@@ -1,6 +1,6 @@
 import ReBanner from "./ReBanner.jsx";
 import {useEffect, useState} from "react";
-import axios from "axios";
+import api from "../../api/axios.js";
 import SeatManager from "./Seat/SeatManager.jsx";
 import Swal from "sweetalert2";
 
@@ -12,20 +12,18 @@ function PreFunction() {
 
     const storedToken = localStorage.getItem('ACCESS_TOKEN');
     useEffect(() => {
-        console.log("📦 페이지 로드시 token:", storedToken);
     }, []);
 
 
     // 편의시설 목록 불러오기
     useEffect(() => {
         // 편의시설 목록 불러오기
-        axios.get("http://localhost:8080/pre/owner/funcOpt", {
+        api.get("/pre/owner/funcOpt", {
             headers: {
                 Authorization: `Bearer ${storedToken}`,
             },
         })
             .then((res) => {
-                console.log("funcOpt API 응답:", res.data);
                 const data = res.data?.data || res.data;
                 if (Array.isArray(data)) {
                     setFuncOpt(data);
@@ -38,7 +36,7 @@ function PreFunction() {
             });
 
         // 사용자가 저장한 편의시설 불러오기
-        axios.get("http://localhost:8080/pre/owner/getFunc", {
+        api.get("/pre/owner/getFunc", {
             headers: {
                 Authorization: `Bearer ${storedToken}`,
             },
@@ -49,8 +47,6 @@ function PreFunction() {
                     const idArray = data.map(item => item.cvId);  // ✅ ID만 추출
                     setSelectOpt(idArray);
                     setIsSave(true);
-                } else {
-                    console.warn("getFunc 데이터가 배열이 아니거나 없음:", data);
                 }
             })
             .catch((err) => {
@@ -87,10 +83,10 @@ function PreFunction() {
         if (!confirmResult.isConfirmed) return;
 
         const url = isSave
-            ? "http://localhost:8080/pre/owner/updateFunc"
-            : "http://localhost:8080/pre/owner/saveFunc";
+            ? "/pre/owner/updateFunc"
+            : "/pre/owner/saveFunc";
 
-        const method = isSave ? axios.put : axios.post;
+        const method = isSave ? api.put : api.post;
 
         try {
             const res = await method(url, { function: selectOpt }, {

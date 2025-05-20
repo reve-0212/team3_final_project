@@ -1,7 +1,7 @@
 import { Button } from "react-bootstrap";
 import {useEffect, useState} from "react";
 import ReBanner from "./ReBanner.jsx";
-import axios from "axios";
+import api from "../../api/axios.js";
 import Swal from "sweetalert2";
 
 function PreTimeSet({ onEditClick }) {
@@ -100,7 +100,7 @@ function PreTimeSet({ onEditClick }) {
 
     // 가게에 저장된 운영시간 불러오기
     useEffect(() => {
-        axios.get("http://localhost:8080/pre/owner/seeTime", {
+        api.get("/pre/owner/seeTime", {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -123,7 +123,6 @@ function PreTimeSet({ onEditClick }) {
                 }
             })
             .catch((err) => {
-                console.error("시간 불러오기 실패:", err);
             });
     }, []);
 
@@ -131,14 +130,13 @@ function PreTimeSet({ onEditClick }) {
     // 가게 카테고리 불러오기
     useEffect(() => {
 
-        axios.get("http://localhost:8080/pre/owner/getCate", {
+        api.get("/pre/owner/getCate", {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         })
             .then((res) => {
                 const cateData = res.data.data;
-                console.log(cateData);
                 if (cateData && cateData.categoryName) {
                     setSelectedCate(cateData.categoryName);
                     setSelectedAddr(cateData.categoryAddr);
@@ -151,7 +149,6 @@ function PreTimeSet({ onEditClick }) {
             .catch((err) => {
                 // 데이터가 없으면 저장모드 유지
                 setIsSave(true)
-                console.log(err)
             })
     }, []);
 
@@ -159,9 +156,7 @@ function PreTimeSet({ onEditClick }) {
     // 가게 카테고리 저장하기
     const hSubmit = (e) => {
         e.preventDefault();
-        console.log("토큰 헤더:", {
-            Authorization: `Bearer ${token}`,
-        });
+
         if (!token) {
             alert("로그인이 필요합니다.");
             return;
@@ -173,7 +168,7 @@ function PreTimeSet({ onEditClick }) {
             categoryTag: hashTag.join(","),
         };
         if (isSave) {
-            axios.post("http://localhost:8080/pre/owner/saveCate", cateData, {
+            api.post("/pre/owner/saveCate", cateData, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`
@@ -181,8 +176,6 @@ function PreTimeSet({ onEditClick }) {
             })
                 .then((res) => {
                     // 요청이 성공했을 때 처리
-                    console.log("서버 응답:", res.data);
-                    console.log("카테고리 데이터", cateData);
                     if (res.status === 200) {
                         Swal.fire({
                             icon: 'success',
@@ -190,7 +183,6 @@ function PreTimeSet({ onEditClick }) {
                             text: '운영시간 정보가 저장되었습니다.',
                             confirmButtonColor: '#FFD727'
                         });
-                        console.log(res.data);
                     } else {
                         Swal.fire({
                             icon: 'error',
@@ -210,14 +202,13 @@ function PreTimeSet({ onEditClick }) {
                     });
                 });
         } else {
-            axios.put("http://localhost:8080/pre/owner/updateCate", cateData, {
+            api.put("/pre/owner/updateCate", cateData, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
             })
                 .then((res) => {
-                    console.log(res)
                     Swal.fire({
                         icon: 'success',
                         title: '수정 완료!',
@@ -226,7 +217,6 @@ function PreTimeSet({ onEditClick }) {
                     });
                 })
                 .catch((error) => {
-                    console.error("수정 중 오류:", error);
                     Swal.fire({
                         icon: 'error',
                         title: '오류',
@@ -273,7 +263,6 @@ function PreTimeSet({ onEditClick }) {
                     value={selectedCate}
                     onChange={(e) => {
                         setSelectedCate(e.target.value);
-                        console.log("선택한 카테고리:", e.target.value);
                     }}
                 >
                     <option value="" >카테고리를 선택하세요</option>
@@ -295,7 +284,6 @@ function PreTimeSet({ onEditClick }) {
                     value={selectedAddr}
                     onChange={(e) => {
                         setSelectedAddr(e.target.value);
-                        console.log("선택한 지역:", e.target.value);
                     }}
                 >
                     <option value="">지역을 선택하세요</option>

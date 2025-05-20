@@ -2,7 +2,7 @@ import WaBanner from "./WaBanner.jsx";
 import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import ReBanner from "./ReBanner.jsx";
-import axios from "axios";
+import api from "../../api/axios.js";
 import Swal from "sweetalert2";
 // import PreTimeSet from "./PreTimeSet.jsx";
 // import {Link} from "react-router-dom";
@@ -41,7 +41,7 @@ function PreTime({onClose}) {
             return;
         }
 
-        axios.get("http://localhost:8080/pre/owner/getTime", {
+        api.get("/pre/owner/getTime", {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -85,7 +85,7 @@ function PreTime({onClose}) {
         }));
 
         if(!isSave) {
-            axios.post("http://localhost:8080/pre/owner/saveTime",
+            api.post("/pre/owner/saveTime",
                 formatted, {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -110,7 +110,6 @@ function PreTime({onClose}) {
                     }
                 })
                 .catch((error) => {
-                    console.error("서버 오류:", error);
                     Swal.fire({
                         icon: 'error',
                         title: '오류',
@@ -120,7 +119,7 @@ function PreTime({onClose}) {
                 });
         }
         else{
-            axios.put(`http://localhost:8080/pre/owner/updateTime`, formatted, {
+            api.put(`/pre/owner/updateTime`, formatted, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -141,11 +140,9 @@ function PreTime({onClose}) {
                             text: '운영시간 정보 수정이 실패하였습니다.',
                             confirmButtonColor: '#FF3B30'
                         });
-                        console.log(res.data.message);
                     }
                 })
                 .catch((error) => {
-                    console.log("에러 발생 : "+error);
                     Swal.fire({
                         icon: 'error',
                         title: '오류',

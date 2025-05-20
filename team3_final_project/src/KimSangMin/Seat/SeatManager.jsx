@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Draggable from "react-draggable";
-import axios from "axios";
 import Swal from "sweetalert2";
+import api from "../../api/axios.js";
 
 function SeatManager() {
     const token = localStorage.getItem("ACCESS_TOKEN");
@@ -106,9 +106,9 @@ function SeatManager() {
             setIsModified(true);
 
             if (lastSeat.resSeatId) {
-                axios
+                api
                     .delete(
-                        `http://localhost:8080/pre/owner/seats/delete/${lastSeat.resSeatId}`,
+                        `/pre/owner/seats/delete/${lastSeat.resSeatId}`,
                         {
                             headers: {
                                 "Content-Type": "application/json",
@@ -192,14 +192,14 @@ function SeatManager() {
             const updatedSeats = elements.filter((el) => el.resSeatId && el.isModified);
 
             if (newSeats.length)
-                await axios.post("http://localhost:8080/pre/owner/seats/save", newSeats, {
+                await api.post("/pre/owner/seats/save", newSeats, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
 
             await Promise.all(
                 updatedSeats.map((seat) =>
-                    axios.put(
-                        "http://localhost:8080/pre/owner/seats/update",
+                    api.put(
+                        "/pre/owner/seats/update",
                         {
                             seatId: seat.resSeatId,
                             x: seat.x,
@@ -212,7 +212,7 @@ function SeatManager() {
                 )
             );
 
-            const res = await axios.get("http://localhost:8080/pre/owner/seats/load", {
+            const res = await api.get("/pre/owner/seats/load", {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
@@ -243,8 +243,8 @@ function SeatManager() {
     useEffect(() => {
         if (!token) return;
 
-        axios
-            .get("http://localhost:8080/pre/owner/seats/load", {
+        api
+            .get("/pre/owner/seats/load", {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
@@ -270,7 +270,6 @@ function SeatManager() {
                 }
             })
             .catch(() => {
-                console.error("좌석 불러오기 실패");
             });
     }, [token]);
 
