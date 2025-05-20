@@ -295,7 +295,7 @@ function TodayReservation() {
                                 className={"seat-layout"}
                                 style={{
                                     position: "relative",
-                                    width: "71%",
+                                    // width: "100%",
                                     minWidth: "900px",
                                     height: "400px",
                                     border: "1px solid #ddd",

@@ -300,7 +300,6 @@ function ContentDetail() {
                       </div>
                     ))}
                   </div>
-
                 )}
               </div>
             </div>
