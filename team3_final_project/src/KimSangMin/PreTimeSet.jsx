@@ -2,6 +2,7 @@ import { Button } from "react-bootstrap";
 import {useEffect, useState} from "react";
 import ReBanner from "./ReBanner.jsx";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 function PreTimeSet({ onEditClick }) {
 
@@ -183,15 +184,30 @@ function PreTimeSet({ onEditClick }) {
                     console.log("서버 응답:", res.data);
                     console.log("카테고리 데이터", cateData);
                     if (res.status === 200) {
-                        alert('데이터가 성공적으로 저장되었습니다!');
+                        Swal.fire({
+                            icon: 'success',
+                            title: '저장 완료!',
+                            text: '운영시간 정보가 저장되었습니다.',
+                            confirmButtonColor: '#FFD727'
+                        });
                         console.log(res.data);
                     } else {
-                        alert('서버에서 문제가 발생했습니다. 다시 시도해주세요.');
+                        Swal.fire({
+                            icon: 'error',
+                            title: '오류',
+                            text: '수정 중 오류가 발생하였습니다.',
+                            confirmButtonColor: '#FF3B30'
+                        });
                     }
                 })
                 .catch((error) => {
                     console.error('서버 요청 중 오류 발생:', error);
-                    alert('서버 오류 발생. 잠시 후 다시 시도해주세요.');
+                    Swal.fire({
+                        icon: 'error',
+                        title: '오류',
+                        text: '서버 오류 발생. 잠시 후 다시 시도해주세요.',
+                        confirmButtonColor: '#FF3B30'
+                    });
                 });
         } else {
             axios.put("http://localhost:8080/pre/owner/updateCate", cateData, {
@@ -202,11 +218,21 @@ function PreTimeSet({ onEditClick }) {
             })
                 .then((res) => {
                     console.log(res)
-                    alert("수정 성공!");
+                    Swal.fire({
+                        icon: 'success',
+                        title: '수정 완료!',
+                        text: '운영시간 정보가 수정되었습니다.',
+                        confirmButtonColor: '#FFD727'
+                    });
                 })
                 .catch((error) => {
                     console.error("수정 중 오류:", error);
-                    alert("수정 실패.");
+                    Swal.fire({
+                        icon: 'error',
+                        title: '오류',
+                        text: '수정 중 오류가 발생하였습니다.',
+                        confirmButtonColor: '#FF3B30'
+                    });
                 });
         }
     }

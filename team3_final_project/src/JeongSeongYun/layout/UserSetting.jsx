@@ -126,7 +126,7 @@ function UserSetting() {
       <div className={"mt-5"}>
         <button
           type="button"
-          className="btn btn-warning w-100 py-3 fw-bold"
+          className="btn common-btn w-100 py-3 fw-bold"
           onClick={handleLogout}
         >
           로그아웃

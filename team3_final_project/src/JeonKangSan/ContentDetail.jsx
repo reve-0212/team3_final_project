@@ -10,9 +10,7 @@ import useResStoreSjh from "../stores/useResStoreSjh.jsx";
 function ContentDetail() {
   const userStore = useUserStore((state) => state.user)
   const setRes = useResStoreSjh((state) => state.setRes)
-  const param = useParams()
-  console.log(param.resIdx)
-
+  const restaurant = useParams()
 
   useKakaoLoader({appkey: import.meta.env.VITE_REACT_APP_KAKAO_MAP_API_KEY})
   const userIdx = userStore && userStore.userIdx !== null ? userStore.userIdx : ""
@@ -24,9 +22,9 @@ function ContentDetail() {
   const [bestMenus, setBestMenus] = useState([]);
   const [timeSlots, setTimeSlots] = useState([]);
   const [reviews, setReviews] = useState([]);
-
-  // const {resIdx} = useParams();
-
+  const [convenient, setConvenient] = useState([])
+  const [storeTime, setStoreTime] = useState([])
+  const [hashTag, setHashTag] = useState([])
   const [parsedTags, setParsedTags] = useState([]);
 
   // 지도 초기 중심좌표
@@ -41,25 +39,27 @@ function ContentDetail() {
     lng: 126.570667
   })
 
-  // console.log(timeSlots)
-
   // 여러가지 불러오기
   useEffect(() => {
     axios.all([
         // res1 : 가게 상세 정보 가져오기
-        axios.get(`http://localhost:8080/detail/${param.resIdx}`),
+        axios.get(`http://localhost:8080/detail/${restaurant.resIdx}`),
         // res2 : 가게 메뉴 가져오기
-        axios.get(`http://localhost:8080/bestmenu/${param.resIdx}`),
+        axios.get(`http://localhost:8080/bestmenu/${restaurant.resIdx}`),
+        // res3 : 편의시설 가져오기
+        axios.get(`http://localhost:8080/convenient/${restaurant.resIdx}`),
+        // res4 : 시간 가져오기
+        axios.get(`http://localhost:8080/time/${restaurant.resIdx}`),
+        // res5 : 태그 가져오기
+        axios.get(`http://localhost:8080/hashTag/${restaurant.resIdx}`)
       ]
     ).then(
-      axios.spread((res1, res2) => {
+      axios.spread((res1, res2, res3, res4, res5) => {
         const data1 = res1.data
         const data2 = res2.data
-
-        console.log(data1)
-        console.log(data2)
-
-        console.log(data1.resReserveTime.split(",")[0])
+        const data3 = res3.data
+        const data4 = res4.data
+        const data5 = res5.data
 
         setStoreInfo(data1);
         setRes(data1)
@@ -67,6 +67,9 @@ function ContentDetail() {
         setPosition({lat: data1.resLat, lng: data1.resLng})
         setTimeSlots(data1.resReserveTime.split(","))
         setBestMenus(data2);
+        setConvenient(data3)
+        setStoreTime(data4)
+        setHashTag(data5)
       })
     ).catch((err) => {
       console.log(err)
@@ -75,52 +78,94 @@ function ContentDetail() {
 
   // 리뷰 불러오기
   useEffect(() => {
-    axios.get(`http://localhost:8080/reviews/${param.resIdx}`)
+    axios.get(`http://localhost:8080/reviews/${restaurant.resIdx}`)
       .then(res => {
         setReviews(res.data);
       })
       .catch(err => console.log("리뷰 불러오기 오류:", err));
-  }, [param.resIdx]);
-
-  // 해시태그
-  useEffect(() => {
-    if (storeInfo && storeInfo.categoryTag) {
-      const tags = storeInfo.categoryTag.trim().split(/\s+/).map(tag => tag.replace(/^#/, ""));
-      setParsedTags(tags);
-    }
-  }, [storeInfo.categoryTag]);
+  }, [restaurant.resIdx]);
 
   // 시간 데이터 집어넣기
   useEffect(() => {
     if (!storeInfo.resReserveTime) return;
   }, [storeInfo.resReserveTime]);
 
+  // 해시태그 나누기
+  useEffect(() => {
+    if (hashTag.length > 0) {
+      const allTags =
+        hashTag.flatMap(tagObj => tagObj?.categoryDTO?.categoryTag.split(","))
+          .filter(Boolean)
+      setParsedTags(allTags)
+    }
+  }, [hashTag]);
+
+  // 내가 전에 갔던 페이지 기억하기
+  // 중복된 페이지면 기억안함
+  // 길이는 최대 3
+  useEffect(() => {
+    const recent = JSON.parse(localStorage.getItem("recentStores") || "[]");
+    const updated = [restaurant.resIdx, ...recent.filter(id => id !== restaurant.resIdx)]
+    if (updated.length > 3) updated.length = 3;
+    localStorage.setItem("recentStores", JSON.stringify(updated))
+  }, [restaurant.resIdx]);
+
+  console.log(localStorage.getItem("recentStores"))
 
   return (
     <div className="app-container">
       <div className="container py-2 content-container">
         {/* 가게 대표 이미지 */}
-        <div
-          className="d-flex justify-content-center align-items-center bg-light w-100 mb-3"
-          style={{height: '250px', maxHeight: '250px', overflow: 'hidden'}}
-        >
-          {storeInfo.resImage1 ? (
-            <a href={storeInfo.resImage1} target="_blank" rel="noopener noreferrer">
-              <img
-                src={storeInfo.resImage1}
-                alt="대표 이미지"
-                style={{
-                  height: '100%',
-                  maxHeight: '250px',
-                  width: 'auto',
-                  objectFit: 'cover'
-                }}
-              />
-            </a>
-          ) : (
-            <span className="text-muted">사진</span>
-          )}
+
+        <div className="d-flex overflow-auto gap-2 mb-3" style={{ whiteSpace: "nowrap" }}>
+          {[storeInfo.resImage1, storeInfo.resImage2, storeInfo.resImage3]
+              .filter(Boolean)
+              .map((img, idx) => (
+                  <div
+                      key={idx}
+                      className="bg-light rounded overflow-hidden"
+                      style={{
+                        minWidth: "200px",
+                        height: "180px",
+                        flex: "0 0 auto"
+                      }}
+                  >
+                    <img
+                        src={img}
+                        alt={`대표 이미지 ${idx + 1}`}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover"
+                        }}
+                    />
+                  </div>
+              ))}
         </div>
+
+        {/*<div*/}
+        {/*  className="d-flex justify-content-center align-items-center bg-light w-100 mb-3"*/}
+        {/*  style={{height: '250px', maxHeight: '250px', overflow: 'hidden'}}*/}
+        {/*>*/}
+        {/*  {storeInfo.resImage1 ? (*/}
+        {/*    <a href={storeInfo.resImage1} target="_blank" rel="noopener noreferrer">*/}
+        {/*      <img*/}
+        {/*        src={storeInfo.resImage1}*/}
+        {/*        alt="대표 이미지"*/}
+        {/*        style={{*/}
+        {/*          height: '100%',*/}
+        {/*          maxHeight: '250px',*/}
+        {/*          width: 'auto',*/}
+        {/*          objectFit: 'cover'*/}
+        {/*        }}*/}
+        {/*      />*/}
+        {/*    </a>*/}
+        {/*  ) : (*/}
+        {/*    <span className="text-muted">사진</span>*/}
+        {/*  )}*/}
+        {/*</div>*/}
+
+
         {/* 가게 이름 */}
         <div className="d-flex justify-content-start text mb-2">
           <h5 className="fw-bold">
@@ -132,7 +177,7 @@ function ContentDetail() {
           <div className="d-flex gap-2 mb-2">
             {/* 평균 평점 */}
             <span style={{
-              backgroundColor: "#F5F5F5",
+              backgroundColor: "#FFF8E1",
               padding: "4px 12px",
               borderRadius: "8px",
               fontWeight: "600",
@@ -145,7 +190,7 @@ function ContentDetail() {
 
             {/* 리뷰 개수 */}
             <span style={{
-              backgroundColor: "#F5F5F5",
+              backgroundColor: "#FFF8E1",
               padding: "4px 12px",
               borderRadius: "8px",
               fontWeight: "600",
@@ -156,19 +201,27 @@ function ContentDetail() {
           </div>
           <hr/>
           <div className="d-flex flex-column gap-2 mb-3">
-            <div className="d-flex align-items-center gap-2 flex-wrap">
-              <i className="fa-regular fa-clock text-secondary"></i>
-              <span className="fw-semibold text-dark">영업시간:</span>
-              <div
-                className="d-flex flex-wrap gap-3"
-                style={{maxWidth: "240px"}} // 너비 기준 설정
-              >
-                {(storeInfo?.resReserveTime || "-")
-                  .split(',')
-                  .map((time, idx) => (
-                    <span key={idx}>{time}</span>
+            <div>
+              <p className={"fw-semibold text-dark"}>
+                <i className="fa-regular fa-clock text-secondary"></i>
+                &nbsp; 영업시간
+              </p>
+
+              {storeTime.length === 0 ? (
+                <p>정보가 없습니다</p>
+              ) : (
+                <div className={"d-grid"} style={{gridTemplateColumns: "repeat(2,1fr)"}}>
+                  {storeTime.map((time) => (
+                    <p>
+                      <span className={"fw-bold"}>{time.restaurantTimeDTO?.day} : </span>
+                      <span>{time.restaurantTimeDTO?.startTime.split(":")[0]}:</span>
+                      <span>{time.restaurantTimeDTO?.startTime.split(":")[1]} ~ </span>
+                      <span>{time.restaurantTimeDTO?.endTime.split(":")[0]}:</span>
+                      <span>{time.restaurantTimeDTO?.endTime.split(":")[1]}</span>
+                    </p>
                   ))}
-              </div>
+                </div>
+              )}
             </div>
 
             <div className="d-flex align-items-center gap-2">
@@ -235,19 +288,43 @@ function ContentDetail() {
 
             <br/>
             <div className="mb-3 text-start">
-              <h4 className="extra-bold">해시 태그</h4>
+              <h4 className="extra-bold">해시태그</h4>
 
-              {parsedTags.length > 0 ? (
+              {parsedTags.length === 0 ? (
+                <p className={"text-center"}>해시태그가 없습니다</p>
+              ) : (
                 <div className="d-flex flex-wrap gap-2 ps-2 pt-2">
-                  {parsedTags.map((tag, idx) => (
-                    <div key={idx}>
-                      <span className="badge">#{tag}</span>
-                    </div>
+                  {parsedTags.map((tag) => (
+                    <button type={"button"} className={"btn"} style={{backgroundColor: "#FFD727"}}>{tag}</button>
                   ))}
                 </div>
-              ) : (
-                <div className="ps-2 pt-2 text-muted small"></div>
               )}
+            </div>
+
+            <br/>
+            <div className="mb-3 text-start">
+              <h4 className="extra-bold">편의시설</h4>
+              <div className={"d-flex justify-content-center align-items-center flex-row"}>
+                {/*<img src={convenient[0].convenientDTO.cvImg} alt={}/>*/}
+                {convenient.length === 0 ? (
+                  <p>제공하는 편의시설이 없습니다</p>
+                ) : (
+                  <div className={"d-flex justify-content-center align-items-center"}>
+                    {convenient.map((item, index) => (
+                      <div className={"mx-3"}>
+                        <p className={"fw-bold"}>{item.convenientDTO?.cvName}</p>
+                        {/*<p>{item.convenientDTO?.cvIntro}</p>*/}
+                        <img
+                          key={index}
+                          src={item.convenientDTO?.cvImg}
+                          style={{width: "100px", height: "100px"}}
+                        />
+                      </div>
+                    ))}
+                  </div>
+
+                )}
+              </div>
             </div>
           </div>
         )}
@@ -255,36 +332,35 @@ function ContentDetail() {
         {/* 메뉴 */}
         {/* 대표메뉴 */}
         {ActTab === "대표메뉴" && (
-            <div className="mb-5">
-              <h5 className="mb-3 fw-bold text-start">메뉴</h5>
-              {bestMenus
-                  .filter(menu => menu.menuHidden !== "1") // 숨김 처리된 메뉴 제외
-                  .map((menu, idx) => (
-                      <div
-                          key={idx}
-                          className="d-flex justify-content-between align-items-center border-bottom py-3"
-                      >
-                        <div className="text-start">
-                          <div className="fw-bold">
-                            {menu.menuSoldOut === "1" && (
-                                <span className="text-danger me-2">(품절)</span>
-                            )}
-                            {menu.menuName}
-                          </div>
-                          <div className="text-muted small">{menu.menuExplanation}</div>
-                          <div className="fw-bold mt-3">{menu.menuPrice} 원</div>
-                        </div>
-                        <div
-                            className="bg-light d-flex justify-content-center align-items-center"
-                            style={{ width: "64px", height: "64px", borderRadius: "6px" }}
-                        >
-                          <span className="text-muted small">사진</span>
-                        </div>
-                      </div>
-                  ))}
-            </div>
+          <div className="mb-5">
+            <h5 className="mb-3 fw-bold text-start">메뉴</h5>
+            {bestMenus
+              .filter(menu => menu.menuHidden !== "1") // 숨김 처리된 메뉴 제외
+              .map((menu, idx) => (
+                <div
+                  key={idx}
+                  className="d-flex justify-content-between align-items-center border-bottom py-3"
+                >
+                  <div className="text-start">
+                    <div className="fw-bold">
+                      {menu.menuSoldOut === "1" && (
+                        <span className="text-danger me-2">(품절)</span>
+                      )}
+                      {menu.menuName}
+                    </div>
+                    <div className="text-muted small">{menu.menuExplanation}</div>
+                    <div className="fw-bold mt-3">{menu.menuPrice} 원</div>
+                  </div>
+                  <div
+                    className="bg-light d-flex justify-content-center align-items-center"
+                    style={{width: "64px", height: "64px", borderRadius: "6px"}}
+                  >
+                    <span className="text-muted small">사진</span>
+                  </div>
+                </div>
+              ))}
+          </div>
         )}
-
 
 
         {ActTab === "리뷰" && (
@@ -346,7 +422,7 @@ function ContentDetail() {
             {timeSlots.map((time, idx) => (
               <button key={idx}
                       className={"btn m-1"}
-                      style={{backgroundColor: "#FFD700"}}>
+                      style={{backgroundColor: "#FFF8E1"}}>
                 {/*<button*/}
                 {/*    key={idx}*/}
                 {/*    className={`btn ${selectedTime === time ? "btn-primary" : "btn-outline-primary"}`}*/}
@@ -361,7 +437,7 @@ function ContentDetail() {
             <button
               className="common-btn w-100"
               onClick={() => {
-                Nv(`/book/visit/${userIdx}/${param.resIdx}`)
+                Nv(`/book/visit/${userIdx}/${restaurant.resIdx}`)
               }}>예약하기
             </button>
           ) : (

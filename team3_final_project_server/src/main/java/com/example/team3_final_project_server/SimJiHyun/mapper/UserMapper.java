@@ -83,4 +83,16 @@ public interface UserMapper {
 
   //  예약된 좌석 id 번호 들고오기
   List<Integer> isSeatReserved(String rsvDate, String rsvTime);
+
+  List<RcDTO> convenient(int resIdx);
+
+  List<RtDTO> time(int resIdx);
+
+  List<RcaDTO> hashTag(int resIdx);
+
+  List<RvRsDTO> reviewPick();
+
+  List<RbDTO> bookmarkRes(int userIdx);
+
+  List<RestaurantDTO> customRec();
 }

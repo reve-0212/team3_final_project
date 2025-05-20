@@ -14,6 +14,9 @@
     SELECT menu_idx, res_idx, menu_name, menu_price, menu_explanation, menu_image
     FROM menu
     WHERE res_idx = #{resIdx}
+    and menu_hidden !=1
+    and menu_sold_out !=1
+    order by menu_sort;
   </select>
 
   <select id="getResIdx" resultType="com.example.team3_final_project_server.dto.ReservationDTO" parameterType="int">

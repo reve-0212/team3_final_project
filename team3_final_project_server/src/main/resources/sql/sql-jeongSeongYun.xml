@@ -227,21 +227,21 @@
         r.rsv_time DESC;
     </select>
 
-<!--    <select id="getuserListAndImg" parameterType="int" resultType="com.example.team3_final_project_server.dto.OwnerDTO">-->
-<!--        SELECT-->
-<!--            a.user_nick,-->
-<!--            a.user_call,-->
-<!--            a.user_email,-->
-<!--            a.bs_name,-->
-<!--            a.bs_number,-->
-<!--            b.res_image1-->
-<!--        FROM-->
-<!--            user a-->
-<!--        LEFT JOIN-->
-<!--            restaurant b ON a.user_idx = b.user_idx-->
-<!--        WHERE-->
-<!--            a.user_idx = #{userIdx}-->
-<!--    </select>-->
+    <select id="getuserListAndImg" parameterType="int" resultType="com.example.team3_final_project_server.dto.OwnerDTO">
+        SELECT
+            a.user_nick,
+            a.user_call,
+            a.user_email,
+            a.bs_name,
+            a.bs_number,
+            b.res_image1
+        FROM
+            user a
+        LEFT JOIN
+            restaurant b ON a.user_idx = b.user_idx
+        WHERE
+            a.user_idx = #{userIdx}
+    </select>
 
 
 </mapper>
