@@ -1,19 +1,21 @@
-import React, {useState, useRef, useEffect} from "react";
+import React, {useState, useRef} from "react";
 import useUserStore from "../../stores/useUserStore.jsx";
 import {useNavigate} from "react-router-dom";
-import {logout} from "../../simJiHyun/service/ApiService.js";
 import axios from "axios";
+import api from "../../api/axios.js"
 
 function UserSetting() {
   const user = useUserStore((state) => state.user)
   const {clearUser, setUser} = useUserStore();
   const Nv = useNavigate();
-  console.log(user)
 
-  // user 정보 한번만 출력하기
-  useEffect(() => {
-    console.log(user)
-  }, [])
+  // 로그아웃 시 웹 브라우저에 저장된 모든 토큰 정보를 삭제함
+  const logout = () => {
+    localStorage.setItem("ACCESS_TOKEN", null);
+    localStorage.removeItem("ACCESS_TOKEN");
+    sessionStorage.setItem("REFRESH_TOKEN", null);
+    sessionStorage.removeItem("REFRESH_TOKEN");
+  }
 
   const [editField, setEditField] = useState(null);
   // 필드가 이름, 이메일, 전화번호 정보를 다 가지고 있음
@@ -52,8 +54,8 @@ function UserSetting() {
     if (editField === field) {
       try {
         if (field === "user_pass") {
-          await axios.put(
-            `http://localhost:8080/api/auth/updatePassword`, {
+          await api.put(
+            `/api/auth/updatePassword`, {
               user_id: user.user_id,
               newPass: formData.user_pass
             }, {
@@ -64,8 +66,8 @@ function UserSetting() {
           )
           alert("비밀번호 변경 완료")
         } else {
-          await axios.put(
-            `http://localhost:8080/api/user/updateInfo`,
+          await api.put(
+            `/api/user/updateInfo`,
             {user_id: user.user_id, field, value: formData[field],},
             {
               headers: {

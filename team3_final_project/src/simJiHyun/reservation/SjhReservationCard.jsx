@@ -4,8 +4,9 @@ import {useNavigate} from "react-router-dom";
 import "../SjhCss.css";
 import useReservationIdxStore from "../../stores/useReservationIdxStore.jsx";
 import useRestaurantStore from "../../stores/useRestaurantStore.jsx";
-import axios from "axios";
 import {Accordion} from "react-bootstrap";
+import api from "../../api/axios.js"
+import axios from "axios";
 
 
 function SjhReservationCard(props) {
@@ -107,22 +108,18 @@ function SjhReservationCard(props) {
                 onClose={() => setOpenModal(false)}
                 onCancelConfirm={() => {
                   axios.all([
-                    axios.put("http://localhost:8080/cancelBook", null,
+                    api.put("/cancelBook", null,
                       {
                         params: {reservationIdx: props.reservationIdx},
                         headers: {Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`}
                       }),
-                    axios.put("http://localhost:8080/cancelBookHistory", null,
+                    api.put("/cancelBookHistory", null,
                       {
                         params: {reservationIdx: props.reservationIdx},
                         headers: {Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`}
                       })
                   ]).then(() => {
-                    axios.spread((res1, res2) => {
-                      console.log("-----res1-----")
-                      console.log(res1.data)
-                      console.log("-----res2-----")
-                      console.log(res2.data)
+                    axios.spread(() => {
                       alert("예약이 취소되었습니다")
                     })
                   }).catch((err) => {

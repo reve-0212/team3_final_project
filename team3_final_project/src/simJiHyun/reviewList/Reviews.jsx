@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import useUserStore from "../../stores/useUserStore.jsx";
 import { useNavigate } from "react-router-dom";
+import api from "../../api/axios.js"
 
 function Reviews() {
     const [reviews, setReviews] = useState([]);
@@ -14,24 +15,19 @@ function Reviews() {
     // useEffect로 리뷰 데이터 로딩
     useEffect(() => {
         if (!userIdx) {
-            console.warn("userIdx가 아직 정의되지 않았습니다.");
             return;
         }
 
-        console.log("userIdx로 리뷰 요청:", userIdx);
-
-        axios
-            .get(`http://localhost:8080/api/review/${userIdx}`, {
+        api.get(`/api/review/${userIdx}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
                 },
             })
             .then((response) => {
-                console.log("리뷰 목록 불러오기 성공:", response.data);
                 setReviews(response.data);
             })
             .catch((error) => {
-                console.error("리뷰 불러오기 실패:", error);
+                console.error(error);
             });
     }, [userIdx]); // userIdx가 바뀔 때마다 리뷰를 다시 로드
 
@@ -41,7 +37,6 @@ function Reviews() {
             console.warn("유효하지 않은 reviewIdx:", reviewIdx);
             return;
         }
-        console.log("리뷰 수정 페이지로 이동:", reviewIdx);
         navigate(`/user/reviewWrite?reviewIdx=${reviewIdx}`);
     };
 

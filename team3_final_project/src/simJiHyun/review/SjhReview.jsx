@@ -3,9 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera, faStar } from "@fortawesome/free-solid-svg-icons";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
 import useUserStore from "../../stores/useUserStore.jsx";
 import useRestaurantStore from "../../stores/useRestaurantStore.jsx";
+import api from "../../api/axios.js"
 
 function SjhReview() {
   const userState = useUserStore((state) => state.user);
@@ -25,8 +25,7 @@ function SjhReview() {
     if (reviewIdx) {
       setIsEditMode(true);
       setExistingReviewId(reviewIdx);
-      axios
-          .get(`http://localhost:8080/api/review/detail/${reviewIdx}`, {
+      api.get(`/api/review/detail/${reviewIdx}`, {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
             },
@@ -108,10 +107,10 @@ function SjhReview() {
     };
 
     const url = isEditMode
-        ? `http://localhost:8080/api/review/${reviewIdx}`
-        : "http://localhost:8080/api/review";
+        ? `/api/review/${reviewIdx}`
+        : "/api/review";
 
-    const method = isEditMode ? axios.put : axios.post;
+    const method = isEditMode ? api.put : api.post;
 
     method(url, reviewData, {
       headers: {
@@ -130,7 +129,7 @@ function SjhReview() {
 
   const handleDeleteReview = () => {
     if (window.confirm("정말 삭제하시겠습니까?")) {
-      axios.delete(`http://localhost:8080/api/review/${reviewIdx}`, {
+      api.delete(`/api/review/${reviewIdx}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
         },
