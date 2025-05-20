@@ -1,6 +1,5 @@
 import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import WaBanner from "../KimSangMin/WaBanner.jsx";
 import {
     DndContext,
     closestCenter,
@@ -17,7 +16,7 @@ import {
 import { GripVertical } from "lucide-react";
 import { CSS } from "@dnd-kit/utilities";
 import ReBanner from "../KimSangMin/ReBanner.jsx";
-import axios from "axios";
+import api from "../api/axios.js";
 
 function SortableItem({ item, onCheck, checked }) {
     const {
@@ -101,7 +100,7 @@ function CeoMenuListEdit() {
     useEffect(() => {
         if (!resIdx) return;
 
-        axios.get('http://localhost:8080/menu/list', {
+        api.get('/menu/list', {
             params: {resIdx: resIdx}
         })
             .then(response => {
@@ -178,14 +177,14 @@ function CeoMenuListEdit() {
             menuSort: menuList.length - 1 - index  // index 내림차순으로 선언
         }));
 
-        console.log("보낼 메뉴 배열:", updatedList);
-        axios.post('http://localhost:8080/menu/listEdit', updatedList)
+        // console.log("보낼 메뉴 배열:", updatedList);
+        api.post('/menu/listEdit', updatedList)
             .then(() => {
                 alert("저장 완료!");
                 navigate(`/pre/PreMenuList/${resIdx}`);
             })
             .catch((err) => {
-                console.error("메뉴 저장 실패:", err);
+                // console.error("메뉴 저장 실패:", err);
                 alert("저장 실패");
             });
     };

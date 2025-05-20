@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import "./css/CeoMenuList.css"
 import {useNavigate, useParams} from "react-router-dom";
 import ReBanner from "../KimSangMin/ReBanner.jsx";
-import axios from "axios";
+import api from "../api/axios.js";
 
 function CeoMenuList() {
 
@@ -19,7 +19,7 @@ function CeoMenuList() {
     useEffect(() => {
         if (!resIdx) return;
 
-        axios.get('http://localhost:8080/menu/list', {params: {resIdx}}, {
+        api.get('/menu/list', {params: {resIdx}}, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
@@ -66,7 +66,7 @@ function CeoMenuList() {
 
   // 숨기기 취소
   const handleUnhidden = (menuIdx) => {
-    axios.put(`http://localhost:8080/menu/unHidden/${menuIdx}`, {}, {
+      api.put(`/menu/unHidden/${menuIdx}`, {}, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`
@@ -86,7 +86,7 @@ function CeoMenuList() {
 
     // 품절 취소
     const handleUnsoldOut = (menuIdx) => {
-        axios.put(`http://localhost:8080/menu/unSoldOut/${menuIdx}`, {}, {
+        api.put(`/menu/unSoldOut/${menuIdx}`, {}, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`

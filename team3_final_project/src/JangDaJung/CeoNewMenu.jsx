@@ -2,9 +2,9 @@ import "./css/CeoNewMenu.css";
 import React, {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import ReBanner from "../KimSangMin/ReBanner.jsx";
-import axios from "axios";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCamera} from "@fortawesome/free-solid-svg-icons";
+import api from "../api/axios.js";
 
 function CeoNewMenu() {
 
@@ -31,7 +31,7 @@ function CeoNewMenu() {
   useEffect(() => {
     if (!resIdx) return;
 
-    axios.get('http://localhost:8080/menu/list', {
+    api.get('/menu/list', {
       params: {resIdx: resIdx}
     })
       .then(response => {
@@ -44,9 +44,9 @@ function CeoNewMenu() {
 
   // 이미지를 cloudinary 로 가져감
   const uploadToCloudinary = async (file) => {
-    console.log("업로드할 파일:", file);
-    console.log("name:", file.name);
-    console.log("type:", file.type);
+    // console.log("업로드할 파일:", file);
+    // console.log("name:", file.name);
+    // console.log("type:", file.type);
 
     const formData = new FormData();
     formData.append("file", file);
@@ -55,11 +55,11 @@ function CeoNewMenu() {
     for (let pair of formData.entries()) {
       if (pair[0] === "file") {
         const f = pair[1];
-        console.log(`file name: ${f.name}`);
-        console.log(`file size: ${f.size}`);
-        console.log(`file type: ${f.type}`);
+        // console.log(`file name: ${f.name}`);
+        // console.log(`file size: ${f.size}`);
+        // console.log(`file type: ${f.type}`);
       } else {
-        console.log(`${pair[0]}: ${pair[1]}`);
+        // console.log(`${pair[0]}: ${pair[1]}`);
       }
     }
 
@@ -70,7 +70,7 @@ function CeoNewMenu() {
       });
 
       const data = await response.json();
-      console.log("Cloudinary 응답:", data);
+      // console.log("Cloudinary 응답:", data);
       return data.secure_url;
     } catch (err) {
       console.error(err);
@@ -98,14 +98,14 @@ function CeoNewMenu() {
     };
 
     try {
-      const response = await axios.post('http://localhost:8080/menu/newMenu', uploadData);
+      const response = await api.post('/menu/newMenu', uploadData);
       if (response.status === 200) {
         setShowSuccessModal(true);
       }
     } catch (error) {
       console.error("메뉴 추가 실패:", error);
     }
-    console.log("보내는 데이터", uploadData)
+    // console.log("보내는 데이터", uploadData)
   };
 
   const handleCancel = () => {
