@@ -9,6 +9,7 @@ import axios from "axios";
 import useRestaurantStore from "../../stores/useRestaurantStore.jsx";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import useResStoreSjh from "../../stores/useResStoreSjh.jsx";
+import api from "../../api/axios.js";
 
 function BookInfo() {
   // 모달을 열지 말지 결정한다
@@ -25,7 +26,7 @@ function BookInfo() {
   useEffect(() => {
     axios.all([
       // 예약 정보 가져오기 (메뉴 제외)
-      axios.get("http://localhost:8080/getBook", {
+      api.get("/getBook", {
         params: {
           reservationIdx: reservationIdx,
           restaurantIdx: restaurantIdx
@@ -35,7 +36,7 @@ function BookInfo() {
         }
       }),
       // 예약 정보 가져오기 (메뉴만)
-      axios.get("http://localhost:8080/getMenu", {
+      api.get("/getMenu", {
         params: {
           reservationIdx: reservationIdx,
           restaurantIdx: restaurantIdx
@@ -48,10 +49,8 @@ function BookInfo() {
       axios.spread((res1, res2) => {
         setReservations(res1.data)
         setMenus(res2.data)
-        console.log(res1.data)
-        // console.log(res2.data)
-      })).catch((err) => {
-      console.log(err)
+      })).catch(() => {
+
     })
   }, []);
 

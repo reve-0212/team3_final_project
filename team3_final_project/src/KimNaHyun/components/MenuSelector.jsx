@@ -8,6 +8,7 @@ import useResStoreSjh from "../../stores/useResStoreSjh.jsx";
 import useMenuStore from "../../stores/useMenuStore.jsx";
 import usePeopleStore from "../../stores/usePeopleStore.jsx";
 import useRsvDateTimeStore from "../../stores/useRsvDateTimeStore.jsx";
+import api from "../../api/axios.js";
 
 const MenuSelector = () => {
   const Nv = useNavigate();
@@ -26,40 +27,30 @@ const MenuSelector = () => {
   // 좌석 세팅에서 선택한 reservationIdx 가지고 있기
   const reservationIdx = useReservationIdxStore((state) => state.reservationIdx)
 
-  useEffect(() => {
-    console.log("userIdx")
-    console.log(userIdx)
-  }, [userIdx])
+  // useEffect(() => {
+  //   console.log("userIdx")
+  //   console.log(userIdx)
+  // }, [userIdx])
+  //
+  // useEffect(() => {
+  //   console.log("resIdx")
+  //   console.log(resIdx)
+  // }, [resIdx]);
+  //
+  // useEffect(() => {
+  //   console.log("reservationIdx")
+  //   console.log(reservationIdx)
+  // }, [reservationIdx]);
 
   useEffect(() => {
-    console.log("resIdx")
-    console.log(resIdx)
-  }, [resIdx]);
-
-  useEffect(() => {
-    console.log("reservationIdx")
-    console.log(reservationIdx)
-  }, [reservationIdx]);
-
-  useEffect(() => {
-    console.log("people")
-    console.log(people)
-    console.log("people.woman")
-    console.log(people.woman)
-    console.log("people.man")
-    console.log(people.man)
-    console.log("people.baby")
-    console.log(people.baby)
 
     setAllPeople(people.woman + people.man + people.baby)
   }, [people]);
-  console.log("-----allPeople-----")
-  console.log(allPeople)
 
-  useEffect(() => {
-    console.log("rsvDateTime")
-    console.log(rsvDateTime)
-  }, []);
+  // useEffect(() => {
+  //   console.log("rsvDateTime")
+  //   console.log(rsvDateTime)
+  // }, []);
 
   // window.addEventListener("popstate", () => {
   //   console.log("뒤로가기")
@@ -69,13 +60,11 @@ const MenuSelector = () => {
   useEffect(() => {
     if (!resIdx) return; // resIdx가 없는 경우 API 호출을 하지 않도록 처리
 
-    axios.get(`http://localhost:8080/api/menu/${resIdx}`)
+    api.get(`/api/menu/${resIdx}`)
       .then(res => {
-        console.log(res.data);
         setMenuItems(res.data);
       })
       .catch(err => {
-        console.log(err);
         alert("메뉴 데이터를 불러오는 데 실패했습니다.");
       });
   }, [resIdx]);  // resIdx가 변경될 때마다 다시 데이터 로딩

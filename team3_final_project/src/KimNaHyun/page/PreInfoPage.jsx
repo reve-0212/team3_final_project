@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import api from "../../api/axios.js";
 
 function PreInfoPage() {
     const nv = useNavigate();
@@ -28,9 +29,8 @@ function PreInfoPage() {
         }
 
         // 회원가입 요청
-        axios.post('http://localhost:8080/pre/signup', userData)
+        api.post('/pre/signup', userData)
             .then((response) => {
-                console.log(response.data); // 응답 데이터 확인
                 const { success, message } = response.data;
 
                 if (success) {

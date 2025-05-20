@@ -69,15 +69,13 @@ section {
 
 /* 컨테이너 정렬 */
 .datepicker-container {
+    width:70% !important;
     display: flex;
     flex-direction: column;
     align-items: center;
     font-size: 20px !important;
 }
-.react-datepicker__month-container {
-    /*width: 500px !important;*/
-    /*height: 500px !important;*/
-}
+
 .react-datepicker {
     color: #ffffff !important;
 }
@@ -216,6 +214,51 @@ section {
         width: 2.6rem !important;
         line-height: 2.2rem !important;
     }
+
+
+/*    데이트피커 반응형 */
+    .react-datepicker {
+        font-family: 'Segoe UI', sans-serif;
+        border: 0px solid #ccc !important;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        font-size: 1.1rem !important;
+
+    }
+
+    .react-datepicker__header {
+        background-color: #FFD700 !important;
+        border-bottom: 0px solid #ddd !important;
+        padding: 15px 0 !important;
+        width: 100%;
+    }
+    .react-datepicker__day {
+        width: 2.3rem !important;
+        line-height: 2.3rem !important;
+    }
+    .react-datepicker__day-name {
+        color: #ffe8c0 !important;
+        width: 2.2rem !important;
+        line-height: 2.9rem !important;
+    }
+
+    .react-datepicker__day-names {
+        margin-top: 10px !important;
+
+    }
+
+    .react-datepicker__day--selected {
+        background-color: #FFD700  !important;
+        z-index: 999;
+        color: white;
+        border-radius: 50% !important;
+    }
+
+    .react-datepicker__day--keyboard-selected {
+        background-color: #ffe8c0 !important;
+        border-radius: 50% !important;
+    }
+
 
 }
 

@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import "../KnhMain.css"
 import axios from "axios";
 import useRsvDateStore from "../../stores/useRsvDateStore.jsx";
 import useRsvTimeStore from "../../stores/useRsvTimeStore.jsx";
@@ -11,6 +12,7 @@ import usePeopleStore from "../../stores/usePeopleStore.jsx";
 // 최종 에약 확정 페이지에서 한번에 예약하기
 import useResStoreSjh from "../../stores/useResStoreSjh.jsx";
 import Button from "../components/Button.jsx";
+import api from "../../api/axios.js";
 
 function DateSelectorPage() {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -33,8 +35,8 @@ function DateSelectorPage() {
   useEffect(() => {
     if (!resIdx) return;
 
-    axios
-      .get(`http://localhost:8080/api/time/${resIdx}`, {
+    api
+      .get(`/api/time/${resIdx}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
         },
@@ -42,8 +44,7 @@ function DateSelectorPage() {
       .then((response) => {
         setOpeningHours(response.data.split(","))
       })
-      .catch((err) => {
-        console.error("영업시간 불러오기 실패:", err);
+      .catch(() => {
         alert("식당 정보를 불러오지 못했습니다.");
       });
   }, [resIdx]);
