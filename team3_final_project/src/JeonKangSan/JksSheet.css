@@ -281,3 +281,94 @@ select:focus {
     border: 1px solid #FFD727;
 }
 
+@media (max-width: 360px) {
+    /* 앱 컨테이너 너비 제한 */
+    .app-container {
+        max-width: 100%;
+        padding: 0 12px;
+    }
+
+    /* 탭 버튼 줄이기 */
+    .tab-btn {
+        font-size: 0.85rem;
+        min-width: 80px;
+        max-width: 110px;
+        padding: 8px 0;
+    }
+
+    /* 리뷰용 탭 버튼 줄이기 */
+    .small-tab-btn {
+        font-size: 0.75rem;
+        min-width: 65px;
+        padding: 8px 0;
+    }
+
+    /* 카드 내부 제목, 텍스트 축소 */
+    .card .card-title {
+        font-size: 1rem;
+    }
+
+    .card .card-text {
+        font-size: 0.85rem;
+    }
+
+    .card small {
+        font-size: 0.75rem;
+    }
+
+    /* 이미지 높이 축소 */
+    .card .rounded,
+    .res-img {
+        height: 100px !important;
+    }
+
+    /* 해시태그 버튼 */
+    .btn[style*="background-color: #FFD727"] {
+        font-size: 0.75rem;
+        padding: 4px 8px;
+    }
+
+    /* 위치, 편의시설 박스 폰트 */
+    .location-box,
+    .reserve-time-box {
+        font-size: 0.85rem;
+    }
+
+    /* 지도 영역 높이 축소 */
+    #map {
+        height: 180px !important;
+    }
+
+    /* common-btn 크기 줄이기 */
+    .common-btn {
+        font-size: 0.9rem;
+        padding: 12px 0;
+    }
+
+    /* 정렬, 필터 select 박스 */
+    select.btn-jks {
+        font-size: 0.75rem;
+        padding: 6px 10px;
+    }
+
+    /* 대기팀 뱃지 */
+    .overlay-badge {
+        font-size: 0.7rem;
+        padding: 4px 8px;
+    }
+
+    /* 버튼 내 아이콘 위치 조정 */
+    .btn-jks.btn-outline-secondary.btn-sm {
+        font-size: 0.7rem;
+        padding: 4px 10px;
+    }
+
+    .dropdown-icon-1 {
+        top: 40% !important; /* 더 위로 */
+    }
+
+    .dropdown-icon-2 {
+        top: 42% !important;
+    }
+}
+
