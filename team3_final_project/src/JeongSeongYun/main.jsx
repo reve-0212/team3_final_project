@@ -19,21 +19,13 @@ import BookRegPage from "../KimNaHyun/page/BookRegPage.jsx";
 import BookInfoPage from "../KimNaHyun/page/BookInfoPage.jsx";
 import SjhReview from "../simJiHyun/review/SjhReview.jsx";
 import SjhReviewList from "../simJiHyun/reviewList/SjhReviewList.jsx";
-import WaitingInfoPage from "../KimNaHyun/page/WaitingInfoPage.jsx";
 import OwnerLogin from "../JeonKangSan/OwnerLogin.jsx";
 import PreReserve from "../KimSangMin/PreReserve.jsx";
 import PreWait from "../KimSangMin/PreWait.jsx";
-import OwnerLoginSjh from "../simJiHyun/login/OwnerLoginSjh.jsx";
-import PreTime from "../KimSangMin/PreTime.jsx";
-import PreTimeSet from "../KimSangMin/PreTimeSet.jsx";
 import PreRegPage from "./layout/PreRegPage.jsx";
 import PreUpdatePage from "../KimSangMin/PreUpdatePage.jsx";
 import PreMain from "../KimSangMin/PreMain.jsx";
-import PreCh from "../KimSangMin/PreCh.jsx";
 import PreRe from "../KimSangMin/PreRe.jsx";
-import PreDayCh from "../KimSangMin/PreDayCh.jsx";
-import PreReSet from "../KimSangMin/PreReSet.jsx";
-import PreFunction from "../KimSangMin/PreFunction.jsx";
 import PastDateReservation from "../JangDaJung/PastDateReservation.jsx";
 import TodayReservation from "../JangDaJung/TodayReservation.jsx";
 import PreSelect from "../KimSangMin/PreSelect.jsx";
@@ -142,7 +134,7 @@ function main() {
               <Route path="/user/reviewWrite" element={<SjhReview />} />
 
               {/*모바일 전용 사장 로그인*/}
-              <Route path={"/pre/login"} element={<OwnerLoginSjh/>}/>
+              {/*<Route path={"/pre/login"} element={<OwnerLoginSjh/>}/>*/}
               {/*웨이팅 웹앱*/}
               <Route path="/pre/web/PreWait" element={<PreWait/>}/>
               {/*예약 웹앱*/}

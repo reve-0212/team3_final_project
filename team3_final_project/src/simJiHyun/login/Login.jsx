@@ -4,12 +4,35 @@ import LoginSignText from "../LoginSignText.jsx";
 import "../SjhCss.css"
 import useUserStore from "../../stores/useUserStore.jsx";
 import {Link, useNavigate} from "react-router-dom";
-import {apiLogin} from "../service/ApiService.js"
+import api from "../../api/axios.js"
+
 
 function Login() {
   const setUser = useUserStore((state) => state.setUser);
 
   const Nv = useNavigate();
+
+  // 로그인용
+  const apiLogin = async (userId, userPass) => {
+    return api.get(`/api/auth/login`, {
+      params: {
+        userId: userId,
+        userPass: userPass
+      }
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(res => {
+        localStorage.setItem("ACCESS_TOKEN", res.data.accessToken);
+        sessionStorage.setItem("REFRESH_TOKEN", res.data.refreshToken);
+        return res.data
+      })
+      .catch(err => {
+        alert(`로그인 중 오류가 발생했습니다.\n${err}`);
+      });
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();

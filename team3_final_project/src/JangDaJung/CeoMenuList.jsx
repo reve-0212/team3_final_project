@@ -12,7 +12,6 @@ function CeoMenuList() {
     const [searchKeyword, setSearchKeyword] = useState(''); // 검색 버튼 누른 뒤 확정된 값
 
     const [menuList, setMenuList] = useState([]);
-    // const [resIdx, setResIdx] = useState(null);
 
     const { resIdx } = useParams();
 

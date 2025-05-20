@@ -1,11 +1,26 @@
-import SignMini from "./SignMini.jsx";
 import LoginSignText from "../LoginSignText.jsx";
-import {useNavigate} from "react-router-dom";
 import {useState} from "react";
 import "../SjhCss.css"
-import {apiSignup} from "../service/ApiService.js";
+import api from "../../api/axios.js"
 
 function SignUp() {
+
+  const apiSignup = (memberDTO) => {
+    // axios로 가입할 회원 정보를 전달함
+    api.post(`/api/auth/signup`, memberDTO, {
+      // headers 의 'Content-Type': 'application/json' 은 axios 가 자동으로 설정, 생략 가능
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(() => {
+        alert('회원 가입 완료');
+        window.location.href = '/user/login';
+      })
+      .catch(err => {
+        alert(`회원 가입 중 오류가 발생했습니다.\n${err}`);
+      });
+  }
 
   const [gender, setGender] = useState("male")
   const [age, setAge] = useState(10)
@@ -22,14 +37,6 @@ function SignUp() {
     const userCall = formData.get("userCall");
     const userEmail = formData.get("userEmail");
 
-    console.log(userId)
-    console.log(userPass)
-    console.log(userNick)
-    console.log(userGender)
-    console.log(userAge)
-    console.log(userCall)
-    console.log(userEmail)
-
     apiSignup({
       userId: userId, userPass: userPass, userNick: userNick, userGender: userGender,
       userAge: userAge, userCall: userCall, userEmail: userEmail
@@ -39,18 +46,15 @@ function SignUp() {
   const handleMale = () => {
     setGender("male")
     setBtnActive("male")
-    console.log(gender)
   }
 
   const handleFemale = () => {
     setGender("female")
     setBtnActive("female")
-    console.log(gender)
   }
 
   const handleChangeAge = (e) => {
     setAge(e.target.value)
-    console.log(age)
   }
 
 
