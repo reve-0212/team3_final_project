@@ -51,6 +51,7 @@ public class SecurityConfig {
 //    cors 허용할 주소
     configuration.addAllowedOrigin("http://localhost:5173");
     configuration.addAllowedOrigin("http://localhost:5174");
+    configuration.addAllowedOrigin("http://10.100.203.73:5173"); // aws 리액트가 있는 서버 ip로 바꾸면 됨
 //    cors 허용할 메소드 (GET, POST, PUT, DELETE)
     configuration.addAllowedMethod("*");
 //    cors 허용할 헤더 (여기서는 Authorization 부분이 필요하기 때문에 추가함)

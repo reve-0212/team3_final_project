@@ -59,7 +59,7 @@ public class HistoryController {
 //    ------ 통계 페이지
 //    가게 메인 페이지에서 오늘의 예약 불러오기
 
-//    예약하기 -> 히스토리 테이블에 저장
+    //    예약하기 -> 히스토리 테이블에 저장
     @PostMapping("/save")
     public ResponseEntity<String> bookReservation(@RequestBody List<ReservationHistoryDTO> historyList) {
         jdjService.saveHistories(historyList);
@@ -73,7 +73,7 @@ public class HistoryController {
 //        return ResponseEntity.ok(resTime);
 //    }
 
-//    가게 예약 시간대 불러오기(메인)
+    //    가게 예약 시간대 불러오기(메인)
     @GetMapping("/restaurant/{resIdx}/reservationTime")
     public ResponseEntity<List<String>> getResTime(@PathVariable("resIdx") String resIdx) {
         String csv = jdjService.getResTime(resIdx).toString();
@@ -84,7 +84,7 @@ public class HistoryController {
         List<String> timeList = Arrays.asList(csv.split(","));
         return ResponseEntity.ok(timeList);
     }
-//    가게 이름
+    //    가게 이름
     @GetMapping("/storeInfo")
     public ResponseEntity<?> getStoreInfo(@RequestParam int resIdx) {
         Map<String, Object> result = jdjService.getStoreInfo(resIdx);
@@ -133,9 +133,22 @@ public class HistoryController {
         return jdjService.getTeamCountByHour(startDate, endDate, resIdx);
     }
 
+    //  시간대별 예약팀 수
+    @GetMapping("reservation/hourMain")
+    public List<Map<String, Object>> getTeamCountByHourMain(
+        @RequestParam String startDate,
+        @RequestParam String endDate,
+        @RequestParam int resIdx
+    ) {
+        System.out.println("startDate = " + startDate);
+        System.out.println("endDate = " + endDate);
+        System.out.println("resIdx = " + resIdx);
+        return jdjService.getTeamCountByHourMain(startDate, endDate, resIdx);
+    }
 //  @GetMapping("/api/dummy/insert")
 //  public String insertDummyData() {
 //    dummyDataInsert.insertDummyData();
 //    return "더미 데이터 삽입 완료!";
 //  }
 }
+

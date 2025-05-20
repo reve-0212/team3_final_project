@@ -52,6 +52,10 @@ public class JDJServiceImpl implements JDJService {
         return jdjMapper.selectTeamCountByHour(startDate, endDate, resIdx);
     }
 
+    @Override
+    public List<Map<String, Object>> getTeamCountByHourMain(String startDate, String endDate, int resIdx) {
+        return jdjMapper.selectTeamCountByHourMain(startDate, endDate, resIdx);
+    }
 
 
 //    가게 영업시간 불러오기(통계페이지)
@@ -70,7 +74,7 @@ public class JDJServiceImpl implements JDJService {
 //        return result;
 //    }
 
-//    가게 예약시간대 불러오기(메인페이지)
+    //    가게 예약시간대 불러오기(메인페이지)
     @Override
     public List<String> getResTime(String resIdx) {
         return jdjMapper.getResTime(resIdx);
@@ -84,13 +88,13 @@ public class JDJServiceImpl implements JDJService {
 
 //  ---- 메뉴 페이지
 
-//    메뉴 리스트
+    //    메뉴 리스트
     @Override
     public List<MenuDTO> getMenuList(int resIdx) {
         return jdjMapper.selectMenuList(resIdx);
     }
 
-//    메뉴 리스트 페이지에서 숨기기 해제
+    //    메뉴 리스트 페이지에서 숨기기 해제
     @Override
     public void updateUnhidden(int menuIdx, boolean hidden) {
         jdjMapper.updateUnhidden(menuIdx, hidden);
@@ -126,7 +130,7 @@ public class JDJServiceImpl implements JDJService {
         return jdjMapper.getMenuById(menuIdx);
     }
 
-//    메뉴 정보 수정
+    //    메뉴 정보 수정
     @Override
     public void editMenu(int menuIdx, String menuName, int menuPrice, String menuExplanation, String menuImage) throws Exception {
         MenuDTO menuDTO = new MenuDTO();
@@ -140,13 +144,13 @@ public class JDJServiceImpl implements JDJService {
         jdjMapper.editMenu(menuDTO);
     }
 
-//    메뉴 삭제
+    //    메뉴 삭제
     @Override
     public void deleteMenu(int menuIdx) {
         jdjMapper.deleteMenu(menuIdx);
     }
 
-//    ----- 리뷰
+    //    ----- 리뷰
 //    메인페이지에서 리뷰 통계
     @Override
     public Map<String, Object> getReviewChByResIdx(int resIdx) {
@@ -179,7 +183,7 @@ public class JDJServiceImpl implements JDJService {
         return result;
     }
 
-//    가게 이름
+    //    가게 이름
     @Override
     public Map<String, Object> getStoreInfo(int resIdx) {
         return jdjMapper.getStoreInfo(resIdx);
@@ -197,3 +201,4 @@ public class JDJServiceImpl implements JDJService {
 //        return jdjMapper.updatePreReply(dto);
 //    }
 }
+

@@ -1,5 +1,3 @@
-// ContentList.jsx
-
 import "./JksSheet.css";
 import {Link, useNavigate, useParams, useLocation} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
