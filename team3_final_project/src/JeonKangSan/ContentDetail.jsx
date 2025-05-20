@@ -62,7 +62,7 @@ function ContentDetail() {
         const data5 = res5.data
 
         console.log(data2)
-
+        console.log(data2);
         setStoreInfo(data1);
         setRes(data1)
         setCenter({lat: data1.resLat, lng: data1.resLng})
@@ -312,7 +312,7 @@ function ContentDetail() {
           <div className="mb-5">
             <h5 className="mb-3 fw-bold text-start">메뉴</h5>
             {bestMenus
-              .filter(menu => menu.menuHidden !== "1") // 숨김 처리된 메뉴 제외
+              .filter(menu => menu.menuHidden !== true) // 숨김 처리된 메뉴 제외
               .map((menu, idx) => (
                 <div
                   key={idx}
@@ -320,7 +320,7 @@ function ContentDetail() {
                 >
                   <div className="text-start">
                     <div className="fw-bold">
-                      {menu.menuSoldOut === "1" && (
+                      {menu.menuSoldOut === true && (
                         <span className="text-danger me-2">(품절)</span>
                       )}
                       {menu.menuName}

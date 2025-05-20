@@ -20,8 +20,11 @@ function CeoMenuList() {
     useEffect(() => {
         if (!resIdx) return;
 
-        axios.get('http://localhost:8080/menu/list', {
-            params: {resIdx}
+        axios.get('http://localhost:8080/menu/list', {params: {resIdx}}, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
+            },
         })
             .then(response => {
                 setMenuList(response.data);
@@ -84,7 +87,12 @@ function CeoMenuList() {
 
     // 품절 취소
     const handleUnsoldOut = (menuIdx) => {
-        axios.put(`http://localhost:8080/menu/unSoldOut/${menuIdx}`)
+        axios.put(`http://localhost:8080/menu/unSoldOut/${menuIdx}`, {}, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`
+            }
+        })
             .then(() => {
                 setMenuList((prev) =>
                     prev.map((menu) =>
