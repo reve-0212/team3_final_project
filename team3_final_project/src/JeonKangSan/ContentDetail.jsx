@@ -1,11 +1,12 @@
 import {useEffect, useState} from "react";
 import "./JksSheet.css";
 import "../simJiHyun/SjhCss.css"
-import axios from "axios";
 import {useNavigate, useParams} from "react-router-dom";
 import useUserStore from "../stores/useUserStore.jsx";
 import {Map, MapMarker, useKakaoLoader} from "react-kakao-maps-sdk";
 import useResStoreSjh from "../stores/useResStoreSjh.jsx";
+import api from "../api/axios.js";
+
 
 function ContentDetail() {
   const userStore = useUserStore((state) => state.user)
@@ -41,50 +42,38 @@ function ContentDetail() {
 
   // 여러가지 불러오기
   useEffect(() => {
-    axios.all([
-        // res1 : 가게 상세 정보 가져오기
-        axios.get(`http://localhost:8080/detail/${restaurant.resIdx}`),
-        // res2 : 가게 메뉴 가져오기
-        axios.get(`http://localhost:8080/bestmenu/${restaurant.resIdx}`),
-        // res3 : 편의시설 가져오기
-        axios.get(`http://localhost:8080/convenient/${restaurant.resIdx}`),
-        // res4 : 시간 가져오기
-        axios.get(`http://localhost:8080/time/${restaurant.resIdx}`),
-        // res5 : 태그 가져오기
-        axios.get(`http://localhost:8080/hashTag/${restaurant.resIdx}`)
-      ]
-    ).then(
-      axios.spread((res1, res2, res3, res4, res5) => {
-        const data1 = res1.data
-        const data2 = res2.data
-        const data3 = res3.data
-        const data4 = res4.data
-        const data5 = res5.data
+    (async () => {
+      try {
+        const [res1, res2, res3, res4, res5] = await Promise.all([
+          api.get(`/detail/${restaurant.resIdx}`),
+          api.get(`/bestmenu/${restaurant.resIdx}`),
+          api.get(`/convenient/${restaurant.resIdx}`),
+          api.get(`/time/${restaurant.resIdx}`),
+          api.get(`/hashTag/${restaurant.resIdx}`)
+        ]);
 
-        console.log(data2)
-        console.log(data2);
-        setStoreInfo(data1);
-        setRes(data1)
-        setCenter({lat: data1.resLat, lng: data1.resLng})
-        setPosition({lat: data1.resLat, lng: data1.resLng})
-        setTimeSlots(data1.resReserveTime.split(","))
-        setBestMenus(data2);
-        setConvenient(data3)
-        setStoreTime(data4)
-        setHashTag(data5)
-      })
-    ).catch((err) => {
-      console.log(err)
-    })
-  }, [])
+        setStoreInfo(res1.data);
+        setRes(res1.data);
+        setCenter({ lat: res1.data.resLat, lng: res1.data.resLng });
+        setPosition({ lat: res1.data.resLat, lng: res1.data.resLng });
+        setTimeSlots(res1.data.resReserveTime.split(","));
+        setBestMenus(res2.data);
+        setConvenient(res3.data);
+        setStoreTime(res4.data);
+        setHashTag(res5.data);
+      } catch (e) {
+        // 실패 시 무시
+      }
+    })();
+  }, []);
 
   // 리뷰 불러오기
   useEffect(() => {
-    axios.get(`http://localhost:8080/reviews/${restaurant.resIdx}`)
+    api.get(`/${restaurant.resIdx}`)
       .then(res => {
         setReviews(res.data);
       })
-      .catch(err => console.log("리뷰 불러오기 오류:", err));
+      .catch();
   }, [restaurant.resIdx]);
 
   // 시간 데이터 집어넣기
@@ -111,8 +100,6 @@ function ContentDetail() {
     if (updated.length > 3) updated.length = 3;
     localStorage.setItem("recentStores", JSON.stringify(updated))
   }, [restaurant.resIdx]);
-
-  console.log(localStorage.getItem("recentStores"))
 
   return (
     <div className="app-container">
@@ -400,11 +387,6 @@ function ContentDetail() {
               <button key={idx}
                       className={"btn m-1"}
                       style={{backgroundColor: "#FFF8E1"}}>
-                {/*<button*/}
-                {/*    key={idx}*/}
-                {/*    className={`btn ${selectedTime === time ? "btn-primary" : "btn-outline-primary"}`}*/}
-                {/*    onClick={() => setSelectedTime(time)}*/}
-                {/*>*/}
                 {time}
               </button>
             ))}
