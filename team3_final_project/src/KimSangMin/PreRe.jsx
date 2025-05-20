@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import ReBanner from "./ReBanner.jsx";
 import {useParams} from "react-router-dom";
-import axios from "axios";
+import api from "../api/axios.js";
 
 function PreRe() {
   const { resIdx } = useParams();
@@ -16,7 +16,7 @@ function PreRe() {
 
   const fetchReviews = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/pre/review/list`, {
+      const response = await api.get(`/pre/review/list`, {
         params: { resIdx }
       });
       setReviews(response.data);
@@ -40,7 +40,7 @@ function PreRe() {
   //       reviewOwnerContents: chReply
   //     };
   //
-  //     await axios.post("http://localhost:8080/reply", payload);
+  //     await api.post("/reply", payload);
   //
   //     await fetchReviews(); // 등록 후 리스트 다시 불러오기
   //     const newReviews = [...reviews];
@@ -61,7 +61,7 @@ function PreRe() {
   //       reviewIdx: review.reviewIdx,
   //       reviewOwnerContents: ""
   //     };
-  //     await axios.post("http://localhost:8080/reply", payload);
+  //     await api.post("/reply", payload);
   //
   //     const newReviews = [...reviews];
   //     newReviews[index].reviewOwnerContents = "";

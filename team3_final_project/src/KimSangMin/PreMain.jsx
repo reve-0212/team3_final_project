@@ -3,7 +3,7 @@ import '../JangDaJung/css/CeoMain.css';
 import ReBanner from "./ReBanner.jsx";
 import {Link, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import axios from "axios";
+import api from "../api/axios.js";
 
 function PreMain() {
     // console.log(localStorage.getItem('ACCESS_TOKEN'));
@@ -53,7 +53,7 @@ function PreMain() {
 
     const fetchResName = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/history/storeInfo`, {
+            const response = await api.get(`/api/history/storeInfo`, {
                 params: { resIdx: resIdx },
                 headers: {
                     "Content-Type": "application/json",
@@ -70,7 +70,7 @@ function PreMain() {
     };
     const fetchResTime = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/history/restaurant/${resIdx}/reservationTime`,{
+            const response = await api.get(`/api/history/restaurant/${resIdx}/reservationTime`,{
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`
@@ -87,7 +87,7 @@ function PreMain() {
 
     const fetchReservationHistory = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/history/reservation/hourMain`, {
+            const response = await api.get(`/api/history/reservation/hourMain`, {
                 params: {
                     startDate: startDateTime,
                     endDate: endDateTime,
@@ -112,7 +112,7 @@ function PreMain() {
                 count: timeMap[time] || 0 // 데이터가 없으면 0으로 설정
             }));
             setReservationData(data);
-            console.log(data);
+            // console.log(data);
         } catch (err) {
             console.error("예약 기록 가져오기 실패", err);
         }
@@ -122,18 +122,18 @@ function PreMain() {
 
     const fetchReview = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/pre/review/main`,{
+            const response = await api.get(`/pre/review/main`,{
                 params: {resIdx: resIdx},
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`
                 }
             });
-            console.log("리뷰 응답:", response.data);
+            // console.log("리뷰 응답:", response.data);
             const data = response.data;
             setAverageScore(data.averageScore || 0);
             setReviewScoreData(data.reviewScoreData || []);
-            console.log("리뷰 점수별 데이터:", reviewScoreData);
+            // console.log("리뷰 점수별 데이터:", reviewScoreData);
             // setReviewData(data.monthlyCounts || []);
         } catch (err) {
             console.log("리뷰 들고오기 실패", err);

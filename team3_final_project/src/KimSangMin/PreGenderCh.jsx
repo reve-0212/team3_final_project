@@ -3,7 +3,7 @@ import {Link, useParams} from "react-router-dom";
 import {DayPicker} from "react-day-picker";
 import {Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import {useEffect, useRef, useState} from "react";
-import axios from "axios";
+import api from "../api/axios.js";
 
 function PreGenderCh() {
 
@@ -70,7 +70,7 @@ function PreGenderCh() {
 
         setLoading(true);
         try{
-            const response = await axios.get("http://localhost:8080/api/history/visitors", {
+            const response = await api.get("/api/history/visitors", {
                 params: {
                     startDate: formatDateStart(seDay.from),
                     endDate: formatDateEnd(seDay.to),
