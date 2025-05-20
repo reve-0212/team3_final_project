@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import ReBanner from "./ReBanner.jsx";
-import api from "../../api/axios.js";
+import api from "../api/axios.js";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCamera} from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";

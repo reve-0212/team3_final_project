@@ -2,7 +2,7 @@ import WaBanner from "./WaBanner.jsx";
 import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import ReBanner from "./ReBanner.jsx";
-import api from "../../api/axios.js";
+import api from "../api/axios.js";
 import Swal from "sweetalert2";
 // import PreTimeSet from "./PreTimeSet.jsx";
 // import {Link} from "react-router-dom";

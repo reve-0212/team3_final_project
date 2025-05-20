@@ -1,7 +1,7 @@
 import { Button } from "react-bootstrap";
 import {useEffect, useState} from "react";
 import ReBanner from "./ReBanner.jsx";
-import api from "../../api/axios.js";
+import api from "../api/axios.js";
 import Swal from "sweetalert2";
 
 function PreTimeSet({ onEditClick }) {

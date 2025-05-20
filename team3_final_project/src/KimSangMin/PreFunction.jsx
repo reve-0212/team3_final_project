@@ -1,6 +1,6 @@
 import ReBanner from "./ReBanner.jsx";
 import {useEffect, useState} from "react";
-import api from "../../api/axios.js";
+import api from "../api/axios.js";
 import SeatManager from "./Seat/SeatManager.jsx";
 import Swal from "sweetalert2";
 
