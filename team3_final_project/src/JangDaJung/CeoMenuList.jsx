@@ -104,35 +104,6 @@ function CeoMenuList() {
             });
     };
 
-
-    // 품절 취소
-    // const handleUnsoldOut = (menuIdx) => {
-    //     axios.put(
-    //         `http://localhost:8080/menu/unSoldOut/${menuIdx}`,
-    //         {},
-    //         {
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //                 'Authorization': `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
-    //             },
-    //         }
-    //     )
-    //         .then(() => {
-    //             setMenuList((prev) =>
-    //                 prev.map((menu) =>
-    //                     menu.menuIdx === menuIdx
-    //                         ? { ...menu, menuSoldOut: false }
-    //                         : menu
-    //                 )
-    //             );
-    //         })
-    //         .catch((err) => {
-    //             console.log('품절 취소 실패', err);
-    //         });
-    // };
-
-
-
     return (
         <>
         <ReBanner />

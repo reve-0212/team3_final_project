@@ -2,7 +2,7 @@ import LoginSignText from "../../simJiHyun/LoginSignText.jsx";
 import LoginText from "../../simJiHyun/login/LoginText.jsx";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
-
+import api from "../../api/axios.js"
 
 function AdminLogin() {
     const nv = useNavigate();
@@ -12,7 +12,7 @@ function AdminLogin() {
         const adminId = formData.get('adminId')
         const adminPw = formData.get('adminPw')
 
-        axios.get(`http://localhost:8080/pre/admin/login`, {
+        api.get(`/pre/admin/login`, {
             params: {
                 adminId: adminId,
                 adminPw: adminPw
@@ -25,7 +25,6 @@ function AdminLogin() {
                 alert(` ${res.data.userNick} 님 환영합니다.`);
                 localStorage.setItem("ACCESS_TOKEN", res.data.accessToken);
                 sessionStorage.setItem("REFRESH_TOKEN", res.data.refreshToken);
-                console.log(res.data);
                 nv("/pre/reg");
             })
             .catch(err => {

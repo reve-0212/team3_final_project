@@ -5,7 +5,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faStar} from "@fortawesome/free-solid-svg-icons";
 import useUserStore from "/src/stores/useUserStore.jsx"
-
+import api from "../../api/axios.js"
 
 // 작업
 import {useEffect, useState} from "react";
@@ -20,18 +20,15 @@ function Bookmark() {
 
 
     const userIdx = userStore && userStore.userIdx !== null ? userStore.userIdx : ""
-    console.log("userIdx: ", userIdx);
 
 
     useEffect(() => {
-        axios
-            .get(`http://localhost:8080/bookmark/${userIdx}`)
+        api
+            .get(`/bookmark/${userIdx}`)
             .then((res) => {
-                console.log("북마크 응답 데이터:", res.data);
                 setBookmarkedStores(res.data);
             })
-            .catch((err) => {
-                console.error("북마크 목록 불러오기 실패", err);
+            .catch(() => {
             });
     }, [userIdx]);
 
