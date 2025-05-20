@@ -11,6 +11,7 @@ import useMenuStore from "../../stores/useMenuStore.jsx";
 import axios from "axios";
 import useReservationIdxStore from "../../stores/useReservationIdxStore.jsx";
 import useRestaurantStore from "../../stores/useRestaurantStore.jsx";
+import api from "../../api/axios.js";
 
 function BookReg() {
   const Nv = useNavigate();
@@ -67,7 +68,7 @@ function BookReg() {
         try {
           //   1. reservation 만들기
           const bookRes =
-            await axios.put("http://localhost:8080/bookAllReg", null, {
+            await api.put("/bookAllReg", null, {
               params: {
                 userIdx: userStore.userIdx,
                 resIdx: res.resIdx,
@@ -81,11 +82,10 @@ function BookReg() {
                 Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
               }
             });
-          console.log("bookRes : " + bookRes.data)
 
           //   2. 예약 번호 조회
           const searchRes =
-            await axios.get("http://localhost:8080/searchResIdx", {
+            await api.get("/searchResIdx", {
               params: {
                 userIdx: userStore.userIdx,
                 resIdx: res.resIdx,
@@ -98,11 +98,10 @@ function BookReg() {
               alert("이미 같은 시간에 예약하셨습니다")
               Nv("/latestDetails")
             });
-          console.log("searchRes : " + searchRes.data)
 
           // 3. 좌석 갯수 만큼 예약
           for (let seatId of selectedSeat) {
-            await axios.put("http://localhost:8080/reserveSeat", null, {
+            await api.put("/reserveSeat", null, {
               params: {
                 reservationIdx: searchRes.data,
                 seatId: seatId
@@ -114,7 +113,7 @@ function BookReg() {
 
           //   4. 메뉴 갯수만큼 예약
           for (let menu of selectedMenu) {
-            await axios.put("http://localhost:8080/reserveMenu", null, {
+            await api.put("/reserveMenu", null, {
               params: {
                 reservationIdx: searchRes.data,
                 menuIdx: menu.menuIdx,
@@ -125,7 +124,7 @@ function BookReg() {
             });
 
             // 5. 히스토리 저장
-            await axios.put("http://localhost:8080/saveHistory", null, {
+            await api.put("/saveHistory", null, {
               params: {
                 reservationIdx: searchRes.data,
                 resIdx: res.resIdx,

@@ -13,7 +13,7 @@ function CeoMenuList() {
 
     const [menuList, setMenuList] = useState([]);
 
-    const { resIdx } = useParams();
+    const {resIdx} = useParams();
 
     // 메뉴 불러오기
     useEffect(() => {
@@ -95,7 +95,7 @@ function CeoMenuList() {
             .then(() => {
                 setMenuList((prev) =>
                     prev.map((menu) =>
-                        menu.menuIdx === menuIdx ? { ...menu, menuSoldOut: false } : menu
+                        menu.menuIdx === menuIdx ? {...menu, menuSoldOut: false} : menu
                     )
                 );
             })
@@ -103,6 +103,35 @@ function CeoMenuList() {
                 console.log("품절 취소 실패", err);
             });
     };
+
+
+    // 품절 취소
+    // const handleUnsoldOut = (menuIdx) => {
+    //     axios.put(
+    //         `http://localhost:8080/menu/unSoldOut/${menuIdx}`,
+    //         {},
+    //         {
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 'Authorization': `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+    //             },
+    //         }
+    //     )
+    //         .then(() => {
+    //             setMenuList((prev) =>
+    //                 prev.map((menu) =>
+    //                     menu.menuIdx === menuIdx
+    //                         ? { ...menu, menuSoldOut: false }
+    //                         : menu
+    //                 )
+    //             );
+    //         })
+    //         .catch((err) => {
+    //             console.log('품절 취소 실패', err);
+    //         });
+    // };
+
+
 
     return (
         <>
