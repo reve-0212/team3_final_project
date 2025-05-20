@@ -296,7 +296,7 @@ function TodayReservation() {
                                 style={{
                                     position: "relative",
                                     width: "71%",
-                                    maxWidth: "900px",
+                                    minWidth: "900px",
                                     height: "400px",
                                     border: "1px solid #ddd",
                                     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.15)",
@@ -420,7 +420,7 @@ function TodayReservation() {
                                     <td colSpan={8}>등록된 웨이팅이 없습니다.</td>
                                 </tr>
                             ) : (
-                                paginatedData.map((item) => {
+                                paginatedData.map((item, index) => {
                                     // 날짜 비교를 위한 코드
                                     const reservationDateTime = new Date(item.rsvTime); // 문자열을 Date 객체로
                                     const today = new Date();
@@ -431,8 +431,8 @@ function TodayReservation() {
                                     return (
                                         <tr key={item.reservationIdx}
                                         >
-                                            <td>No. {item.reservationIdx}</td>
-                                            <td>{item.seatIds}</td>
+                                            <td>No. {index + 1}</td>
+                                            <td>{item.resSeatId}</td>
                                             <td>{item.userNick}</td>
                                             <td>{item.rsvPeople}</td>
                                             <td>{item.userCall}</td>
