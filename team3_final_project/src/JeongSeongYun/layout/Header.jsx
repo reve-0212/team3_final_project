@@ -120,7 +120,6 @@ function Header() {
   // BrowserRouter 전용
   if (matchContentList) {
     const category = matchContentList?.params?.category;
-    console.log(category)
 
     const categoryMap = {
       korean: "한식",

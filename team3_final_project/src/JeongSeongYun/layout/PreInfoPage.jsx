@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
-
+import api from "../../api/axios.js"
 function PreInfoPage() {
     const nv = useNavigate();
 
@@ -29,7 +29,7 @@ function PreInfoPage() {
             userId,userPass,userNick,userCall, userEmail,bsName,bsNumber
         }
 
-        axios.post('http://localhost:8080/pre/admin/SaveOwnerInfo',ownerData,{
+        api.post('/pre/admin/SaveOwnerInfo',ownerData,{
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`
@@ -50,8 +50,6 @@ function PreInfoPage() {
             .catch( (err) => {
                 alert(err);
             });
-        // 서버 전송 또는 유효성 검사
-        console.log(ownerData);
     };
 
     return (
