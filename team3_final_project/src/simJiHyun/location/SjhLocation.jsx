@@ -1,9 +1,8 @@
 import {Map, MapMarker, useKakaoLoader, useMap} from "react-kakao-maps-sdk";
 import {useEffect, useMemo, useState} from "react";
-import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {Accordion} from "react-bootstrap";
-import useResStoreSjh from "../../stores/useResStoreSjh.jsx";
+import api from "../../api/axios.js"
 
 // 두 좌표 사이 거리 계산 (단위 : km)
 function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
@@ -60,10 +59,8 @@ function SjhLocation() {
     })
 
     // 가게 번호, 이름, lat, lng 가져오기
-    axios.get("http://localhost:8080/getStoreLocation")
+    api.get("/getStoreLocation")
       .then((res) => {
-        console.log("res.data")
-        console.log(res.data)
         setStorePositions(res.data)
       }).catch((err) => {
       console.log(err)

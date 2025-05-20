@@ -3,9 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera, faStar } from "@fortawesome/free-solid-svg-icons";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
 import useUserStore from "../../stores/useUserStore.jsx";
 import useRestaurantStore from "../../stores/useRestaurantStore.jsx";
+import api from "../../api/axios.js"
 
 function SjhReview() {
   const userState = useUserStore((state) => state.user);
@@ -25,8 +25,7 @@ function SjhReview() {
     if (reviewIdx) {
       setIsEditMode(true);
       setExistingReviewId(reviewIdx);
-      axios
-          .get(`http://localhost:8080/api/review/detail/${reviewIdx}`, {
+      api.get(`/api/review/detail/${reviewIdx}`, {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
             },
@@ -108,17 +107,17 @@ function SjhReview() {
     };
 
     const url = isEditMode
-        ? `http://localhost:8080/api/review/${reviewIdx}`
-        : "http://localhost:8080/api/review";
+        ? `/api/review/${reviewIdx}`
+        : "/api/review";
 
-    const method = isEditMode ? axios.put : axios.post;
+    const method = isEditMode ? api.put : api.post;
 
     method(url, reviewData, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
       },
     })
-        .then((response) => {
+        .then(() => {
           alert(isEditMode ? "리뷰가 수정되었습니다." : "리뷰가 성공적으로 등록되었습니다.");
           Nv("/user/reviewList");
         })
@@ -130,7 +129,7 @@ function SjhReview() {
 
   const handleDeleteReview = () => {
     if (window.confirm("정말 삭제하시겠습니까?")) {
-      axios.delete(`http://localhost:8080/api/review/${reviewIdx}`, {
+      api.delete(`/api/review/${reviewIdx}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
         },
@@ -165,7 +164,7 @@ function SjhReview() {
           />
         </div>
 
-        <div className="mt-3 mb-5 d-flex flex-wrap gap-2">
+        <div className="mt-3 mb-3 d-flex flex-wrap gap-2">
           <label
               htmlFor="reviewImageUpload"
               style={{
@@ -203,16 +202,16 @@ function SjhReview() {
         </div>
 
         {isEditMode ? (
-            <div className="d-flex gap-3 mt-5">
+            <div className="d-flex gap-3">
               <button
-                  className="btn text-light fw-bold py-3 flex-fill"
+                  className="btn text-light fw-bold py-3 flex-fill w-100"
                   style={{ backgroundColor: "#FFD700"}}
                   onClick={handleSubmitReview}
               >
                 수정하기
               </button>
               <button
-                  className="btn text-light fw-bold py-3 flex-fill"
+                  className="btn text-light fw-bold py-3 flex-fill w-100"
                   style={{ backgroundColor: "#bbbbbb" }}
                   onClick={handleDeleteReview}
               >
@@ -221,7 +220,7 @@ function SjhReview() {
             </div>
         ) : (
             <button
-                className="btn text-light fw-bold py-3 flex-fill mt-5"
+                className="btn text-light fw-bold py-3 flex-fill w-100"
                 style={{ backgroundColor: "#FFD700"}}
                 onClick={handleSubmitReview}
             >

@@ -2,7 +2,8 @@ import SjhReservationCard from "./SjhReservationCard.jsx";
 import UseOrNoShow from "./UseOrNoShow.jsx";
 import {useEffect, useState} from "react";
 import useUserStore from "../../stores/useUserStore.jsx";
-import axios from "axios";
+import api from "../../api/axios.js"
+
 
 // state
 function SjhReservation() {
@@ -13,7 +14,7 @@ function SjhReservation() {
 
   // 예약 여부 보기
   const userReservation = () => {
-    axios.get(`http://localhost:8080/userReservation`, {
+    api.get(`/userReservation`, {
       params: {
         userIdx: user.userIdx
       },
@@ -21,7 +22,6 @@ function SjhReservation() {
         Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`
       }
     }).then(res => {
-      console.log(res.data)
       setReservations(res.data)
     }).catch(err => {
       console.log(err)

@@ -1,11 +1,26 @@
-import SignMini from "./SignMini.jsx";
 import LoginSignText from "../LoginSignText.jsx";
-import {useNavigate} from "react-router-dom";
 import {useState} from "react";
 import "../SjhCss.css"
-import {apiSignup} from "../service/ApiService.js";
+import api from "../../api/axios.js"
 
 function SignUp() {
+
+  const apiSignup = (memberDTO) => {
+    // axios로 가입할 회원 정보를 전달함
+    api.post(`/api/auth/signup`, memberDTO, {
+      // headers 의 'Content-Type': 'application/json' 은 axios 가 자동으로 설정, 생략 가능
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(() => {
+        alert('회원 가입 완료');
+        window.location.href = '/user/login';
+      })
+      .catch(err => {
+        alert(`회원 가입 중 오류가 발생했습니다.\n${err}`);
+      });
+  }
 
   const [gender, setGender] = useState("male")
   const [age, setAge] = useState(10)
@@ -22,14 +37,6 @@ function SignUp() {
     const userCall = formData.get("userCall");
     const userEmail = formData.get("userEmail");
 
-    console.log(userId)
-    console.log(userPass)
-    console.log(userNick)
-    console.log(userGender)
-    console.log(userAge)
-    console.log(userCall)
-    console.log(userEmail)
-
     apiSignup({
       userId: userId, userPass: userPass, userNick: userNick, userGender: userGender,
       userAge: userAge, userCall: userCall, userEmail: userEmail
@@ -39,20 +46,16 @@ function SignUp() {
   const handleMale = () => {
     setGender("male")
     setBtnActive("male")
-    console.log(gender)
   }
 
   const handleFemale = () => {
     setGender("female")
     setBtnActive("female")
-    console.log(gender)
   }
 
   const handleChangeAge = (e) => {
     setAge(e.target.value)
-    console.log(age)
   }
-
 
   return (
     <form className={"container py-2"} onSubmit={handleSubmit}>
@@ -63,26 +66,26 @@ function SignUp() {
           <label htmlFor={"userId"} className={"form-label fs-4"}>아이디</label>
           <input type={"text"} className={"form-control py-3 input-box"}
                  id={"userId"} placeholder={"아이디를 입력해주세요"}
-                 name={"userId"}/>
+                 name={"userId"} style={{width: "20rem"}}/>
         </div>
 
         <div className={"mt-4"}>
           <label htmlFor={"userPass"} className={"form-label fs-4"}>비밀번호</label>
           <input type={"text"} className={"form-control py-3 input-box"}
                  id={"userPass"} placeholder={"비밀번호를 입력해주세요"}
-                 name={"userPass"}/>
+                 name={"userPass"} style={{width: "20rem"}}/>
         </div>
 
         <div className={"mt-4"}>
           <label htmlFor={"userNick"} className={"form-label fs-4"}>이름</label>
           <input type={"text"} className={"form-control py-3 input-box"}
                  id={"userNick"} placeholder={"이름을 입력해주세요"}
-                 name={"userNick"}/>
+                 name={"userNick"} style={{width: "20rem"}}/>
         </div>
 
         <div className={"mt-4"}>
           <label htmlFor={"userGender"} className={"form-label fs-4"}>성별</label>
-          <div className={"d-flex gap-3 input-box"}>
+          <div className={"d-flex gap-3 input-box"} style={{width: "20rem"}}>
             <button type={"button"}
                     className={`btn rounded-3 flex-fill py-3 genderBtn 
                                 ${btnActive === "male" ? "active" : ""}`}
@@ -100,7 +103,7 @@ function SignUp() {
           <label htmlFor="userAge" className="form-label fs-4 text-start">나이대</label>
           <select value={age}
                   className="form-select py-3 input-box text-center"
-                  style={{maxWidth: "400px"}}
+                  style={{width: "20rem"}}
                   onChange={handleChangeAge}>
             <option value={10}>10대</option>
             <option value={20}>20대</option>
@@ -115,20 +118,20 @@ function SignUp() {
           <label htmlFor={"userCall"} className={"form-label fs-4"}>연락처</label>
           <input type={"text"} className={"form-control py-3 input-box"}
                  id={"userCall"} placeholder={"010-1234-5678"}
-                 name={"userCall"}/>
+                 name={"userCall"} style={{width: "20rem"}}/>
         </div>
 
         <div className={"mt-4"}>
           <label htmlFor={"userEmail"} className={"form-label fs-4"}>이메일</label>
           <input type={"text"} className={"form-control py-3 input-box"}
                  id={"userEmail"} placeholder={"이메일을 입력해주세요"}
-                 name={"userEmail"}/>
+                 name={"userEmail"} style={{width: "20rem"}}/>
         </div>
       </div>
 
       <div className={"mt-5 mb-5 d-flex justify-content-center"}>
         <button type={"submit"}
-                className={"btn py-3 fw-bold text-light fs-4 input-box rounded-3"}
+                className={"btn py-3 fw-bold text-light fs-4 input-box rounded-3 mx-1"}
                 style={{backgroundColor: "#FFD727"}}>회원 등록
         </button>
       </div>

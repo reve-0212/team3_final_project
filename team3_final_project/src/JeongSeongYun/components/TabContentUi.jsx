@@ -1,9 +1,9 @@
 import {useNavigate} from "react-router-dom";
 import React, {useEffect, useState} from "react";
-import axios from "axios";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faStar} from "@fortawesome/free-solid-svg-icons";
 import useUserStore from "../../stores/useUserStore.jsx";
+import api from "../../api/axios.js"
 
 function TabContentUi({title, engTitle, description}) {
   const nv = useNavigate();
@@ -15,9 +15,6 @@ function TabContentUi({title, engTitle, description}) {
   const [recentStores, setRecentStores] = useState([])
   const [needLogin, setNeedLogin] = useState(false)
 
-  // console.log(user)
-  // console.log(userIdx)
-
   useEffect(() => {
     setCustomStores([])
     setBookmarkStores([])
@@ -28,44 +25,34 @@ function TabContentUi({title, engTitle, description}) {
     const fetchData = async () => {
       try {
         if (!userIdx && (engTitle === "bookmarkRes")) {
-          console.log("로그인 필요")
           setNeedLogin(true)
           return;
         }
 
         switch (engTitle) {
           case "customRec" : {
-            console.log("customRec")
-            const customRec = await axios.get("http://localhost:8080/customRec")
-            console.log(customRec.data)
+            const customRec = await api.get("/customRec")
             setCustomStores(customRec.data)
             break;
           }
 
           case "bookmarkRes" : {
-            console.log("bookmarkRes")
-            const bookmarkRes = await axios.get("http://localhost:8080/bookmarkRes", {
+            const bookmarkRes = await api.get("bookmarkRes", {
               params: {userIdx: userIdx}
             })
-            console.log(bookmarkRes.data)
             setBookmarkStores(bookmarkRes.data)
             break;
           }
 
           case "reviewPick" : {
-            console.log("reviewPick")
-            const reviewRes = await axios.get(`http://localhost:8080/reviewPick`)
-            console.log(reviewRes.data)
+            const reviewRes = await api.get(`reviewPick`)
             setReviewStores(reviewRes.data)
             break;
           }
 
           case "recentlyRes" : {
-            console.log("recentlyRes")
             const stored = JSON.parse(localStorage.getItem("recentStores") || "[]")
-            const recentRes = await Promise.all(stored.map((id) =>
-              axios.get(`http://localhost:8080/detail/${id}`)))
-            console.log(recentRes)
+            const recentRes = await Promise.all(stored.map((id) => api.get(`detail/${id}`)))
             setRecentStores(recentRes.map(res => res.data))
             break;
           }
@@ -94,15 +81,15 @@ function TabContentUi({title, engTitle, description}) {
                 <img
                   key={idx}
                   src={image}
-                  style={{width: "128px", height: "128px", flex: "0 0 auto"}}
-                  className={"rounded-5"}
+                  style={{width: "6rem", height: "6rem", flex: "0 0 auto"}}
+                  className={"rounded-4"}
                   onClick={() => nv(`/resdetail/${index.resIdx}`)}
                 />
               ) : (
                 <div
                   key={idx}
-                  style={{width: "128px", height: "128px", flex: "0 0 auto", backgroundColor: "#D9D9D9"}}
-                  className={"rounded-5"}
+                  style={{width: "6rem", height: "6rem", flex: "0 0 auto", backgroundColor: "#D9D9D9"}}
+                  className={"rounded-4"}
                   onClick={() => nv(`/resdetail/${index.resIdx}`)}
                 ></div>
               )
@@ -120,10 +107,10 @@ function TabContentUi({title, engTitle, description}) {
 
       return (
         <div key={index.restaurantDTO?.resIdx} className={"mb-3"}>
-          <div className={"d-flex justify-content-between align-items-center "}>
+          <div className={"d-flex justify-content-between align-items-center"}>
             <p className={"fw-bold"}>{index.restaurantDTO?.resName}</p>
             <p className={"fw-bold"}><FontAwesomeIcon icon={faStar}
-                                                      style={{color: "#FFD727"}}/> : {index.reviewDTO?.reviewRating}</p>
+                                                      style={{color: "#FFD727"}}/> {index.reviewDTO?.reviewRating}</p>
           </div>
 
           <div className={"d-flex justify-content-center align-items-center gap-3"}>
@@ -132,15 +119,15 @@ function TabContentUi({title, engTitle, description}) {
                 <img
                   key={idx}
                   src={image}
-                  style={{width: "128px", height: "128px", flex: "0 0 auto"}}
-                  className={"rounded-5"}
+                  style={{width: "6rem", height: "6rem", flex: "0 0 auto"}}
+                  className={"rounded-4"}
                   onClick={() => nv(`/resdetail/${index.reviewDTO?.resIdx}`)}
                 />
               ) : (
                 <div
                   key={idx}
-                  style={{width: "128px", height: "128px", flex: "0 0 auto", backgroundColor: "#D9D9D9"}}
-                  className={"rounded-5"}
+                  style={{width: "6rem", height: "6rem", flex: "0 0 auto", backgroundColor: "#D9D9D9"}}
+                  className={"rounded-4"}
                   onClick={() => nv(`/resdetail/${index.reviewDTO?.resIdx}`)}
                 ></div>
               )
@@ -165,15 +152,15 @@ function TabContentUi({title, engTitle, description}) {
                 <img
                   key={idx}
                   src={image}
-                  style={{width: "128px", height: "128px", flex: "0 0 auto"}}
-                  className={"rounded-5"}
+                  style={{width: "6rem", height: "6rem", flex: "0 0 auto"}}
+                  className={"rounded-4"}
                   onClick={() => nv(`/resdetail/${index.restaurantDTO?.resIdx}`)}
                 />
               ) : (
                 <div
                   key={idx}
-                  style={{width: "128px", height: "128px", flex: "0 0 auto", backgroundColor: "#D9D9D9"}}
-                  className={"rounded-5"}
+                  style={{width: "6rem", height: "6rem", flex: "0 0 auto", backgroundColor: "#D9D9D9"}}
+                  className={"rounded-4"}
                   onClick={() => nv(`/resdetail/${index.restaurantDTO?.resIdx}`)}
                 ></div>
               )
@@ -190,37 +177,23 @@ function TabContentUi({title, engTitle, description}) {
       const imageList = [index.resImage1, index.resImage2, index.resImage3]
 
       return (
-
-      //   나현씨 css 수정 ( 나중에 다시 합칠것!)
-      // return (
-      //   <div className="mb-5">
-      //     <div className={"d-flex flex-row align-items-center justify-content-between"}>
-      //       <div>
-      //         <h5 className="fw-bold mb-1 fs-5 fs-sm-4">{title}</h5>
-      //         <p className="text-muted small fs-7">{description}</p>
-      //       </div>
-      //       <small className="text-muted" onClick={() => {
-      //         nv(`/contentList/${engTitle}`)
-      //       }}>전체보기 ></small>
-      //     </div>
-
         <div key={index.resIdx} className={"mb-3"}>
-          <p className={"fw-bold"}>{index.resName}</p>
-          <div className={"d-flex justify-content-center align-items-center gap-3"}>
+          <p className={"fw-bold "}>{index.resName}</p>
+          <div className={"d-flex justify-content-evenly align-items-center gap-3"}>
             {imageList.map((image, idx) => (
               image ? (
                 <img
                   key={idx}
                   src={image}
-                  style={{width: "128px", height: "128px", flex: "0 0 auto"}}
-                  className={"rounded-5"}
+                  style={{width: "6rem", height: "6rem", flex: "0 0 auto"}}
+                  className={"rounded-4"}
                   onClick={() => nv(`/resdetail/${index.resIdx}`)}
                 />
               ) : (
                 <div
                   key={idx}
-                  style={{width: "128px", height: "128px", flex: "0 0 auto", backgroundColor: "#D9D9D9"}}
-                  className={"rounded-5"}
+                  style={{width: "6rem", height: "6rem", flex: "0 0 auto", backgroundColor: "#D9D9D9"}}
+                  className={"rounded-4"}
                   onClick={() => nv(`/resdetail/${index.resIdx}`)}
                 ></div>
               )
@@ -232,10 +205,10 @@ function TabContentUi({title, engTitle, description}) {
   }
 
   return (
-    <div className="mb-5">
+    <div className="d-flex justify-content-center mb-5 flex-column align-items-center">
       <div className={"d-flex flex-row align-items-center justify-content-between"}>
         <div>
-          <h5 className="fw-bold mb-1 fs-5 fs-sm-4">{title}</h5>
+          <h5 className="fw-bold mb-1 fs-5 fs-sm-4 text-center">{title}</h5>
           <p className="text-muted small fs-7">{description}</p>
         </div>
       </div>
@@ -259,9 +232,6 @@ function TabContentUi({title, engTitle, description}) {
               {engTitle === "reviewPick" && renderReviewList(reviewStores)}
               {engTitle === "bookmarkRes" && renderBookmarkList(bookmarkStores)}
               {engTitle === "customRec" && renderCustomList(customStores)}
-              {/*<small className="text-muted" onClick={() => {*/}
-              {/*    nv(`/contentList/${engTitle}`)*/}
-              {/*}}>전체보기</small>*/}
             </div>
           )}
 
