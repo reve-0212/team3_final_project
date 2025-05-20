@@ -62,7 +62,7 @@ function ContentDetail() {
         const data5 = res5.data
 
         console.log(data2)
-
+        console.log(data2);
         setStoreInfo(data1);
         setRes(data1)
         setCenter({lat: data1.resLat, lng: data1.resLng})

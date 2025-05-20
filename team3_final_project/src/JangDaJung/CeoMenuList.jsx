@@ -20,8 +20,11 @@ function CeoMenuList() {
     useEffect(() => {
         if (!resIdx) return;
 
-        axios.get('http://localhost:8080/menu/list', {
-            params: {resIdx}
+        axios.get('http://localhost:8080/menu/list', {params: {resIdx}}, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
+            },
         })
             .then(response => {
                 setMenuList(response.data);
@@ -82,6 +85,27 @@ function CeoMenuList() {
       });
   };
 
+<<<<<<< HEAD
+    // 품절 취소
+    const handleUnsoldOut = (menuIdx) => {
+        axios.put(`http://localhost:8080/menu/unSoldOut/${menuIdx}`, {}, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`
+            }
+        })
+            .then(() => {
+                setMenuList((prev) =>
+                    prev.map((menu) =>
+                        menu.menuIdx === menuIdx ? { ...menu, menuSoldOut: false } : menu
+                    )
+                );
+            })
+            .catch(err => {
+                console.log("품절 취소 실패", err);
+            });
+    };
+=======
   // 품절 취소
   const handleUnsoldOut = (menuIdx) => {
     axios.put(`http://localhost:8080/menu/unSoldOut/${menuIdx}`, {}, {
@@ -101,6 +125,7 @@ function CeoMenuList() {
         console.log("품절 취소 실패", err);
       });
   };
+>>>>>>> 0c4e459b91ed094958d61e88488372d8fcaabe05
 
     return (
         <>
