@@ -62,35 +62,45 @@ function CeoMenuList() {
         navigate(`/pre/MenuEdit/${resIdx}/${menuIdx}`);
     };
 
-    // 숨기기 취소
-    const handleUnhidden = (menuIdx) => {
-        axios.put(`http://localhost:8080/menu/unHidden/${menuIdx}`)
-            .then(() => {
-                setMenuList((prev) =>
-                    prev.map((menu) =>
-                        menu.menuIdx === menuIdx ? { ...menu, menuHidden: false } : menu
-                    )
-                );
-            })
-            .catch(err => {
-                console.error("숨기기 취소 실패", err);
-            });
-    };
+  // 숨기기 취소
+  const handleUnhidden = (menuIdx) => {
+    axios.put(`http://localhost:8080/menu/unHidden/${menuIdx}`, {}, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`
+      }
+    })
+      .then(() => {
+        setMenuList((prev) =>
+          prev.map((menu) =>
+            menu.menuIdx === menuIdx ? { ...menu, menuHidden: false } : menu
+          )
+        );
+      })
+      .catch(err => {
+        console.error("숨기기 취소 실패", err);
+      });
+  };
 
-    // 품절 취소
-    const handleUnsoldOut = (menuIdx) => {
-        axios.put(`http://localhost:8080/menu/unSoldOut/${menuIdx}`)
-            .then(() => {
-                setMenuList((prev) =>
-                    prev.map((menu) =>
-                        menu.menuIdx === menuIdx ? { ...menu, menuSoldOut: false } : menu
-                    )
-                );
-            })
-            .catch(err => {
-                console.log("품절 취소 실패", err);
-            });
-    };
+  // 품절 취소
+  const handleUnsoldOut = (menuIdx) => {
+    axios.put(`http://localhost:8080/menu/unSoldOut/${menuIdx}`, {}, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`
+      }
+    })
+      .then(() => {
+        setMenuList((prev) =>
+          prev.map((menu) =>
+            menu.menuIdx === menuIdx ? { ...menu, menuSoldOut: false } : menu
+          )
+        );
+      })
+      .catch(err => {
+        console.log("품절 취소 실패", err);
+      });
+  };
 
     return (
         <>

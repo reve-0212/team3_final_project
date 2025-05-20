@@ -3,13 +3,13 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.team3_final_project_server.JangDaJung.JDJMapper">
-<!--    resIdx 불러오기-->
+    <!--    resIdx 불러오기-->
     <select id="selectResIdxByUserIdx" parameterType="int" resultType="int">
         SELECT res_idx
         FROM restaurant
         WHERE user_idx = #{userIdx}
     </select>
-<!--    통계 페이지 -->
+    <!--    통계 페이지 -->
 
     <!-- 메뉴 여러개 선택해서 예약할 수  있도록 history 저장 -->
     <insert id="insertHistories" parameterType="list">
@@ -33,34 +33,34 @@
         SELECT *
         FROM reservation_history
         WHERE reservation_date BETWEEN #{startDate} AND #{endDate}
-            AND checkout_date IS NOT NULL
+        AND checkout_date IS NOT NULL
     </select>
 
     <!--  성별-->
     <select id="selectVisitorGender" resultType="map">
         SELECT
-            SUM(rsv_man) AS totalMan,
-            SUM(rsv_woman) AS totalWoman,
-            SUM(rsv_people) AS totalPeople,
-            SUM(rsv_baby) AS totalBaby
+        SUM(rsv_man) AS totalMan,
+        SUM(rsv_woman) AS totalWoman,
+        SUM(rsv_people) AS totalPeople,
+        SUM(rsv_baby) AS totalBaby
         FROM reservation_history
         WHERE reservation_date BETWEEN #{startDate} AND #{endDate}
-            AND res_idx = #{resIdx}
-            AND checkout_date IS NOT NULL
+        AND res_idx = #{resIdx}
+        AND checkout_date IS NOT NULL
     </select>
 
-<!--    메뉴 불러와서 판매량 계산 -->
+    <!--    메뉴 불러와서 판매량 계산 -->
     <select id="selectMenuSales" resultType="map">
         SELECT
-            m.menu_name,
-            m.menu_price,
-            IFNULL(SUM(h.menu_sold_count), 0) AS soldCount,
-            IFNULL(SUM(h.menu_sold_total_price), 0) AS soldTotalPrice
+        m.menu_name,
+        m.menu_price,
+        IFNULL(SUM(h.menu_sold_count), 0) AS soldCount,
+        IFNULL(SUM(h.menu_sold_total_price), 0) AS soldTotalPrice
         FROM menu m
         LEFT JOIN reservation_history h
-            ON m.menu_idx = h.menu_idx
-            AND h.reservation_date BETWEEN #{startDate} AND #{endDate}
-            AND h.checkout_date IS NOT NULL
+        ON m.menu_idx = h.menu_idx
+        AND h.reservation_date BETWEEN #{startDate} AND #{endDate}
+        AND h.checkout_date IS NOT NULL
         WHERE m.res_idx = #{resIdx}
         GROUP BY m.menu_idx
     </select>
@@ -68,113 +68,125 @@
     <!--    시간대별 예약팀 수-->
     <select id="selectTeamCountByHour" resultType="map">
         SELECT
-            DATE_FORMAT(reservation_date, '%H:%i') as hour,
-            COUNT(DISTINCT reservation_idx) AS teamCount,
-            SUM(rsv_people) AS visitorCount
+        DATE_FORMAT(reservation_date, '%H:%i') as hour,
+        COUNT(DISTINCT reservation_idx) AS teamCount,
+        SUM(rsv_people) AS visitorCount
         FROM reservation_history
         WHERE reservation_date BETWEEN #{startDate} AND #{endDate}
-            AND res_idx = #{resIdx}
-            AND checkout_date IS NOT NULL
+        AND res_idx = #{resIdx}
+        AND checkout_date IS NOT NULL
         GROUP BY DATE_FORMAT(reservation_date, '%H:%i')
         ORDER BY hour
     </select>
 
-<!--    가게 예약 가능 시간 불러오기(메인페이지)-->
+    <select id="selectTeamCountByHourMain" resultType="map">
+        SELECT
+        DATE_FORMAT(reservation_date, '%H:%i') as hour,
+        COUNT(DISTINCT reservation_idx) AS teamCount,
+        SUM(rsv_people) AS visitorCount
+        FROM reservation_history
+        WHERE reservation_date BETWEEN #{startDate} AND #{endDate}
+        AND res_idx = #{resIdx}
+        GROUP BY DATE_FORMAT(reservation_date, '%H:%i')
+        ORDER BY hour
+    </select>
+
+    <!--    가게 예약 가능 시간 불러오기(메인페이지)-->
     <select id="getResTime" resultType="String">
         SELECT res_reserve_time
         FROM restaurant
         WHERE res_idx = #{resIdx}
     </select>
-<!--    가게 이름 -->
+    <!--    가게 이름 -->
     <select id="getStoreInfo" resultType="map" parameterType="int">
         SELECT res_name
         FROM restaurant
         WHERE res_idx = #{resIdx}
     </select>
 
-<!--    메뉴 페이지-->
+    <!--    메뉴 페이지-->
 
-<!--    메뉴 리스트 -->
+    <!--    메뉴 리스트 -->
     <select id="selectMenuList" resultType="com.example.team3_final_project_server.dto.MenuDTO">
         SELECT
-            menu_idx AS menuIdx,
-            res_idx AS resIdx,
-            menu_name AS menuName,
-            menu_price AS menuPrice,
-            menu_explanation AS menuExplanation,
-            menu_image AS menuImage,
-            menu_hidden AS menuHidden,
-            menu_sold_out AS menuSoldOut,
-            menu_sort AS menuSort
+        menu_idx AS menuIdx,
+        res_idx AS resIdx,
+        menu_name AS menuName,
+        menu_price AS menuPrice,
+        menu_explanation AS menuExplanation,
+        menu_image AS menuImage,
+        menu_hidden AS menuHidden,
+        menu_sold_out AS menuSoldOut,
+        menu_sort AS menuSort
         FROM menu
         WHERE res_idx = #{resIdx}
         ORDER BY menu_sort DESC
     </select>
 
-<!--    메뉴 리스트 페이지에서 숨기기 해제-->
+    <!--    메뉴 리스트 페이지에서 숨기기 해제-->
     <update id="updateUnhidden">
         UPDATE menu
         SET menu_hidden = #{menuHidden}
         WHERE menu_idx = #{menuIdx}
     </update>
 
-<!--    메뉴 리스트 페이지에서 품절 해제-->
+    <!--    메뉴 리스트 페이지에서 품절 해제-->
     <update id="updateUnSoldOut">
         UPDATE menu
         SET menu_sold_out = #{menuSoldOut}
         WHERE menu_idx = #{menuIdx}
     </update>
 
-<!--    새 메뉴 등록-->
+    <!--    새 메뉴 등록-->
     <insert id="newMenu" parameterType="com.example.team3_final_project_server.dto.MenuDTO">
         INSERT INTO menu
-            (res_idx, menu_name, menu_price, menu_explanation, menu_image, menu_hidden, menu_sold_out, menu_sort)
+        (res_idx, menu_name, menu_price, menu_explanation, menu_image, menu_hidden, menu_sold_out, menu_sort)
         VALUES
-            (#{resIdx}, #{menuName}, #{menuPrice}, #{menuExplanation}, #{menuImage}, #{menuHidden, jdbcType=VARCHAR}, #{menuSoldOut, jdbcType=VARCHAR}, #{menuSort})
+        (#{resIdx}, #{menuName}, #{menuPrice}, #{menuExplanation}, #{menuImage}, #{menuHidden, jdbcType=VARCHAR}, #{menuSoldOut, jdbcType=VARCHAR}, #{menuSort})
     </insert>
 
     <select id="selectMaxMenuSort" resultType="int">
         SELECT
-            IFNULL(MAX(menu_sort), 0)
+        IFNULL(MAX(menu_sort), 0)
         FROM menu
         WHERE res_idx = #{resIdx}
     </select>
 
-<!--    메뉴 리스트 수정 -->
+    <!--    메뉴 리스트 수정 -->
     <update id="updateMenuList">
         UPDATE menu
         SET
-            menu_sort = #{menuSort},
-            menu_hidden = #{menuHidden},
-            menu_sold_out = #{menuSoldOut}
+        menu_sort = #{menuSort},
+        menu_hidden = #{menuHidden},
+        menu_sold_out = #{menuSoldOut}
         WHERE menu_idx = #{menuIdx}
     </update>
 
-<!--    menuEdit 페이지에서 기본 정보 불러오기-->
+    <!--    menuEdit 페이지에서 기본 정보 불러오기-->
     <select id="getMenuById" resultType="com.example.team3_final_project_server.dto.MenuDTO">
         SELECT menu_idx, menu_name, menu_price, menu_explanation, menu_image
         FROM menu
         WHERE menu_idx = #{menuIdx}
     </select>
 
-<!--    메뉴 정보 수정-->
+    <!--    메뉴 정보 수정-->
     <update id="editMenu" parameterType="com.example.team3_final_project_server.dto.MenuDTO">
         UPDATE menu
         SET
-            menu_name = #{menuName},
-            menu_price = #{menuPrice},
-            menu_explanation = #{menuExplanation},
-            menu_image = #{menuImage}
+        menu_name = #{menuName},
+        menu_price = #{menuPrice},
+        menu_explanation = #{menuExplanation},
+        menu_image = #{menuImage}
         WHERE menu_idx = #{menuIdx}
     </update>
-<!--    메뉴 삭제-->
+    <!--    메뉴 삭제-->
     <delete id="deleteMenu" parameterType="int">
         DELETE FROM menu
         WHERE menu_idx = #{menuIdx}
     </delete>
 
-<!--    리뷰 페이지 -->
-<!--    리뷰 불러오기-->
+    <!--    리뷰 페이지 -->
+    <!--    리뷰 불러오기-->
     <select id="getReviewListByResIdx" resultType="com.example.team3_final_project_server.dto.ReviewDTO">
         SELECT r.*, u.user_nick AS userNick
         FROM review r
@@ -190,9 +202,9 @@
     </select>
 
     <!-- 사장님 답글 등록/수정 -->
-<!--    <update id="updatePreReply">-->
-<!--        UPDATE review-->
-<!--        SET review_owner_contents = #{reviewOwnerContents}-->
-<!--        WHERE review_idx = #{reviewIdx}-->
-<!--    </update>-->
+    <!--    <update id="updatePreReply">-->
+    <!--        UPDATE review-->
+    <!--        SET review_owner_contents = #{reviewOwnerContents}-->
+    <!--        WHERE review_idx = #{reviewIdx}-->
+    <!--    </update>-->
 </mapper>

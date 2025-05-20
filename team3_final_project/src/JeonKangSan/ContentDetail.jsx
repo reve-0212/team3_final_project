@@ -61,6 +61,8 @@ function ContentDetail() {
         const data4 = res4.data
         const data5 = res5.data
 
+        console.log(data2)
+
         setStoreInfo(data1);
         setRes(data1)
         setCenter({lat: data1.resLat, lng: data1.resLng})
@@ -116,55 +118,31 @@ function ContentDetail() {
     <div className="app-container">
       <div className="container py-2 content-container">
         {/* 가게 대표 이미지 */}
-
-        <div className="d-flex overflow-auto gap-2 mb-3" style={{ whiteSpace: "nowrap" }}>
+        <div className="d-flex overflow-auto gap-2 mb-3" style={{whiteSpace: "nowrap"}}>
           {[storeInfo.resImage1, storeInfo.resImage2, storeInfo.resImage3]
-              .filter(Boolean)
-              .map((img, idx) => (
-                  <div
-                      key={idx}
-                      className="bg-light rounded overflow-hidden"
-                      style={{
-                        minWidth: "200px",
-                        height: "180px",
-                        flex: "0 0 auto"
-                      }}
-                  >
-                    <img
-                        src={img}
-                        alt={`대표 이미지 ${idx + 1}`}
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                          objectFit: "cover"
-                        }}
-                    />
-                  </div>
-              ))}
+            .filter(Boolean)
+            .map((img, idx) => (
+              <div
+                key={idx}
+                className="bg-light rounded overflow-hidden"
+                style={{
+                  minWidth: "200px",
+                  height: "180px",
+                  flex: "0 0 auto"
+                }}
+              >
+                <img
+                  src={img}
+                  alt={`대표 이미지 ${idx + 1}`}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover"
+                  }}
+                />
+              </div>
+            ))}
         </div>
-
-        {/*<div*/}
-        {/*  className="d-flex justify-content-center align-items-center bg-light w-100 mb-3"*/}
-        {/*  style={{height: '250px', maxHeight: '250px', overflow: 'hidden'}}*/}
-        {/*>*/}
-        {/*  {storeInfo.resImage1 ? (*/}
-        {/*    <a href={storeInfo.resImage1} target="_blank" rel="noopener noreferrer">*/}
-        {/*      <img*/}
-        {/*        src={storeInfo.resImage1}*/}
-        {/*        alt="대표 이미지"*/}
-        {/*        style={{*/}
-        {/*          height: '100%',*/}
-        {/*          maxHeight: '250px',*/}
-        {/*          width: 'auto',*/}
-        {/*          objectFit: 'cover'*/}
-        {/*        }}*/}
-        {/*      />*/}
-        {/*    </a>*/}
-        {/*  ) : (*/}
-        {/*    <span className="text-muted">사진</span>*/}
-        {/*  )}*/}
-        {/*</div>*/}
-
 
         {/* 가게 이름 */}
         <div className="d-flex justify-content-start text mb-2">
@@ -304,25 +282,24 @@ function ContentDetail() {
             <br/>
             <div className="mb-3 text-start">
               <h4 className="extra-bold">편의시설</h4>
-              <div className={"d-flex justify-content-center align-items-center flex-row"}>
-                {/*<img src={convenient[0].convenientDTO.cvImg} alt={}/>*/}
+              <div>
                 {convenient.length === 0 ? (
                   <p>제공하는 편의시설이 없습니다</p>
                 ) : (
-                  <div className={"d-flex justify-content-center align-items-center"}>
+                  <div className={"d-grid"}
+                       style={{display: "grid", gridTemplateColumns: "repeat(3,1fr)"}}>
                     {convenient.map((item, index) => (
-                      <div className={"mx-3"}>
+                      <div className={"mx-3 d-flex justify-content-center flex-column justify-content-center"}>
                         <p className={"fw-bold"}>{item.convenientDTO?.cvName}</p>
-                        {/*<p>{item.convenientDTO?.cvIntro}</p>*/}
+                        {/*<p className={"fw-bold"}>{item.convenientDTO?.cvIntro}</p>*/}
                         <img
                           key={index}
                           src={item.convenientDTO?.cvImg}
-                          style={{width: "100px", height: "100px"}}
+                          style={{width: "50px", height: "50px"}}
                         />
                       </div>
                     ))}
                   </div>
-
                 )}
               </div>
             </div>
@@ -335,7 +312,7 @@ function ContentDetail() {
           <div className="mb-5">
             <h5 className="mb-3 fw-bold text-start">메뉴</h5>
             {bestMenus
-              .filter(menu => menu.menuHidden !== "1") // 숨김 처리된 메뉴 제외
+              .filter(menu => menu.menuHidden !== true) // 숨김 처리된 메뉴 제외
               .map((menu, idx) => (
                 <div
                   key={idx}
@@ -343,7 +320,7 @@ function ContentDetail() {
                 >
                   <div className="text-start">
                     <div className="fw-bold">
-                      {menu.menuSoldOut === "1" && (
+                      {menu.menuSoldOut === true && (
                         <span className="text-danger me-2">(품절)</span>
                       )}
                       {menu.menuName}
@@ -355,7 +332,7 @@ function ContentDetail() {
                     className="bg-light d-flex justify-content-center align-items-center"
                     style={{width: "64px", height: "64px", borderRadius: "6px"}}
                   >
-                    <span className="text-muted small">사진</span>
+                    <img src={menu.menuImage} style={{width: "64px", height: "64px", borderRadius: "10px"}}/>
                   </div>
                 </div>
               ))}

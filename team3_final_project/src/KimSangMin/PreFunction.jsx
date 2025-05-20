@@ -18,15 +18,17 @@ function PreFunction() {
 
     // 편의시설 목록 불러오기
     useEffect(() => {
-        axios.get("http://localhost:8080/pre/owner/funcOpt",{
-            headers:{
+        // 편의시설 목록 불러오기
+        axios.get("http://localhost:8080/pre/owner/funcOpt", {
+            headers: {
                 Authorization: `Bearer ${storedToken}`,
             },
         })
             .then((res) => {
                 console.log("funcOpt API 응답:", res.data);
-                if (Array.isArray(res.data.data)) {
-                    setFuncOpt(res.data.data);
+                const data = res.data?.data || res.data;
+                if (Array.isArray(data)) {
+                    setFuncOpt(data);
                 } else {
                     console.warn("funcOpt 응답이 배열이 아닙니다:", res.data);
                 }
@@ -35,22 +37,27 @@ function PreFunction() {
                 console.error("funcOpt API 에러:", err);
             });
 
-    // 사용자가 저장한 편의시설 불러오기
-    axios.get("http://localhost:8080/pre/owner/getFunc",{
-        headers : {
-            Authorization : `Bearer ${storedToken}`
-        }
-    })
-        .then((res => {
-            if (res.data && res.data.length > 0) {
-                setSelectOpt(res.data);
-                setIsSave(true)
-            }
-        }))
-        .catch((err) => {
-            console.log(err)
+        // 사용자가 저장한 편의시설 불러오기
+        axios.get("http://localhost:8080/pre/owner/getFunc", {
+            headers: {
+                Authorization: `Bearer ${storedToken}`,
+            },
         })
-},[storedToken]);
+            .then((res) => {
+                const data = res.data?.data || [];
+                if (Array.isArray(data) && data.length > 0) {
+                    const idArray = data.map(item => item.cvId);  // ✅ ID만 추출
+                    setSelectOpt(idArray);
+                    setIsSave(true);
+                } else {
+                    console.warn("getFunc 데이터가 배열이 아니거나 없음:", data);
+                }
+            })
+            .catch((err) => {
+                console.error("getFunc API 에러:", err);
+            });
+    }, [storedToken]);
+
 
 
     // 편의시설 선택/해제

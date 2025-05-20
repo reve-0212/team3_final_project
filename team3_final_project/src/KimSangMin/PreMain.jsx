@@ -17,6 +17,8 @@ function PreMain() {
 
     const today = new Date().toISOString().split('T')[0];
 
+    const startDateTime = today + ' 00:00:00';
+    const endDateTime = today + ' 23:59:59';
     // 리뷰
     const [reviewScoreData, setReviewScoreData] = useState([]);
     // const [reviewData, setReviewData] = useState([]);
@@ -85,15 +87,15 @@ function PreMain() {
 
     const fetchReservationHistory = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/history/reservation/hour`, {
+            const response = await axios.get(`http://localhost:8080/api/history/reservation/hourMain`, {
                 params: {
-                    startDate: today,
-                    endDate: today,
+                    startDate: startDateTime,
+                    endDate: endDateTime,
                     resIdx: resIdx
                 },
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`
+                    'Authorization': `Bearer ${token}`
                 }
             });
             const fetched = response.data; // [{time: "11:00", count: 3}, ...]
@@ -101,7 +103,7 @@ function PreMain() {
             // 응답 데이터를 Map으로 변환
             const timeMap = {};
             fetched.forEach(item => {
-                timeMap[item.time] = item.count;
+                timeMap[item.hour] = item.teamCount;
             });
 
             // timeSlots 기준으로 항상 시간대 만들기
@@ -110,6 +112,7 @@ function PreMain() {
                 count: timeMap[time] || 0 // 데이터가 없으면 0으로 설정
             }));
             setReservationData(data);
+            console.log(data);
         } catch (err) {
             console.error("예약 기록 가져오기 실패", err);
         }

@@ -65,7 +65,15 @@ function VisitPage() {
         </li>
       </ul>
 
-      <Button btnName="다음" onClick={handleSubmit}/>
+      <Button
+        btnName="다음"
+        onClick={() => {
+          visitors.man + visitors.woman + visitors.baby === 0 ? (
+            alert("1명 이상 선택해주세요")
+          ) : (
+            handleSubmit()
+          )
+        }}/>
     </div>
   );
 }
