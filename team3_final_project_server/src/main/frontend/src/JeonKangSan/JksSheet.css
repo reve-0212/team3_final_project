@@ -1,0 +1,374 @@
+/* JksSheet.css */
+/* 480px(공통) */
+
+/* 전체 문서 스크롤 처리 */
+html {
+    overflow-y: scroll;
+}
+
+/* 앱의 전체 레이아웃 최대 너비 설정 */
+.app-container {
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+/* 기본 버튼 스타일 (둥근 형태, 여백 포함) */
+.btn-jks {
+    border-radius: 10px;
+    padding: 8px 20px;
+    background-color: #FFFFFF;
+    border: #5a3a2e;
+}
+
+/* 공통 버튼: 주황색 배경, 가운데 정렬 */
+.common-btn {
+    width: 100%;
+    background:  #FFD700;
+    padding: 15px 0;
+    color: #5D4037;
+    font-weight: bold;
+    margin: 0 auto;
+    border-radius: 10px;
+    text-align: center;
+    border: 0 solid black;
+}
+
+/* 공통 버튼(외곽선): 흰 배경, 주황 테두리 */
+.common-btn-outline {
+    background: #ffffff;
+    color: #FFD727;
+    padding: 15px 0;
+    font-weight: bold;
+    width: 50%;
+    margin: 0 auto;
+    border: 2px solid #FFD727;
+    border-radius: 10px;
+}
+
+/* 공통 버튼(외곽선) 호버 효과 */
+.common-btn-outline:hover {
+    background: #FFD727;
+    color: #5D4037;
+}
+
+
+/* 공통 버튼(작은 크기) */
+.common-btn-sm {
+    background: #FFD727;
+    padding: 12px 0;
+    color: #5D4037;
+    font-weight: bold;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+/* 콘텐츠 영역: 600px 이상 확보 */
+.content-container {
+    min-height: 600px; /* 상세정보 기준 충분한 높이 */
+    width: 100%;       /* 항상 100% 차지 */
+}
+
+/* 아이콘 고려 버튼 스타일 */
+.button-seebox {
+    background: #FFD727;
+    color: #5D4037;
+    border: 1px solid #FFD700;
+    padding-right: 3rem; /* 아이콘과 겹치지 않게 */
+}
+select:focus {
+    outline: none;
+}
+.button-seebox:hover {
+    background: #FFFFFF;
+    color: #000000;
+}
+.button-seebox > option {
+    background: #ffffff;
+}
+
+/* 강조 텍스트 스타일 */
+.notice-text {
+    color: #FFD727;
+    font-weight: 600; /* 살짝 굵게 (semi-bold) */
+}
+
+/* 매우 굵은 소제목 텍스트 */
+.extra-bold {
+    font-weight: 800; /* 아주 굵게 */
+    font-size: 1.1rem; /* 작게 (보통 h4는 1.5rem 정도인데 줄임) */
+    margin-bottom: 0.5rem; /* 줄 간격도 살짝 정리 */
+}
+
+/* 해시태그 영역: 2열 그리드, 배경 노랑 */
+.hashtag-wrap {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2개씩 균등하게 나누기 */
+    gap: 8px; /* 와플처럼 칸 간격 */
+    padding: 10px;
+    background-color: #FFF8E1;
+    border-radius: 10px;
+}
+
+/* 해시태그 항목 스타일 */
+.hashtag-item {
+    background-color: #ffffff; /* 각 뱃지 칸 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px; /* 고정 높이로 깔끔 */
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #666;
+}
+
+/* 뱃지 스타일(노랑 배경) */
+.badge {
+    background-color: #FFF8E1 !important; /* 배경 연노랑 */
+    color: #555555; /* 글자색 */
+    font-weight: 600;
+    font-size: 0.8rem; /* 글자 크기 약간 축소 */
+    padding: 6px 10px; /* 패딩도 약간 축소 */
+    border-radius: 8px;
+}
+
+
+/* 뱃지 스타일(회색 배경) */
+.badge-default {
+    background-color: #f8f9fa;
+    color: #555555; /* 글자색 */
+    font-weight: 600;
+    font-size: 0.8rem; /* 글자 크기 약간 축소 */
+    padding: 6px 10px; /* 패딩도 약간 축소 */
+    border-radius: 8px;
+}
+
+.overlay-badge {
+    position: absolute;
+    bottom: 4px;
+    left: 4px;
+    background-color: rgba(0, 0, 0, 0.65);
+    color: white;
+    padding: 8px 12px;
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 4px;
+    line-height: 1;
+}
+
+/* 위치 정보 박스 */
+.location-box {
+    background-color: #f5f5f5; /* 연회색 배경 */
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    width : 100%;
+    height: 100px;
+}
+
+/* 예약 시간 정보 박스 */
+.reserve-time-box {
+    background-color: #f5f5f5; /* 연회색 배경 */
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    width : 100%;
+    height: 150px;
+}
+
+/* 사용자 정의 select 스타일 */
+.custom-select-text {
+    appearance: none;
+    -webkit-appearance: none;
+    background: transparent;
+    border: none;
+    color: #FFD727;
+    font-weight: bold;
+    font-size: 0.9rem;
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+    cursor: pointer;
+    outline: none;
+}
+
+/* select 화살표 제거 */
+.custom-select-text::-ms-expand {
+    display: none;
+}
+
+/* 보조 설명용 회색 텍스트 */
+.custom-span-text {
+    font-size: 0.9rem;
+    color: #6c757d; /* Bootstrap의 text-muted에 해당 */
+    line-height: 1;
+}
+
+/* 탭 버튼 기본 스타일 */
+.tab-btn {
+    flex: 1 1 35%; /* grow:1, shrink:1, 기본 폭 35% */
+    padding: 10px 0; /* 패딩 위아래 여유롭게 */
+    border: 1px solid #FFD727;
+    border-radius: 12px;
+    background: #FFF8E1;
+    color: #5D4037;
+    font-weight: normal;
+    font-size: 1.05rem;
+    text-align: center;
+    transition: 0.2s;
+    min-width: 110px; /* 최소 너비 보장 */
+    max-width: 180px; /* 너무 퍼지지 않게 */
+}
+
+/* 탭 버튼 활성화 상태 */
+.tab-btn.active {
+    background: #FFD727;
+    color: #5a3a2e;
+    border: 1px solid #FFD727;
+}
+
+
+/* 탭 메뉴 전체 영역 */
+.tab-menu-wrapper {
+    display: flex;
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* 탭 항목 기본 스타일 */
+.tab-menu-text {
+    flex: 1;
+    text-align: center;
+    padding: 10px 0;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #333;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+}
+
+/* 탭 항목 활성화 스타일 */
+.tab-menu-text.active {
+    color: #FFD727;
+    border-bottom: 3px solid #FFD727;
+}
+
+
+
+/* 리뷰용 작은 탭 버튼 */
+.small-tab-btn {
+    flex: 1 1 30%;
+    padding: 10px 0;
+    border: 1px solid #FFD727;
+    border-radius: 10px;
+    background: white;
+    color: #5D4037;
+    font-weight: bold;
+    font-size: 0.9rem;
+    text-align: center;
+    transition: 0.2s;
+    min-width: 90px;
+    max-width: 150px;
+}
+
+/* 리뷰용 탭 버튼 활성화 */
+.small-tab-btn.active {
+    background: #FFD727;
+    color: #5D4037;
+    border: 1px solid #FFD727;
+}
+
+@media (max-width: 360px) {
+    /* 앱 컨테이너 너비 제한 */
+    .app-container {
+        max-width: 100%;
+        padding: 0 12px;
+    }
+
+    /* 탭 버튼 줄이기 */
+    .tab-btn {
+        font-size: 0.85rem;
+        min-width: 80px;
+        max-width: 110px;
+        padding: 8px 0;
+    }
+
+    /* 리뷰용 탭 버튼 줄이기 */
+    .small-tab-btn {
+        font-size: 0.75rem;
+        min-width: 65px;
+        padding: 8px 0;
+    }
+
+    /* 카드 내부 제목, 텍스트 축소 */
+    .card .card-title {
+        font-size: 1rem;
+    }
+
+    .card .card-text {
+        font-size: 0.85rem;
+    }
+
+    .card small {
+        font-size: 0.75rem;
+    }
+
+    /* 이미지 높이 축소 */
+    .card .rounded,
+    .res-img {
+        height: 100px !important;
+    }
+
+    /* 해시태그 버튼 */
+    .btn[style*="background-color: #FFD727"] {
+        font-size: 0.75rem;
+        padding: 4px 8px;
+    }
+
+    /* 위치, 편의시설 박스 폰트 */
+    .location-box,
+    .reserve-time-box {
+        font-size: 0.85rem;
+    }
+
+    /* 지도 영역 높이 축소 */
+    #map {
+        height: 180px !important;
+    }
+
+    /* common-btn 크기 줄이기 */
+    .common-btn {
+        font-size: 0.9rem;
+        padding: 12px 0;
+    }
+
+    /* 정렬, 필터 select 박스 */
+    select.btn-jks {
+        font-size: 0.75rem;
+        padding: 6px 10px;
+    }
+
+    /* 대기팀 뱃지 */
+    .overlay-badge {
+        font-size: 0.7rem;
+        padding: 4px 8px;
+    }
+
+    /* 버튼 내 아이콘 위치 조정 */
+    .btn-jks.btn-outline-secondary.btn-sm {
+        font-size: 0.7rem;
+        padding: 4px 10px;
+    }
+
+    .dropdown-icon-1 {
+        top: 40% !important; /* 더 위로 */
+    }
+
+    .dropdown-icon-2 {
+        top: 42% !important;
+    }
+}
+

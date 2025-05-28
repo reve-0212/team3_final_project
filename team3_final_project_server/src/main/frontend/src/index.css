@@ -1,0 +1,10 @@
+@font-face {
+  font-family: 'Tmoney RoundWind';
+  src: url("/fonts/TmoneyRoundWindRegular.ttf") format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  font-family: 'Tmoney RoundWind', sans-serif;
+}

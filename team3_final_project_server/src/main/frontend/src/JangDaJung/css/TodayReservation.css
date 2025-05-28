@@ -1,0 +1,84 @@
+.ceo-main{
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+}
+
+.today-waiting-title {
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: #5D4037;
+    /*text-align: left;*/
+    /*padding-left: 20px;*/
+}
+
+.custom-tab-btn {
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    color: gray;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+}
+
+.custom-tab-btn.active {
+    color: #5a3a2e;
+    font-weight: bold;
+}
+
+.custom-tab-btn.active {
+    color: #5D4037;
+    font-weight: bold;
+}
+
+/* 호출됨 표시 스타일 */
+.called-text {
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+
+.table {
+    font-size: 14px;
+}
+.ceo-btn {
+    font-size: 14px;
+    border-radius: 10%;
+    height: 2vw;
+    text-align: center;
+    border: none;
+}
+.btn-call {
+    background-color: #FFCD83;
+}
+.btn-done {
+    background-color: #FFD727;
+}
+.btn-cancel {
+    background-color: #FF5025;
+}
+
+
+/* 버튼 그룹 정리 */
+@media (max-width: 576px) {
+    .d-flex.flex-column.align-items-center.gap-1 > button {
+        width: 100%;
+    }
+}
+
+.seat-wrapper {
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.seat-wrapper:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    transform: translateY(-4px);
+    cursor: pointer;
+}
+.seat-wrapper.not-allowed:hover {
+    cursor: not-allowed;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transform: none;
+}

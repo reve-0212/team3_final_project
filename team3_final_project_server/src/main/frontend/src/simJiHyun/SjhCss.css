@@ -1,0 +1,54 @@
+.app-container {
+  max-width: 480px;
+  margin: 0 auto;
+  border: 1px solid black;
+}
+
+.input-box {
+  width: 400px;
+}
+
+.hover-p {
+  color: #000;
+  display: inline-block;
+  margin: 0;
+}
+
+.genderBtn {
+  background-color: white;
+  color: black;
+  border: 1px solid #929292;
+}
+
+.genderBtn.active {
+  background-color: #929292;
+  color: white;
+}
+
+/*이용 완료*/
+.visitBtnActive {
+  background-color: #FFF8E1;
+  color: #5d4037;
+}
+
+/*이용 예정*/
+.visitBtn {
+  background-color:  #FFD700;
+  color: white;
+}
+
+.reservationCardCancel {
+  display: none;
+}
+
+.reservationCard {
+  display: block;
+}
+
+.bookmark {
+  color: white;
+}
+
+.bookmarkActive {
+  color: #FFD727;
+}

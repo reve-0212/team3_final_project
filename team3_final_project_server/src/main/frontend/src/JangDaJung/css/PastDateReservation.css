@@ -1,0 +1,142 @@
+.ceo-main{
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+}
+/* 날짜 범위 박스 */
+.date-box {
+    cursor: pointer;
+    /*border: 1px solid #e3e5e8;*/
+    border-radius: 10px;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    width: 27.4vw;
+    height: 3.5vw;
+    text-align: center;
+    line-height: 3.5vw;
+    min-width: 200px;
+    background-color: white;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+}
+.search-box {
+    background-color: white;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+}
+
+.date-range-container {
+    position: relative;
+}
+
+/* 달력 팝업 스타일 */
+.calendar-popup {
+    position: absolute;
+    top: 100%;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;  /* 'div' 박스를 덮지 않도록 최상위 레벨 */
+}
+
+/* 날짜 선택 원형 표시 */
+.selected-from, .selected-to {
+    background-color: #4CAF50 !important;
+    color: white !important;
+    border-radius: 50%;
+    font-weight: bold;
+    text-align: center;
+}
+
+.selected-range {
+    background-color: rgba(76, 175, 80, 0.3) !important;
+}
+
+.status-select {
+    background-color: transparent;
+    width: 8.3vw;
+}
+
+.status-select:hover,
+.status-select:focus {
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+/* 버튼 스타일 */
+.btn-confirm {
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-confirm:hover {
+    background-color: #45a049;
+}
+
+.past-waiting-title {
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: #5D4037;
+    /*text-align: left;*/
+    /*padding-left: 20px;*/
+}
+
+.table {
+    border-collapse: collapse;
+    border: none;
+    background-color: transparent;
+}
+
+.table th,
+.table td {
+    border: none;
+    border-top: 1px solid #F4F4F4;
+    border-bottom: 1px solid #F4F4F4;
+    text-align: center;
+    vertical-align: middle;
+    color: #808080;
+    padding: 14px 8px;
+    font-weight: normal;
+}
+.table td {
+    font-size: 14px;
+}
+
+/* 헤더 구분선은 더 진하게 */
+.table thead th {
+    border-top: 2px solid #DADADA;
+    border-bottom: 2px solid #DADADA;
+    color: #5D4037;
+}
+
+.table th:nth-child(5), .table td:nth-child(5), .table th:nth-child(6), .table td:nth-child(6), .table th:nth-child(7), .table td:nth-child(7), .table th:nth-child(8), .table td:nth-child(8) {
+    min-width: 12vw;
+}
+
+.status-box {
+    border-radius: 0.3vw;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-left: 1.2vw;
+    margin-right: 1.2vw;
+}
+
+.status-request {
+    background-color: #009018;
+}
+
+.status-done {
+    background-color: #808080;
+}
+.status-cancel {
+    background-color: #FF5025;
+}
