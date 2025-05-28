@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/pre")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins ={"http://localhost:5173","http://54.180.178.82:8080","http://54.180.178.82:5173"})
 @RequiredArgsConstructor
 public class JSYController {
 

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins ={"http://localhost:5173","http://54.180.178.82:8080","http://54.180.178.82:5173"})
 @Controller
 public class JKSController {
 

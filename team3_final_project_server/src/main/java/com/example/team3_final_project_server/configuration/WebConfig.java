@@ -14,8 +14,9 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
 //              registry.addMapping("/**") : 모든 경로에 대해 CORS를 허용
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:5173","http://10.100.203.73:5173")  // http://localhost:5173 에서 오는 요청만 허용 // aws 리액트가 있는 서버 ip로 바꾸면 됨
-                .allowedMethods("GET", "POST", "PUT", "DELETE")
-                .allowedHeaders("Authorization", "Content-Type");
+                .allowedOrigins("http://localhost:5173","http://54.180.178.82:5173","http://54.180.178.82:8080")  // http://localhost:5173 에서 오는 요청만 허용 // aws 리액트가 있는 서버 ip로 바꾸면 됨
+                .allowedMethods("GET", "POST", "PUT", "DELETE","*")
+                .allowedHeaders("*")
+                .allowCredentials(true);
     }
 }

@@ -4,7 +4,7 @@ import axios from "axios";
 const baseURL =
     window.location.hostname === "localhost"
         ? "http://localhost:8080"
-        : "http://10.100.203.73:8080"; // 실제 Spring 서버 IP
+        : "http://54.180.178.82:8080"; // 실제 Spring 서버 IP
 
 const instance = axios.create({
     baseURL,

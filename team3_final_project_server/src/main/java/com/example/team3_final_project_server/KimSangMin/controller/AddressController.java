@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import java.net.URLEncoder;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
+@CrossOrigin(origins ={"http://localhost:5173","http://54.180.178.82:8080","http://54.180.178.82:5173"}, allowCredentials = "true")
 public class AddressController {
 
     private static final Logger logger = LoggerFactory.getLogger(AddressController.class);

@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import axios from 'axios';
 import LoginSignText from "../simJiHyun/LoginSignText.jsx";
 import Swal from "sweetalert2";
+import api from "../api/axios.js"
 
 function OwnerLogin() {
     const nv = useNavigate();
@@ -19,7 +19,7 @@ function OwnerLogin() {
         const userData = { userId, userPass };
         console.log(userData);
 
-        axios.post("http://localhost:8080/pre/login", userData,{
+        api.post("/pre/login", userData,{
             headers : {
                 'Content-Type': 'application/json'
             }})
@@ -28,13 +28,12 @@ function OwnerLogin() {
                 if (success) {
                     alert(message);
 
-                    console.log(res.data);
                     // JWT 토큰을 로컬 스토리지에 저장
                     localStorage.setItem('ACCESS_TOKEN', res.data.data.accessToken);
                     sessionStorage.setItem('REFRESH_TOKEN', res.data.data.refreshToken);
 
                     const token = res.data.data.accessToken;
-                    axios.get(`http://localhost:8080/pre/resIdxByUser`, {
+                    api.get(`/pre/resIdxByUser`, {
                         headers: {
                             'Content-Type': 'application/json',
                             Authorization: `Bearer ${token}`,

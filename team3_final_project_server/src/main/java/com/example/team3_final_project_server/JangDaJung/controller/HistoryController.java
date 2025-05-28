@@ -17,7 +17,7 @@ import java.util.*;
 @RestController
 @RequestMapping("/api/history")
 @RequiredArgsConstructor
-@CrossOrigin(origins ="http://localhost:5173")
+@CrossOrigin(origins ={"http://localhost:5173","http://54.180.178.82:8080","http://54.180.178.82:5173"})
 public class HistoryController {
 
     @Autowired

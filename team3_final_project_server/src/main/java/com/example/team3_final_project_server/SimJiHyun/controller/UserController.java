@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:5174"})
+@CrossOrigin(origins ={"http://localhost:5173","http://54.180.178.82:8080","http://54.180.178.82:5173"})
 @RestController
 @RequiredArgsConstructor
 public class UserController {

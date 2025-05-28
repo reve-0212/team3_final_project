@@ -3,6 +3,7 @@ package com.example.team3_final_project_server.configuration;
 import com.example.team3_final_project_server.configuration.jwt.JwtTokenAuthenticationFilter;
 import com.example.team3_final_project_server.configuration.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,7 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
+
 import static org.springframework.http.HttpMethod.*;
 
 @Configuration
@@ -50,7 +51,8 @@ public class SecurityConfig {
 //    cors 허용할 주소
     configuration.addAllowedOrigin("http://localhost:5173");
     configuration.addAllowedOrigin("http://localhost:5174");
-    configuration.addAllowedOrigin("http://10.100.203.73:5173"); // aws 리액트가 있는 서버 ip로 바꾸면 됨
+    configuration.addAllowedOrigin("http://54.180.178.82:8080");
+    configuration.addAllowedOrigin("http://54.180.178.82:5173"); // aws 리액트가 있는 서버 ip로 바꾸면 됨
 //    cors 허용할 메소드 (GET, POST, PUT, DELETE)
     configuration.addAllowedMethod("*");
 //    cors 허용할 헤더 (여기서는 Authorization 부분이 필요하기 때문에 추가함)
@@ -68,7 +70,6 @@ public class SecurityConfig {
   @Bean
   public WebSecurityCustomizer configure() {
     return web -> web.ignoring()
-            .requestMatchers(toH2Console())
             .requestMatchers("/static/**");
   }
 
@@ -84,80 +85,91 @@ public class SecurityConfig {
    * addFilterAfter() : 첫번째 매개변수로 지정한 필터를 두번째 매개변수로 지정한 스프링 시큐리티 필터 다음에 동작
    * UsernamePasswordAuthenticationFilter : 스프링 시큐티리의 일반적인 사용자 인증 필터(id/pw 기반 인증)
    * */
-  @Bean
-  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    return http
-            .csrf(csrf -> csrf.disable())
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .httpBasic(httpBasic -> httpBasic.disable())
-            .logout(logout -> logout.disable())
-            .sessionManagement(sessionManagementConfigurer -> sessionManagementConfigurer
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+//  @Bean
+//  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//    return http
+//            .csrf(csrf -> csrf.disable())
+//            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+//            .httpBasic(httpBasic -> httpBasic.disable())
+//            .logout(logout -> logout.disable())
+//            .sessionManagement(sessionManagementConfigurer -> sessionManagementConfigurer
+//                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//            .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+//                    //관리자 전용 페이지
+//                    .requestMatchers("/pre/admin/**").permitAll()
+//
+//                    // 사장 전용
+////                    .requestMatchers("/pre/**").hasRole("OWNER")
+//                    .requestMatchers("/pre/login").permitAll()  // 로그인은 모두 허용
+//                    .requestMatchers("/pre/resave", "/pre/pastDateRes", "/pre/owner/getRestaurant").hasRole("OWNER") // 이건 인증된 사장만 가능
+//
+//                    //로그인한 사용자용
+//                    .requestMatchers("/waiting/**", "/book/**", "/latestDetails", "/book/info").hasRole("USER")
+//                    .requestMatchers(GET, "/userReservation", "/getBook", "/userLoadSeat/**", "/getMenuInfo", "/getStoreInfo", "/getMenu", "/isSeatReserved").hasRole("USER")
+//                    .requestMatchers(PUT, "/cancelBook", "/reserveSeat", "/reserveMenu", "/saveHistory", "/cancelBookHistory", "/bookAllReg").hasRole("USER")
+//                    .requestMatchers(DELETE, "/deleteReservation").hasRole("USER")
+//
+////                    모든 사용자용
+//                    .requestMatchers("/user/**", "/latestDetails", "/bookmark", "/contentDetail", "/review", "/", "/api/visitors", "/bookmark/**").permitAll()
+//                    .requestMatchers("/jsy/contents/**", "/jsy/ownerLogin", "/contents/**", "/detail/**", "/reviews/**", "/bestmenu/**", "/reservedSeat/**", "/isSeatAvailable/**", "/getStoreLocation").permitAll()
+//                    .requestMatchers("/api/**", "/auth/**", "/api/auth/signup", "/convenient/**", "/time/**", "/hashTag/**", "/reviewPick", "/bookmarkRes", "/customRec").permitAll()
+//                    .requestMatchers("/api/visitors", "/api/visitors/**", "/reserveMenu/**").permitAll()
+//
+////                    사장 전용
+//                    .requestMatchers("/pre/owner/saveCate").hasRole("OWNER")
+//                    .requestMatchers("/pre/owner/resave").hasRole("OWNER")
+//                    .requestMatchers("/pre/owner/seats/save").hasRole("OWNER")// 이건 인증된 사장만 가능
+//                    .requestMatchers("/pre/owner/func").hasRole("OWNER")
+//                    .requestMatchers(PUT, "/pre/owner/updateRest/**").hasRole("OWNER")
+//                    .requestMatchers(GET, "/pre/owner/getRestaurant").hasRole("OWNER")
+//                    .requestMatchers(PUT, "/pre/owner/seats/update").hasRole("OWNER")
+//                    .requestMatchers(DELETE, "/pre/owner/seats/delete").hasRole("OWNER")
+//                    .requestMatchers(GET, "/pre/owner/getCate").hasRole("OWNER")
+//
+//                    .requestMatchers(GET, "/pre/owner/funcOpt").hasRole("OWNER")
+//                    .requestMatchers(GET, "/pre/owner/getFunc").hasRole("OWNER")
+//                    .requestMatchers(PUT, "/pre/owner/updateFunc").hasRole("OWNER")
+//                    .requestMatchers("/pre/owner/saveFunc").hasRole("OWNER")
+//
+//                    .requestMatchers(PUT, "/pre/owner/updateCate").hasRole("OWNER")
+//                    .requestMatchers("/pre/owner/saveTime").hasRole("OWNER")
+//                    .requestMatchers(PUT, "/pre/owner/updateTime").hasRole("OWNER")
+//                    .requestMatchers(GET, "/pre/owner/getTime").hasRole("OWNER")
+//                    .requestMatchers(GET, "/pre/owner/seeTime").hasRole("OWNER")
+//
+//                    .requestMatchers("/pre/login").permitAll()  // 로그인은 모두 허용
+//                    .requestMatchers("/api/history/**", "/api/history/restaurant/{resIdx}/**", "/api/history/reservation/**").permitAll()
+//                    .requestMatchers("/menu/**", "/menu/unHidden/**", "/menu/unSoldOut/**", "/menu/delete/**", "/menu/edit/**").permitAll()
+//                    .requestMatchers("/pre/owner/Profile").hasRole("OWNER")
+//                    .requestMatchers("/pre/review/**").permitAll()
+//
+////                    관리자 전용 페이지
+//                    .requestMatchers("/pre/admin/**").permitAll()
+//                    .requestMatchers("/pre/admin/login").permitAll()
+//                    .requestMatchers("/pre/admin/SaveOwnerInfo").hasRole("ADMIN")
+////            나머지 url은 모두 인증 받은 사용자만 사용 가능
+//                    .anyRequest().authenticated())
+//
+//            .addFilterBefore(jwtTokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+//            .build();
+//  }
 
-                    //관리자 전용 페이지
-                    .requestMatchers("/pre/admin/**").permitAll()
 
-                    // 사장 전용
-//                    .requestMatchers("/pre/**").hasRole("OWNER")
-                    .requestMatchers("/pre/login").permitAll()  // 로그인은 모두 허용
-                    .requestMatchers("/pre/resave", "/pre/pastDateRes", "/pre/owner/getRestaurant").hasRole("OWNER") // 이건 인증된 사장만 가능
+@Bean
+public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+  return http
+          .csrf(csrf -> csrf.disable())
+          .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+          .httpBasic(httpBasic -> httpBasic.disable())
+          .logout(logout -> logout.disable())
+          .sessionManagement(session -> session
+                  .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+          .authorizeHttpRequests(auth -> auth
+                  .anyRequest().permitAll())
+          .addFilterBefore(jwtTokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+          .build();
+}
 
-                    //로그인한 사용자용
-                    .requestMatchers("/waiting/**", "/book/**", "/latestDetails", "/book/info").hasRole("USER")
-                    .requestMatchers(GET, "/userReservation", "/getBook", "/userLoadSeat/**", "/getMenuInfo", "/getStoreInfo", "/getMenu", "/isSeatReserved").hasRole("USER")
-                    .requestMatchers(PUT, "/cancelBook", "/reserveSeat", "/reserveMenu", "/saveHistory", "/cancelBookHistory", "/bookAllReg").hasRole("USER")
-                    .requestMatchers(DELETE, "/deleteReservation").hasRole("USER")
-
-//                    모든 사용자용
-                    .requestMatchers("/user/**", "/latestDetails", "/bookmark", "/contentDetail", "/review", "/", "/api/visitors", "/bookmark/**").permitAll()
-                    .requestMatchers("/jsy/contents/**", "/jsy/ownerLogin", "/contents/**", "/detail/**", "/reviews/**", "/bestmenu/**", "/reservedSeat/**", "/isSeatAvailable/**", "/getStoreLocation").permitAll()
-                    .requestMatchers("/api/**", "/auth/**", "/api/auth/signup", "/convenient/**", "/time/**", "/hashTag/**", "/reviewPick", "/bookmarkRes", "/customRec").permitAll()
-                    .requestMatchers("/api/visitors", "/api/visitors/**", "/reserveMenu/**").permitAll()
-
-//                    사장 전용
-                    .requestMatchers("/pre/owner/saveCate").hasRole("OWNER")
-                    .requestMatchers("/pre/owner/resave").hasRole("OWNER")
-                    .requestMatchers("/pre/owner/seats/save").hasRole("OWNER")// 이건 인증된 사장만 가능
-                    .requestMatchers("/pre/owner/func").hasRole("OWNER")
-                    .requestMatchers(PUT, "/pre/owner/updateRest/**").hasRole("OWNER")
-                    .requestMatchers(GET, "/pre/owner/getRestaurant").hasRole("OWNER")
-                    .requestMatchers(PUT, "/pre/owner/seats/update").hasRole("OWNER")
-                    .requestMatchers(DELETE, "/pre/owner/seats/delete").hasRole("OWNER")
-                    .requestMatchers(GET, "/pre/owner/getCate").hasRole("OWNER")
-
-                    .requestMatchers(GET, "/pre/owner/funcOpt").hasRole("OWNER")
-                    .requestMatchers(GET, "/pre/owner/getFunc").hasRole("OWNER")
-                    .requestMatchers(PUT, "/pre/owner/updateFunc").hasRole("OWNER")
-                    .requestMatchers("/pre/owner/saveFunc").hasRole("OWNER")
-
-                    .requestMatchers(PUT, "/pre/owner/updateCate").hasRole("OWNER")
-                    .requestMatchers("/pre/owner/saveTime").hasRole("OWNER")
-                    .requestMatchers(PUT, "/pre/owner/updateTime").hasRole("OWNER")
-                    .requestMatchers(GET, "/pre/owner/getTime").hasRole("OWNER")
-                    .requestMatchers(GET, "/pre/owner/seeTime").hasRole("OWNER")
-
-                    .requestMatchers("/pre/login").permitAll()  // 로그인은 모두 허용
-                    .requestMatchers("/api/history/**", "/api/history/restaurant/{resIdx}/**", "/api/history/reservation/**").permitAll()
-                    .requestMatchers("/menu/**", "/menu/unHidden/**", "/menu/unSoldOut/**", "/menu/delete/**", "/menu/edit/**").permitAll()
-                    .requestMatchers("/pre/owner/Profile").hasRole("OWNER")
-
-                    .requestMatchers("/pre/review/**").permitAll()
-
-//                    관리자 전용 페이지
-                    .requestMatchers("/pre/admin/**").permitAll()
-                    .requestMatchers("/pre/admin/login").permitAll()
-                    .requestMatchers("/pre/admin/SaveOwnerInfo").hasRole("ADMIN")
-//                    .requestMatchers("/auth/**", "/contentList/**", "/jsy/contents/**", "/pre/**", "/api/**", "/user/**").permitAll()
-//                    .requestMatchers("/admin/**").hasRole("ADMIN")
-//                    .requestMatchers("/member/**", "/board/**").hasAnyRole("ADMIN", "MEMBER")
-//                    .requestMatchers("/pre/**").hasRole("OWNER")
-//            나머지 url은 모두 인증 받은 사용자만 사용 가능
-                    .anyRequest().authenticated())
-
-            .addFilterBefore(jwtTokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-            .build();
-  }
 
   @Bean
   public PasswordEncoder passwordEncoder() {
